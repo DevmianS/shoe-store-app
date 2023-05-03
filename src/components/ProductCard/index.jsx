@@ -1,6 +1,6 @@
 import Image from "next/image"
 import styles from './ProductCard.module.css'
-import { Button } from "@mui/material"
+
 
 export default function ProductCard ({title,price,category,imgPath}){
 return (
