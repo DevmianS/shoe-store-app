@@ -1,8 +1,8 @@
 import React from 'react';
 import style from './index.module.css';
 
-const Index = () => {
+const SignUp = () => {
   return <div className={style.test}>Sign up</div>;
 };
 
-export default Index;
+export default SignUp;

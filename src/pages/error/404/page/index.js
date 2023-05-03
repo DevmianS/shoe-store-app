@@ -1,8 +1,8 @@
 import React from 'react';
 import style from './index.module.css';
 
-const Index = () => {
+const Error404Page = () => {
   return <div className={style.test}>Error 404 page</div>;
 };
 
-export default Index;
+export default Error404Page;

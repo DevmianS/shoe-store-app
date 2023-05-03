@@ -1,8 +1,8 @@
 import React from 'react';
 import style from './index.module.css';
 
-const Index = () => {
+const ResetPassword = () => {
   return <div className={style.test}>Reset password</div>;
 };
 
-export default Index;
+export default ResetPassword;

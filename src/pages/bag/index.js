@@ -1,8 +1,8 @@
 import React from 'react';
 import style from './index.module.css';
 
-const Index = () => {
+const Bag = () => {
   return <div className={style.test}>Bag</div>;
 };
 
-export default Index;
+export default Bag;

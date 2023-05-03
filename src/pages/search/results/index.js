@@ -2,7 +2,7 @@ import React from 'react';
 import style from './index.module.css';
 import {useRouter} from 'next/router';
 
-const Index = () => {
+const SearchResults = () => {
   const {query} = useRouter();
   const {name} = query;
 
@@ -17,4 +17,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default SearchResults;
