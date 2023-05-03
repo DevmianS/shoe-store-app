@@ -1,0 +1,92 @@
+*,*:before,*::after{
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+body {
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 500;
+}
+  .icon-chevron-down:before {
+    content: "\e900";
+  }
+  .icon-chevron-left:before {
+    content: "\e901";
+  }
+  .icon-chevron-right:before {
+    content: "\e902";
+  }
+  .icon-chevron-up:before {
+    content: "\e903";
+  }
+  .icon-menu:before {
+    content: "\e90a";
+  }
+  .icon-more:before {
+    content: "\e918";
+  }
+  .icon-close:before {
+    content: "\e919";
+  }
+  .icon-search:before {
+    content: "\e904";
+  }
+  .icon-bag:before {
+    content: "\e905";
+  }
+  .icon-filter:before {
+    content: "\e906";
+  }
+  .icon-bag-o:before {
+    content: "\e907";
+  }
+  .icon-trash:before {
+    content: "\e908";
+  }
+  .icon-heart:before {
+    content: "\e909";
+  }
+  .icon-gallery:before {
+    content: "\e90b";
+  }
+  .icon-plus-element:before {
+    content: "\e90c";
+  }
+  .icon-security:before {
+    content: "\e90d";
+  }
+  .icon-setting:before {
+    content: "\e90e";
+  }
+  .icon-orders:before {
+    content: "\e90f";
+  }
+  .icon-wallet:before {
+    content: "\e910";
+  }
+  .icon-medal-star:before {
+    content: "\e911";
+  }
+  .icon-newsletters:before {
+    content: "\e912";
+  }
+  .icon-star:before {
+    content: "\e913";
+  }
+  .icon-bonus-account:before {
+    content: "\e914";
+  }
+  .icon-logout:before {
+    content: "\e915";
+  }
+  .icon-profile:before {
+    content: "\e916";
+  }
+  .icon-logo:before {
+    content: "\e917";
+  }
+  .icon-star-full:before {
+    content: "\e9d9";
+  }
+  
