@@ -57,7 +57,7 @@
     padding: 5px;
 }
 
-@media(min-width:967px){
+@media(min-width:992px){
     .card{
         cursor: pointer;
     }
