@@ -1,5 +1,11 @@
 import {createTheme} from '@mui/material/styles';
+import {Work_Sans} from 'next/font/google';
 
+const work_sans = Work_Sans({
+  weight: ['300', '400', '500'],
+  style: ['normal'],
+  subsets: ['latin'],
+});
 export const theme = createTheme({
   palette: {
     primary: {
@@ -31,4 +37,5 @@ export const theme = createTheme({
       },
     },
   },
+  typography:{fontFamily:work_sans.style.fontFamily}
 });
