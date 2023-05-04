@@ -1,9 +1,10 @@
 import React from 'react';
+
 import Button from '@/components/UI/Button/Button';
 
-const index = () => {
-  return (
-    <div>
+
+const Index = () => {
+   return <div>
       <h1>Test icons usage</h1>
       <i className="icon-chevron-down"></i>
       <i className="icon-gallery"></i>
@@ -21,6 +22,7 @@ const index = () => {
           Test outlined
         </Button>
 
+
         <Button
           onClick={() => {
             console.log('test');
@@ -34,4 +36,5 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
+
