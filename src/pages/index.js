@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-const index = () => {
+const Index = () => {
    return <div>
       <h1>Test icons usage</h1>
 <i className='icon-chevron-down'></i>
@@ -10,4 +10,5 @@ const index = () => {
    </div>
 }
 
-export default index
+
+export default Index;
