@@ -4,7 +4,6 @@ import {ThemeProvider} from '@mui/material';
 import {theme} from '../utils/theme';
 import CssBaseline from '@mui/material/CssBaseline';
 
-
 const icons_font = localFont({src: '../font/SHOES_STORE.woff'});
 export default function App({Component, pageProps}) {
   return (
