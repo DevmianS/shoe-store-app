@@ -10,15 +10,24 @@ const index = () => {
       <i className="icon-logo"></i>
       <i className="icon-logout"></i>
       <h2>Button Test</h2>
-      <div style={{width: 300, display: 'flex', gap: '2rem'}}>
+      <div style={{width: 500, display: 'flex', gap: '2rem'}}>
         <Button>Test</Button>
+        <Button
+          outlined
+          onClick={() => {
+            console.log('test');
+          }}
+        >
+          Test outlined
+        </Button>
+
         <Button
           onClick={() => {
             console.log('test');
           }}
-          outlined
+          disabled
         >
-          Test outlined
+          Test disabled
         </Button>
       </div>
     </div>
