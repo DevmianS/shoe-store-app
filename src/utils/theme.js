@@ -6,6 +6,7 @@ const work_sans = Work_Sans({
   style: ['normal'],
   subsets: ['latin'],
 });
+
 export const theme = createTheme({
   palette: {
     primary: {
@@ -36,6 +37,68 @@ export const theme = createTheme({
         },
       },
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          '.MuiOutlinedInput-notchedOutline': {
+            borderRadius: 8,
+            borderColor: '#494949',
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderRadius: 8,
+            borderColor: 'black',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#494949',
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          position: 'relative',
+          legend: {
+            span: {
+              display: 'none',
+            },
+          },
+          '& label': {
+            color: '#494949',
+            position: 'relative',
+            fontSize: 15,
+            fontWeight: 500,
+            transform: 'none',
+            paddingBottom: 8,
+            lineHeight: '17px',
+          },
+          '& label.Mui-focused': {
+            color: '#494949',
+          },
+          '.MuiInputBase-root': {
+            height: 48,
+            fontWeight: 300,
+            fontSize: 15,
+          },
+          '.MuiInputBase-sizeSmall': {
+            height: 34,
+            fontSize: 12,
+          },
+          '& label.MuiInputLabel-sizeSmall': {
+            paddingBottom: 5,
+            lineHeight: '14px',
+            fontSize: 12,
+          },
+        },
+      },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        asterisk: {
+          color: 'red',
+        },
+      },
+    },
   },
-  typography:{fontFamily:work_sans.style.fontFamily}
+  typography: {fontFamily: work_sans.style.fontFamily},
 });
