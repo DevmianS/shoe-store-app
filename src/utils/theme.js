@@ -7,7 +7,7 @@ const work_sans = Work_Sans({
   subsets: ['latin'],
 });
 
-export let theme = createTheme({
+export const theme = createTheme({
   palette: {
     primary: {
       main: '#fe645e',
@@ -22,9 +22,6 @@ export let theme = createTheme({
     common: '#494949',
     border: '#000000',
   },
-});
-
-theme = createTheme(theme, {
   components: {
     MuiTypography: {
       styleOverrides: {
@@ -39,7 +36,7 @@ theme = createTheme(theme, {
         body1: {
           fontSize: 16,
           fontWeight: 400,
-          color: theme.palette.text.secondary,
+          color: theme => theme.palette.text.secondary,
         },
         body2: {fontSize: 20, fontWeight: 500},
         body3: {fontSize: 12, fontWeight: 500},
@@ -47,7 +44,7 @@ theme = createTheme(theme, {
         body5: {
           fontSize: 15,
           fontWeight: 300,
-          color: theme.palette.text.secondary,
+          color: theme => theme.palette.text.secondary,
         },
       },
     },
@@ -79,14 +76,14 @@ theme = createTheme(theme, {
         root: {
           '.MuiOutlinedInput-notchedOutline': {
             borderRadius: 8,
-            borderColor: theme.palette.border,
+            borderColor: theme => theme.palette.border,
           },
           '&:hover .MuiOutlinedInput-notchedOutline': {
             borderRadius: 8,
-            borderColor: theme.palette.border,
+            borderColor: theme => theme.palette.border,
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.common,
+            borderColor: theme => theme.palette.common,
           },
         },
       },
@@ -101,7 +98,7 @@ theme = createTheme(theme, {
             },
           },
           '& label': {
-            color: theme.palette.text.tetriary,
+            color: theme => theme.palette.text.tetriary,
             position: 'relative',
             fontSize: 15,
             fontWeight: 500,
@@ -111,7 +108,7 @@ theme = createTheme(theme, {
             pointerEvents: 'auto',
           },
           '& label.Mui-focused': {
-            color: theme.palette.text.tetriary,
+            color: theme => theme.palette.text.tetriary,
           },
           '.MuiInputBase-root': {
             height: 48,

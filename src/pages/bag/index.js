@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './index.module.css';
-import Cart from '@/components/UI/Cart/Cart';
+import Cart from '@/components/UI/Cart';
 
 const Bag = () => {
   return (
