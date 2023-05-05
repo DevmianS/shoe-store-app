@@ -10,7 +10,7 @@ import {Typography, InputBase} from '@mui/material';
 
 import {styled, alpha} from '@mui/material/styles';
 
-import Cart from "../Cart/Cart.jsx"
+import Cart from '../Cart/index.js';
 
 const Search = styled('div')(({theme}) => ({
   position: 'relative',
@@ -174,8 +174,8 @@ const NavBar = () => {
                 color="inherit"
                 aria-label="Bag"
               >
-                  <Cart count={5} />
-              {/*   <Link href="bag" className={styles.link}>
+                <Cart count={5} />
+                {/*   <Link href="bag" className={styles.link}>
                    <i className={`icon-bag `}></i> 
                 </Link> */}
               </IconButton>
@@ -236,7 +236,7 @@ const NavBar = () => {
         className={styles.shadowScreen}
         sx={{
           display: expandedResponsive ? 'flex' : 'none',
-          opacity:expandedResponsive ? '0.85' : '0'
+          opacity: expandedResponsive ? '0.85' : '0',
         }}
       ></Box>
       <Box

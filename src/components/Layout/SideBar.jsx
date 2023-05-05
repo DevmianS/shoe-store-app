@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ListItem from '../UI/ListItem/ListItem';
+import ListItem from '../UI/ListItem';
 
 export default function SideBar({listItems}) {
   return (
