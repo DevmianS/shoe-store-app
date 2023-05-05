@@ -11,3 +11,12 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.signInForm__welcomeTitle {
+  font-size: 45px;
+}
+
+.signInForm__welcomeDescription {
+  font-size: 15px;
+  color: #5c5c5c;
+}
