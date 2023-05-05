@@ -108,6 +108,7 @@ theme = createTheme(theme, {
             transform: 'none',
             paddingBottom: 8,
             lineHeight: '17px',
+            pointerEvents: 'auto',
           },
           '& label.Mui-focused': {
             color: theme.palette.text.tetriary,
