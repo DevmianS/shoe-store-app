@@ -1,55 +1,31 @@
-import {AppBar, Button, IconButton, Stack, Toolbar, Box} from '@mui/material';
 import React, {useRef} from 'react';
-import styles from './NavBar.module.css';
-import Link from 'next/link';
 
-import {createPortal} from 'react-dom';
+import {
+  AppBar,
+  Button,
+  IconButton,
+  Stack,
+  Toolbar,
+  Box,
+  Link,
+  Typography,
+} from '@mui/material';
+
+import Cart from '../Cart';
 
 import {useState} from 'react';
-import {Typography, InputBase} from '@mui/material';
 
-import {styled, alpha} from '@mui/material/styles';
-
-import Cart from '../Cart/index.js';
-
-const Search = styled('div')(({theme}) => ({
-  position: 'relative',
-  border: '1px solid #494949',
-  borderRadius: '42px',
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  minWidth: '20%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({theme}) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({theme}) => ({
-  color: 'inherit',
-  width: '100%',
-  overflow: 'hidden',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    minWidth: '100%',
-    width: '100%',
-  },
-}));
+import {
+  buttonsArray,
+  buttonsArrayResponsive,
+  Search,
+  StyledInputBase,
+  SearchIconWrapper,
+  LinkStyles,
+} from './utils';
 
 const NavBar = () => {
+  const [expandedResponsive, setExpandedResponsive] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
   const ref = useRef(null);
@@ -61,22 +37,24 @@ const NavBar = () => {
     }, 0);
   };
 
-  const [expandedResponsive, setExpandedResponsive] = useState(false);
-
   return (
     <>
       <AppBar
         position="static"
-        className={`${styles.nav} ${expanded ? styles.navExpanded : ''}`}
         sx={{
           height: {
             xs: expanded ? '200px' : '60px',
             md: expanded ? '420px' : '120px',
           },
+          backgroundColor: '#fff',
+          color: '#000',
+          justifyContent: 'center',
+          borderBottom: '1px solid #eaecf0',
+          boxShadow: 'none',
+          transition: 'all 0.5s ease-in-out',
         }}
       >
         <Toolbar
-          className={styles.toolbar}
           sx={{
             padding: {
               xs: '0',
@@ -100,59 +78,68 @@ const NavBar = () => {
               },
             }}
           >
-            <Link href="home" className={styles.link}>
-              <i className={` icon-logo ${styles.icon}`}></i>
+            <Link
+              href="home"
+              sx={{
+                ...LinkStyles,
+              }}
+            >
+              <i
+                color="inherit"
+                sx={{
+                  width: '60px',
+                  height: '40px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                className="icon-logo"
+              ></i>
             </Link>
           </IconButton>
           <Stack
             direction="row"
             spacing={2}
-            className={expanded && styles.displayNone}
             sx={{
               display: {
                 xs: 'none',
-                md: 'flex',
+                md: expanded ? 'none' : 'flex',
               },
             }}
           >
-            <Button color="inherit" className={styles.button}>
-              <Link href="home" className={styles.link}>
-                Home
-              </Link>
-            </Button>
-            <Button color="inherit" className={styles.button}>
-              <Link href="search" className={styles.link}>
-                For woman
-              </Link>
-            </Button>
-            <Button color="inherit" className={styles.button}>
-              <Link href="search" className={styles.link}>
-                For men
-              </Link>
-            </Button>
-            <Button color="inherit" className={styles.button}>
-              <Link href="search" className={styles.link}>
-                Accessories
-              </Link>
-            </Button>
-            <Button color="inherit" className={styles.button}>
-              <Link href="search" className={styles.link}>
-                Sale
-              </Link>
-            </Button>
+            {buttonsArray.map(button => (
+              <Button key={button.text} color="inherit">
+                <Link
+                  href={button.link}
+                  sx={{
+                    ...LinkStyles,
+                  }}
+                >
+                  {button.text}
+                </Link>
+              </Button>
+            ))}
           </Stack>
-          <div className={styles.searchContainer}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              marginRight: '12px',
+              flexGrow: '1',
+              justifyContent: 'flex-end',
+            }}
+          >
             <Search
               onClick={() => setExpanded(true)}
               onBlur={() => setExpanded(false)}
-              className={`${styles.search} ${
-                expanded ? styles.searchExpanded : ''
-              }`}
               sx={{
                 display: {
                   xs: expanded ? 'flex' : 'none',
                   md: 'flex',
                 },
+                transition: 'all 0.5s ease-in-out',
+                marginRight: '15px',
+                minWidth: expanded ? '95%' : '',
               }}
             >
               <SearchIconWrapper>
@@ -169,30 +156,25 @@ const NavBar = () => {
             <Stack direction="row" spacing={1}>
               <IconButton
                 size="large"
-                className={`${expanded ? styles.displayNone : ''}`}
                 edge="start"
                 color="inherit"
                 aria-label="Bag"
+                sx={{display: expanded ? 'none' : ''}}
               >
                 <Cart count={5} />
-                {/*   <Link href="bag" className={styles.link}>
-                   <i className={`icon-bag `}></i> 
-                </Link> */}
               </IconButton>
               <IconButton
                 size="large"
                 onClick={handleFocusInputResponsive}
-                className={`${styles.iconContainer} ${
-                  expanded ? styles.displayNone : ''
-                }`}
                 edge="start"
                 color="inherit"
                 aria-label="Search"
                 sx={{
                   display: {
-                    xs: 'flex',
+                    xs: expanded ? 'none' : 'flex',
                     md: 'none',
                   },
+                  marginInline: '30px',
                 }}
               >
                 <i className={`icon-search `}></i>
@@ -200,9 +182,10 @@ const NavBar = () => {
 
               <IconButton
                 size="large"
-                className={`${styles.iconContainer} ${
-                  expanded ? '' : styles.displayNone
-                }`}
+                sx={{
+                  display: expanded ? 'flex' : 'none',
+                  marginInline: '30px',
+                }}
                 edge="start"
                 color="inherit"
                 aria-label="Close"
@@ -212,79 +195,108 @@ const NavBar = () => {
               </IconButton>
               <IconButton
                 size="large"
-                className={`${styles.iconContainer} ${
-                  expanded ? styles.displayNone : ''
-                }`}
                 edge="start"
                 color="inherit"
                 aria-label="Menu"
                 sx={{
                   display: {
-                    xs: 'flex',
+                    xs: expanded ? 'none' : 'flex',
                     md: 'none',
                   },
+                  marginInline: '30px',
                 }}
                 onClick={() => setExpandedResponsive(true)}
               >
                 <i className={`icon-menu `}></i>
               </IconButton>
             </Stack>
-          </div>
+          </Box>
         </Toolbar>
       </AppBar>
       <Box
-        className={styles.shadowScreen}
         sx={{
           display: expandedResponsive ? 'flex' : 'none',
           opacity: expandedResponsive ? '0.85' : '0',
+          position: 'fixed',
+          top: '0',
+          right: '0',
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: '#F3F3F3',
+          transition: 'all 2s ease-in-out',
         }}
       ></Box>
       <Box
-        className={styles.navResponsive}
-        sx={{transform: expandedResponsive ? '' : 'translateX(1000px)'}}
+        sx={{
+          transform: expandedResponsive ? '' : 'translateX(1000px)',
+          position: 'fixed',
+          top: '0',
+          right: '0',
+          width: '270px',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          backgroundColor: '#fff',
+          borderLeft: '1px solid #eaecf0',
+          transition: 'all 0.5s ease-in-out',
+        }}
       >
         <Button
           color="inherit"
-          className={styles.navResponsive__close}
           onClick={() => setExpandedResponsive(false)}
+          sx={{
+            width: '100%',
+            height: '60px',
+            padding: '10px',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            color: '#000',
+          }}
         >
-          <i className={`icon-close ${styles.i}`}></i>
+          <Box className="icon-close" sx={{fontSize: '25px'}}></Box>
         </Button>
         <Stack
           direction="column"
           spacing={1}
-          className={styles.navResponsiveLinks}
+          sx={{
+            width: '100%',
+            height: '100%',
+            textAlign: 'start',
+            padding: '30px',
+          }}
         >
-          <Button color="inherit" className={styles.buttonResponsive}>
-            <Link href="/home" className={styles.link}>
-              <i className={`icon-chevron-left ${styles.i}`}></i>
-              <p className={styles.p}>Home</p>
-            </Link>
-          </Button>
-          <Button color="inherit" className={styles.buttonResponsive}>
-            <Link href="search" className={styles.link}>
-              <i className={`icon-bonus-account ${styles.i}`}></i>
-              <p className={styles.p}>Products</p>
-            </Link>
-          </Button>
-          <Button color="inherit" className={styles.buttonResponsive}>
-            <Link href="bag" className={styles.link}>
-              <i className={`icon-bag ${styles.i}`}></i>
-              <p className={styles.p}>Bag</p>
-            </Link>
-          </Button>
-          <Button color="inherit" className={styles.buttonResponsive}>
-            <Link href="profile" className={styles.link}>
-              <i className={`icon-profile ${styles.i}`}></i>
-              <p className={styles.p}>My profile</p>
-            </Link>
-          </Button>
-          <Button color="inherit" className={styles.buttonResponsive}>
-            <Link href="" className={styles.link}>
-              <i className={`icon-logout ${styles.i}`}></i>
-              <p className={styles.p}>Log out</p>
-            </Link>
-          </Button>
+          {buttonsArrayResponsive.map(button => (
+            <Button
+              color="inherit"
+              key={button.text}
+              sx={{
+                width: '150px',
+                display: 'flex',
+                justifyContent: 'flex-start',
+                alignCtems: 'center',
+                color: '#000',
+              }}
+            >
+              <Link
+                color="inherit"
+                href={button.link}
+                sx={{
+                  ...LinkStyles,
+                }}
+              >
+                <Box
+                  className={`icon-${button.icon}`}
+                  sx={{fontSize: '25px'}}
+                ></Box>
+
+                <Typography color="inherit" sx={{marginLeft: ' 20px'}}>
+                  {button.text}
+                </Typography>
+              </Link>
+            </Button>
+          ))}
         </Stack>
       </Box>
     </>
