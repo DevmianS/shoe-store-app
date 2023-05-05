@@ -2,19 +2,56 @@ import {createTheme} from '@mui/material/styles';
 import {Work_Sans} from 'next/font/google';
 
 const work_sans = Work_Sans({
-  weight: ['300', '400', '500'],
+  weight: ['300', '400', '500', '600'],
   style: ['normal'],
   subsets: ['latin'],
 });
 
-export const theme = createTheme({
+export let theme = createTheme({
   palette: {
     primary: {
       main: '#fe645e',
       contrastText: '#fff',
     },
+    text: {
+      primary: '#000000',
+      secondary: '#5C5C5C',
+      tetriary: '#494949',
+    },
+    divider: '#EAECF0',
+    common: '#494949',
+    border: '#000000',
   },
+});
+
+theme = createTheme(theme, {
   components: {
+    MuiTypography: {
+      styleOverrides: {
+        h1: {
+          fontSize: 45,
+          fontWeight: 500,
+        },
+        h2: {fontSize: 38, fontWeight: 500},
+        h3: {fontSize: 30, fontWeight: 500},
+        h4: {fontSize: 30, fontWeight: 600},
+        h5: {fontSize: 10, fontWeight: 500},
+        body1: {
+          fontSize: 16,
+          fontWeight: 400,
+          color: theme.palette.text.secondary,
+        },
+        body2: {fontSize: 20, fontWeight: 500},
+        body3: {fontSize: 12, fontWeight: 500},
+        body4: {fontSize: 25, fontWeight: 400},
+        body5: {
+          fontSize: 15,
+          fontWeight: 300,
+          color: theme.palette.text.secondary,
+        },
+      },
+    },
+
     MuiButton: {
       styleOverrides: {
         sizeSmall: {
@@ -42,14 +79,14 @@ export const theme = createTheme({
         root: {
           '.MuiOutlinedInput-notchedOutline': {
             borderRadius: 8,
-            borderColor: '#494949',
+            borderColor: theme.palette.border,
           },
           '&:hover .MuiOutlinedInput-notchedOutline': {
             borderRadius: 8,
-            borderColor: 'black',
+            borderColor: theme.palette.border,
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#494949',
+            borderColor: theme.palette.common,
           },
         },
       },
@@ -64,7 +101,7 @@ export const theme = createTheme({
             },
           },
           '& label': {
-            color: '#494949',
+            color: theme.palette.text.tetriary,
             position: 'relative',
             fontSize: 15,
             fontWeight: 500,
@@ -73,7 +110,7 @@ export const theme = createTheme({
             lineHeight: '17px',
           },
           '& label.Mui-focused': {
-            color: '#494949',
+            color: theme.palette.text.tetriary,
           },
           '.MuiInputBase-root': {
             height: 48,
