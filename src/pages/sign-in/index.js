@@ -3,20 +3,16 @@ import Button from '@/components/UI/Button/Button';
 import Banner from '@/assets/product8.jpg';
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
 import {
   Box,
   Checkbox,
-  FormControl,
   FormControlLabel,
   Grid,
+  Icon,
+  Link,
   TextField,
   Typography,
 } from '@mui/material';
-
-const theme = {
-  spacing: 1,
-};
 
 const SignIn = () => {
   const [rememberMe, setRememberMe] = useState(false);
@@ -34,10 +30,10 @@ const SignIn = () => {
       <Head>
         <title>Sign in</title>
       </Head>
-      <Box sx={{width: 40}}>
+      <Icon sx={{width: 32, position: 'absolute', top: 50, left: 40}}>
         <i className="icon-logo"></i>
-      </Box>
-      <Grid container>
+      </Icon>
+      <Grid container sx={{maxHeight: 1080, overflow: 'hidden'}}>
         <Grid
           item
           xs={6}
@@ -88,7 +84,9 @@ const SignIn = () => {
                   control={<Checkbox onChange={handleCheckbox} />}
                   label="Remember me"
                 />
-                <Link href="/reset-password">Forgot password?</Link>
+                <Link href="/reset-password" underline="none">
+                  Forgot password?
+                </Link>
               </Box>
               <Button
                 size="medium"
@@ -96,8 +94,16 @@ const SignIn = () => {
                 onClick={handleSignIn}
               />
             </form>
-            <Typography component="p" variant="body2">
-              Don't have an account? <Link href="/sign-up">Sign up</Link>
+            <Typography
+              component="p"
+              variant="body2"
+              sx={{textAlign: 'center'}}
+              mt={2}
+            >
+              Don't have an account?{' '}
+              <Link href="/sign-up" underline="none">
+                Sign up
+              </Link>
             </Typography>
           </Box>
         </Grid>
