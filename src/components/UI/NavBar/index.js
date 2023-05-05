@@ -25,13 +25,13 @@ import {
 } from './utils';
 
 const NavBar = () => {
-  const [expandedResponsive, setExpandedResponsive] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
+  const [searchExpanded, setSearchExpanded] = useState(false);
 
   const ref = useRef(null);
 
   const handleFocusInputResponsive = () => {
-    setExpanded(true);
+    setSearchExpanded(true);
     setTimeout(() => {
       ref.current.focus();
     }, 0);
@@ -43,8 +43,8 @@ const NavBar = () => {
         position="static"
         sx={{
           height: {
-            xs: expanded ? '200px' : '60px',
-            md: expanded ? '420px' : '120px',
+            xs: searchExpanded ? '200px' : '60px',
+            md: searchExpanded ? '420px' : '120px',
           },
           backgroundColor: '#fff',
           color: '#000',
@@ -69,7 +69,7 @@ const NavBar = () => {
             aria-label="logo"
             sx={{
               opacity: {
-                xs: expanded ? '0' : '1',
+                xs: searchExpanded ? '0' : '1',
                 md: '1',
               },
               marginInline: {
@@ -103,7 +103,7 @@ const NavBar = () => {
             sx={{
               display: {
                 xs: 'none',
-                md: expanded ? 'none' : 'flex',
+                md: searchExpanded ? 'none' : 'flex',
               },
             }}
           >
@@ -130,16 +130,19 @@ const NavBar = () => {
             }}
           >
             <Search
-              onClick={() => setExpanded(true)}
-              onBlur={() => setExpanded(false)}
+              onClick={() => setSearchExpanded(true)}
+              onBlur={() => setSearchExpanded(false)}
               sx={{
                 display: {
-                  xs: expanded ? 'flex' : 'none',
+                  xs: searchExpanded ? 'flex' : 'none',
                   md: 'flex',
                 },
-                transition: 'all 0.5s ease-in-out',
+                transition: 'all 0.7s ease-in-out',
                 marginRight: '15px',
-                minWidth: expanded ? '95%' : '',
+                minWidth: {
+                  xs: searchExpanded ? '90%' : '',
+                  md: searchExpanded ? '95%' : '0',
+                },
               }}
             >
               <SearchIconWrapper>
@@ -159,7 +162,7 @@ const NavBar = () => {
                 edge="start"
                 color="inherit"
                 aria-label="Bag"
-                sx={{display: expanded ? 'none' : ''}}
+                sx={{display: searchExpanded ? 'none' : ''}}
               >
                 <Cart count={5} />
               </IconButton>
@@ -171,7 +174,7 @@ const NavBar = () => {
                 aria-label="Search"
                 sx={{
                   display: {
-                    xs: expanded ? 'none' : 'flex',
+                    xs: searchExpanded ? 'none' : 'flex',
                     md: 'none',
                   },
                   marginInline: '30px',
@@ -183,13 +186,13 @@ const NavBar = () => {
               <IconButton
                 size="large"
                 sx={{
-                  display: expanded ? 'flex' : 'none',
+                  display: searchExpanded ? 'flex' : 'none',
                   marginInline: '30px',
                 }}
                 edge="start"
                 color="inherit"
                 aria-label="Close"
-                onClick={() => setExpanded(false)}
+                onClick={() => setSearchExpanded(false)}
               >
                 <i className={`icon-close `}></i>
               </IconButton>
@@ -200,12 +203,12 @@ const NavBar = () => {
                 aria-label="Menu"
                 sx={{
                   display: {
-                    xs: expanded ? 'none' : 'flex',
+                    xs: searchExpanded ? 'none' : 'flex',
                     md: 'none',
                   },
                   marginInline: '30px',
                 }}
-                onClick={() => setExpandedResponsive(true)}
+                onClick={() => setMobileMenu(true)}
               >
                 <i className={`icon-menu `}></i>
               </IconButton>
@@ -215,8 +218,8 @@ const NavBar = () => {
       </AppBar>
       <Box
         sx={{
-          display: expandedResponsive ? 'flex' : 'none',
-          opacity: expandedResponsive ? '0.85' : '0',
+          display: mobileMenu ? 'flex' : 'none',
+          opacity: mobileMenu ? '0.85' : '0',
           position: 'fixed',
           top: '0',
           right: '0',
@@ -228,7 +231,7 @@ const NavBar = () => {
       ></Box>
       <Box
         sx={{
-          transform: expandedResponsive ? '' : 'translateX(1000px)',
+          transform: mobileMenu ? '' : 'translateX(1000px)',
           position: 'fixed',
           top: '0',
           right: '0',
@@ -245,7 +248,7 @@ const NavBar = () => {
       >
         <Button
           color="inherit"
-          onClick={() => setExpandedResponsive(false)}
+          onClick={() => setMobileMenu(false)}
           sx={{
             width: '100%',
             height: '60px',
