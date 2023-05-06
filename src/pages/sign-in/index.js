@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Button from '@/components/UI/Button/Button';
+import Button from '@/components/UI/Button';
 import Banner from '@/assets/product8.jpg';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -33,7 +33,10 @@ const SignIn = () => {
       <Icon sx={{width: 32, position: 'absolute', top: 50, left: 40}}>
         <i className="icon-logo"></i>
       </Icon>
-      <Grid container sx={{maxHeight: 1080, overflow: 'hidden'}}>
+      <Grid
+        container
+        sx={{height: '100%', height: '100vh', overflow: 'hidden'}}
+      >
         <Grid
           item
           xs={6}
@@ -41,13 +44,10 @@ const SignIn = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            p: 2,
           }}
         >
-          <Box
-            sx={{
-              width: 500,
-            }}
-          >
+          <Box>
             <Typography component="h1" variant="h3">
               Welcome back
             </Typography>
@@ -108,7 +108,13 @@ const SignIn = () => {
           </Box>
         </Grid>
         <Grid item xs={6}>
-          <Image src={Banner} alt="banner" width="960" height="1080" />
+          <Image
+            src={Banner}
+            alt="banner"
+            width={960}
+            height={1080}
+            style={{width: '100%', height: '100%', objectFit: 'cover'}}
+          />
         </Grid>
       </Grid>
     </>
