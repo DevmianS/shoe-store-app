@@ -1,6 +1,12 @@
 import {createTheme} from '@mui/material/styles';
 import {Work_Sans} from 'next/font/google';
 
+const responsiveFont = (mobileSize, desktopSize) => {
+  return `calc(${mobileSize}px + ${
+    desktopSize - mobileSize
+  } * ((100vw - 360px) / (1920 - 360)))`;
+};
+
 const work_sans = Work_Sans({
   weight: ['300', '400', '500', '600'],
   style: ['normal'],
@@ -26,7 +32,7 @@ export const theme = createTheme({
     MuiTypography: {
       styleOverrides: {
         h1: {
-          fontSize: 45,
+          fontSize: responsiveFont(30, 45),
           fontWeight: 500,
         },
         h2: {fontSize: 38, fontWeight: 500},
