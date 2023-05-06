@@ -41,7 +41,7 @@ const NavBar = () => {
     <>
       <Box
         sx={{
-          height: {
+          minHeight: {
             xs: '60px',
             md: '120px',
           },
@@ -52,7 +52,7 @@ const NavBar = () => {
       <AppBar
         position="static"
         sx={{
-          height: {
+          minHeight: {
             xs: searchExpanded ? '200px' : '60px',
             md: searchExpanded ? '420px' : '120px',
           },
@@ -115,6 +115,7 @@ const NavBar = () => {
             </Link>
           </IconButton>
           <Stack
+            component="nav"
             direction="row"
             spacing={2}
             sx={{

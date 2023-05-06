@@ -19,11 +19,9 @@ const Profile = () => {
   ];
   return (
     <NavBarLayout>
-      <Grid container>
-        <Grid item xs={2}>
-          <SideBar listItems={profileItemsList} />
-        </Grid>
-      </Grid>
+      <SideBar listItems={profileItemsList}>
+        <h1>Profile</h1>
+      </SideBar>
     </NavBarLayout>
   );
 };
