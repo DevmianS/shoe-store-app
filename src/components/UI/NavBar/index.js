@@ -39,6 +39,16 @@ const NavBar = () => {
 
   return (
     <>
+      <Box
+        sx={{
+          height: {
+            xs: '60px',
+            md: '120px',
+          },
+          width: '100%',
+        }}
+      ></Box>
+
       <AppBar
         position="static"
         sx={{
@@ -48,10 +58,13 @@ const NavBar = () => {
           },
           backgroundColor: '#fff',
           color: '#000',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           borderBottom: '1px solid #eaecf0',
           boxShadow: 'none',
           transition: 'all 0.5s ease-in-out',
+          position: 'fixed',
+          top: '0',
+          zIndex: '100',
         }}
       >
         <Toolbar
@@ -59,6 +72,10 @@ const NavBar = () => {
             padding: {
               xs: '0',
               md: '',
+            },
+            height: {
+              xs: '60px',
+              md: '120px',
             },
           }}
         >
@@ -218,17 +235,17 @@ const NavBar = () => {
       </AppBar>
       <Box
         sx={{
-          display: mobileMenu ? 'flex' : 'none',
-          opacity: mobileMenu ? '0.85' : '0',
+          display: searchExpanded || mobileMenu ? 'flex' : 'none',
+          opacity: searchExpanded || mobileMenu ? '0.85' : '0',
           position: 'fixed',
           top: '0',
           right: '0',
           width: '100vw',
           height: '100vh',
           backgroundColor: '#F3F3F3',
-          transition: 'all 2s ease-in-out',
         }}
       ></Box>
+
       <Box
         sx={{
           transform: mobileMenu ? '' : 'translateX(1000px)',
@@ -244,6 +261,7 @@ const NavBar = () => {
           backgroundColor: '#fff',
           borderLeft: '1px solid #eaecf0',
           transition: 'all 0.5s ease-in-out',
+          zIndex: '300',
         }}
       >
         <Button
