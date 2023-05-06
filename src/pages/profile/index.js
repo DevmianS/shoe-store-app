@@ -1,12 +1,21 @@
+import Image from 'next/image';
 import Head from 'next/head';
-import {Grid, Typography, styled, Box} from '@mui/material';
+
+import {Typography, styled, Box, Stack} from '@mui/material';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
+import ProductCard from '@/components/UI/ProductCard';
 
 import LinksList from '@/components/UI/LinksList';
 
-const Profile = () => {
+import bannerImg from '@/assets/banner.jpg';
+import product1 from '@/assets/product1.jpg';
+import product2 from '@/assets/product2.jpg';
+import product3 from '@/assets/product3.jpg';
+import product4 from '@/assets/product4.jpg';
+
+const Profile = ({userName}) => {
   // we can recieve COUNT properties from REDUX
   const profileItemsList = [
     {name: 'My orders', icon: 'bag', click: null},
@@ -20,10 +29,39 @@ const Profile = () => {
     {name: 'Log out', icon: 'logout', click: null},
   ];
   const TempAvatar = styled(Box)({
-    width: '64px',
+    maxWidth: '64px',
     height: '64px',
+    flex: '0 0 64px',
     background: '#e2e2e2',
     borderRadius: '50%',
+    marginRight: '16px',
+  });
+  const Column = styled(Box)(({theme}) => ({
+    [theme.breakpoints.up('lg')]: {
+      flex: '0 0 33%',
+    },
+    [theme.breakpoints.between('md', 'lg')]: {
+      flex: '0 0 50%',
+      padding: '0 15px',
+    },
+    [theme.breakpoints.down('md')]: {
+      flex: '0 0 50%',
+      padding: '0 8px',
+    },
+    [theme.breakpoints.up('xl')]: {
+      flex: '0 0 25%',
+    },
+    padding: '0 24px',
+  }));
+
+  const TempAvatarLg = styled(Box)({
+    maxWidth: '120px',
+    height: '120px',
+    flex: '0 0 120px',
+    background: '#e2e2e2',
+    borderRadius: '50%',
+    marginRight: '26px',
+    border: '4px solid white',
   });
   return (
     <>
@@ -31,23 +69,101 @@ const Profile = () => {
         <title>My profile</title>
       </Head>
       <NavBarLayout>
-        <Grid
-          container
-          justifyContent={'space-between'}
-          sx={{padding: '40px 0'}}
-        >
+        <Box justifyContent={'space-between'} padding="40px 0" display="flex">
           <SideBar areaName="user profile actions">
-            <Box>
+            <Stack
+              direction="row"
+              pl="40px"
+              alignItems="center"
+              mb="7px"
+              pb="32px"
+              borderBottom="1px solid"
+              borderColor="divider"
+            >
               <TempAvatar />
-            </Box>
+              <Box>
+                <Typography color="text.tetriary" fontSize={12}>
+                  Welcome
+                </Typography>
+                <Typography fontWeight={500}>
+                  {userName || 'Jane Meldrum'}
+                </Typography>
+              </Box>
+            </Stack>
             <LinksList listItems={profileItemsList} />
           </SideBar>
-          <Grid item xs={10} sx={{padding: '0 60px'}}>
-            <Typography variant="h1" component="h1">
-              My profile
+          <Box
+            sx={{
+              flex: '1 1 auto',
+              padding: {lg: '0 60px', md: '0 40px', sm: '0 30px', xs: '0 10px'},
+            }}
+          >
+            <Box
+              minHeight={260}
+              sx={{background: `url(${bannerImg.src}) center/cover no-repeat`}}
+            ></Box>
+            <Stack
+              direction="row"
+              alignItems="end"
+              sx={{
+                ml: {xl: '70px', md: '50px', sm: '30px', xs: '30px'},
+                mb: '50px',
+                mt: '-30px',
+              }}
+            >
+              <TempAvatarLg />
+              <Box>
+                <Typography variant="body2" component="h3">
+                  {userName || 'Jane Meldrum'}
+                </Typography>
+                <Typography color="text.tetriary" fontSize={15} mb="12px">
+                  1 374 bonus points
+                </Typography>
+              </Box>
+            </Stack>
+            <Typography variant="h1" component="h1" mb="40px">
+              Last viewed products
             </Typography>
-          </Grid>
-        </Grid>
+            <Box
+              display="flex"
+              flexWrap="wrap"
+              margin={{sm: '0 -8px', md: '0 -24px'}}
+            >
+              <Column>
+                <ProductCard
+                  title="Nike Air Max 270"
+                  category="Women's Shoes"
+                  price={160}
+                  imgPath={product1}
+                />
+              </Column>
+              <Column>
+                <ProductCard
+                  title="Nike Air Max 90"
+                  category="Men's Shoes"
+                  price={140}
+                  imgPath={product2}
+                />
+              </Column>
+              <Column>
+                <ProductCard
+                  title="Nike Air Force 1 '07 SE"
+                  category="Women's Shoes"
+                  price={110}
+                  imgPath={product3}
+                />
+              </Column>
+              <Column>
+                <ProductCard
+                  title="Nike Air Max 210"
+                  category="Men's Shoes"
+                  price={180}
+                  imgPath={product4}
+                />
+              </Column>
+            </Box>
+          </Box>
+        </Box>
       </NavBarLayout>
     </>
   );

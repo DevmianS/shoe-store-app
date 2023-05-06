@@ -1,19 +1,16 @@
-import {Stack, Grid} from '@mui/material';
+import {Stack, Box} from '@mui/material';
 
 export default function SideBar({children, areaName}) {
   return (
-    <Grid item xl={2}>
+    <Box sx={{flex: '0 0 320px', display: {xs: 'none', md: 'flex'}}}>
       <Stack
         component="sidebar"
         direction="column"
         aria-label={areaName}
         variant="permanent"
-        sx={{
-          display: {sm: 'none', md: 'flex'},
-        }}
       >
         {children}
       </Stack>
-    </Grid>
+    </Box>
   );
 }
