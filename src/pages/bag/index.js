@@ -7,6 +7,8 @@ import product1 from '@/assets/product1.jpg';
 import product2 from '@/assets/product2.jpg';
 import product3 from '@/assets/product3.jpg';
 
+import NavBarLayout from '@/components/Layout/NavBarLayout';
+
 const Bag = () => {
   const saveClickHandler = () => {
     console.log('SAVED');
