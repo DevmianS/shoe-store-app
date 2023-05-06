@@ -1,7 +1,5 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
+import {Card, Typography, Stack} from '@mui/material';
+
 import Image from 'next/image';
 
 export default function CartProductItem({
@@ -19,12 +17,11 @@ export default function CartProductItem({
   return (
     <Card
       sx={{
-        m: '20px',
         position: 'relative',
         border: 0,
         boxShadow: 'none',
         borderRadius: 0,
-        maxWidth: 960,
+        width: '100%',
         transition: 'transform 0.5s',
         '&:hover': {
           transform: 'scale(1.01)',
