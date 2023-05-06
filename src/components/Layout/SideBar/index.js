@@ -14,6 +14,7 @@ export default function SideBar({listItems, children}) {
       }}
     >
       <Stack
+        component="sidebar"
         direction="column"
         aria-label="user profile actions"
         variant="permanent"

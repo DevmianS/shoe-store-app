@@ -115,6 +115,7 @@ const NavBar = () => {
             </Link>
           </IconButton>
           <Stack
+            component="nav"
             direction="row"
             spacing={2}
             sx={{
