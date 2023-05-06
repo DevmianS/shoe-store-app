@@ -33,18 +33,15 @@ const SignIn = () => {
       <Icon sx={{width: 32, position: 'absolute', top: 50, left: 40}}>
         <i className="icon-logo"></i>
       </Icon>
-      <Grid
-        container
-        sx={{height: '100%', height: '100vh', overflow: 'hidden'}}
-      >
-        <Grid
-          item
-          xs={6}
+      <Box container sx={{width: '100%', height: '100vh', display: 'flex'}}>
+        <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             p: 2,
+            width: '50%',
+            height: '100%',
           }}
         >
           <Box>
@@ -106,8 +103,8 @@ const SignIn = () => {
               </Link>
             </Typography>
           </Box>
-        </Grid>
-        <Grid item xs={6}>
+        </Box>
+        <Box sx={{width: '50%', height: '100%', display: 'flex'}}>
           <Image
             src={Banner}
             alt="banner"
@@ -115,8 +112,8 @@ const SignIn = () => {
             height={1080}
             style={{width: '100%', height: '100%', objectFit: 'cover'}}
           />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </>
   );
 };
