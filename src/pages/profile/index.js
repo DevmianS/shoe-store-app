@@ -43,15 +43,18 @@ const Profile = ({userName}) => {
     [theme.breakpoints.between('md', 'lg')]: {
       flex: '0 0 50%',
       padding: '0 15px',
+      marginBottom: '15px',
     },
     [theme.breakpoints.down('md')]: {
       flex: '0 0 50%',
       padding: '0 8px',
+      marginBottom: '16px',
     },
     [theme.breakpoints.up('xl')]: {
       flex: '0 0 25%',
     },
     padding: '0 24px',
+    marginBottom: '24px',
   }));
 
   const TempAvatarLg = styled(Box)({
