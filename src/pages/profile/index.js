@@ -3,6 +3,8 @@ import style from './index.module.css';
 import SideBar from '@/components/Layout/SideBar';
 import {Grid} from '@mui/material';
 
+import NavBarLayout from '@/components/Layout/NavBarLayout';
+
 const Profile = () => {
   const profileItemsList = [
     {name: 'My orders', icon: 'bag', click: null},
@@ -16,11 +18,13 @@ const Profile = () => {
     {name: 'Log out', icon: 'logout', click: null},
   ];
   return (
-    <Grid container>
-      <Grid item xs={2}>
-        <SideBar listItems={profileItemsList} />
+    <NavBarLayout>
+      <Grid container>
+        <Grid item xs={2}>
+          <SideBar listItems={profileItemsList} />
+        </Grid>
       </Grid>
-    </Grid>
+    </NavBarLayout>
   );
 };
 
