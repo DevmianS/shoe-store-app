@@ -5,9 +5,12 @@ const Search = styled('div')(({theme}) => ({
   position: 'relative',
   border: '1px solid #494949',
   borderRadius: '42px',
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: alpha((theme && theme.palette.common.white) || '#fff', 0.15),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha(
+      (theme && theme.palette.common.white) || '#fff',
+      0.25,
+    ),
   },
   marginLeft: 0,
   minWidth: '20%',
@@ -66,5 +69,5 @@ module.exports = {
   StyledInputBase,
   Search,
   SearchIconWrapper,
-  LinkStyles
+  LinkStyles,
 };
