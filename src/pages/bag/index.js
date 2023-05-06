@@ -61,108 +61,110 @@ const Bag = () => {
   ];
 
   return (
-    <Container maxWidth="xl">
-      <Grid container justifyContent={'space-between'}>
-        <Grid item xl={8}>
-          <Typography variant="h1" component="h1" mb={7}>
-            Cart
-          </Typography>
-          {products.map(product => {
-            return (
-              <CardWrapper
-                key={product.title + product.price + product.inStock}
-              >
-                <CartProductItem {...product} />
-              </CardWrapper>
-            );
-          })}
-        </Grid>
-        <Grid item xl={3}>
-          <Typography variant="h1" component="h2" mb={7}>
-            Summary
-          </Typography>
-          <Box>
-            <Typography
-              variant="body2"
-              fontWeight={400}
-              component="p"
-              mb={4}
-              display={'flex'}
-              alignItems={'center'}
-            >
-              Do you have a promocode?
-              <Typography
-                className="icon-chevron-down"
-                component="i"
-                fontSize={20}
-                ml={'5px'}
-              />
+    <NavBarLayout>
+      <Container maxWidth="xl" sx={{pt: '80px'}}>
+        <Grid container justifyContent={'space-between'}>
+          <Grid item xl={8}>
+            <Typography variant="h1" component="h1" mb={7}>
+              Cart
             </Typography>
-            <Stack
-              direction="row"
-              mb={3}
-              justifyContent={'space-between'}
-              alignItems={'center'}
-            >
-              <Typography variant="h3" component="h3" fontWeight={400}>
-                Subtotal
+            {products.map(product => {
+              return (
+                <CardWrapper
+                  key={product.title + product.price + product.inStock}
+                >
+                  <CartProductItem {...product} />
+                </CardWrapper>
+              );
+            })}
+          </Grid>
+          <Grid item xl={3}>
+            <Typography variant="h1" component="h2" mb={7}>
+              Summary
+            </Typography>
+            <Box>
+              <Typography
+                variant="body2"
+                fontWeight={400}
+                component="p"
+                mb={4}
+                display={'flex'}
+                alignItems={'center'}
+              >
+                Do you have a promocode?
+                <Typography
+                  className="icon-chevron-down"
+                  component="i"
+                  fontSize={20}
+                  ml={'5px'}
+                />
               </Typography>
-              <Typography variant="h3" component="span" fontWeight={400}>
-                $410
-              </Typography>
-            </Stack>
-            <Stack
-              direction="row"
-              mb={3}
-              justifyContent={'space-between'}
-              alignItems={'center'}
-            >
-              <Typography variant="h3" component="h3" fontWeight={400}>
-                Shipping
-              </Typography>
-              <Typography variant="h3" component="span" fontWeight={400}>
-                $20
-              </Typography>
-            </Stack>
-            <Stack
-              direction="row"
-              justifyContent={'space-between'}
-              alignItems={'center'}
-            >
-              <Typography variant="h3" component="h3" fontWeight={400}>
-                Tax
-              </Typography>
-              <Typography variant="h3" component="span" fontWeight={400}>
-                $0
-              </Typography>
-            </Stack>
-            <Stack
-              direction="row"
-              mt={7}
-              pb={2}
-              pt={2}
-              mb={7}
-              borderTop={'1px solid #EAECF0'}
-              borderBottom={'1px solid #EAECF0'}
-              justifyContent={'space-between'}
-              alignItems={'center'}
-            >
-              <Typography variant="h3" component="h3" fontWeight={600}>
-                Total
-              </Typography>
-              <Typography variant="h3" component="span" fontWeight={600}>
-                $430
-              </Typography>
-            </Stack>
-            <Stack spacing={2}>
-              <Button outlined>PayPal</Button>
+              <Stack
+                direction="row"
+                mb={3}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+              >
+                <Typography variant="h3" component="h3" fontWeight={400}>
+                  Subtotal
+                </Typography>
+                <Typography variant="h3" component="span" fontWeight={400}>
+                  $410
+                </Typography>
+              </Stack>
+              <Stack
+                direction="row"
+                mb={3}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+              >
+                <Typography variant="h3" component="h3" fontWeight={400}>
+                  Shipping
+                </Typography>
+                <Typography variant="h3" component="span" fontWeight={400}>
+                  $20
+                </Typography>
+              </Stack>
+              <Stack
+                direction="row"
+                justifyContent={'space-between'}
+                alignItems={'center'}
+              >
+                <Typography variant="h3" component="h3" fontWeight={400}>
+                  Tax
+                </Typography>
+                <Typography variant="h3" component="span" fontWeight={400}>
+                  $0
+                </Typography>
+              </Stack>
+              <Stack
+                direction="row"
+                mt={7}
+                pb={2}
+                pt={2}
+                mb={7}
+                borderTop={'1px solid #EAECF0'}
+                borderBottom={'1px solid #EAECF0'}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+              >
+                <Typography variant="h3" component="h3" fontWeight={600}>
+                  Total
+                </Typography>
+                <Typography variant="h3" component="span" fontWeight={600}>
+                  $430
+                </Typography>
+              </Stack>
+              <Stack spacing={2}>
+                <Button outlined>PayPal</Button>
 
-              <Button>Checkout</Button>
-            </Stack>
-          </Box>
+                <Button>Checkout</Button>
+              </Stack>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </NavBarLayout>
   );
 };
 
