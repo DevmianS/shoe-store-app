@@ -1,13 +1,14 @@
 import Head from 'next/head';
 import {useRouter} from 'next/router';
 
-import {Typography, styled, Box, Stack} from '@mui/material';
+import {Typography, styled, Box, Stack, TextField} from '@mui/material';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import LinksList from '@/components/UI/LinksList';
 import ListItem from '@/components/UI/ListItem';
+import Button from '@/components/UI/Button';
 
 const ProfileUpdate = () => {
   const router = useRouter();
@@ -26,15 +27,18 @@ const ProfileUpdate = () => {
     {name: 'My wallet', icon: 'wallet', click: () => console.log('Wallet')},
   ];
 
-  const TempAvatar = styled(Box)({
+  const TempAvatar = styled(Box)(({theme}) => ({
+    [theme.breakpoints.up('lg')]: {
+      marginRight: '75px',
+    },
     maxWidth: '150px',
     height: '150px',
     flex: '0 0 150px',
     background: '#e2e2e2',
     borderRadius: '50%',
-    marginRight: '26px',
+    marginRight: '35px',
     border: '4px solid white',
-  });
+  }));
   return (
     <>
       <Head>
@@ -67,6 +71,66 @@ const ProfileUpdate = () => {
             <Typography variant="h1" component="h1" mb="40px">
               My Profile
             </Typography>
+            <Stack
+              direction="row"
+              alignItems="center"
+              flexWrap="wrap"
+              mb={{lg: '50px', xs: '25px'}}
+            >
+              <TempAvatar />
+              <Box>
+                <Box mb="24px">
+                  <Button outlined>Change photo</Button>
+                </Box>
+                <Button>Delete</Button>
+              </Box>
+            </Stack>
+            <Typography
+              variant="body5"
+              component="p"
+              color="text.secondary"
+              mb="50px"
+            >
+              Welcome back! Please enter your details to log into your account.
+            </Typography>
+            <Box maxWidth={450}>
+              <Box mb="25px">
+                <TextField
+                  fullWidth
+                  size="medium"
+                  placeholder="Jane"
+                  label="Name"
+                  type="text"
+                />
+              </Box>{' '}
+              <Box mb="25px">
+                <TextField
+                  fullWidth
+                  size="medium"
+                  placeholder="Meldrum"
+                  label="Surname"
+                  type="text"
+                />
+              </Box>
+              <Box mb="25px">
+                <TextField
+                  fullWidth
+                  size="medium"
+                  label="Email"
+                  type="email"
+                  placeholder="example@mail.com"
+                />
+              </Box>
+              <Box mb="25px">
+                <TextField
+                  fullWidth
+                  size="medium"
+                  label="Phone number"
+                  type="tel"
+                  placeholder="(949) 354-2574"
+                />
+              </Box>
+            </Box>
           </Box>
         </Box>
       </NavBarLayout>
