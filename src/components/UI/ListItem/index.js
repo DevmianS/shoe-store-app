@@ -10,7 +10,12 @@ export default function ListItem({name, icon, onClick, count}) {
   return (
     <MUItem disablePadding sx={{marginBottom: '8px'}}>
       <ListItemButton
-        sx={{display: 'flex', alignItems: 'center', fontWeight: 500}}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          fontWeight: 500,
+          paddingLeft: '40px',
+        }}
         onClick={onClick}
       >
         <i
