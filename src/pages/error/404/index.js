@@ -1,14 +1,12 @@
-import React from 'react';
-import style from './index.module.css';
+import ErrorPageTpl from '@/components/Layout/ErrorPageTpl';
+import errorImg from '@/assets/background.jpg';
 
-import NavBarLayout from '@/components/Layout/NavBarLayout';
+function ErrorPage404() {
+  const pageTitle = 'Error 404!';
+  const msgText =
+    "We're sorry, but the page you requested cannot be found. It may have been removed, had its name changed, or is temporarily unavailable. Please check the URL for proper spelling and capitalization, or try searching for the page using our site search feature. If you continue to experience problems, please contact our support team for assistance.";
 
-const Error404 = () => {
-  return (
-    <NavBarLayout>
-      <div className={style.test}>Error 404</div>
-    </NavBarLayout>
-  );
-};
+  return <ErrorPageTpl boxImg={errorImg} text={msgText} title={pageTitle} />;
+}
 
-export default Error404;
+export default ErrorPage404;
