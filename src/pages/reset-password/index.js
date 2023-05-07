@@ -2,8 +2,6 @@ import Head from 'next/head';
 
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
-import Banner from '@/components/UI/Banner';
-
 const ResetPassword = () => {
   return (
     <>
