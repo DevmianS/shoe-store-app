@@ -1,8 +1,18 @@
-import React from 'react';
-import style from './index.module.css';
+import Head from 'next/head';
+
+import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 const ForgotPassword = () => {
-  return <div className={style.test}>Forgot password</div>;
+  return (
+    <>
+      <Head>
+        <title>Forgot password</title>
+      </Head>
+      <NavBarLayout>
+        <div>ForgotPassword</div>
+      </NavBarLayout>
+    </>
+  );
 };
 
 export default ForgotPassword;

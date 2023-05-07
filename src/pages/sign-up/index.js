@@ -1,8 +1,15 @@
-import React from 'react';
-import style from './index.module.css';
+import Head from 'next/head';
 
 const SignUp = () => {
-  return <div className={style.test}>Sign up</div>;
+  return (
+    <>
+      <Head>
+        <title>Sigh up</title>
+      </Head>
+
+      <div>SighUp</div>
+    </>
+  );
 };
 
 export default SignUp;

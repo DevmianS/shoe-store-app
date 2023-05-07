@@ -1,5 +1,4 @@
-import React from 'react';
-import style from './index.module.css';
+import Head from 'next/head';
 import {useRouter} from 'next/router';
 
 import NavBarLayout from '@/components/Layout/NavBarLayout';
@@ -11,13 +10,18 @@ const SearchResults = () => {
   // This is just an example: http://localhost:3000/search/results?name=bruno
 
   return (
-    <NavBarLayout>
-      <div className={style.test}>
-        <h1>ErrorPage</h1>
-        <p>{name && name}</p>
-        {/* This should show bruno */}
-      </div>
-    </NavBarLayout>
+    <>
+      <Head>
+        <title>Search results</title>
+      </Head>
+      <NavBarLayout>
+        <div>
+          <h1>ErrorPage</h1>
+          <p>{name && name}</p>
+          {/* This should show bruno */}
+        </div>
+      </NavBarLayout>
+    </>
   );
 };
 
