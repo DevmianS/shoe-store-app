@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import {useRouter} from 'next/router';
+import {rwdValue} from '@/utils/theme';
 
 import {Typography, styled, Box, Stack, TextField} from '@mui/material';
 
@@ -27,18 +28,16 @@ const ProfileUpdate = () => {
     {name: 'My wallet', icon: 'wallet', click: () => console.log('Wallet')},
   ];
 
-  const TempAvatar = styled(Box)(({theme}) => ({
-    [theme.breakpoints.up('lg')]: {
-      marginRight: '75px',
-    },
-    maxWidth: '150px',
-    height: '150px',
-    flex: '0 0 150px',
+  const TempAvatar = styled(Box)({
+    width: rwdValue(100, 150),
+    height: rwdValue(100, 150),
+    flex: `0 0 ${rwdValue(100, 150)}`,
     background: '#e2e2e2',
     borderRadius: '50%',
-    marginRight: '35px',
+    marginRight: rwdValue(35, 75),
     border: '4px solid white',
-  }));
+  });
+
   return (
     <>
       <Head>
@@ -68,14 +67,14 @@ const ProfileUpdate = () => {
               padding: {lg: '0 60px', md: '0 40px', sm: '0 30px', xs: '0 10px'},
             }}
           >
-            <Typography variant="h1" component="h1" mb="40px">
+            <Typography variant="h1" component="h1" mb={rwdValue(12, 50)}>
               My Profile
             </Typography>
             <Stack
               direction="row"
               alignItems="center"
               flexWrap="wrap"
-              mb={{lg: '50px', xs: '25px'}}
+              mb={rwdValue(25, 50)}
             >
               <TempAvatar />
               <Box>
@@ -94,7 +93,7 @@ const ProfileUpdate = () => {
               Welcome back! Please enter your details to log into your account.
             </Typography>
             <Box maxWidth={450}>
-              <Box mb="25px">
+              <Box mb={rwdValue(25, 50)}>
                 <TextField
                   fullWidth
                   size="medium"
