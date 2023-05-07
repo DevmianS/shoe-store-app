@@ -18,7 +18,7 @@ export default function ReviewsCarousel() {
     const isLastIndex = currentIndex === reviews.length - 1;
     const newIndex = isLastIndex ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
-  }, [currentIndex, reviews]);
+  }, [currentIndex]);
 
   useEffect(() => {
     if (timerRef.current) {
