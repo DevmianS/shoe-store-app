@@ -1,8 +1,17 @@
 import React from 'react';
-import style from './index.module.css';
+
+import SignLayout from '@/components/Layout/SignLayout';
+import SignUpForm from '@/components/UI/SignUpForm';
+import ReviewsCarousel from '@/components/UI/ReviewsCarousel';
 
 const SignUp = () => {
-  return <div className={style.test}>Sign up</div>;
+  return (
+    <SignLayout
+      form={<SignUpForm />}
+      carrusel={<ReviewsCarousel />}
+      src="/product8.jpg"
+    ></SignLayout>
+  );
 };
 
 export default SignUp;

@@ -4,7 +4,7 @@ import {Box} from '@mui/material';
 
 import Image from 'next/image';
 
-const Banner = ({children}) => {
+const Banner = ({children, src}) => {
   return (
     <Box
       sx={{
@@ -15,7 +15,7 @@ const Banner = ({children}) => {
       }}
     >
       <Image
-        src="/product8.jpg"
+        src={src}
         alt="banner"
         width={960}
         height={1080}
@@ -33,12 +33,27 @@ const Banner = ({children}) => {
           width: '100%',
           height: '100%',
           display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          flexDirection: 'column',
         }}
       >
-        {children}
-        <h1>Helloasd+`pkas</h1>
+        <Box
+          sx={{
+            width: '100%',
+            height: '50%',
+          }}
+        ></Box>
+        <Box
+          sx={{
+            width: '100%',
+            height: '50%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignContent: 'flex-start',
+            padding:1
+          }}
+        >
+          {children}
+        </Box>
       </Box>
     </Box>
   );

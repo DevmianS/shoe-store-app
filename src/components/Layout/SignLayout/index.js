@@ -1,10 +1,11 @@
 import React from 'react';
-import Banner from '@/assets/product8.jpg';
 import Head from 'next/head';
 import Image from 'next/image';
 import {Box, Icon} from '@mui/material';
 
-const SignLayout = ({children, headTitle}) => {
+import Banner from '@/components/UI/Banner';
+
+const SignLayout = ({headTitle, carrusel, src, form}) => {
   return (
     <>
       <Head>
@@ -13,7 +14,13 @@ const SignLayout = ({children, headTitle}) => {
       <Icon sx={{width: 32, position: 'absolute', top: 50, left: 40}}>
         <i className="icon-logo"></i>
       </Icon>
-      <Box sx={{width: '100%', height: '100vh', display: 'flex'}}>
+      <Box
+        sx={{
+          width: '100%',
+          height: '100vh',
+          display: 'flex',
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
@@ -24,17 +31,9 @@ const SignLayout = ({children, headTitle}) => {
             height: '100%',
           }}
         >
-          {children}
+          {form}
         </Box>
-        <Box sx={{width: '50%', height: '100%', display: 'flex'}}>
-          <Image
-            src={Banner}
-            alt="banner"
-            width={960}
-            height={1080}
-            style={{width: '100%', height: '100%', objectFit: 'cover'}}
-          />
-        </Box>
+        <Banner src={src}>{carrusel && carrusel}</Banner>
       </Box>
     </>
   );
