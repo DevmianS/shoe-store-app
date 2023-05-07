@@ -2,11 +2,16 @@ import React from 'react';
 import SignLayout from '@/components/Layout/SignLayout';
 import SignInForm from '@/components/UI/SignInForm';
 
+import Head from 'next/head';
+
 const SignIn = () => {
   return (
-    <SignLayout>
-      <SignInForm />
-    </SignLayout>
+    <>
+      <Head>
+        <title>Sign in</title>
+      </Head>
+      <SignLayout form={<SignInForm />} src="/product8.jpg"></SignLayout>
+    </>
   );
 };
 
