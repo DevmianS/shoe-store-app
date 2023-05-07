@@ -1,5 +1,6 @@
 import {createTheme} from '@mui/material/styles';
 import {Work_Sans} from 'next/font/google';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const responsiveFont = (mobileSize, desktopSize) => {
   return `calc(${mobileSize}px + ${
@@ -91,18 +92,35 @@ export const theme = createTheme({
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
             borderColor: theme => theme.palette.common,
           },
+          '& legend span': {
+            visibility: 'hidden',
+          },
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: theme => theme.palette.text.tetriary,
+          position: 'relative',
+          fontSize: 15,
+          fontWeight: 500,
+          transform: 'none',
+          paddingBottom: 8,
+          lineHeight: '17px',
+          pointerEvents: 'auto',
         },
       },
     },
     MuiTextField: {
+      defaultProps: {
+        InputLabelProps: {
+          shrink: true,
+        },
+      },
       styleOverrides: {
         root: {
           position: 'relative',
-          legend: {
-            span: {
-              display: 'none',
-            },
-          },
           '& label': {
             color: theme => theme.palette.text.tetriary,
             position: 'relative',
@@ -130,6 +148,9 @@ export const theme = createTheme({
             lineHeight: '14px',
             fontSize: 12,
           },
+          '& legend span': {
+            display: 'none',
+          },
         },
       },
     },
@@ -137,6 +158,29 @@ export const theme = createTheme({
       styleOverrides: {
         asterisk: {
           color: 'red',
+        },
+      },
+    },
+    MuiSelect: {
+      defaultProps: {
+        disableUnderline: true,
+        IconComponent: ExpandMoreIcon,
+        SelectDisplayProps: {
+          style: {
+            minHeight: 0,
+          },
+        },
+      },
+      styleOverrides: {
+        outlined: {
+          fontSize: 15,
+          fontWeight: 300,
+          color: '#5C5C5C',
+        },
+        standard: {
+          fontSize: 24,
+          fontWeight: 400,
+          color: '#494949',
         },
       },
     },
