@@ -1,8 +1,18 @@
-import React from 'react';
-import style from './index.module.css';
+import Head from 'next/head';
+
+import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 const ResetPassword = () => {
-  return <div className={style.test}>Reset password</div>;
+  return (
+    <>
+      <Head>
+        <title>Reset password</title>
+      </Head>
+      <NavBarLayout>
+        <div>Reset password</div>
+      </NavBarLayout>
+    </>
+  );
 };
 
 export default ResetPassword;

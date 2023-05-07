@@ -1,13 +1,17 @@
-import React from 'react';
-import style from './index.module.css';
+import Head from 'next/head';
 
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 const AddProduct = () => {
   return (
-    <NavBarLayout>
-      <div className={style.test}>Add product</div>
-    </NavBarLayout>
+    <>
+      <Head>
+        <title>Add new product</title>
+      </Head>
+      <NavBarLayout>
+        <div>Add product</div>
+      </NavBarLayout>
+    </>
   );
 };
 
