@@ -23,6 +23,7 @@ import {
   SearchIconWrapper,
   LinkStyles,
 } from './utils';
+import NestedList from './allPages';
 
 const NavBar = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -137,6 +138,7 @@ const NavBar = () => {
                 </Link>
               </Button>
             ))}
+            <NestedList />
           </Stack>
           <Box
             sx={{
