@@ -92,14 +92,8 @@ export const theme = createTheme({
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
             borderColor: theme => theme.palette.common,
           },
-          '.MuiSelect-select-MuiInputBase-input-MuiInput-input.MuiSelect-select':
-            {
-              height: 100,
-              minHeight: 100,
-              color: 'red',
-            },
           '& legend span': {
-            display: 'none',
+            visibility: 'hidden',
           },
         },
       },
@@ -153,6 +147,9 @@ export const theme = createTheme({
             paddingBottom: 5,
             lineHeight: '14px',
             fontSize: 12,
+          },
+          '& legend span': {
+            display: 'none',
           },
         },
       },
