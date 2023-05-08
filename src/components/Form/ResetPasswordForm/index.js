@@ -22,7 +22,18 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        width: '100%',
+        maxWidth: '412px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        flexDirection: 'column',
+        textAlign: 'start',
+        padding: '20px',
+      }}
+    >
       <Typography component="h1" variant="h3">
         Reset password
       </Typography>
@@ -35,7 +46,7 @@ const ResetPasswordForm = () => {
       >
         Please create new password here
       </Typography>
-      <Box sx={{width: 412}}>
+      <Box sx={{width: '100%'}}>
         <FormControl sx={{width: '100%'}}>
           <TextField
             size="medium"
