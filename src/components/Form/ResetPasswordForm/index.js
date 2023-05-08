@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 
-const ForgotPasswordForm = () => {
+const ResetPasswordForm = () => {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleCheckbox = event => {
@@ -24,7 +24,7 @@ const ForgotPasswordForm = () => {
   return (
     <Box>
       <Typography component="h1" variant="h3">
-        Forgot password?
+        Reset password
       </Typography>
       <Typography
         component="p"
@@ -33,17 +33,25 @@ const ForgotPasswordForm = () => {
         mb={3}
         sx={{fontSize: '15px', color: '#5C5C5C'}}
       >
-        Don’t worry, we’ll send you reset instructions.
+        Please create new password here
       </Typography>
       <Box sx={{width: 412}}>
         <FormControl sx={{width: '100%'}}>
           <TextField
             size="medium"
-            label="Email"
-            type="email"
+            label="Password"
+            type="password"
             margin="normal"
-            placeholder="Enter your email"
-            sx={{marginBottom: '20px'}}
+            required
+            placeholder="at least 8 characters"
+          />
+          <TextField
+            size="medium"
+            label="Confirm password"
+            type="password"
+            margin="normal"
+            required
+            placeholder="at least 8 characters"
           />
 
           <Button size="medium" onClick={handleSignIn}>
@@ -79,4 +87,4 @@ const ForgotPasswordForm = () => {
   );
 };
 
-export default ForgotPasswordForm;
+export default ResetPasswordForm;
