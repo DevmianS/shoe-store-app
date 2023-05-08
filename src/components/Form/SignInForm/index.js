@@ -62,7 +62,9 @@ const SignInForm = () => {
             Forgot password?
           </Link>
         </Box>
-        <Button size="medium" children={'Sign in'} onClick={handleSignIn} />
+        <Button size="medium" onClick={handleSignIn}>
+          Sign in
+        </Button>
       </form>
       <Typography
         component="p"
@@ -70,7 +72,7 @@ const SignInForm = () => {
         sx={{textAlign: 'center'}}
         mt={2}
       >
-        Don't have an account?{' '}
+        Don´t have an account?{' '}
         <Link href="/sign-up" underline="none">
           Sign up
         </Link>
