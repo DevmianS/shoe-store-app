@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Head from 'next/head';
 import {rwdValue} from '@/utils/theme';
 
@@ -17,7 +16,6 @@ import {
   useMediaQuery,
   Checkbox,
   FormGroup,
-  FormControlLabel,
 } from '@mui/material';
 
 import SideBar from '@/components/Layout/SideBar';
@@ -25,6 +23,7 @@ import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import LinksList from '@/components/UI/LinksList';
 import {useState} from 'react';
+import FileInput from '@/components/UI/FileInput';
 
 const AddProduct = ({userName}) => {
   const [select, setSelect] = useState({gender: 'male', brand: 'nike'});
@@ -35,7 +34,6 @@ const AddProduct = ({userName}) => {
     39: false,
     40: false,
   });
-
   // EVENTS
   const genderChangeHandler = e => {
     setSelect({...select, gender: e.target.value});
@@ -66,6 +64,7 @@ const AddProduct = ({userName}) => {
   // STYLED COMPONENTS
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
 
   const AvatarWrapper = styled(Stack)(({theme}) => ({
     display: 'flex',
@@ -123,6 +122,10 @@ const AddProduct = ({userName}) => {
       height: isDesktop ? '48px' : '33px',
       fontSize: isDesktop ? '15px' : '10px',
     },
+    '& .MuiInputBase-fullWidth': {
+      height: isDesktop ? '48px' : '33px',
+      fontSize: isDesktop ? '15px' : '10px',
+    },
     '& label': {
       fontSize: isDesktop ? '15px' : '12px',
     },
@@ -133,6 +136,30 @@ const AddProduct = ({userName}) => {
     marginBottom: '25px',
   });
 
+  const CheckBoxWrap = styled(FormGroup)({
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: isDesktop ? 'space-between' : 'start',
+    gap: '10px',
+    marginBottom: '20px',
+    '& .MuiFormLabel-root': {
+      cursor: 'pointer',
+      border: `1px solid #C4C4C4`,
+      borderRadius: '5.58px',
+      width: isDesktop ? '75px' : '52px',
+      height: isDesktop ? '48px' : '34px',
+      fontSize: isDesktop ? '15px' : '10px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 0,
+      margin: 0,
+    },
+    '& .MuiCheckbox-root': {
+      display: 'none',
+    },
+  });
   return (
     <>
       <Head>
@@ -178,144 +205,153 @@ const AddProduct = ({userName}) => {
               prices. Stay organized and streamline your product management with
               the account page.
             </Typography>
-            <Box maxWidth={450}>
-              <FormItem>
-                <TextField
-                  fullWidth
-                  size="medium"
-                  placeholder="Nike Air Max 90"
-                  label="Product name"
-                  type="text"
-                />
-              </FormItem>
-              <FormItem>
-                <TextField
-                  fullWidth
-                  size="medium"
-                  placeholder="Sport"
-                  label="Category"
-                  type="text"
-                />
-              </FormItem>
-              <FormItem>
-                <Box sx={{display: 'flex', gap: '20px', flexDirection: 'row'}}>
-                  <FormControl fullWidth>
-                    <InputLabel id="gender">Gender</InputLabel>
-                    <Select
-                      sx={{
-                        height: '48px',
-                        '& .MuiInputBase-input': {
-                          fontSize: isDesktop ? '15px' : '10px',
-                        },
-                      }}
-                      labelId="gender"
-                      variant="outlined"
-                      value={select.gender}
-                      onChange={genderChangeHandler}
-                    >
-                      <MenuItem value="male">Male</MenuItem>
-                      <MenuItem value="female">Female</MenuItem>
-                      <MenuItem value="indeterminate">Indeterminate</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <InputLabel id="brand">Brand</InputLabel>
-                    <Select
-                      sx={{
-                        height: '48px',
-                        '& .MuiInputBase-input': {
-                          fontSize: isDesktop ? '15px' : '10px',
-                        },
-                      }}
-                      labelId="brand"
-                      variant="outlined"
-                      value={select.brand}
-                      onChange={brandChangeHandler}
-                    >
-                      <MenuItem value="adidas">Adidas</MenuItem>
-                      <MenuItem value="asics">Asics</MenuItem>
-                      <MenuItem value="newBalance">New Balance</MenuItem>
-                      <MenuItem value="nike">Nike</MenuItem>
-                      <MenuItem value="puma">Puma</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-              </FormItem>
-              <FormItem>
-                <TextField
-                  fullWidth
-                  size="medium"
-                  placeholder="Do not exceed 300 characters."
-                  label="Description"
-                  type="text"
-                  multiline
-                  rows={isDesktop ? 11 : 1}
-                  sx={{
-                    '& .MuiInputBase-root': {
-                      minHeight: isDesktop ? '270px' : 0,
-                      height: {xs: '34px'},
-                    },
-                    '& .MuiInputBase-input': {
-                      fontSize: isDesktop ? '15px' : '10px',
-                    },
-                    '& label': {
-                      fontSize: isDesktop ? '15px' : '12px',
-                    },
-                  }}
-                />
-              </FormItem>
-              <FormGroup
+            <Stack direction={isTablet ? 'column' : 'row'}>
+              <Box
+                maxWidth={450}
+                flex="0 0 450px"
+                mr={isTablet ? 0 : rwdValue(30, 120)}
                 sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  width: '100%',
-                  justifyContent: isDesktop ? 'space-between' : 'start',
-                  gap: '10px',
-                  '& .MuiFormLabel-root': {
-                    cursor: 'pointer',
-                    border: `1px solid #C4C4C4`,
-                    borderRadius: '5.58px',
-                    width: isDesktop ? '75px' : '52px',
-                    height: isDesktop ? '48px' : '34px',
+                  '& .MuiInputBase-input': {
                     fontSize: isDesktop ? '15px' : '10px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: 0,
-                    margin: 0,
-                  },
-                  '& .MuiCheckbox-root': {
-                    display: 'none',
                   },
                 }}
               >
-                {[...Object.keys(size)].map(n => {
-                  return (
-                    <Box>
-                      <Checkbox
-                        name={n}
-                        checked={size[n]}
-                        onChange={checkBoxChangeHandler}
-                        id={'size' + n}
-                      />
-                      <InputLabel
+                <FormItem>
+                  <TextField
+                    fullWidth
+                    size="medium"
+                    placeholder="Nike Air Max 90"
+                    label="Product name"
+                    type="text"
+                  />
+                </FormItem>
+                <FormItem>
+                  <TextField
+                    fullWidth
+                    size="medium"
+                    placeholder="Sport"
+                    label="Category"
+                    type="text"
+                  />
+                </FormItem>
+                <FormItem>
+                  <Box
+                    sx={{display: 'flex', gap: '20px', flexDirection: 'row'}}
+                  >
+                    <FormControl fullWidth>
+                      <InputLabel id="gender">Gender</InputLabel>
+                      <Select
                         sx={{
-                          background: size[n]
-                            ? theme.palette.primary.main
-                            : 'white',
-                          color: size[n]
-                            ? 'white'
-                            : theme.palette.text.secondary,
+                          height: '48px',
+                          '& .MuiInputBase-input': {
+                            fontSize: isDesktop ? '15px' : '10px',
+                          },
                         }}
-                        htmlFor={'size' + n}
+                        labelId="gender"
+                        variant="outlined"
+                        value={select.gender}
+                        onChange={genderChangeHandler}
                       >
-                        EU-{n}
-                      </InputLabel>
-                    </Box>
-                  );
-                })}
-              </FormGroup>
-            </Box>
+                        <MenuItem value="male">Male</MenuItem>
+                        <MenuItem value="female">Female</MenuItem>
+                        <MenuItem value="indeterminate">Indeterminate</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <FormControl fullWidth>
+                      <InputLabel id="brand">Brand</InputLabel>
+                      <Select
+                        sx={{
+                          height: '48px',
+                          '& .MuiInputBase-input': {
+                            fontSize: isDesktop ? '15px' : '10px',
+                          },
+                        }}
+                        labelId="brand"
+                        variant="outlined"
+                        value={select.brand}
+                        onChange={brandChangeHandler}
+                      >
+                        <MenuItem value="adidas">Adidas</MenuItem>
+                        <MenuItem value="asics">Asics</MenuItem>
+                        <MenuItem value="newBalance">New Balance</MenuItem>
+                        <MenuItem value="nike">Nike</MenuItem>
+                        <MenuItem value="puma">Puma</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </FormItem>
+                <FormItem>
+                  <TextField
+                    fullWidth
+                    size="medium"
+                    placeholder="Do not exceed 300 characters."
+                    label="Description"
+                    type="text"
+                    multiline
+                    rows={isDesktop ? 11 : 1}
+                    sx={{
+                      '& .MuiInputBase-root': {
+                        minHeight: isDesktop ? '270px' : 0,
+                        height: {xs: '34px'},
+                      },
+                      '& .MuiInputBase-input': {
+                        fontSize: isDesktop ? '15px' : '10px',
+                      },
+                      '& label': {
+                        fontSize: isDesktop ? '15px' : '12px',
+                      },
+                    }}
+                  />
+                </FormItem>
+                <CheckBoxWrap>
+                  {[...Object.keys(size)].map(n => {
+                    return (
+                      <Box key={n}>
+                        <Checkbox
+                          name={n}
+                          checked={size[n]}
+                          onChange={checkBoxChangeHandler}
+                          id={'size' + n}
+                        />
+                        <InputLabel
+                          sx={{
+                            background: size[n]
+                              ? theme.palette.primary.main
+                              : 'white',
+                            color: size[n]
+                              ? 'white'
+                              : theme.palette.text.secondary,
+                            '&:hover': {
+                              borderColor: 'black',
+                              color: 'black',
+                            },
+                          }}
+                          htmlFor={'size' + n}
+                        >
+                          EU-{n}
+                        </InputLabel>
+                      </Box>
+                    );
+                  })}
+                </CheckBoxWrap>
+              </Box>
+              <Box>
+                <InputLabel>Product images</InputLabel>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: isTablet ? '20px' : '52px',
+                    flexWrap: 'wrap',
+                    flex: '1 1 auto',
+                  }}
+                >
+                  <FileInput />
+                  <FileInput />
+                  <FileInput />
+                  <FileInput />
+                </Box>
+              </Box>
+            </Stack>
           </Content>
         </Row>
       </NavBarLayout>
