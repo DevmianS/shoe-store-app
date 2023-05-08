@@ -2,14 +2,28 @@ import Image from 'next/image';
 import Head from 'next/head';
 import {rwdValue} from '@/utils/theme';
 
-import {Typography, styled, Box, Stack, Button, TextField} from '@mui/material';
+import {
+  Typography,
+  styled,
+  Box,
+  Stack,
+  Button,
+  TextField,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
+} from '@mui/material';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import LinksList from '@/components/UI/LinksList';
+import {useState} from 'react';
 
 const AddProduct = ({userName}) => {
+  const [select, setSelect] = useState({gender: 'male', brand: 'nike'});
+
   const user = userName || 'Jane Meldrum';
   const profileItemsList = [
     {name: 'My orders', icon: 'bag', click: null},
@@ -73,14 +87,20 @@ const AddProduct = ({userName}) => {
     justifyContent: 'space-between',
     padding: '40px 0',
   });
-  const FormItem = styled(Box)({
-    marginBottom: '25px',
-  });
-
   const Content = styled(Box)({
     flex: '1 1 auto',
     padding: `0 ${rwdValue(10, 60)}`,
   });
+  const FormItem = styled(Box)({
+    marginBottom: '25px',
+  });
+
+  const genderChangeHandler = e => {
+    setSelect({...select, gender: e.target.value});
+  };
+  const brandChangeHandler = e => {
+    setSelect({...select, brand: e.target.value});
+  };
   return (
     <>
       <Head>
@@ -144,8 +164,56 @@ const AddProduct = ({userName}) => {
                   type="text"
                 />
               </FormItem>
-              <FormItem></FormItem>
-              <FormItem></FormItem>
+              <FormItem>
+                <Box sx={{display: 'flex', gap: '20px', flexDirection: 'row'}}>
+                  <FormControl fullWidth>
+                    <InputLabel id="gender">Gender</InputLabel>
+                    <Select
+                      sx={{height: '48px'}}
+                      labelId="gender"
+                      variant="outlined"
+                      value={select.gender}
+                      onChange={genderChangeHandler}
+                    >
+                      <MenuItem value="male">Male</MenuItem>
+                      <MenuItem value="female">Female</MenuItem>
+                      <MenuItem value="indeterminate">Indeterminate</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <InputLabel id="brand">Brand</InputLabel>
+                    <Select
+                      sx={{height: '48px'}}
+                      labelId="brand"
+                      variant="outlined"
+                      value={select.brand}
+                      onChange={brandChangeHandler}
+                    >
+                      <MenuItem value="adidas">Adidas</MenuItem>
+                      <MenuItem value="asics">Asics</MenuItem>
+                      <MenuItem value="newBalance">New Balance</MenuItem>
+                      <MenuItem value="nike">Nike</MenuItem>
+                      <MenuItem value="puma">Puma</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+              </FormItem>
+              <FormItem>
+                <TextField
+                  fullWidth
+                  size="medium"
+                  placeholder="Do not exceed 300 characters."
+                  label="Description"
+                  type="text"
+                  multiline
+                  rows="10"
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      minHeight: '270px',
+                    },
+                  }}
+                />
+              </FormItem>
             </Box>
           </Content>
         </Row>
