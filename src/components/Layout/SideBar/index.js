@@ -4,7 +4,7 @@ export default function SideBar({children, areaName}) {
   return (
     <Box sx={{flex: '0 0 320px', display: {xs: 'none', md: 'flex'}}}>
       <Stack
-        component="sidebar"
+        component="div"
         direction="column"
         aria-label={areaName}
         variant="permanent"

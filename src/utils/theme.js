@@ -2,7 +2,7 @@ import {createTheme} from '@mui/material/styles';
 import {Work_Sans} from 'next/font/google';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const responsiveFont = (mobileSize, desktopSize) => {
+export const rwdValue = (mobileSize, desktopSize) => {
   return `calc(${mobileSize}px + ${
     desktopSize - mobileSize
   } * ((100vw - 360px) / (1920 - 360)))`;
@@ -33,7 +33,7 @@ export const theme = createTheme({
     MuiTypography: {
       styleOverrides: {
         h1: {
-          fontSize: responsiveFont(30, 45),
+          fontSize: rwdValue(30, 45),
           fontWeight: 500,
         },
         h2: {fontSize: 38, fontWeight: 500},
