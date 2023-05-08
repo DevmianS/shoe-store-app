@@ -15,6 +15,9 @@ import {
   MenuItem,
   useTheme,
   useMediaQuery,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
 } from '@mui/material';
 
 import SideBar from '@/components/Layout/SideBar';
@@ -25,8 +28,28 @@ import {useState} from 'react';
 
 const AddProduct = ({userName}) => {
   const [select, setSelect] = useState({gender: 'male', brand: 'nike'});
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
+  const [size, setSize] = useState({
+    36: false,
+    37: false,
+    38: false,
+    39: false,
+    40: false,
+  });
+
+  // EVENTS
+  const genderChangeHandler = e => {
+    setSelect({...select, gender: e.target.value});
+  };
+  const brandChangeHandler = e => {
+    setSelect({...select, brand: e.target.value});
+  };
+  const checkBoxChangeHandler = e => {
+    if (e.target.checked) {
+      setSize(prev => ({...prev, [e.target.name]: true}));
+    } else {
+      setSize(prev => ({...prev, [e.target.name]: false}));
+    }
+  };
 
   const user = userName || 'Jane Meldrum';
   const profileItemsList = [
@@ -39,6 +62,11 @@ const AddProduct = ({userName}) => {
     {name: 'My feedback', icon: 'star', click: null},
     {name: 'Log out', icon: 'logout', click: null},
   ];
+
+  // STYLED COMPONENTS
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
+
   const AvatarWrapper = styled(Stack)(({theme}) => ({
     display: 'flex',
     flexDirection: 'row',
@@ -49,7 +77,6 @@ const AddProduct = ({userName}) => {
     borderBottom: '1px solid',
     borderColor: theme.palette.divider,
   }));
-
   const TempAvatar = styled(Box)({
     maxWidth: '64px',
     height: '64px',
@@ -92,28 +119,20 @@ const AddProduct = ({userName}) => {
     padding: '40px 0',
   });
   const Content = styled(Box)(({theme}) => ({
-    [theme.breakpoints.down('sm')]: {
-      '& .MuiInputBase-root': {
-        height: '33px',
-        fontSize: '10px',
-      },
-      '& label': {
-        fontSize: '12px',
-      },
+    '& .MuiInputBase-root': {
+      height: isDesktop ? '48px' : '33px',
+      fontSize: isDesktop ? '15px' : '10px',
+    },
+    '& label': {
+      fontSize: isDesktop ? '15px' : '12px',
     },
     flex: '1 1 auto',
-    padding: `0 ${rwdValue(10, 60)}`,
+    padding: `0 ${rwdValue(20, 60)}`,
   }));
   const FormItem = styled(Box)({
     marginBottom: '25px',
   });
 
-  const genderChangeHandler = e => {
-    setSelect({...select, gender: e.target.value});
-  };
-  const brandChangeHandler = e => {
-    setSelect({...select, brand: e.target.value});
-  };
   return (
     <>
       <Head>
@@ -167,7 +186,6 @@ const AddProduct = ({userName}) => {
                   placeholder="Nike Air Max 90"
                   label="Product name"
                   type="text"
-                  padd
                 />
               </FormItem>
               <FormItem>
@@ -187,9 +205,6 @@ const AddProduct = ({userName}) => {
                       sx={{
                         height: '48px',
                         '& .MuiInputBase-input': {
-                          fontSize: isDesktop ? '15px' : '10px',
-                        },
-                        '& .MuiButtonBase-root': {
                           fontSize: isDesktop ? '15px' : '10px',
                         },
                       }}
@@ -249,6 +264,57 @@ const AddProduct = ({userName}) => {
                   }}
                 />
               </FormItem>
+              <FormGroup
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  width: '100%',
+                  justifyContent: isDesktop ? 'space-between' : 'start',
+                  gap: '10px',
+                  '& .MuiFormLabel-root': {
+                    cursor: 'pointer',
+                    border: `1px solid #C4C4C4`,
+                    borderRadius: '5.58px',
+                    width: isDesktop ? '75px' : '52px',
+                    height: isDesktop ? '48px' : '34px',
+                    fontSize: isDesktop ? '15px' : '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 0,
+                    margin: 0,
+                  },
+                  '& .MuiCheckbox-root': {
+                    display: 'none',
+                  },
+                }}
+              >
+                {[...Object.keys(size)].map(n => {
+                  return (
+                    <Box>
+                      <Checkbox
+                        name={n}
+                        checked={size[n]}
+                        onChange={checkBoxChangeHandler}
+                        id={'size' + n}
+                      />
+                      <InputLabel
+                        sx={{
+                          background: size[n]
+                            ? theme.palette.primary.main
+                            : 'white',
+                          color: size[n]
+                            ? 'white'
+                            : theme.palette.text.secondary,
+                        }}
+                        htmlFor={'size' + n}
+                      >
+                        EU-{n}
+                      </InputLabel>
+                    </Box>
+                  );
+                })}
+              </FormGroup>
             </Box>
           </Content>
         </Row>
