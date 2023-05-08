@@ -13,6 +13,8 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 
 import SideBar from '@/components/Layout/SideBar';
@@ -23,6 +25,8 @@ import {useState} from 'react';
 
 const AddProduct = ({userName}) => {
   const [select, setSelect] = useState({gender: 'male', brand: 'nike'});
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
 
   const user = userName || 'Jane Meldrum';
   const profileItemsList = [
@@ -87,10 +91,19 @@ const AddProduct = ({userName}) => {
     justifyContent: 'space-between',
     padding: '40px 0',
   });
-  const Content = styled(Box)({
+  const Content = styled(Box)(({theme}) => ({
+    [theme.breakpoints.down('sm')]: {
+      '& .MuiInputBase-root': {
+        height: '33px',
+        fontSize: '10px',
+      },
+      '& label': {
+        fontSize: '12px',
+      },
+    },
     flex: '1 1 auto',
     padding: `0 ${rwdValue(10, 60)}`,
-  });
+  }));
   const FormItem = styled(Box)({
     marginBottom: '25px',
   });
@@ -135,6 +148,7 @@ const AddProduct = ({userName}) => {
               component="p"
               color="text.secondary"
               mb={rwdValue(25, 40)}
+              fontSize={rwdValue(12, 15)}
               maxWidth="900px"
             >
               The account page allows you to manage your products easily. You
@@ -153,6 +167,7 @@ const AddProduct = ({userName}) => {
                   placeholder="Nike Air Max 90"
                   label="Product name"
                   type="text"
+                  padd
                 />
               </FormItem>
               <FormItem>
@@ -169,7 +184,15 @@ const AddProduct = ({userName}) => {
                   <FormControl fullWidth>
                     <InputLabel id="gender">Gender</InputLabel>
                     <Select
-                      sx={{height: '48px'}}
+                      sx={{
+                        height: '48px',
+                        '& .MuiInputBase-input': {
+                          fontSize: isDesktop ? '15px' : '10px',
+                        },
+                        '& .MuiButtonBase-root': {
+                          fontSize: isDesktop ? '15px' : '10px',
+                        },
+                      }}
                       labelId="gender"
                       variant="outlined"
                       value={select.gender}
@@ -183,7 +206,12 @@ const AddProduct = ({userName}) => {
                   <FormControl fullWidth>
                     <InputLabel id="brand">Brand</InputLabel>
                     <Select
-                      sx={{height: '48px'}}
+                      sx={{
+                        height: '48px',
+                        '& .MuiInputBase-input': {
+                          fontSize: isDesktop ? '15px' : '10px',
+                        },
+                      }}
                       labelId="brand"
                       variant="outlined"
                       value={select.brand}
@@ -206,10 +234,17 @@ const AddProduct = ({userName}) => {
                   label="Description"
                   type="text"
                   multiline
-                  rows="10"
+                  rows={isDesktop ? 11 : 1}
                   sx={{
                     '& .MuiInputBase-root': {
-                      minHeight: '270px',
+                      minHeight: isDesktop ? '270px' : 0,
+                      height: {xs: '34px'},
+                    },
+                    '& .MuiInputBase-input': {
+                      fontSize: isDesktop ? '15px' : '10px',
+                    },
+                    '& label': {
+                      fontSize: isDesktop ? '15px' : '12px',
                     },
                   }}
                 />
