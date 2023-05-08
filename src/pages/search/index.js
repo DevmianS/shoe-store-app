@@ -1,13 +1,17 @@
-import React from 'react';
-import style from './index.module.css';
+import Head from 'next/head';
 
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 const Search = () => {
   return (
-    <NavBarLayout>
-      <div className={style.test}>Search results</div>
-    </NavBarLayout>
+    <>
+      <Head>
+        <title>Search</title>
+      </Head>
+      <NavBarLayout>
+        <div>Search</div>
+      </NavBarLayout>
+    </>
   );
 };
 

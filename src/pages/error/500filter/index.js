@@ -1,3 +1,5 @@
+import Head from 'next/head';
+
 import ErrorPageTpl from '@/components/Layout/ErrorPageTpl';
 import error500 from '@/assets/500.png';
 
@@ -8,7 +10,14 @@ function ErrorFilter500() {
                 temporarily unavailable. Please check the URL and try again, or
                 use the navigation menu to explore our site.`;
 
-  return <ErrorPageTpl img={error500} text={msgText} title={pageTitle} />;
+  return (
+    <>
+      <Head>
+        <title>Server error</title>
+      </Head>
+      <ErrorPageTpl img={error500} text={msgText} title={pageTitle} />
+    </>
+  );
 }
 
 export default ErrorFilter500;
