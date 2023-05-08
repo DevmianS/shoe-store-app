@@ -1,6 +1,7 @@
 import Head from 'next/head';
 
-import NavBarLayout from '@/components/Layout/NavBarLayout';
+import SignLayout from '@/components/Layout/SignLayout';
+import ResetPasswordForm from '@/components/Form/ResetPasswordForm';
 
 const ResetPassword = () => {
   return (
@@ -8,9 +9,7 @@ const ResetPassword = () => {
       <Head>
         <title>Reset password</title>
       </Head>
-      <NavBarLayout>
-        <div>Reset password</div>
-      </NavBarLayout>
+      <SignLayout form={<ResetPasswordForm />} src="/forgotPassword.jpg" />
     </>
   );
 };
