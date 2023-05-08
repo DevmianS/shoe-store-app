@@ -21,7 +21,18 @@ const SignInForm = () => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        width: '100%',
+        maxWidth: '412px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        flexDirection: 'column',
+        textAlign: 'start',
+        padding: '20px',
+      }}
+    >
       <Typography component="h1" variant="h3">
         Welcome back
       </Typography>
@@ -66,17 +77,30 @@ const SignInForm = () => {
           Sign in
         </Button>
       </form>
-      <Typography
-        component="p"
-        variant="body2"
-        sx={{textAlign: 'center'}}
-        mt={2}
+      <Box
+        sx={{
+          textAlign: 'center',
+          fontSize: 15,
+          textAlign: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+        }}
       >
-        Don´t have an account?{' '}
-        <Link href="/sign-up" underline="none">
+        <Typography component="p" sx={{fontWeight: 500, textAlign: 'center'}}>
+          Don’t have an account?
+        </Typography>
+        <Link
+          href="/sign-up"
+          underline="none"
+          sx={{
+            marginLeft: 1,
+          }}
+        >
           Sign up
         </Link>
-      </Typography>
+      </Box>
     </Box>
   );
 };

@@ -22,7 +22,18 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        width: '100%',
+        maxWidth: '412px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        flexDirection: 'column',
+        textAlign: 'start',
+        padding: '20px',
+      }}
+    >
       <Typography component="h1" variant="h3">
         Forgot password?
       </Typography>
@@ -35,7 +46,7 @@ const ForgotPasswordForm = () => {
       >
         Don’t worry, we’ll send you reset instructions.
       </Typography>
-      <Box sx={{width: 412}}>
+      <Box sx={{width: '100%'}}>
         <FormControl sx={{width: '100%'}}>
           <TextField
             size="medium"
@@ -43,13 +54,10 @@ const ForgotPasswordForm = () => {
             type="email"
             margin="normal"
             placeholder="Enter your email"
-            sx={{marginBottom:"20px"}}
+            sx={{marginBottom: '20px'}}
           />
 
-          <Button
-            size="medium"
-            onClick={handleSignIn}
-          >
+          <Button size="medium" onClick={handleSignIn}>
             Reset password
           </Button>
         </FormControl>
@@ -61,7 +69,7 @@ const ForgotPasswordForm = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop:"10px"
+            marginTop: '10px',
           }}
         >
           <Typography component="p" sx={{fontWeight: 500}}>

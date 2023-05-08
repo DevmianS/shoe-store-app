@@ -22,7 +22,16 @@ const SignUpForm = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{
+      width: '100%',
+      maxWidth: '412px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      flexDirection: 'column',
+      textAlign: 'start',
+      padding: '20px',
+    }}>
       <Typography component="h1" variant="h3">
         Create an account
       </Typography>
@@ -35,7 +44,7 @@ const SignUpForm = () => {
       >
         Create an account to get an easy access to your dream shopping
       </Typography>
-      <Box sx={{width: 412}}>
+      <Box sx={{width: "100%"}}>
         <FormControl sx={{width: '100%'}}>
           <TextField
             size="medium"
