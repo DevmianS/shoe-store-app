@@ -2,7 +2,7 @@ import {Button as MUIButton} from '@mui/material';
 
 //size: "small" | "medium" | "large"
 
-function Button({size = 'medium', outlined, onClick, disabled, children}) {
+function Button({size = 'medium', outlined, onClick, disabled, children, sx}) {
   return (
     <MUIButton
       variant={outlined ? 'outlined' : 'contained'}
@@ -12,6 +12,7 @@ function Button({size = 'medium', outlined, onClick, disabled, children}) {
       fullWidth
       onClick={onClick}
       disabled={disabled}
+      sx={{...sx}}
     >
       {children}
     </MUIButton>
