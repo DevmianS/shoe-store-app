@@ -135,7 +135,6 @@ const AddProduct = ({userName}) => {
   const FormItem = styled(Box)({
     marginBottom: '25px',
   });
-
   const CheckBoxWrap = styled(FormGroup)({
     display: 'flex',
     flexDirection: 'row',
@@ -158,6 +157,60 @@ const AddProduct = ({userName}) => {
     },
     '& .MuiCheckbox-root': {
       display: 'none',
+    },
+  });
+  const BoxFile = styled(Box)({
+    flex: isTablet ? `0 0 calc(50% - 10px)` : `0 0 calc(50% - 26px)`,
+    maxWidth: isTablet ? `calc(50% - 10px)` : `calc(50% - 26px)`,
+    width: '100%',
+    height: rwdValue(100, 380),
+    minHeight: '100px',
+    border: '1px dashed #5C5C5C',
+    borderRadius: '8px',
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    '& input': {
+      width: '100%',
+      height: '100%',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      opacity: 0,
+      cursor: 'pointer',
+    },
+    '& img': {
+      outline: '2px solid #fff',
+      objectFit: 'cover',
+      width: '100%',
+      height: '100%',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      pointerEvents: 'none',
+    },
+    '& button': {
+      width: '40px',
+      position: 'absolute',
+      bottom: '10px',
+      left: 'calc(50%-75px)',
+      transform: `translateY(${isTablet ? 0 : -10}px)`,
+      opacity: isTablet ? 1 : 0,
+      transition: '0.5s',
+    },
+    '&:hover': {
+      borderColor: theme.palette.primary.main,
+      color: theme.palette.primary.main,
+      '& i': {
+        color: theme.palette.primary.main,
+      },
+      '& button': {
+        transform: 'translateY(0)',
+        opacity: 1,
+        transition: '0.5s',
+      },
     },
   });
   return (
@@ -207,8 +260,8 @@ const AddProduct = ({userName}) => {
             </Typography>
             <Stack direction={isTablet ? 'column' : 'row'}>
               <Box
-                maxWidth={450}
-                flex="0 0 450px"
+                maxWidth={isTablet ? '100%' : '450px'}
+                flex={isTablet ? '1 1 auto' : '0 0 450px'}
                 mr={isTablet ? 0 : rwdValue(30, 120)}
                 sx={{
                   '& .MuiInputBase-input': {
@@ -335,14 +388,18 @@ const AddProduct = ({userName}) => {
                   })}
                 </CheckBoxWrap>
               </Box>
-              <Box>
+              <Box
+                sx={{
+                  flex: '1 1 auto',
+                  width: '100%',
+                }}
+              >
                 <InputLabel>Product images</InputLabel>
                 <Box
                   sx={{
                     display: 'flex',
                     gap: isTablet ? '20px' : '52px',
                     flexWrap: 'wrap',
-                    flex: '1 1 auto',
                   }}
                 >
                   <FileInput />

@@ -61,6 +61,9 @@ export default function FileInput() {
     },
     '& button': {
       width: '40px',
+      minWidth: isTablet ? '40px' : '60px',
+      height: '40px',
+      padding: 0,
       position: 'absolute',
       bottom: '10px',
       left: 'calc(50%-75px)',
