@@ -7,8 +7,9 @@ const ForgotPassword = () => {
   return (
     <>
       <Head>
-        <title>Forgot password</title>
+        <title>Wellrun | Forgot password</title>
       </Head>
+
       <SignLayout form={<ForgotPasswordForm />} src="/forgotPassword.jpg" />
     </>
   );

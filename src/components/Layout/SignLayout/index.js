@@ -1,16 +1,11 @@
 import React from 'react';
-import Head from 'next/head';
-import Image from 'next/image';
 import {Box, Icon, Toolbar} from '@mui/material';
 
 import Banner from '@/components/UI/Banner';
 
-const SignLayout = ({headTitle, carrusel, src, form}) => {
+const SignLayout = ({carousel, src, form}) => {
   return (
     <>
-      <Head>
-        <title>{headTitle}</title>
-      </Head>
       <Icon
         sx={{
           width: 32,
@@ -61,17 +56,7 @@ const SignLayout = ({headTitle, carrusel, src, form}) => {
         >
           {form}
         </Box>
-        {/* <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '50%',
-            height: '100%',
-          }}
-        >
-        </Box> */}
-        <Banner src={src}>{carrusel && carrusel}</Banner>
+        <Banner src={src}>{carousel && carousel}</Banner>
       </Box>
     </>
   );
