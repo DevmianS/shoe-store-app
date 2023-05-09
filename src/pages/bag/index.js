@@ -1,4 +1,13 @@
-import {Container, Grid, Typography, Box, styled, Stack} from '@mui/material';
+import {
+  Container,
+  Grid,
+  Typography,
+  Box,
+  styled,
+  Stack,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 
 import Button from '@/components/UI/Button';
 import CartProductItem from '@/components/UI/CartProductItem';
@@ -9,8 +18,12 @@ import product3 from '@/assets/product3.jpg';
 
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Head from 'next/head';
+import {rwdValue} from '@/utils/theme';
 
 const Bag = () => {
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+
   const saveClickHandler = () => {
     console.log('SAVED');
   };
@@ -19,8 +32,12 @@ const Bag = () => {
   };
   const CardWrapper = styled(Box)({
     borderBottom: '1px solid #EAECF0',
-    paddingBottom: 60,
-    marginBottom: 60,
+    paddingBottom: rwdValue(20, 60),
+    marginBottom: rwdValue(20, 60),
+    '&:first-of-type': {
+      borderTop: '1px solid #EAECF0',
+      paddingTop: rwdValue(20, 60),
+    },
   });
   const products = [
     {
@@ -67,10 +84,16 @@ const Bag = () => {
         <title>Your bag</title>
       </Head>
       <NavBarLayout>
-        <Container maxWidth="xl" sx={{pt: '80px'}}>
+        <Container maxWidth="xl" sx={{marginTop: rwdValue(20, 60)}}>
           <Grid container justifyContent={'space-between'}>
-            <Grid item xl={8}>
-              <Typography variant="h1" component="h1" mb={7}>
+            <Grid item xl={8} xs={12}>
+              <Typography
+                variant="h1"
+                component="h1"
+                sx={{
+                  marginBottom: rwdValue(12, 24),
+                }}
+              >
                 Cart
               </Typography>
               {products.map(product => {
@@ -83,8 +106,16 @@ const Bag = () => {
                 );
               })}
             </Grid>
-            <Grid item xl={3}>
-              <Typography variant="h1" component="h2" mb={7}>
+            <Grid item xl={3} xs={12} mb={'30px'}>
+              <Typography
+                variant="h1"
+                component="h2"
+                sx={{
+                  marginBottom: rwdValue(20, 40),
+                  paddingBottom: isTablet ? rwdValue(20, 40) : 0,
+                  borderBottom: isTablet ? '1px solid #EAECF0' : 'none',
+                }}
+              >
                 Summary
               </Typography>
               <Box>
@@ -110,10 +141,20 @@ const Bag = () => {
                   justifyContent={'space-between'}
                   alignItems={'center'}
                 >
-                  <Typography variant="h3" component="h3" fontWeight={400}>
+                  <Typography
+                    variant="h3"
+                    component="h3"
+                    fontWeight={400}
+                    fontSize={rwdValue(20, 30)}
+                  >
                     Subtotal
                   </Typography>
-                  <Typography variant="h3" component="span" fontWeight={400}>
+                  <Typography
+                    variant="h3"
+                    component="span"
+                    fontWeight={400}
+                    fontSize={rwdValue(20, 30)}
+                  >
                     $410
                   </Typography>
                 </Stack>
@@ -123,10 +164,20 @@ const Bag = () => {
                   justifyContent={'space-between'}
                   alignItems={'center'}
                 >
-                  <Typography variant="h3" component="h3" fontWeight={400}>
+                  <Typography
+                    variant="h3"
+                    component="h3"
+                    fontWeight={400}
+                    fontSize={rwdValue(20, 30)}
+                  >
                     Shipping
                   </Typography>
-                  <Typography variant="h3" component="span" fontWeight={400}>
+                  <Typography
+                    variant="h3"
+                    component="span"
+                    fontWeight={400}
+                    fontSize={rwdValue(20, 30)}
+                  >
                     $20
                   </Typography>
                 </Stack>
@@ -135,28 +186,49 @@ const Bag = () => {
                   justifyContent={'space-between'}
                   alignItems={'center'}
                 >
-                  <Typography variant="h3" component="h3" fontWeight={400}>
+                  <Typography
+                    variant="h3"
+                    component="h3"
+                    fontWeight={400}
+                    fontSize={rwdValue(20, 30)}
+                  >
                     Tax
                   </Typography>
-                  <Typography variant="h3" component="span" fontWeight={400}>
+                  <Typography
+                    variant="h3"
+                    component="span"
+                    fontWeight={400}
+                    fontSize={rwdValue(20, 30)}
+                  >
                     $0
                   </Typography>
                 </Stack>
                 <Stack
                   direction="row"
-                  mt={7}
-                  pb={2}
-                  pt={2}
-                  mb={7}
+                  sx={{
+                    padding: '20px 0',
+                    marginBottom: rwdValue(30, 55),
+                    marginTop: rwdValue(30, 55),
+                  }}
                   borderTop={'1px solid #EAECF0'}
                   borderBottom={'1px solid #EAECF0'}
                   justifyContent={'space-between'}
                   alignItems={'center'}
                 >
-                  <Typography variant="h3" component="h3" fontWeight={600}>
+                  <Typography
+                    variant="h3"
+                    component="h3"
+                    fontWeight={600}
+                    fontSize={rwdValue(20, 30)}
+                  >
                     Total
                   </Typography>
-                  <Typography variant="h3" component="span" fontWeight={600}>
+                  <Typography
+                    variant="h3"
+                    component="span"
+                    fontWeight={600}
+                    fontSize={rwdValue(20, 30)}
+                  >
                     $430
                   </Typography>
                 </Stack>
