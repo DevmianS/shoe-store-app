@@ -122,10 +122,6 @@ const AddProduct = ({userName}) => {
       height: isDesktop ? '48px' : '33px',
       fontSize: isDesktop ? '15px' : '10px',
     },
-    '& .MuiInputBase-fullWidth': {
-      height: isDesktop ? '48px' : '33px',
-      fontSize: isDesktop ? '15px' : '10px',
-    },
     '& label': {
       fontSize: isDesktop ? '15px' : '12px',
     },
@@ -276,6 +272,12 @@ const AddProduct = ({userName}) => {
                     placeholder="Nike Air Max 90"
                     label="Product name"
                     type="text"
+                    sx={{
+                      '& .MuiInputBase-fullWidth': {
+                        height: isDesktop ? '48px' : '33px',
+                        fontSize: isDesktop ? '15px' : '10px',
+                      },
+                    }}
                   />
                 </FormItem>
                 <FormItem>
@@ -285,6 +287,12 @@ const AddProduct = ({userName}) => {
                     placeholder="Sport"
                     label="Category"
                     type="text"
+                    sx={{
+                      '& .MuiInputBase-fullWidth': {
+                        height: isDesktop ? '48px' : '33px',
+                        fontSize: isDesktop ? '15px' : '10px',
+                      },
+                    }}
                   />
                 </FormItem>
                 <FormItem>
