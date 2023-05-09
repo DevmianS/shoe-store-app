@@ -8,13 +8,13 @@ const SignUp = () => {
   return (
     <>
       <Head>
-        <title>Sign up</title>
+        <title>Wellrun | Sign up</title>
       </Head>
 
       <SignLayout
         form={<SignUpForm />}
-        carrusel={<ReviewsCarousel />}
         src="/product2.jpg"
+        carousel={<ReviewsCarousel />}
       />
     </>
   );

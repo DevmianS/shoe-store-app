@@ -8,9 +8,10 @@ const SignIn = () => {
   return (
     <>
       <Head>
-        <title>Sign in</title>
+        <title>Wellrun | Sign in</title>
       </Head>
-      <SignLayout form={<SignInForm />} src="/product8.jpg"></SignLayout>
+
+      <SignLayout form={<SignInForm />} src="/product8.jpg" />
     </>
   );
 };
