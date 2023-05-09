@@ -7,7 +7,6 @@ import {
   MenuItem,
   Select,
   FormControl,
-  InputLabel,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
