@@ -115,7 +115,7 @@ const AddProduct = ({userName}) => {
   const Row = styled(Box)({
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '40px 0',
+    padding: isTablet ? '25px 0' : '40px 0',
   });
   const Content = styled(Box)(({theme}) => ({
     '& .MuiInputBase-root': {
