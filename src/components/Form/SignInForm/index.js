@@ -22,21 +22,17 @@ import Spinner from '@/components/UI/Spinner';
 const SignInForm = () => {
   const router = useRouter();
 
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
 
-  const handleCheckbox = event => {
-    setRememberMe(event.target.checked);
-  };
-
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState();
+  const [password, setPassword] = useState();
 
   const {data, isLoading, isError, mutate} = useMutation({
     mutationKey: ['logIn'],
-    mutationFn: user => logIn(user),
+    mutationFn: async user => logIn(user),
   });
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     console.log('handleSubmit');
     event.preventDefault();
     const user = {
@@ -50,7 +46,7 @@ const SignInForm = () => {
     if (localStorage.getItem('user')) {
       router.push('/');
     }
-  }, [data, router]);
+  }, [data?.user?.id, router]);
 
   const executeError = message => {
     toast.error(message);
@@ -58,11 +54,36 @@ const SignInForm = () => {
 
   useEffect(() => {
     if (isError) {
-      executeError(
-        "The indentifier and password don't match. Please try again.",
-      );
+      executeError("The user and password don't match. Please try again.");
     }
   }, [isError]);
+
+  useEffect(() => {
+    const localMem = JSON.parse(localStorage.getItem('logInInfo'));
+    setName(localMem?.user || '');
+    setPassword(localMem?.password || '');
+  }, []);
+
+  useEffect(() => {
+    if (rememberMe && name && password) {
+      localStorage.setItem(
+        'logInInfo',
+        JSON.stringify({user: name, password: password}),
+      );
+      console.log('as2d');
+    }
+    if (!rememberMe) {
+      console.log('asd');
+      localStorage.removeItem('logInInfo');
+    }
+  }, [rememberMe, name, password]);
+
+  console.log('rememberMe', rememberMe);
+
+  useEffect(() => {
+    setName(JSON.parse(localStorage.getItem('logInInfo'))?.user || '');
+    setPassword(JSON.parse(localStorage.getItem('logInInfo'))?.password || '');
+  }, []);
 
   return (
     <>
@@ -86,7 +107,6 @@ const SignInForm = () => {
           <Spinner />
         </Box>
       )}
-
       <Box
         sx={{
           width: '100%',
@@ -138,7 +158,12 @@ const SignInForm = () => {
             }}
           >
             <FormControlLabel
-              control={<Checkbox onChange={handleCheckbox} />}
+              control={
+                <Checkbox
+                  checked={rememberMe}
+                  onChange={() => setRememberMe(!rememberMe)}
+                />
+              }
               label="Remember me"
             />
             <Link href="/reset-password" underline="none">

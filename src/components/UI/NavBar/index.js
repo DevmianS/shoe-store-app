@@ -97,7 +97,7 @@ const NavBar = () => {
             }}
           >
             <Link
-              href="home"
+              href="/home"
               sx={{
                 ...LinkStyles,
               }}
@@ -129,7 +129,7 @@ const NavBar = () => {
             {buttonsArray.map(button => (
               <Button key={button.text} color="inherit">
                 <Link
-                  href={button.link}
+                  href={`/${button.link}`}
                   sx={{
                     ...LinkStyles,
                   }}
@@ -305,7 +305,7 @@ const NavBar = () => {
             >
               <Link
                 color="inherit"
-                href={button.link}
+                href={`/${button.link}`}
                 sx={{
                   ...LinkStyles,
                 }}
