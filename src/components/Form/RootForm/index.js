@@ -4,22 +4,13 @@ import {
   Box,
   Checkbox,
   FormControlLabel,
-  Link,
   TextField,
   Typography,
 } from '@mui/material';
 
+import Link from 'next/link';
+
 const RootForm = () => {
-  const [rememberMe, setRememberMe] = useState(false);
-
-  const handleCheckbox = event => {
-    setRememberMe(event.target.checked);
-  };
-
-  const handleSignIn = () => {
-    console.log('Clicked');
-  };
-
   return (
     <Box
       sx={{
@@ -50,12 +41,32 @@ const RootForm = () => {
           flexDirection: 'column',
         }}
       >
-        <Button size="medium" onClick={handleSignIn} outlined={true}>
-          Sign in
+        <Button size="medium" outlined={true}>
+          <Link
+            href="/sign-in"
+            style={{
+              width: '100%',
+              height: '100%',
+              textDecoration: 'none',
+              color: '#FE645E',
+            }}
+          >
+            Sign in
+          </Link>
         </Button>
 
-        <Button size="medium" onClick={handleSignIn}>
-          Sign up
+        <Button size="medium">
+          <Link
+            href="/sign-up"
+            style={{
+              width: '100%',
+              height: '100%',
+              color: 'white',
+              textDecoration: 'none',
+            }}
+          >
+            Sign up
+          </Link>
         </Button>
       </Box>
     </Box>

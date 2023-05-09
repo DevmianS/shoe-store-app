@@ -21,17 +21,24 @@ const SignUpForm = () => {
     console.log('Clicked');
   };
 
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
   return (
-    <Box sx={{
-      width: '100%',
-      maxWidth: '412px',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-      flexDirection: 'column',
-      textAlign: 'start',
-      padding: '20px',
-    }}>
+    <Box
+      sx={{
+        width: '100%',
+        maxWidth: '412px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        flexDirection: 'column',
+        textAlign: 'start',
+        padding: '20px',
+      }}
+    >
       <Typography component="h1" variant="h3">
         Create an account
       </Typography>
@@ -44,7 +51,7 @@ const SignUpForm = () => {
       >
         Create an account to get an easy access to your dream shopping
       </Typography>
-      <Box sx={{width: "100%"}}>
+      <Box sx={{width: '100%'}}>
         <FormControl sx={{width: '100%'}}>
           <TextField
             size="medium"
