@@ -277,6 +277,9 @@ const AddProduct = ({userName}) => {
                         height: isDesktop ? '48px' : '33px',
                         fontSize: isDesktop ? '15px' : '10px',
                       },
+                      '& .MuiInputLabel-formControl': {
+                        fontSize: isDesktop ? '15px' : '12px',
+                      },
                     }}
                   />
                 </FormItem>
@@ -291,6 +294,9 @@ const AddProduct = ({userName}) => {
                       '& .MuiInputBase-fullWidth': {
                         height: isDesktop ? '48px' : '33px',
                         fontSize: isDesktop ? '15px' : '10px',
+                      },
+                      '& .MuiInputLabel-formControl': {
+                        fontSize: isDesktop ? '15px' : '12px',
                       },
                     }}
                   />
