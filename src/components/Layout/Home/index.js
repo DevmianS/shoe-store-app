@@ -23,13 +23,13 @@ import product3 from '@/assets/product3.jpg';
 import product4 from '@/assets/product4.jpg';
 import product5 from '@/assets/product5.jpg';
 import product6 from '@/assets/product6.jpg';
+import TopBanner from '@/components/UI/TopBanner';
 
 const Home = ({userName}) => {
   const router = useRouter();
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const homeItemsList = [
     {name: 'My profile', icon: 'profile', click: () => router.push('/profile')},
@@ -113,14 +113,7 @@ const Home = ({userName}) => {
           padding: {lg: '0 60px', md: '0 40px', sm: '0 30px', xs: '0 10px'},
         }}
       >
-        <Box
-          sx={{
-            background: `url(${bannerImg.src}) center/cover no-repeat`,
-            minHeight: isMobile ? '130px' : '260px',
-            width: isMobile ? 'calc(100% + 20px)' : '100%',
-            transform: `translateX(${isMobile ? '-10px' : '0px'})`,
-          }}
-        ></Box>
+        <TopBanner imgPath={bannerImg.src} />
         <Stack
           direction="row"
           alignItems="end"
