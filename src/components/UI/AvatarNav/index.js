@@ -35,7 +35,7 @@ const NavbarMenu = ({name}) => {
   const handleLogout = () => {
     toast.success('Logged out successfully.');
     localStorage.removeItem('user');
-    router.reload();
+    router.push('/sign-in');
   };
 
   const handleDarkModeToggle = () => {
@@ -68,7 +68,11 @@ const NavbarMenu = ({name}) => {
   return (
     <>
       <Avatar
-        sx={{cursor: 'pointer'}}
+        sx={{
+          cursor: 'pointer',
+          border: '1px solid black',
+          boxShadow: '0px 0px 7px black',
+        }}
         style={{backgroundColor: color}}
         onClick={handleClick}
       >
