@@ -8,6 +8,8 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
 
+import {Toaster} from 'sonner';
+
 const icons_font = localFont({src: '../font/SHOES_STORE.woff'});
 export default function App({Component, pageProps}) {
   return (
@@ -29,6 +31,7 @@ export default function App({Component, pageProps}) {
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
         <Component {...pageProps} />
+        <Toaster richColors expand={true} position="top-center" closeButton />
       </QueryClientProvider>
     </ThemeProvider>
   );

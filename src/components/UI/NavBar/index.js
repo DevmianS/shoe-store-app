@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import {
   AppBar,
@@ -15,6 +15,8 @@ import Cart from '../Cart';
 
 import {useState} from 'react';
 
+import NavbarMenu from '../AvatarNav';
+
 import {
   buttonsArray,
   buttonsArrayResponsive,
@@ -25,7 +27,11 @@ import {
 } from './utils';
 import NestedList from './allPages';
 
+import {useRouter} from 'next/router';
+
 const NavBar = () => {
+  const router = useRouter();
+
   const [mobileMenu, setMobileMenu] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
 
@@ -37,6 +43,13 @@ const NavBar = () => {
       ref.current.focus();
     }, 0);
   };
+
+  useEffect(() => {
+    console.log('router', router.asPath);
+    if (router.asPath.includes('search')) {
+      handleFocusInputResponsive();
+    }
+  }, [router]);
 
   return (
     <>
@@ -97,7 +110,7 @@ const NavBar = () => {
             }}
           >
             <Link
-              href="/home"
+              href="/"
               sx={{
                 ...LinkStyles,
               }}
@@ -185,6 +198,17 @@ const NavBar = () => {
                 sx={{display: searchExpanded ? 'none' : ''}}
               >
                 <Cart count={5} />
+              </IconButton>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="Bag"
+                sx={{
+                  display: {xs: 'none', md: searchExpanded ? 'none' : 'flex'},
+                }}
+              >
+                <NavbarMenu name="brunito" />
               </IconButton>
               <IconButton
                 size="large"

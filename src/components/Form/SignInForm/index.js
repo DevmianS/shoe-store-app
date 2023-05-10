@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Button from '@/components/UI/Button';
 import {
   Box,
@@ -9,11 +9,11 @@ import {
   Typography,
 } from '@mui/material';
 
-import {Toaster, toast} from 'sonner';
+import {toast} from 'sonner';
 
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useMutation} from '@tanstack/react-query';
 
-import {fetchUtil, registerNewUser, logIn} from '@/utils/utils';
+import {logIn} from '@/utils/utils';
 
 import {useRouter} from 'next/router';
 
@@ -24,10 +24,31 @@ const SignInForm = () => {
 
   const [rememberMe, setRememberMe] = useState(true);
 
-  const [name, setName] = useState();
-  const [password, setPassword] = useState();
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
 
-  const {data, isLoading, isError, mutate} = useMutation({
+  const [nameError, setNameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const checkErrorName = () => {
+    const usernameRegex = /^[a-zA-Z0-9_-]{2,10}$/;
+    if (usernameRegex.test(name) && !/\s/.test(name)) {
+      setNameError(false);
+    } else {
+      setNameError(true);
+    }
+  };
+
+  const checkErrorPassword = () => {
+    const emailRegex = /^\S{8,}$/;
+    if (emailRegex.test(password)) {
+      setPasswordError(false);
+    } else {
+      setPasswordError(true);
+    }
+  };
+
+  const {data, isLoading, isError, isSuccess, mutate, error} = useMutation({
     mutationKey: ['logIn'],
     mutationFn: async user => logIn(user),
   });
@@ -35,11 +56,13 @@ const SignInForm = () => {
   const handleSubmit = async event => {
     console.log('handleSubmit');
     event.preventDefault();
-    const user = {
-      identifier: name,
-      password: password,
-    };
-    mutate(user);
+    if (!nameError && !passwordError) {
+      const user = {
+        identifier: name,
+        password: password,
+      };
+      mutate(user);
+    }
   };
 
   useEffect(() => {
@@ -52,16 +75,35 @@ const SignInForm = () => {
     toast.error(message);
   };
 
+  const executeSucces = message => {
+    toast.success(message);
+  };
+
+  const navigateRouter = useCallback(
+    route => {
+      router.push(route);
+    },
+    [router],
+  );
+
+  useEffect(() => {
+    if (isSuccess) {
+      executeSucces('Logged in successfully.');
+      navigateRouter('/');
+    }
+  }, [isSuccess, navigateRouter]);
+
   useEffect(() => {
     if (isError) {
-      executeError("The user and password don't match. Please try again.");
+      executeError(error.response.data.error.message);
     }
-  }, [isError]);
+  }, [isError, error]);
 
   useEffect(() => {
     const localMem = JSON.parse(localStorage.getItem('logInInfo'));
     setName(localMem?.user || '');
     setPassword(localMem?.password || '');
+    setRememberMe(localMem ? true : false);
   }, []);
 
   useEffect(() => {
@@ -78,8 +120,6 @@ const SignInForm = () => {
     }
   }, [rememberMe, name, password]);
 
-  console.log('rememberMe', rememberMe);
-
   useEffect(() => {
     setName(JSON.parse(localStorage.getItem('logInInfo'))?.user || '');
     setPassword(JSON.parse(localStorage.getItem('logInInfo'))?.password || '');
@@ -87,7 +127,6 @@ const SignInForm = () => {
 
   return (
     <>
-      <Toaster richColors expand={false} position="top-center" />
       {isLoading && (
         <Box
           sx={{
@@ -136,6 +175,12 @@ const SignInForm = () => {
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="Valerii"
+            error={nameError}
+            helperText={
+              nameError &&
+              "The user's name should be greater than 2, less than 10 characters and contain no spaces."
+            }
+            onBlur={checkErrorName}
           />
           <TextField
             fullWidth
@@ -147,6 +192,12 @@ const SignInForm = () => {
             value={password}
             onChange={e => setPassword(e.target.value)}
             placeholder="This_isPassword123"
+            error={passwordError}
+            helperText={
+              passwordError &&
+              'Password should contain at least 8 characters and no spaces.'
+            }
+            onBlur={checkErrorPassword}
           />
           <Box
             mb={6}
