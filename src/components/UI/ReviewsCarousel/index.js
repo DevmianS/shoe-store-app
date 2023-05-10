@@ -43,7 +43,7 @@ export default function ReviewsCarousel() {
           borderRadius: 8,
           maxWidth: 756,
           maxHeight: 317,
-          p: '2%',
+          p: 9,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
