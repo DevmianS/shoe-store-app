@@ -7,9 +7,10 @@ import {
   Stack,
   Toolbar,
   Box,
-  Link,
   Typography,
 } from '@mui/material';
+
+import Link from 'next/link';
 
 import Cart from '../Cart';
 
@@ -111,7 +112,7 @@ const NavBar = () => {
           >
             <Link
               href="/"
-              sx={{
+              style={{
                 ...LinkStyles,
               }}
             >
@@ -143,7 +144,7 @@ const NavBar = () => {
               <Button key={button.text} color="inherit">
                 <Link
                   href={`/${button.link}`}
-                  sx={{
+                  style={{
                     ...LinkStyles,
                   }}
                 >
@@ -330,7 +331,7 @@ const NavBar = () => {
               <Link
                 color="inherit"
                 href={`/${button.link}`}
-                sx={{
+                style={{
                   ...LinkStyles,
                 }}
               >
