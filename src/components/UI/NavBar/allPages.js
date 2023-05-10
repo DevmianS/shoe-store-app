@@ -77,9 +77,6 @@ export default function CustomizedMenus() {
         onClose={handleClose}
       >
         <Link href="/">
-          <MenuItem>Root</MenuItem>
-        </Link>
-        <Link href="/home">
           <MenuItem>Home</MenuItem>
         </Link>
         <Link href="/add-product">
@@ -88,10 +85,10 @@ export default function CustomizedMenus() {
         <Link href="/bag">
           <MenuItem>Bag</MenuItem>
         </Link>
-        <Link href="/error/404">
+        <Link href="/404">
           <MenuItem>404</MenuItem>
         </Link>
-        <Link href="/error/500">
+        <Link href="/500">
           <MenuItem>500</MenuItem>
         </Link>
         <Link href="/error/404filter">
