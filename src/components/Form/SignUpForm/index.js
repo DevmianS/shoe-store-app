@@ -1,4 +1,4 @@
-import React, {useEffect, useState,useCallback} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import Button from '@/components/UI/Button';
 import {
   Box,
@@ -322,7 +322,7 @@ const SignUpForm = () => {
               Already have an account?
             </Typography>
             <Link
-              href="/sign-up"
+              href="/sign-in"
               underline="none"
               sx={{
                 marginLeft: 1,
