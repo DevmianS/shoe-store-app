@@ -26,8 +26,7 @@ export default function CartProductItem({
   image,
 }) {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const Product = styled(Card)({
     position: 'relative',
@@ -151,7 +150,7 @@ export default function CartProductItem({
             variant="body4"
             color="primary"
             fontWeight={600}
-            fontSize={rwdValue(8, 20)}
+            fontSize={rwdValue(8, 25)}
             display={isTablet ? 'none' : 'block'}
           >
             {inStock ? 'In Stock' : 'Not available'}
