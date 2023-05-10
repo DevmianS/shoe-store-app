@@ -1,27 +1,20 @@
-import React, {useEffect} from 'react';
-import Button from '@/components/UI/Button';
-import {TextField} from '@mui/material';
+import Head from 'next/head';
 
-import Root from '@/components/UI/Root';
-
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
-import Head from 'next/head';
+import Root from '@/components/UI/Root';
+import Home from '@/components/Layout/Home';
 
 const Index = () => {
-  const [auth, setAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem('user')) {
-      setAuth(
-        <NavBarLayout>
-          <div>Home</div>
-        </NavBarLayout>,
-      );
+      setIsAuth(true);
     } else {
-      setAuth(<Root />);
+      setIsAuth(false);
     }
   }, []);
 
@@ -30,7 +23,13 @@ const Index = () => {
       <Head>
         <title>Home</title>
       </Head>
-      {auth}
+      {isAuth ? (
+        <NavBarLayout>
+          <Home />
+        </NavBarLayout>
+      ) : (
+        <Root />
+      )}
     </>
   );
 };
