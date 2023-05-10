@@ -40,11 +40,11 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
 }));
 
 const buttonsArray = [
-  {link: '/', text: 'Home'},
-  {link: '/search', text: 'For woman'},
-  {link: '/search', text: 'For men'},
-  {link: '/search', text: 'Accessories'},
-  {link: '/search', text: 'Sale'},
+  {link: '', text: 'Home'},
+  {link: 'search', text: 'For woman'},
+  {link: 'search', text: 'For men'},
+  {link: 'search', text: 'Accessories'},
+  {link: 'search', text: 'Sale'},
 ];
 
 const buttonsArrayResponsive = [
