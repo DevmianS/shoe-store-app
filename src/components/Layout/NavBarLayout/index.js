@@ -21,7 +21,7 @@ const NavBarLayout = ({children}) => {
   });
   return (
     <Wrapper>
-      <NavBar />
+      <NavBar key="nav" />
       <Box component="main">{children}</Box>
     </Wrapper>
   );

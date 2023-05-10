@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, memo} from 'react';
 import {
   Avatar,
   Menu,
@@ -13,10 +13,12 @@ import {AccountCircle, Brightness4, ExitToApp} from '@mui/icons-material';
 import {useRouter} from 'next/router';
 import {toast} from 'sonner';
 
-const NavbarMenu = ({name}) => {
+const NavbarMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [color, setColor] = useState('#0097A7');
+
+  const [name, setName] = useState('');
 
   const router = useRouter();
 
@@ -63,6 +65,12 @@ const NavbarMenu = ({name}) => {
 
   useEffect(() => {
     setColor(getRandomColor());
+    const nameLocalUser = localStorage.getItem('user');
+    if (nameLocalUser) {
+      setName(JSON.parse(nameLocalUser).userData.username);
+    } else {
+      setName('Valeri');
+    }
   }, []);
 
   return (
@@ -109,4 +117,4 @@ const NavbarMenu = ({name}) => {
   );
 };
 
-export default NavbarMenu;
+export default memo(NavbarMenu);
