@@ -131,18 +131,6 @@ const SignInForm = () => {
     setPassword(JSON.parse(localStorage.getItem('logInInfo'))?.password || '');
   }, []);
 
-  const FormBox = styled(Box)({
-    width: '100%',
-    maxWidth: '560px',
-    textAlign: 'start',
-    alignSelf: isMobile ? 'start' : 'center',
-    paddingTop: isMobile ? '80px' : '0',
-    '& form': {
-      width: '100%',
-      paddingRight: isMobile ? 0 : rwdValue(60, 120),
-    },
-  });
-
   return (
     <>
       {isLoading && (
@@ -164,7 +152,19 @@ const SignInForm = () => {
           <Spinner />
         </Box>
       )}
-      <FormBox>
+      <Box
+        sx={{
+          width: '100%',
+          maxWidth: '560px',
+          textAlign: 'start',
+          alignSelf: isMobile ? 'start' : 'center',
+          paddingTop: isMobile ? '80px' : '0',
+          '& form': {
+            width: '100%',
+            paddingRight: isMobile ? 0 : rwdValue(60, 120),
+          },
+        }}
+      >
         <Typography
           component="h1"
           variant="h1"
@@ -200,6 +200,7 @@ const SignInForm = () => {
               nameError &&
               "The user's name should be greater than 2, less than 10 characters and contain no spaces."
             }
+            onFocus={() => setNameError(false)}
             onBlur={checkErrorName}
           />
           <TextField
@@ -218,6 +219,7 @@ const SignInForm = () => {
               passwordError &&
               'Password should contain at least 8 characters and no spaces.'
             }
+            onFocus={() => setPasswordError(false)}
             onBlur={checkErrorPassword}
           />
           <Box
@@ -299,7 +301,7 @@ const SignInForm = () => {
             </Typography>
           </Box>
         </form>
-      </FormBox>
+      </Box>
     </>
   );
 };
