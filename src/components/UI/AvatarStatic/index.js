@@ -4,7 +4,7 @@ import {Avatar, Box, styled} from '@mui/material';
 const AvatarStatic = ({variant = 'medium', sx}) => {
   /* placeholders to be changed to redux states */
   const srcPlaceholder = '/';
-  const altPlaceholder = 'Jane Doe';
+  const altPlaceholder = 'Jane Meldrum';
 
   const BoxStyled = styled(Box)(() => ({
     width:
@@ -42,7 +42,8 @@ const AvatarStatic = ({variant = 'medium', sx}) => {
     borderRadius: '50%',
   }));
 
-  const initials = altPlaceholder.substring(0, 2).toUpperCase();
+  const nameSplit = altPlaceholder.split(' ');
+  const initials = `${nameSplit[0][0]}${nameSplit[1][0]}`;
 
   return (
     <>

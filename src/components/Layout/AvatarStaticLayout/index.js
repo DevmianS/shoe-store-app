@@ -19,7 +19,7 @@ const AvatarStaticLayout = () => {
         <Typography color="text.tetriary" fontSize={12}>
           Welcome
         </Typography>
-        <Typography fontWeight={500}>{'Jane Doe'}</Typography>
+        <Typography fontWeight={500}>{'Jane Meldrum'}</Typography>
       </Box>
     </AvatarWrapper>
   );
