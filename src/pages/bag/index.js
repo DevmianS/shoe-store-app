@@ -1,7 +1,5 @@
 import Head from 'next/head';
 import {
-  Container,
-  Grid,
   Typography,
   Box,
   styled,
@@ -11,15 +9,12 @@ import {
 } from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
+import mockupProducts from '@/utils/data';
 
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import Button from '@/components/UI/Button';
 import CartProductItem from '@/components/UI/CartProductItem';
-
-import product1 from '@/assets/product1.jpg';
-import product2 from '@/assets/product2.jpg';
-import product3 from '@/assets/product3.jpg';
 
 // Test import
 /* import {useSelector, useDispatch} from 'react-redux';
@@ -27,7 +22,6 @@ import {addProduct, deleteProduct} from '../../features/bagSlice';
  */
 
 const Bag = () => {
-  
   // Test code
   /* 
   const bag = useSelector(state => state.bag);
@@ -87,45 +81,6 @@ const Bag = () => {
     marginBottom: rwdValue(40, 80),
   });
 
-  const products = [
-    {
-      title: 'Nike Air Max 270',
-      price: '160',
-      category: "Women's Shoes",
-      inStock: true,
-      size: [36, 37, 38, 39],
-      color: ['white', 'red', 'blue'],
-      quantity: 3,
-      image: product1,
-      onSave: saveClickHandler,
-      onDelete: deleteClickHandler,
-    },
-    {
-      title: 'Nike Air Max 90',
-      price: '140',
-      category: "Men's Shoes",
-      inStock: true,
-      size: [36, 37, 38, 39],
-      color: ['white', 'red', 'blue'],
-      quantity: 3,
-      image: product2,
-      onSave: saveClickHandler,
-      onDelete: deleteClickHandler,
-    },
-    {
-      title: "Nike Air Force 1 '07 SE",
-      price: '110',
-      category: "Women's Shoes",
-      inStock: true,
-      size: [36, 37, 38, 39],
-      color: ['white', 'red', 'blue'],
-      quantity: 3,
-      image: product3,
-      onSave: saveClickHandler,
-      onDelete: deleteClickHandler,
-    },
-  ];
-
   return (
     <>
       <Head>
@@ -138,12 +93,21 @@ const Bag = () => {
               <Typography variant="h1" component="h1">
                 Cart
               </Typography>
-              {products.map(product => {
+              {mockupProducts.map(product => {
                 return (
-                  <CardWrapper
-                    key={product.title + product.price + product.inStock}
-                  >
-                    <CartProductItem {...product} />
+                  <CardWrapper key={product.id}>
+                    <CartProductItem
+                      title={product.attributes.name}
+                      category={product.attributes.category}
+                      price={product.attributes.price}
+                      image={product.attributes.image}
+                      inStock={true}
+                      size={[36, 37, 38, 39, 40]}
+                      color={['green', 'black', 'white', 'blue', 'red']}
+                      // quantity={3}
+                      onDelete={deleteClickHandler}
+                      onSave={saveClickHandler}
+                    />
                   </CardWrapper>
                 );
               })}
@@ -197,7 +161,11 @@ const Bag = () => {
                     fontWeight={400}
                     fontSize={rwdValue(20, 30)}
                   >
-                    $410
+                    $
+                    {mockupProducts.reduce(
+                      (acc, prod) => prod.attributes.price + acc,
+                      0,
+                    )}
                   </Typography>
                 </Stack>
                 <Stack
@@ -271,7 +239,11 @@ const Bag = () => {
                     fontWeight={600}
                     fontSize={rwdValue(20, 30)}
                   >
-                    $430
+                    $
+                    {mockupProducts.reduce(
+                      (acc, prod) => prod.attributes.price + acc,
+                      20,
+                    )}
                   </Typography>
                 </Stack>
                 <Stack spacing={2}>

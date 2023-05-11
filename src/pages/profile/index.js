@@ -1,21 +1,18 @@
-import Image from 'next/image';
 import Head from 'next/head';
 
 import {Typography, styled, Box, Stack} from '@mui/material';
 
+import {rwdValue} from '@/utils/theme';
+import mockupProducts from '@/utils/data';
+
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
-import ProductCard from '@/components/UI/ProductCard';
 
+import ProductCard from '@/components/UI/ProductCard';
 import LinksList from '@/components/UI/LinksList';
 
 import bannerImg from '@/assets/banner.jpg';
-import product1 from '@/assets/product1.jpg';
-import product2 from '@/assets/product2.jpg';
-import product3 from '@/assets/product3.jpg';
-import product4 from '@/assets/product4.jpg';
 import TopBanner from '@/components/UI/TopBanner';
-import {rwdValue} from '@/utils/theme';
 
 const Profile = ({userName}) => {
   // we can recieve COUNT properties from REDUX
@@ -140,38 +137,18 @@ const Profile = ({userName}) => {
               flexWrap="wrap"
               margin={{sm: '0 -8px', md: '0 -24px'}}
             >
-              <Column>
-                <ProductCard
-                  title="Nike Air Max 270"
-                  category="Women's Shoes"
-                  price={160}
-                  imgPath={product1}
-                />
-              </Column>
-              <Column>
-                <ProductCard
-                  title="Nike Air Max 90"
-                  category="Men's Shoes"
-                  price={140}
-                  imgPath={product2}
-                />
-              </Column>
-              <Column>
-                <ProductCard
-                  title="Nike Air Force 1 '07 SE"
-                  category="Women's Shoes"
-                  price={110}
-                  imgPath={product3}
-                />
-              </Column>
-              <Column>
-                <ProductCard
-                  title="Nike Air Max 210"
-                  category="Men's Shoes"
-                  price={180}
-                  imgPath={product4}
-                />
-              </Column>
+              {mockupProducts.map(product => {
+                return (
+                  <Column key={product.id}>
+                    <ProductCard
+                      title={product.attributes.name}
+                      category={product.attributes.category}
+                      price={product.attributes.price}
+                      imgPath={product.attributes.image}
+                    />
+                  </Column>
+                );
+              })}
             </Box>
           </Box>
         </Box>
