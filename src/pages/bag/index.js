@@ -20,7 +20,27 @@ import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Head from 'next/head';
 import {rwdValue} from '@/utils/theme';
 
+/* import {useSelector, useDispatch} from 'react-redux';
+import {addProduct, deleteProduct} from '../../features/bagSlice';
+ */
 const Bag = () => {
+  // Test code
+  /*  const bag = useSelector(state => state.bag);
+  const dispatch = useDispatch();
+
+  const handleAddproduct = product => {
+    dispatch(addProduct(product));
+  };
+  const handleDeleteproduct = id => {
+    dispatch(addProduct(id));
+  };
+
+  const testBag = {id: 1, name: 'Jordan 1', price: 99.9};
+
+  useEffect(() => {
+    handleAddproduct(testBag);
+  }, []); */
+
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
 

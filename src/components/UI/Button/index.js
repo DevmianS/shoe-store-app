@@ -21,7 +21,7 @@ function Button({
       onClick={onClick}
       disabled={disabled}
       sx={{...sx}}
-      type={type === 'submit' && 'submit'}
+      type={type === 'submit' ? 'submit' : 'button'}
     >
       {children}
     </MUIButton>

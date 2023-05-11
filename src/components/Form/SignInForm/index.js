@@ -19,7 +19,18 @@ import {useRouter} from 'next/router';
 
 import Spinner from '@/components/UI/Spinner';
 
+/* import {useSelector, useDispatch} from 'react-redux';
+import {setUser} from '@/features/userSlice';
+ */
 const SignInForm = () => {
+  // Redux test
+  /*  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  const handleAddUserTest = user => {
+    dispatch(setUser(user));
+  }; */
+
   const router = useRouter();
 
   const [rememberMe, setRememberMe] = useState(true);
