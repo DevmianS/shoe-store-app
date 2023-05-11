@@ -165,8 +165,7 @@ const SignInForm = () => {
           width: '100%',
           maxWidth: '560px',
           textAlign: 'start',
-          alignSelf: isMobile ? 'start' : 'center',
-          paddingTop: isMobile ? '80px' : '0',
+          alignSelf: 'center',
           '& form': {
             width: '100%',
             paddingRight: isMobile ? 0 : rwdValue(60, 120),
