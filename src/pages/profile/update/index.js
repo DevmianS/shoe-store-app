@@ -10,6 +10,7 @@ import NavBarLayout from '@/components/Layout/NavBarLayout';
 import LinksList from '@/components/UI/LinksList';
 import ListItem from '@/components/UI/ListItem';
 import Button from '@/components/UI/Button';
+import AvatarStatic from '@/components/UI/AvatarStatic';
 
 const ProfileUpdate = () => {
   const router = useRouter();
@@ -28,15 +29,6 @@ const ProfileUpdate = () => {
     {name: 'My wallet', icon: 'wallet', click: () => console.log('Wallet')},
   ];
 
-  const TempAvatar = styled(Box)({
-    width: rwdValue(100, 150),
-    height: rwdValue(100, 150),
-    flex: `0 0 ${rwdValue(100, 150)}`,
-    background: '#e2e2e2',
-    borderRadius: '50%',
-    marginRight: rwdValue(35, 75),
-    border: '4px solid white',
-  });
 
   return (
     <>
@@ -76,7 +68,14 @@ const ProfileUpdate = () => {
               flexWrap="wrap"
               mb={rwdValue(25, 50)}
             >
-              <TempAvatar />
+              <AvatarStatic
+                variant="large"
+                sx={{
+                  marginRight: rwdValue(35, 75),
+                  border: '4px solid white',
+                  flex: `0 0 ${rwdValue(100, 150)}`,
+                }}
+              />
               <Box>
                 <Box mb="24px">
                   <Button outlined>Change photo</Button>
