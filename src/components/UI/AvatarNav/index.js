@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, memo} from 'react';
 import {
   Avatar,
   Menu,
@@ -13,10 +13,12 @@ import {AccountCircle, Brightness4, ExitToApp} from '@mui/icons-material';
 import {useRouter} from 'next/router';
 import {toast} from 'sonner';
 
-const NavbarMenu = ({name}) => {
+const NavbarMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [color, setColor] = useState('#0097A7');
+  const [color, setColor] = useState('#FE645E');
+
+  const [name, setName] = useState('');
 
   const router = useRouter();
 
@@ -43,26 +45,15 @@ const NavbarMenu = ({name}) => {
     // Handle dark mode toggle logic
   };
 
-  const getRandomColor = () => {
-    const colors = [
-      '#D32F2F',
-      '#1976D2',
-      '#388E3C',
-      '#7B1FA2',
-      '#FFA000',
-      '#E64A19',
-      '#795548',
-      '#0097A7',
-      '#FBC02D',
-      '#757575',
-    ];
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
-
   const initials = name.substring(0, 2).toUpperCase();
 
   useEffect(() => {
-    setColor(getRandomColor());
+    const nameLocalUser = localStorage.getItem('user');
+    if (nameLocalUser) {
+      setName(JSON.parse(nameLocalUser).userData.username);
+    } else {
+      setName('Valeri');
+    }
   }, []);
 
   return (
@@ -109,4 +100,4 @@ const NavbarMenu = ({name}) => {
   );
 };
 
-export default NavbarMenu;
+export default memo(NavbarMenu);

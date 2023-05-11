@@ -23,7 +23,18 @@ import {useRouter} from 'next/router';
 import Spinner from '@/components/UI/Spinner';
 import {rwdValue} from '@/utils/theme';
 
+/* import {useSelector, useDispatch} from 'react-redux';
+import {setUser} from '@/features/userSlice';
+ */
 const SignInForm = () => {
+  // Redux test
+  /*  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  const handleAddUserTest = user => {
+    dispatch(setUser(user));
+  }; */
+
   const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -33,8 +44,8 @@ const SignInForm = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
 
-  const [nameError, setNameError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [nameError, setNameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const checkErrorName = () => {
     const usernameRegex = /^[a-zA-Z0-9_-]{2,10}$/;
