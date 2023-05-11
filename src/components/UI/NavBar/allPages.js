@@ -91,29 +91,29 @@ export default function CustomizedMenus() {
         <Link href="/500">
           <MenuItem>500</MenuItem>
         </Link>
-        <Link href="/error/404filter">
+        <Link href="/search">
+          <MenuItem>Search</MenuItem>
+        </Link>
+        <Link href="/search/result">
+          <MenuItem>Search result</MenuItem>
+        </Link>
+        <Link href="/search/404">
           <MenuItem>404 filter</MenuItem>
         </Link>
-        <Link href="/error/500filter">
+        <Link href="/search/500">
           <MenuItem>500 filter</MenuItem>
         </Link>
         <Link href="/forgot-password">
           <MenuItem>Forgot password</MenuItem>
+        </Link>
+        <Link href="/reset-password">
+          <MenuItem>Reset password</MenuItem>
         </Link>
         <Link href="/profile">
           <MenuItem>Profile</MenuItem>
         </Link>
         <Link href="/profile/update">
           <MenuItem>Update profile</MenuItem>
-        </Link>
-        <Link href="/reset-password">
-          <MenuItem>Reset password</MenuItem>
-        </Link>
-        <Link href="/search">
-          <MenuItem>Search</MenuItem>
-        </Link>
-        <Link href="/search/result">
-          <MenuItem>Search result</MenuItem>
         </Link>
         <Link href="/sign-in">
           <MenuItem>Sign-in</MenuItem>
