@@ -4,6 +4,15 @@ import {ThemeProvider} from '@mui/material';
 import {theme} from '../utils/theme';
 import CssBaseline from '@mui/material/CssBaseline';
 
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
+import {Toaster} from 'sonner';
+
+import {Provider} from 'react-redux';
+import {store} from '../app/store';
+
 const icons_font = localFont({src: '../font/SHOES_STORE.woff'});
 export default function App({Component, pageProps}) {
   return (
@@ -23,7 +32,12 @@ export default function App({Component, pageProps}) {
         }
       `}</style>
       <CssBaseline />
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
+        <Toaster richColors expand={true} position="top-center" closeButton />
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

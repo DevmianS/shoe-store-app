@@ -14,6 +14,8 @@ import product1 from '@/assets/product1.jpg';
 import product2 from '@/assets/product2.jpg';
 import product3 from '@/assets/product3.jpg';
 import product4 from '@/assets/product4.jpg';
+import TopBanner from '@/components/UI/TopBanner';
+import {rwdValue} from '@/utils/theme';
 
 const Profile = ({userName}) => {
   // we can recieve COUNT properties from REDUX
@@ -65,6 +67,8 @@ const Profile = ({userName}) => {
     borderRadius: '50%',
     marginRight: '26px',
     border: '4px solid white',
+    position: 'relative',
+    zIndex: 2,
   });
   return (
     <>
@@ -72,7 +76,14 @@ const Profile = ({userName}) => {
         <title>My profile</title>
       </Head>
       <NavBarLayout>
-        <Box justifyContent={'space-between'} padding="40px 0" display="flex">
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            paddingTop: rwdValue(0, 40),
+            paddingBottom: rwdValue(0, 40),
+          }}
+        >
           <SideBar areaName="user profile actions">
             <Stack
               direction="row"
@@ -101,10 +112,7 @@ const Profile = ({userName}) => {
               padding: {lg: '0 60px', md: '0 40px', sm: '0 30px', xs: '0 10px'},
             }}
           >
-            <Box
-              minHeight={260}
-              sx={{background: `url(${bannerImg.src}) center/cover no-repeat`}}
-            ></Box>
+            <TopBanner imgPath={bannerImg.src} />
             <Stack
               direction="row"
               alignItems="end"

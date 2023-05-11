@@ -1,8 +1,17 @@
-import {Stack, Box} from '@mui/material';
+import {Stack, Box, useTheme, useMediaQuery, styled} from '@mui/material';
 
 export default function SideBar({children, areaName}) {
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+
+  const StyledBox = styled(Box)({
+    flex: '0 0 320px',
+    display: isTablet ? 'none' : 'block',
+    width: '100%',
+    maxWidth: '320px',
+  });
   return (
-    <Box sx={{flex: '0 0 320px', display: {xs: 'none', md: 'flex'}}}>
+    <StyledBox>
       <Stack
         component="div"
         direction="column"
@@ -11,6 +20,6 @@ export default function SideBar({children, areaName}) {
       >
         {children}
       </Stack>
-    </Box>
+    </StyledBox>
   );
 }

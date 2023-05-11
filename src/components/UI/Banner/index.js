@@ -12,10 +12,10 @@ const Banner = ({children, src}) => {
         height: '100vh',
         overflow: 'hidden',
         position: 'relative',
-        display:{
-          xs:"none",
-          md:"flex"
-        }
+        display: {
+          xs: 'none',
+          md: 'flex',
+        },
       }}
     >
       <Image
@@ -53,7 +53,7 @@ const Banner = ({children, src}) => {
             display: 'flex',
             justifyContent: 'center',
             alignContent: 'flex-start',
-            padding:1
+            padding: 1,
           }}
         >
           {children}

@@ -40,7 +40,7 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
 }));
 
 const buttonsArray = [
-  {link: 'home', text: 'Home'},
+  {link: '', text: 'Home'},
   {link: 'search', text: 'For woman'},
   {link: 'search', text: 'For men'},
   {link: 'search', text: 'Accessories'},
@@ -58,9 +58,6 @@ const buttonsArrayResponsive = [
 const LinkStyles = {
   textDecoration: 'none',
   color: '#000',
-  display: 'flex',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
 };
 
 module.exports = {

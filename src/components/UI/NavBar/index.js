@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, memo} from 'react';
 
 import {
   AppBar,
@@ -7,13 +7,16 @@ import {
   Stack,
   Toolbar,
   Box,
-  Link,
   Typography,
 } from '@mui/material';
+
+import Link from 'next/link';
 
 import Cart from '../Cart';
 
 import {useState} from 'react';
+
+import NavbarMenu from '../AvatarNav';
 
 import {
   buttonsArray,
@@ -25,7 +28,11 @@ import {
 } from './utils';
 import NestedList from './allPages';
 
+import {useRouter} from 'next/router';
+
 const NavBar = () => {
+  const router = useRouter();
+
   const [mobileMenu, setMobileMenu] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
 
@@ -37,6 +44,13 @@ const NavBar = () => {
       ref.current.focus();
     }, 0);
   };
+
+  useEffect(() => {
+    console.log('router', router.asPath);
+    if (router.asPath.includes('search')) {
+      handleFocusInputResponsive();
+    }
+  }, [router]);
 
   return (
     <>
@@ -80,26 +94,26 @@ const NavBar = () => {
             },
           }}
         >
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="logo"
-            sx={{
-              opacity: {
-                xs: searchExpanded ? '0' : '1',
-                md: '1',
-              },
-              marginInline: {
-                xs: '0',
-                md: '30px',
-              },
+          <Link
+            href="/"
+            style={{
+              ...LinkStyles,
             }}
           >
-            <Link
-              href="/home"
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="logo"
               sx={{
-                ...LinkStyles,
+                opacity: {
+                  xs: searchExpanded ? '0' : '1',
+                  md: '1',
+                },
+                marginInline: {
+                  xs: '0',
+                  md: '30px',
+                },
               }}
             >
               <i
@@ -113,8 +127,8 @@ const NavBar = () => {
                 }}
                 className="icon-logo"
               ></i>
-            </Link>
-          </IconButton>
+            </IconButton>
+          </Link>
           <Stack
             component="nav"
             direction="row"
@@ -127,16 +141,15 @@ const NavBar = () => {
             }}
           >
             {buttonsArray.map(button => (
-              <Button key={button.text} color="inherit">
-                <Link
-                  href={`/${button.link}`}
-                  sx={{
-                    ...LinkStyles,
-                  }}
-                >
-                  {button.text}
-                </Link>
-              </Button>
+              <Link
+                key={button.text}
+                href={`/${button.link}`}
+                style={{
+                  ...LinkStyles,
+                }}
+              >
+                <Button color="inherit">{button.text}</Button>
+              </Link>
             ))}
             <NestedList />
           </Stack>
@@ -185,6 +198,17 @@ const NavBar = () => {
                 sx={{display: searchExpanded ? 'none' : ''}}
               >
                 <Cart count={5} />
+              </IconButton>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="Bag"
+                sx={{
+                  display: {xs: 'none', md: searchExpanded ? 'none' : 'flex'},
+                }}
+              >
+                <NavbarMenu name="brunito" />
               </IconButton>
               <IconButton
                 size="large"
@@ -292,22 +316,22 @@ const NavBar = () => {
           }}
         >
           {buttonsArrayResponsive.map(button => (
-            <Button
+            <Link
               color="inherit"
-              key={button.text}
-              sx={{
-                width: '150px',
-                display: 'flex',
-                justifyContent: 'flex-start',
-                alignCtems: 'center',
-                color: '#000',
+              href={`/${button.link}`}
+              style={{
+                ...LinkStyles,
               }}
+              key={button.text}
             >
-              <Link
+              <Button
                 color="inherit"
-                href={`/${button.link}`}
                 sx={{
-                  ...LinkStyles,
+                  width: '150px',
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  alignCtems: 'center',
+                  color: '#000',
                 }}
               >
                 <Box
@@ -318,13 +342,15 @@ const NavBar = () => {
                 <Typography color="inherit" sx={{marginLeft: ' 20px'}}>
                   {button.text}
                 </Typography>
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           ))}
+          {/* TEMP */}
+          <NestedList />
         </Stack>
       </Box>
     </>
   );
 };
 
-export default NavBar;
+export default memo(NavBar);

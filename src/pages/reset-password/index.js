@@ -7,8 +7,9 @@ const ResetPassword = () => {
   return (
     <>
       <Head>
-        <title>Reset password</title>
+        <title>Wellrun | Reset password</title>
       </Head>
+
       <SignLayout form={<ResetPasswordForm />} src="/forgotPassword.jpg" />
     </>
   );

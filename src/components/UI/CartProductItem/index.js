@@ -26,8 +26,7 @@ export default function CartProductItem({
   image,
 }) {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const Product = styled(Card)({
     position: 'relative',
@@ -56,12 +55,13 @@ export default function CartProductItem({
       fontSize: rwdValue(12, 24),
       lineHeight: 1,
       maxWidth: isTablet ? '90px' : 'auto',
+      width: isTablet ? 'auto' : '100%',
       paddingLeft: 0,
-      paddingRight: isTablet ? '12px' : '24px',
+      paddingRight: isTablet ? '0' : '24px',
     },
     '& .MuiSelect-icon': {
       position: 'static',
-      transform: isTablet ? 'translateX(-24px)' : 'translateX(-12px)',
+      transform: isTablet ? 'translateX(-20px)' : 'translateX(-12px)',
       width: isTablet ? '8px' : '1rem',
       height: isTablet ? '8px' : '1rem',
     },
@@ -151,7 +151,7 @@ export default function CartProductItem({
             variant="body4"
             color="primary"
             fontWeight={600}
-            fontSize={rwdValue(8, 20)}
+            fontSize={rwdValue(8, 25)}
             display={isTablet ? 'none' : 'block'}
           >
             {inStock ? 'In Stock' : 'Not available'}

@@ -1,13 +1,15 @@
+import {useRouter} from 'next/router';
 import Image from 'next/image';
+
 import {Box, Typography, styled, Stack} from '@mui/material';
 
-import Col from '@/components/UI/PageColumn';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
+import Col from '@/components/UI/PageColumn';
 import Button from '@/components/UI/Button';
-import Link from 'next/link';
 
 const ErrorPageTpl = ({text, title, img, boxImg, mobileWhite}) => {
+  const router = useRouter();
   const Row = styled(Box)(({theme}) => ({
     [theme.breakpoints.up('md')]: {
       background: `none`,
@@ -87,9 +89,7 @@ const ErrorPageTpl = ({text, title, img, boxImg, mobileWhite}) => {
               >
                 {text}
               </Typography>
-              <Link href="/">
-                <Button>Back home</Button>
-              </Link>
+              <Button onClick={() => router.push('/')}>Back home</Button>
             </Stack>
           </Content>
         </Col>

@@ -7,6 +7,8 @@ import RootForm from '@/components/Form/RootForm';
 import SignLayout from '@/components/Layout/SignLayout';
 import Image from 'next/image';
 
+import Link from 'next/link';
+
 const RootMobile = () => {
   const [animationCount, setAnimationCount] = useState(1);
 
@@ -145,9 +147,32 @@ const RootMobile = () => {
         }}
       >
         <Button outlined={true} sx={{width: '47%'}}>
-          Sign in
+          <Link
+            href="/sign-in"
+            style={{
+              width: '100%',
+              height: '100%',
+              textDecoration: 'none',
+              color: '#FE645E',
+            }}
+          >
+            Sign in
+          </Link>
         </Button>
-        <Button sx={{width: '47%'}}>Sign Up</Button>
+        <Button sx={{width: '47%'}}>
+          {' '}
+          <Link
+            href="/sign-up"
+            style={{
+              width: '100%',
+              height: '100%',
+              color: 'white',
+              textDecoration: 'none',
+            }}
+          >
+            Sign up
+          </Link>
+        </Button>
       </Box>
     </Box>
   );
