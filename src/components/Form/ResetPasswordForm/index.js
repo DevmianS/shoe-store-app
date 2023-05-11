@@ -1,21 +1,19 @@
-import React, {useState} from 'react';
-import Button from '@/components/UI/Button';
 import {
   Box,
-  Checkbox,
   FormControl,
-  FormControlLabel,
   Link,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
-const ResetPasswordForm = () => {
-  const [rememberMe, setRememberMe] = useState(false);
+import Button from '@/components/UI/Button';
+import {rwdValue} from '@/utils/theme';
 
-  const handleCheckbox = event => {
-    setRememberMe(event.target.checked);
-  };
+const ResetPasswordForm = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleSignIn = () => {
     console.log('Clicked');
@@ -25,47 +23,44 @@ const ResetPasswordForm = () => {
     <Box
       sx={{
         width: '100%',
-        maxWidth: '412px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        flexDirection: 'column',
-        textAlign: 'start',
-        padding: '20px',
+        maxWidth: isMobile ? '100%' : '480px',
+        padding: isMobile ? 0 : '20px',
       }}
     >
-      <Typography component="h1" variant="h3">
+      <Typography component="h1" variant="h1" sx={{marginBottom: '10px'}}>
         Reset password
       </Typography>
       <Typography
         component="p"
         variant="body1"
-        mt={1.5}
-        mb={3}
-        sx={{fontSize: '15px', color: '#5C5C5C'}}
+        sx={{
+          fontSize: rwdValue(10, 15),
+          color: 'text.secondary',
+          marginBottom: '5px',
+        }}
       >
         Please create new password here
       </Typography>
       <Box sx={{width: '100%'}}>
         <FormControl sx={{width: '100%'}}>
           <TextField
-            size="medium"
+            size={isMobile ? 'small' : 'medium'}
             label="Password"
             type="password"
-            margin="normal"
             required
             placeholder="at least 8 characters"
+            sx={{marginBottom: '25px'}}
           />
           <TextField
-            size="medium"
+            size={isMobile ? 'small' : 'medium'}
             label="Confirm password"
             type="password"
-            margin="normal"
             required
             placeholder="at least 8 characters"
+            sx={{marginBottom: '35px'}}
           />
 
-          <Button size="medium" onClick={handleSignIn}>
+          <Button size={isMobile ? 'small' : 'medium'} onClick={handleSignIn}>
             Reset password
           </Button>
         </FormControl>
