@@ -74,9 +74,13 @@ const SignUpForm = () => {
   });
 
   const handleSubmit = async event => {
-    console.log('handleSubmit');
     event.preventDefault();
-    if (!nameError && !passwordError && !emailError && !confirmPassword) {
+    checkErrorConfirm();
+    checkErrorPassword();
+    checkErrorEmail();
+    checkErrorName();
+    if (!nameError && !passwordError && !emailError && !confirmPasswordError) {
+      console.log('handleSubmit pass');
       const user = {
         username: name,
         email: email,
