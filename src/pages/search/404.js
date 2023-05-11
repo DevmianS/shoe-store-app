@@ -10,7 +10,7 @@ function ErrorFilter404() {
   return (
     <>
       <Head>
-        <title>Results not found</title>
+        <title>Wellrun | Results Not Found</title>
       </Head>
       <ErrorPageTpl img={error404} text={msgText} title={pageTitle} />
     </>

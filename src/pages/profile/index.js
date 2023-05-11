@@ -73,7 +73,7 @@ const Profile = ({userName}) => {
   return (
     <>
       <Head>
-        <title>My profile</title>
+        <title>Wellrun | My Profile</title>
       </Head>
       <NavBarLayout>
         <Box

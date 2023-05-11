@@ -41,7 +41,7 @@ const ProfileUpdate = () => {
   return (
     <>
       <Head>
-        <title>Update profile</title>
+        <title>Wellrun | Update Profile</title>
       </Head>
       <NavBarLayout>
         <Box justifyContent={'space-between'} padding="40px 0" display="flex">

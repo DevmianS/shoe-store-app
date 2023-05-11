@@ -10,7 +10,7 @@ function ErrorPage500() {
   return (
     <>
       <Head>
-        <title>Server error</title>
+        <title>Wellrun | Server Error</title>
       </Head>
       <ErrorPageTpl
         boxImg={errorImg}

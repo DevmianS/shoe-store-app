@@ -6,7 +6,7 @@ const Search = () => {
   return (
     <>
       <Head>
-        <title>Search</title>
+        <title>Wellrun | Search</title>
       </Head>
       <NavBarLayout>
         <div>Search</div>

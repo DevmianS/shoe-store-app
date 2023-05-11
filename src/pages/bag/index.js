@@ -27,7 +27,6 @@ import {addProduct, deleteProduct} from '../../features/bagSlice';
  */
 
 const Bag = () => {
-  
   // Test code
   /* 
   const bag = useSelector(state => state.bag);
@@ -129,7 +128,7 @@ const Bag = () => {
   return (
     <>
       <Head>
-        <title>Your bag</title>
+        <title>Wellrun | Your Bag</title>
       </Head>
       <NavBarLayout>
         <ContentWrap>

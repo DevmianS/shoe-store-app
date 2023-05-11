@@ -160,7 +160,7 @@ const AddProduct = ({userName}) => {
   return (
     <>
       <Head>
-        <title>Add Product</title>
+        <title>Wellrun | Add Product</title>
       </Head>
       <NavBarLayout>
         <Row>
