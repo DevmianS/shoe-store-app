@@ -67,26 +67,22 @@ const ResetPasswordForm = () => {
         <Box
           sx={{
             textAlign: 'center',
-            fontSize: 15,
-            textAlign: 'center',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: '10px',
+            columnGap: '5px',
+
+            '& .MuiTypography-root': {
+              fontSize: rwdValue(10, 15),
+              fontWeight: 500,
+            },
           }}
         >
-          <Typography component="p" sx={{fontWeight: 500}}>
-            Back to
+          <Typography component="span">Back to</Typography>
+          <Typography component="span">
+            <Link href="/sign-up">Log in</Link>
           </Typography>
-          <Link
-            href="/sign-up"
-            underline="none"
-            sx={{
-              marginLeft: 1,
-            }}
-          >
-            Log in
-          </Link>
         </Box>
       </Box>
     </Box>

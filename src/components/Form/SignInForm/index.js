@@ -262,13 +262,9 @@ const SignInForm = () => {
                 },
               }}
             />
-            <Link
-              href="/forgot-password"
-              underline="none"
-              sx={{fontSize: rwdValue(10, 15)}}
-            >
-              Forgot password?
-            </Link>
+            <Typography sx={{fontSize: rwdValue(10, 15)}}>
+              <Link href="/forgot-password">Forgot password?</Link>
+            </Typography>
           </Box>
           <Button
             size={isMobile ? 'small' : 'medium'}
@@ -303,9 +299,7 @@ const SignInForm = () => {
                 fontSize: rwdValue(10, 15),
               }}
             >
-              <Link href="/sign-up" underline="none">
-                Sign up
-              </Link>
+              <Link href="/sign-up">Sign up</Link>
             </Typography>
           </Box>
         </form>
