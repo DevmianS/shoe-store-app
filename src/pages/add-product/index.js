@@ -24,6 +24,7 @@ import NavBarLayout from '@/components/Layout/NavBarLayout';
 import LinksList from '@/components/UI/LinksList';
 import {useState} from 'react';
 import FileInput from '@/components/UI/FileInput';
+import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 
 const AddProduct = ({userName}) => {
   const [select, setSelect] = useState({gender: 'male', brand: 'nike'});
@@ -66,24 +67,7 @@ const AddProduct = ({userName}) => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
 
-  const AvatarWrapper = styled(Stack)(({theme}) => ({
-    display: 'flex',
-    flexDirection: 'row',
-    paddingLeft: '40px',
-    alignItems: 'center',
-    marginBottom: '7px',
-    paddingBottom: '32px',
-    borderBottom: '1px solid',
-    borderColor: theme.palette.divider,
-  }));
-  const TempAvatar = styled(Box)({
-    maxWidth: '64px',
-    height: '64px',
-    flex: '0 0 64px',
-    background: '#e2e2e2',
-    borderRadius: '50%',
-    marginRight: '16px',
-  });
+
   const HeaderRow = styled(Stack)(({theme}) => ({
     [theme.breakpoints.up('sm')]: {
       alignItems: 'center',
@@ -160,20 +144,12 @@ const AddProduct = ({userName}) => {
   return (
     <>
       <Head>
-        <title>Add Product</title>
+        <title>Wellrun | Add Product</title>
       </Head>
       <NavBarLayout>
         <Row>
           <SideBar areaName="addd product actions">
-            <AvatarWrapper>
-              <TempAvatar />
-              <Box>
-                <Typography color="text.tetriary" fontSize={12}>
-                  Welcome
-                </Typography>
-                <Typography fontWeight={500}>{user}</Typography>
-              </Box>
-            </AvatarWrapper>
+            <AvatarStaticLayout />
             <LinksList listItems={profileItemsList} />
           </SideBar>
           <Content>
