@@ -7,6 +7,9 @@ import {
   Link,
   TextField,
   Typography,
+  styled,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
 import {toast} from 'sonner';
@@ -18,9 +21,12 @@ import {logIn} from '@/utils/utils';
 import {useRouter} from 'next/router';
 
 import Spinner from '@/components/UI/Spinner';
+import {rwdValue} from '@/utils/theme';
 
 const SignInForm = () => {
   const router = useRouter();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const [rememberMe, setRememberMe] = useState(true);
 
@@ -125,6 +131,18 @@ const SignInForm = () => {
     setPassword(JSON.parse(localStorage.getItem('logInInfo'))?.password || '');
   }, []);
 
+  const FormBox = styled(Box)({
+    width: '100%',
+    maxWidth: '560px',
+    textAlign: 'start',
+    alignSelf: isMobile ? 'start' : 'center',
+    paddingTop: isMobile ? '80px' : '0',
+    '& form': {
+      width: '100%',
+      paddingRight: isMobile ? 0 : rwdValue(60, 120),
+    },
+  });
+
   return (
     <>
       {isLoading && (
@@ -146,35 +164,37 @@ const SignInForm = () => {
           <Spinner />
         </Box>
       )}
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: '412px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          flexDirection: 'column',
-          textAlign: 'start',
-          padding: '20px',
-        }}
-      >
-        <Typography component="h1" variant="h3">
+      <FormBox>
+        <Typography
+          component="h1"
+          variant="h1"
+          textAlign="start"
+          sx={{marginBottom: rwdValue(5, 10)}}
+        >
           Welcome back
         </Typography>
-        <Typography component="p" variant="body1" mb={3}>
+        <Typography
+          component="p"
+          variant="body1"
+          sx={{
+            fontSize: rwdValue(12, 15),
+            marginBottom: rwdValue(15, 50),
+          }}
+        >
           Welcome back! Please enter your details to log into your account.
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
+            sx={{marginBottom: '25px', marginTop: 0}}
             fullWidth
-            size="medium"
+            size={isMobile ? 'small' : 'medium'}
             label="User"
             type="text"
             margin="normal"
             required
             value={name}
             onChange={e => setName(e.target.value)}
-            placeholder="Valerii"
+            placeholder="Type your user name here"
             error={nameError}
             helperText={
               nameError &&
@@ -183,15 +203,16 @@ const SignInForm = () => {
             onBlur={checkErrorName}
           />
           <TextField
+            sx={{marginBottom: '15px', marginTop: 0}}
             fullWidth
-            size="medium"
+            size={isMobile ? 'small' : 'medium'}
             label="Password"
             type="password"
             margin="normal"
             required
             value={password}
             onChange={e => setPassword(e.target.value)}
-            placeholder="This_isPassword123"
+            placeholder="Type your password here"
             error={passwordError}
             helperText={
               passwordError &&
@@ -200,12 +221,12 @@ const SignInForm = () => {
             onBlur={checkErrorPassword}
           />
           <Box
-            mb={6}
             sx={{
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
+              marginBottom: rwdValue(20, 50),
             }}
           >
             <FormControlLabel
@@ -216,40 +237,69 @@ const SignInForm = () => {
                 />
               }
               label="Remember me"
+              sx={{
+                fontSize: rwdValue(10, 15),
+                paddingLeft: '16px',
+                '& .MuiCheckbox-root': {
+                  width: '16px',
+                  height: '16px',
+                  padding: 0,
+                  marginRight: '4px',
+                },
+                '& .MuiFormControlLabel-label': {
+                  fontSize: rwdValue(10, 15),
+                  fontWeight: 500,
+                },
+              }}
             />
-            <Link href="/reset-password" underline="none">
+            <Link
+              href="/reset-password"
+              underline="none"
+              sx={{fontSize: rwdValue(10, 15)}}
+            >
               Forgot password?
             </Link>
           </Box>
-          <Button size="medium" type="submit">
+          <Button
+            size={isMobile ? 'small' : 'medium'}
+            type="submit"
+            sx={{marginBottom: '16px'}}
+          >
             Sign in
           </Button>
-        </form>
-        <Box
-          sx={{
-            textAlign: 'center',
-            fontSize: 15,
-            textAlign: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-          }}
-        >
-          <Typography component="p" sx={{fontWeight: 500, textAlign: 'center'}}>
-            Don’t have an account?
-          </Typography>
-          <Link
-            href="/sign-up"
-            underline="none"
+          <Box
             sx={{
-              marginLeft: 1,
+              textAlign: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              columnGap: '5px',
             }}
           >
-            Sign up
-          </Link>
-        </Box>
-      </Box>
+            <Typography
+              component="span"
+              sx={{
+                fontWeight: 500,
+                fontSize: rwdValue(10, 15),
+              }}
+            >
+              Don’t have an account?
+            </Typography>
+            <Typography
+              component="span"
+              sx={{
+                fontWeight: 500,
+                fontSize: rwdValue(10, 15),
+              }}
+            >
+              <Link href="/sign-up" underline="none">
+                Sign up
+              </Link>
+            </Typography>
+          </Box>
+        </form>
+      </FormBox>
     </>
   );
 };
