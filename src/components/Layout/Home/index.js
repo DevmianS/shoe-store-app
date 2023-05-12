@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
+import mockupProducts from '@/utils/data';
 
 import SideBar from '@/components/Layout/SideBar';
 
@@ -17,12 +18,6 @@ import ProductCard from '@/components/UI/ProductCard';
 import LinksList from '@/components/UI/LinksList';
 
 import bannerImg from '@/assets/banner2.jpg';
-import product1 from '@/assets/product1.jpg';
-import product2 from '@/assets/product2.jpg';
-import product3 from '@/assets/product3.jpg';
-import product4 from '@/assets/product4.jpg';
-import product5 from '@/assets/product5.jpg';
-import product6 from '@/assets/product6.jpg';
 import TopBanner from '@/components/UI/TopBanner';
 
 const Home = ({userName}) => {
@@ -153,54 +148,18 @@ const Home = ({userName}) => {
           flexWrap="wrap"
           margin={{sm: '0 -8px', md: '0 -24px'}}
         >
-          <Column>
-            <ProductCard
-              title="Nike Air Max 270"
-              category="Women's Shoes"
-              price={160}
-              imgPath={product1}
-            />
-          </Column>
-          <Column>
-            <ProductCard
-              title="Nike Air Max 90"
-              category="Men's Shoes"
-              price={140}
-              imgPath={product2}
-            />
-          </Column>
-          <Column>
-            <ProductCard
-              title="Nike Air Force 1 '07 SE"
-              category="Women's Shoes"
-              price={110}
-              imgPath={product3}
-            />
-          </Column>
-          <Column>
-            <ProductCard
-              title="Nike Air Max 210"
-              category="Men's Shoes"
-              price={180}
-              imgPath={product4}
-            />
-          </Column>
-          <Column>
-            <ProductCard
-              title="Nike Air Force 1 '07 SE"
-              category="Women's Shoes"
-              price={110}
-              imgPath={product5}
-            />
-          </Column>
-          <Column>
-            <ProductCard
-              title="Nike Air Force 2"
-              category="Women's Shoes"
-              price={180}
-              imgPath={product6}
-            />
-          </Column>
+          {mockupProducts.map(product => {
+            return (
+              <Column key={product.id}>
+                <ProductCard
+                  title={product.attributes.name}
+                  category={product.attributes.category}
+                  price={product.attributes.price}
+                  imgPath={product.attributes.image}
+                />
+              </Column>
+            );
+          })}
         </Box>
       </Box>
     </Box>
