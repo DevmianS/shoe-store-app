@@ -46,7 +46,6 @@ const AvatarStatic = ({variant = 'medium', sx}) => {
   const initials = `${nameSplit[0][0]}${nameSplit[1][0]}`;
 
   return (
-    <>
       <BoxStyled sx={{...sx}}>
         <Avatar
           src={srcPlaceholder}
@@ -59,7 +58,6 @@ const AvatarStatic = ({variant = 'medium', sx}) => {
           {initials}
         </Avatar>
       </BoxStyled>
-    </>
   );
 };
 
