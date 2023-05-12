@@ -48,6 +48,7 @@ const useStyles = () => {
     description: {
       color: theme.palette.text.secondary,
       marginBottom: rwdValue(25, 50),
+      fontSize: rwdValue(12, 15),
     },
     form: {maxWidth: '450px'},
     item: {marginBottom: rwdValue(25, 50)},
