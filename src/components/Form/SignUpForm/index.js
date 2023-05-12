@@ -14,6 +14,9 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
+import styles from '@/styles/link.module.css';
+
+
 import {registerNewUser} from '@/utils/utils';
 import {rwdValue} from '@/utils/theme';
 
@@ -342,7 +345,7 @@ const SignUpForm = () => {
           >
             <Typography component="span">Already have an account?</Typography>
             <Typography component="span">
-              <Link href="/sign-in">Log in</Link>
+              <Link href="/sign-in" className={styles.link}>Log in</Link>
             </Typography>
           </Box>
         </Box>

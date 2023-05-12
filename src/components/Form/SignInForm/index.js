@@ -3,6 +3,8 @@ import {useRouter} from 'next/router';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useMutation} from '@tanstack/react-query';
 
+import styles from '@/styles/link.module.css';
+
 import {toast} from 'sonner';
 import {
   Box,
@@ -262,7 +264,9 @@ const SignInForm = () => {
               }}
             />
             <Typography sx={{fontSize: rwdValue(10, 15)}}>
-              <Link href="/forgot-password">Forgot password?</Link>
+              <Link href="/forgot-password" className={styles.link}>
+                Forgot password?
+              </Link>
             </Typography>
           </Box>
           <Button
@@ -298,7 +302,9 @@ const SignInForm = () => {
                 fontSize: rwdValue(10, 15),
               }}
             >
-              <Link href="/sign-up">Sign up</Link>
+              <Link href="/sign-up" className={styles.link}>
+                Sign up
+              </Link>
             </Typography>
           </Box>
         </form>
