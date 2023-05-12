@@ -12,7 +12,7 @@ const SearchResults = () => {
   return (
     <>
       <Head>
-        <title>Search results</title>
+        <title>Wellrun | Search Results</title>
       </Head>
       <NavBarLayout>
         <div>

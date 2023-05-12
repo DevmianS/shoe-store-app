@@ -58,9 +58,6 @@ const buttonsArrayResponsive = [
 const LinkStyles = {
   textDecoration: 'none',
   color: '#000',
-  display: 'flex',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
 };
 
 module.exports = {

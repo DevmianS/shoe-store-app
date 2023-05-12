@@ -10,6 +10,16 @@ body {
   line-height: 1;
   font-weight: 500;
 }
+a {
+  text-decoration: none;
+}
+a:visited {
+  color: #fe645e;
+}
+a:hover {
+  color: #b83530;
+}
+
 .icon-chevron-down:before {
   content: '\e900';
 }

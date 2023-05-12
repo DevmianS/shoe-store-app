@@ -1,6 +1,5 @@
+import Head from 'next/head';
 import {
-  Container,
-  Grid,
   Typography,
   Box,
   styled,
@@ -9,20 +8,41 @@ import {
   useTheme,
 } from '@mui/material';
 
+import {rwdValue} from '@/utils/theme';
+import mockupProducts from '@/utils/data';
+
+import NavBarLayout from '@/components/Layout/NavBarLayout';
+
 import Button from '@/components/UI/Button';
 import CartProductItem from '@/components/UI/CartProductItem';
 
-import product1 from '@/assets/product1.jpg';
-import product2 from '@/assets/product2.jpg';
-import product3 from '@/assets/product3.jpg';
-
-import NavBarLayout from '@/components/Layout/NavBarLayout';
-import Head from 'next/head';
-import {rwdValue} from '@/utils/theme';
+// Test import
+/* import {useSelector, useDispatch} from 'react-redux';
+import {addProduct, deleteProduct} from '../../features/bagSlice';
+ */
 
 const Bag = () => {
+  // Test code
+  /* 
+  const bag = useSelector(state => state.bag);
+  const dispatch = useDispatch();
+
+  const handleAddproduct = product => {
+    dispatch(addProduct(product));
+  };
+  const handleDeleteproduct = id => {
+    dispatch(deleteProduct(id));
+  };
+
+  const testBag = {id: 3, name: 'Jordan 3', price: 99.9};
+
+  useEffect(() => {
+    handleAddproduct(testBag);
+  }, []); 
+  */
+
   const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const saveClickHandler = () => {
     console.log('SAVED');
@@ -35,83 +55,69 @@ const Bag = () => {
     paddingBottom: rwdValue(20, 60),
     marginBottom: rwdValue(20, 60),
     '&:first-of-type': {
-      borderTop: '1px solid #EAECF0',
+      borderTop: isTablet ? '1px solid #EAECF0' : 'none',
       paddingTop: rwdValue(20, 60),
+      marginTop: isTablet ? '20px' : 0,
     },
   });
-  const products = [
-    {
-      title: 'Nike Air Max 270',
-      price: '160',
-      category: "Women's Shoes",
-      inStock: true,
-      size: [36, 37, 38, 39],
-      color: ['white', 'red', 'blue'],
-      quantity: 3,
-      image: product1,
-      onSave: saveClickHandler,
-      onDelete: deleteClickHandler,
-    },
-    {
-      title: 'Nike Air Max 90',
-      price: '140',
-      category: "Men's Shoes",
-      inStock: true,
-      size: [36, 37, 38, 39],
-      color: ['white', 'red', 'blue'],
-      quantity: 3,
-      image: product2,
-      onSave: saveClickHandler,
-      onDelete: deleteClickHandler,
-    },
-    {
-      title: "Nike Air Force 1 '07 SE",
-      price: '110',
-      category: "Women's Shoes",
-      inStock: true,
-      size: [36, 37, 38, 39],
-      color: ['white', 'red', 'blue'],
-      quantity: 3,
-      image: product3,
-      onSave: saveClickHandler,
-      onDelete: deleteClickHandler,
-    },
-  ];
+  const FlexRow = styled(Box)({
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  });
+  const FlexColumnBig = styled(Box)({
+    flex: isTablet ? '0 0 100%' : '0 1 62%',
+  });
+  const FlexColumnSmall = styled(Box)({
+    flex: isTablet ? '0 0 100%' : '0 0 26%',
+  });
+  const ContentWrap = styled(Box)({
+    marginTop: rwdValue(20, 80),
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    padding: '0 20px',
+    maxWidth: '1570px',
+    width: '100%',
+    marginBottom: rwdValue(40, 80),
+  });
 
   return (
     <>
       <Head>
-        <title>Your bag</title>
+        <title>Wellrun | Your Bag</title>
       </Head>
       <NavBarLayout>
-        <Container maxWidth="xl" sx={{marginTop: rwdValue(20, 60)}}>
-          <Grid container justifyContent={'space-between'}>
-            <Grid item xl={8} xs={12}>
-              <Typography
-                variant="h1"
-                component="h1"
-                sx={{
-                  marginBottom: rwdValue(12, 24),
-                }}
-              >
+        <ContentWrap>
+          <FlexRow>
+            <FlexColumnBig>
+              <Typography variant="h1" component="h1">
                 Cart
               </Typography>
-              {products.map(product => {
+              {mockupProducts.map(product => {
                 return (
-                  <CardWrapper
-                    key={product.title + product.price + product.inStock}
-                  >
-                    <CartProductItem {...product} />
+                  <CardWrapper key={product.id}>
+                    <CartProductItem
+                      title={product.attributes.name}
+                      category={product.attributes.category}
+                      price={product.attributes.price}
+                      image={product.attributes.image}
+                      inStock={true}
+                      size={[36, 37, 38, 39, 40]}
+                      color={['green', 'black', 'white', 'blue', 'red']}
+                      // quantity={3}
+                      onDelete={deleteClickHandler}
+                      onSave={saveClickHandler}
+                    />
                   </CardWrapper>
                 );
               })}
-            </Grid>
-            <Grid item xl={3} xs={12} mb={'30px'}>
+            </FlexColumnBig>
+            <FlexColumnSmall>
               <Typography
                 variant="h1"
                 component="h2"
                 sx={{
-                  marginBottom: rwdValue(20, 40),
+                  marginBottom: rwdValue(20, 65),
                   paddingBottom: isTablet ? rwdValue(20, 40) : 0,
                   borderBottom: isTablet ? '1px solid #EAECF0' : 'none',
                 }}
@@ -155,7 +161,11 @@ const Bag = () => {
                     fontWeight={400}
                     fontSize={rwdValue(20, 30)}
                   >
-                    $410
+                    $
+                    {mockupProducts.reduce(
+                      (acc, prod) => prod.attributes.price + acc,
+                      0,
+                    )}
                   </Typography>
                 </Stack>
                 <Stack
@@ -229,7 +239,11 @@ const Bag = () => {
                     fontWeight={600}
                     fontSize={rwdValue(20, 30)}
                   >
-                    $430
+                    $
+                    {mockupProducts.reduce(
+                      (acc, prod) => prod.attributes.price + acc,
+                      20,
+                    )}
                   </Typography>
                 </Stack>
                 <Stack spacing={2}>
@@ -238,9 +252,9 @@ const Bag = () => {
                   <Button>Checkout</Button>
                 </Stack>
               </Box>
-            </Grid>
-          </Grid>
-        </Container>
+            </FlexColumnSmall>
+          </FlexRow>
+        </ContentWrap>
       </NavBarLayout>
     </>
   );

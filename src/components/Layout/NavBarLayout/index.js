@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import NavBar from '@/components/UI/NavBar';
 import {Box, styled} from '@mui/material';
 
@@ -20,12 +20,13 @@ const NavBarLayout = ({children}) => {
     },
   });
   return (
-    <Wrapper>
-      <NavBar />
-      <Box component="main">{children}</Box>
+    <Wrapper key="wrap">
+      <NavBar key="nav" />
+      <Box component="main" key="main">
+        {children}
+      </Box>
     </Wrapper>
   );
-  git;
 };
 
-export default NavBarLayout;
+export default memo(NavBarLayout);

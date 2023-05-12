@@ -13,7 +13,7 @@ function ErrorFilter500() {
   return (
     <>
       <Head>
-        <title>Server error</title>
+        <title>Wellrun | Server Error</title>
       </Head>
       <ErrorPageTpl img={error500} text={msgText} title={pageTitle} />
     </>

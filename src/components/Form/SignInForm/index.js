@@ -1,34 +1,50 @@
+import Link from 'next/link';
+import {useRouter} from 'next/router';
 import React, {useCallback, useEffect, useState} from 'react';
-import Button from '@/components/UI/Button';
+import {useMutation} from '@tanstack/react-query';
+
+import styles from '@/styles/link.module.css';
+
+import {toast} from 'sonner';
 import {
   Box,
   Checkbox,
   FormControlLabel,
-  Link,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
-import {toast} from 'sonner';
-
-import {useMutation} from '@tanstack/react-query';
-
 import {logIn} from '@/utils/utils';
+import {rwdValue} from '@/utils/theme';
 
-import {useRouter} from 'next/router';
-
+import Button from '@/components/UI/Button';
 import Spinner from '@/components/UI/Spinner';
 
+/* import {useSelector, useDispatch} from 'react-redux';
+import {setUser} from '@/features/userSlice';
+ */
 const SignInForm = () => {
+  // Redux test
+  /*  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  const handleAddUserTest = user => {
+    dispatch(setUser(user));
+  }; */
+
   const router = useRouter();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const [rememberMe, setRememberMe] = useState(true);
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
 
-  const [nameError, setNameError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [nameError, setNameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const checkErrorName = () => {
     const usernameRegex = /^[a-zA-Z0-9_-]{2,10}$/;
@@ -149,63 +165,79 @@ const SignInForm = () => {
       <Box
         sx={{
           width: '100%',
-          maxWidth: '412px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          flexDirection: 'column',
+          maxWidth: '560px',
           textAlign: 'start',
-          padding: '20px',
+          alignSelf: 'center',
+          '& form': {
+            width: '100%',
+            paddingRight: isMobile ? 0 : rwdValue(60, 120),
+          },
         }}
       >
-        <Typography component="h1" variant="h3">
+        <Typography
+          component="h1"
+          variant="h1"
+          textAlign="start"
+          sx={{marginBottom: rwdValue(5, 10)}}
+        >
           Welcome back
         </Typography>
-        <Typography component="p" variant="body1" mb={3}>
+        <Typography
+          component="p"
+          variant="body1"
+          sx={{
+            fontSize: rwdValue(12, 15),
+            marginBottom: rwdValue(15, 50),
+          }}
+        >
           Welcome back! Please enter your details to log into your account.
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
+            sx={{marginBottom: '25px', marginTop: 0}}
             fullWidth
-            size="medium"
+            size={isMobile ? 'small' : 'medium'}
             label="User"
             type="text"
             margin="normal"
             required
             value={name}
             onChange={e => setName(e.target.value)}
-            placeholder="Valerii"
+            placeholder="Type your user name here"
             error={nameError}
             helperText={
               nameError &&
               "The user's name should be greater than 2, less than 10 characters and contain no spaces."
             }
+            onFocus={() => setNameError(false)}
             onBlur={checkErrorName}
           />
           <TextField
+            sx={{marginBottom: '15px', marginTop: 0}}
             fullWidth
-            size="medium"
+            size={isMobile ? 'small' : 'medium'}
             label="Password"
             type="password"
             margin="normal"
             required
             value={password}
             onChange={e => setPassword(e.target.value)}
-            placeholder="This_isPassword123"
+            placeholder="Type your password here"
             error={passwordError}
             helperText={
               passwordError &&
               'Password should contain at least 8 characters and no spaces.'
             }
+            onFocus={() => setPasswordError(false)}
             onBlur={checkErrorPassword}
           />
           <Box
-            mb={6}
             sx={{
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
+              marginBottom: rwdValue(20, 50),
             }}
           >
             <FormControlLabel
@@ -216,39 +248,66 @@ const SignInForm = () => {
                 />
               }
               label="Remember me"
+              sx={{
+                fontSize: rwdValue(10, 15),
+                paddingLeft: '16px',
+                '& .MuiCheckbox-root': {
+                  width: '16px',
+                  height: '16px',
+                  padding: 0,
+                  marginRight: '4px',
+                },
+                '& .MuiFormControlLabel-label': {
+                  fontSize: rwdValue(10, 15),
+                  fontWeight: 500,
+                },
+              }}
             />
-            <Link href="/reset-password" underline="none">
-              Forgot password?
-            </Link>
+            <Typography sx={{fontSize: rwdValue(10, 15)}}>
+              <Link href="/forgot-password" className={styles.link}>
+                Forgot password?
+              </Link>
+            </Typography>
           </Box>
-          <Button size="medium" type="submit">
+          <Button
+            size={isMobile ? 'small' : 'medium'}
+            type="submit"
+            sx={{marginBottom: '16px'}}
+          >
             Sign in
           </Button>
-        </form>
-        <Box
-          sx={{
-            textAlign: 'center',
-            fontSize: 15,
-            textAlign: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-          }}
-        >
-          <Typography component="p" sx={{fontWeight: 500, textAlign: 'center'}}>
-            Don’t have an account?
-          </Typography>
-          <Link
-            href="/sign-up"
-            underline="none"
+          <Box
             sx={{
-              marginLeft: 1,
+              textAlign: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              columnGap: '5px',
             }}
           >
-            Sign up
-          </Link>
-        </Box>
+            <Typography
+              component="span"
+              sx={{
+                fontWeight: 500,
+                fontSize: rwdValue(10, 15),
+              }}
+            >
+              Don’t have an account?
+            </Typography>
+            <Typography
+              component="span"
+              sx={{
+                fontWeight: 500,
+                fontSize: rwdValue(10, 15),
+              }}
+            >
+              <Link href="/sign-up" className={styles.link}>
+                Sign up
+              </Link>
+            </Typography>
+          </Box>
+        </form>
       </Box>
     </>
   );

@@ -11,7 +11,7 @@ function ErrorPage404() {
   return (
     <>
       <Head>
-        <title>Page not found</title>
+        <title>Wellrun | Not Found</title>
       </Head>
       <ErrorPageTpl boxImg={errorImg} text={msgText} title={pageTitle} />
     </>

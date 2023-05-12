@@ -21,7 +21,7 @@ const Index = () => {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Wellrun | Home</title>
       </Head>
       {isAuth ? (
         <NavBarLayout>
