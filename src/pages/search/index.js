@@ -1,12 +1,9 @@
 import Head from 'next/head';
-import {rwdValue} from '@/utils/theme';
-
 import {
   Typography,
   styled,
   Box,
   Stack,
-  Grid,
   Button,
   TextField,
   useTheme,
@@ -15,15 +12,8 @@ import {
   Checkbox,
 } from '@mui/material';
 
-import product1 from '@/assets/product1.jpg';
-import product2 from '@/assets/product2.jpg';
-import product3 from '@/assets/product3.jpg';
-import product4 from '@/assets/product4.jpg';
-import product5 from '@/assets/product5.jpg';
-import product6 from '@/assets/product6.jpg';
-import product7 from '@/assets/product7.jpg';
-import product8 from '@/assets/product8.jpg';
-import product9 from '@/assets/product9.jpg';
+import {rwdValue} from '@/utils/theme';
+import mockupProducts from '@/utils/data';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -272,80 +262,18 @@ const SearchResults = ({userName}) => {
               flexWrap="wrap"
               margin={{sm: '0 -8px', md: '0 -24px'}}
             >
-              <Column>
-                <ProductCard
-                  title="Nike Air Max 270"
-                  category="Women's Shoes"
-                  price={160}
-                  imgPath={product1}
-                />
-              </Column>
-              <Column>
-                {' '}
-                <ProductCard
-                  title="Nike Air Max 90"
-                  category="Men's Shoes"
-                  price={140}
-                  imgPath={product2}
-                />
-              </Column>
-
-              <Column>
-                <ProductCard
-                  title="Nike Air Force 1 '07 SE"
-                  category="Women's Shoes"
-                  price={110}
-                  imgPath={product3}
-                />
-              </Column>
-              <Column>
-                <ProductCard
-                  title="Nike Air Max 210"
-                  category="Men's Shoes"
-                  price={180}
-                  imgPath={product4}
-                />
-              </Column>
-              <Column>
-                <ProductCard
-                  title="Nike Air Max 270"
-                  category="Women's Shoes"
-                  price={160}
-                  imgPath={product5}
-                />
-              </Column>
-              <Column>
-                <ProductCard
-                  title="Nike Air Max 90"
-                  category="Men's Shoes"
-                  price={140}
-                  imgPath={product6}
-                />
-              </Column>
-              <Column>
-                <ProductCard
-                  title="Nike Air Force 1 '07 SE"
-                  category="Women's Shoes"
-                  price={110}
-                  imgPath={product7}
-                />
-              </Column>
-              <Column>
-                <ProductCard
-                  title="Nike Air Max 210"
-                  category="Men's Shoes"
-                  price={180}
-                  imgPath={product8}
-                />
-              </Column>
-              <Column>
-                <ProductCard
-                  title="Nike Air Max 210"
-                  category="Men's Shoes"
-                  price={180}
-                  imgPath={product9}
-                />
-              </Column>
+              {mockupProducts.map(product => {
+                return (
+                  <Column key={product.id}>
+                    <ProductCard
+                      title={product.attributes.name}
+                      category={product.attributes.category}
+                      price={product.attributes.price}
+                      imgPath={product.attributes.image}
+                    />
+                  </Column>
+                );
+              })}
             </Box>
           </Content>
         </Row>
