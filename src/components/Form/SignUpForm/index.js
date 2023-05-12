@@ -1,23 +1,23 @@
+import {useRouter} from 'next/router';
+import Link from 'next/link';
+
 import React, {useEffect, useState, useCallback} from 'react';
-import Button from '@/components/UI/Button';
+import {useMutation} from '@tanstack/react-query';
+import {toast} from 'sonner';
 import {
   Box,
   Checkbox,
   FormControlLabel,
-  Link,
   TextField,
   Typography,
-  FormControl,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 
-import {toast} from 'sonner';
-
-import {useMutation} from '@tanstack/react-query';
-
 import {registerNewUser} from '@/utils/utils';
+import {rwdValue} from '@/utils/theme';
 
-import {useRouter} from 'next/router';
-
+import Button from '@/components/UI/Button';
 import Spinner from '@/components/UI/Spinner';
 
 const SignUpForm = () => {
@@ -30,6 +30,9 @@ const SignUpForm = () => {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const checkErrorName = () => {
     const usernameRegex = /^[a-zA-Z0-9_-]{2,10}$/;
@@ -204,13 +207,8 @@ const SignUpForm = () => {
       <Box
         sx={{
           width: '100%',
-          maxWidth: '412px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          flexDirection: 'column',
-          textAlign: 'start',
-          padding: '20px',
+          maxWidth: isMobile ? '100%' : '480px',
+          padding: isMobile ? 0 : '20px',
         }}
       >
         <Typography component="h1" variant="h3">
@@ -228,7 +226,7 @@ const SignUpForm = () => {
         <Box sx={{width: '100%'}}>
           <form style={{width: '100%'}} onSubmit={handleSubmit}>
             <TextField
-              size="medium"
+              size={isMobile ? 'small' : 'medium'}
               label="Name"
               type="text"
               margin="normal"
@@ -245,7 +243,7 @@ const SignUpForm = () => {
               onBlur={checkErrorName}
             />
             <TextField
-              size="medium"
+              size={isMobile ? 'small' : 'medium'}
               label="Email"
               type="email"
               margin="normal"
@@ -259,7 +257,7 @@ const SignUpForm = () => {
               onBlur={checkErrorEmail}
             />
             <TextField
-              size="medium"
+              size={isMobile ? 'small' : 'medium'}
               label="Password"
               type="password"
               margin="normal"
@@ -276,7 +274,7 @@ const SignUpForm = () => {
               onBlur={checkErrorPassword}
             />
             <TextField
-              size="medium"
+              size={isMobile ? 'small' : 'medium'}
               label="Confirm password"
               type="password"
               margin="normal"
@@ -308,32 +306,42 @@ const SignUpForm = () => {
                   />
                 }
                 label="Remember me"
+                sx={{
+                  fontSize: rwdValue(10, 15),
+                  paddingLeft: '16px',
+                  '& .MuiCheckbox-root': {
+                    width: '16px',
+                    height: '16px',
+                    padding: 0,
+                    marginRight: '4px',
+                  },
+                  '& .MuiFormControlLabel-label': {
+                    fontSize: rwdValue(10, 15),
+                    fontWeight: 500,
+                  },
+                }}
               />
             </Box>
-            <Button size="medium">Sign up</Button>
+            <Button size={isMobile ? 'small' : 'medium'}>Sign up</Button>
           </form>
           <Box
             sx={{
               textAlign: 'center',
-              fontSize: 15,
-              textAlign: 'center',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              marginTop: '10px',
+              columnGap: '5px',
+              '& .MuiTypography-root': {
+                fontSize: rwdValue(10, 15),
+                fontWeight: 500,
+              },
             }}
           >
-            <Typography component="p" sx={{fontWeight: 500}}>
-              Already have an account?
+            <Typography component="span">Already have an account?</Typography>
+            <Typography component="span">
+              <Link href="/sign-in">Log in</Link>
             </Typography>
-            <Link
-              href="/sign-in"
-              underline="none"
-              sx={{
-                marginLeft: 1,
-              }}
-            >
-              Log in
-            </Link>
           </Box>
         </Box>
       </Box>

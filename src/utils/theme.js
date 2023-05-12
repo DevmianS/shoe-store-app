@@ -65,7 +65,7 @@ export const theme = createTheme({
           textTransform: 'none',
         },
         sizeMedium: {
-          height: 40,
+          height: 48,
           fontSize: 16,
           borderRadius: 8,
           textTransform: 'none',

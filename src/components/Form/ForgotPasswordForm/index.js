@@ -1,21 +1,20 @@
-import React, {useState} from 'react';
-import Button from '@/components/UI/Button';
+import Link from 'next/link';
 import {
   Box,
-  Checkbox,
   FormControl,
-  FormControlLabel,
-  Link,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
-const ForgotPasswordForm = () => {
-  const [rememberMe, setRememberMe] = useState(false);
+import Button from '@/components/UI/Button';
 
-  const handleCheckbox = event => {
-    setRememberMe(event.target.checked);
-  };
+import {rwdValue} from '@/utils/theme';
+
+const ForgotPasswordForm = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleSignIn = () => {
     console.log('Clicked');
@@ -25,31 +24,29 @@ const ForgotPasswordForm = () => {
     <Box
       sx={{
         width: '100%',
-        maxWidth: '412px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        flexDirection: 'column',
-        textAlign: 'start',
-        padding: '20px',
+        maxWidth: isMobile ? '100%' : '480px',
+        padding: isMobile ? 0 : '20px',
       }}
     >
-      <Typography component="h1" variant="h3">
+      <Typography component="h1" variant="h1" sx={{marginBottom: '10px'}}>
         Forgot password?
       </Typography>
       <Typography
         component="p"
         variant="body1"
-        mt={1.5}
-        mb={3}
-        sx={{fontSize: '15px', color: '#5C5C5C'}}
+        sx={{
+          fontSize: rwdValue(10, 15),
+          color: 'text.secondary',
+          marginBottom: '5px',
+        }}
       >
         Don’t worry, we’ll send you reset instructions.
       </Typography>
+
       <Box sx={{width: '100%'}}>
         <FormControl sx={{width: '100%'}}>
           <TextField
-            size="medium"
+            size={isMobile ? 'small' : 'medium'}
             label="Email"
             type="email"
             margin="normal"
@@ -57,33 +54,29 @@ const ForgotPasswordForm = () => {
             sx={{marginBottom: '20px'}}
           />
 
-          <Button size="medium" onClick={handleSignIn}>
+          <Button size={isMobile ? 'small' : 'medium'} onClick={handleSignIn}>
             Reset password
           </Button>
         </FormControl>
         <Box
           sx={{
             textAlign: 'center',
-            fontSize: 15,
-            textAlign: 'center',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: '10px',
+            columnGap: '5px',
+
+            '& .MuiTypography-root': {
+              fontSize: rwdValue(10, 15),
+              fontWeight: 500,
+            },
           }}
         >
-          <Typography component="p" sx={{fontWeight: 500}}>
-            Back to
+          <Typography component="span">Back to</Typography>
+          <Typography component="span">
+            <Link href="/sign-in">Log in</Link>
           </Typography>
-          <Link
-            href="/sign-up"
-            underline="none"
-            sx={{
-              marginLeft: 1,
-            }}
-          >
-            Log in
-          </Link>
         </Box>
       </Box>
     </Box>

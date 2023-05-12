@@ -1,27 +1,24 @@
+import Link from 'next/link';
+import {useRouter} from 'next/router';
 import React, {useCallback, useEffect, useState} from 'react';
-import Button from '@/components/UI/Button';
+import {useMutation} from '@tanstack/react-query';
+
+import {toast} from 'sonner';
 import {
   Box,
   Checkbox,
   FormControlLabel,
-  Link,
   TextField,
   Typography,
-  styled,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 
-import {toast} from 'sonner';
-
-import {useMutation} from '@tanstack/react-query';
-
 import {logIn} from '@/utils/utils';
-
-import {useRouter} from 'next/router';
-
-import Spinner from '@/components/UI/Spinner';
 import {rwdValue} from '@/utils/theme';
+
+import Button from '@/components/UI/Button';
+import Spinner from '@/components/UI/Spinner';
 
 /* import {useSelector, useDispatch} from 'react-redux';
 import {setUser} from '@/features/userSlice';
@@ -168,8 +165,7 @@ const SignInForm = () => {
           width: '100%',
           maxWidth: '560px',
           textAlign: 'start',
-          alignSelf: isMobile ? 'start' : 'center',
-          paddingTop: isMobile ? '80px' : '0',
+          alignSelf: 'center',
           '& form': {
             width: '100%',
             paddingRight: isMobile ? 0 : rwdValue(60, 120),
@@ -265,13 +261,9 @@ const SignInForm = () => {
                 },
               }}
             />
-            <Link
-              href="/reset-password"
-              underline="none"
-              sx={{fontSize: rwdValue(10, 15)}}
-            >
-              Forgot password?
-            </Link>
+            <Typography sx={{fontSize: rwdValue(10, 15)}}>
+              <Link href="/forgot-password">Forgot password?</Link>
+            </Typography>
           </Box>
           <Button
             size={isMobile ? 'small' : 'medium'}
@@ -306,9 +298,7 @@ const SignInForm = () => {
                 fontSize: rwdValue(10, 15),
               }}
             >
-              <Link href="/sign-up" underline="none">
-                Sign up
-              </Link>
+              <Link href="/sign-up">Sign up</Link>
             </Typography>
           </Box>
         </form>
