@@ -24,6 +24,8 @@ import product4 from '@/assets/product4.jpg';
 import product5 from '@/assets/product5.jpg';
 import product6 from '@/assets/product6.jpg';
 import TopBanner from '@/components/UI/TopBanner';
+import AvatarStaticLayout from '../AvatarStaticLayout';
+import AvatarStatic from '@/components/UI/AvatarStatic';
 
 const Home = ({userName}) => {
   const router = useRouter();
@@ -35,14 +37,6 @@ const Home = ({userName}) => {
     {name: 'My profile', icon: 'profile', click: () => router.push('/profile')},
     {name: 'Log out', icon: 'logout', click: null},
   ];
-  const TempAvatar = styled(Box)({
-    maxWidth: '64px',
-    height: '64px',
-    flex: '0 0 64px',
-    background: '#e2e2e2',
-    borderRadius: '50%',
-    marginRight: '16px',
-  });
   const Column = styled(Box)(({theme}) => ({
     [theme.breakpoints.up('lg')]: {
       flex: '0 0 33%',
@@ -64,19 +58,6 @@ const Home = ({userName}) => {
     marginBottom: '24px',
   }));
 
-  const TempAvatarLg = styled(Box)({
-    maxWidth: rwdValue(60, 120),
-    height: rwdValue(60, 120),
-    flexBasis: rwdValue(60, 120),
-    flexShrink: 0,
-    flexGrow: 0,
-    background: '#e2e2e2',
-    borderRadius: '50%',
-    marginRight: rwdValue(13, 26),
-    border: '4px solid white',
-    position: 'relative',
-    zIndex: '2',
-  });
   return (
     <Box
       justifyContent={'space-between'}
@@ -86,25 +67,7 @@ const Home = ({userName}) => {
       }}
     >
       <SideBar areaName="home page actions">
-        <Stack
-          direction="row"
-          pl="40px"
-          alignItems="center"
-          mb="7px"
-          pb="32px"
-          borderBottom="1px solid"
-          borderColor="divider"
-        >
-          <TempAvatar />
-          <Box>
-            <Typography color="text.tetriary" fontSize={12}>
-              Welcome
-            </Typography>
-            <Typography fontWeight={500}>
-              {userName || 'Jane Meldrum'}
-            </Typography>
-          </Box>
-        </Stack>
+        <AvatarStaticLayout />
         <LinksList listItems={homeItemsList} />
       </SideBar>
       <Box
@@ -123,7 +86,14 @@ const Home = ({userName}) => {
             marginTop: isTablet ? '-15px' : '-30px',
           }}
         >
-          <TempAvatarLg />
+          <AvatarStatic
+            variant="medium"
+            sx={{
+              marginRight: rwdValue(5, 15),
+              border: '4px solid white',
+              zIndex: 2,
+            }}
+          />
           <Box>
             <Typography
               variant="body2"
