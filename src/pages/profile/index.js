@@ -17,7 +17,6 @@ import TopBanner from '@/components/UI/TopBanner';
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 
-
 const Profile = ({userName}) => {
   // we can recieve COUNT properties from REDUX
   const profileItemsList = [
@@ -89,10 +88,8 @@ const Profile = ({userName}) => {
               <AvatarStatic
                 variant="medium"
                 sx={{
-                  marginRight: '26px',
+                  marginRight: rwdValue(5, 15),
                   border: '4px solid white',
-                  minHeight: 120,
-                  minWidth: 120,
                   zIndex: 2,
                 }}
               />
