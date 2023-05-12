@@ -14,6 +14,9 @@ import LinksList from '@/components/UI/LinksList';
 import bannerImg from '@/assets/banner.jpg';
 import TopBanner from '@/components/UI/TopBanner';
 
+import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
+import AvatarStatic from '@/components/UI/AvatarStatic';
+
 const Profile = ({userName}) => {
   // we can recieve COUNT properties from REDUX
   const profileItemsList = [
@@ -27,14 +30,6 @@ const Profile = ({userName}) => {
     {name: 'Settings', icon: 'setting', click: null, count: 1},
     {name: 'Log out', icon: 'logout', click: null},
   ];
-  const TempAvatar = styled(Box)({
-    maxWidth: '64px',
-    height: '64px',
-    flex: '0 0 64px',
-    background: '#e2e2e2',
-    borderRadius: '50%',
-    marginRight: '16px',
-  });
   const Column = styled(Box)(({theme}) => ({
     [theme.breakpoints.up('lg')]: {
       flex: '0 0 33%',
@@ -56,17 +51,6 @@ const Profile = ({userName}) => {
     marginBottom: '24px',
   }));
 
-  const TempAvatarLg = styled(Box)({
-    maxWidth: '120px',
-    height: '120px',
-    flex: '0 0 120px',
-    background: '#e2e2e2',
-    borderRadius: '50%',
-    marginRight: '26px',
-    border: '4px solid white',
-    position: 'relative',
-    zIndex: 2,
-  });
   return (
     <>
       <Head>
@@ -82,25 +66,7 @@ const Profile = ({userName}) => {
           }}
         >
           <SideBar areaName="user profile actions">
-            <Stack
-              direction="row"
-              pl="40px"
-              alignItems="center"
-              mb="7px"
-              pb="32px"
-              borderBottom="1px solid"
-              borderColor="divider"
-            >
-              <TempAvatar />
-              <Box>
-                <Typography color="text.tetriary" fontSize={12}>
-                  Welcome
-                </Typography>
-                <Typography fontWeight={500}>
-                  {userName || 'Jane Meldrum'}
-                </Typography>
-              </Box>
-            </Stack>
+            <AvatarStaticLayout />
             <LinksList listItems={profileItemsList} />
           </SideBar>
           <Box
@@ -119,7 +85,14 @@ const Profile = ({userName}) => {
                 mt: '-30px',
               }}
             >
-              <TempAvatarLg />
+              <AvatarStatic
+                variant="medium"
+                sx={{
+                  marginRight: rwdValue(5, 15),
+                  border: '4px solid white',
+                  zIndex: 2,
+                }}
+              />
               <Box>
                 <Typography variant="body2" component="h3">
                   {userName || 'Jane Meldrum'}
