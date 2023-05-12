@@ -322,7 +322,9 @@ const SignUpForm = () => {
                 }}
               />
             </Box>
-            <Button size={isMobile ? 'small' : 'medium'}>Sign up</Button>
+            <Button size={isMobile ? 'small' : 'medium'} type={'submit'}>
+              Sign up
+            </Button>
           </form>
           <Box
             sx={{
