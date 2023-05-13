@@ -1,24 +1,23 @@
 import Image from 'next/image';
 import Card from '@mui/material/Card';
-import {Grid, Typography, Stack, Box} from '@mui/material';
-import {styled} from '@mui/material/styles';
+import {Typography, Stack, Box, useMediaQuery} from '@mui/material';
+import {styled, useTheme} from '@mui/material/styles';
 
 export default function ProductCard({title, price, category, imgPath}) {
-  const StyledCard = styled(Card)(({theme}) => ({
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const basis = isMobile ? '50%' : isTablet ? '33.333%' : '25%';
+  const cardMb = isMobile ? '16px' : isTablet ? '15px' : '24px';
+  const cardP = isMobile ? '8px' : isTablet ? '15px' : '24px';
+
+  const styles = {
     position: 'relative',
     borderRadius: 0,
     border: 'none',
     boxShadow: 'none',
-    [theme.breakpoints.up('md')]: {
-      '&:hover': {
-        cursor: 'pointer',
-        '& img': {
-          transition: '1s',
-          transform: 'scale(1.25)',
-        },
-      },
-    },
-
     '& img': {
       position: 'absolute',
       background: 'primary',
@@ -29,10 +28,22 @@ export default function ProductCard({title, price, category, imgPath}) {
       objectFit: 'cover',
       transition: '1s',
     },
-  }));
+    '&:hover': isDesktop
+      ? {
+          cursor: 'pointer',
+          '& img': {
+            transition: '1s',
+            transform: 'scale(1.25)',
+          },
+        }
+      : {},
+  };
+
   return (
-    <Grid item xs={12} sm={6} md={4} lg={3}>
-      <StyledCard>
+    <Box
+      sx={{flex: `0 0 ${basis}`, padding: `0 ${cardP}`, marginBottom: cardMb}}
+    >
+      <Box sx={styles}>
         <Box
           sx={{
             position: 'relative',
@@ -76,7 +87,7 @@ export default function ProductCard({title, price, category, imgPath}) {
             {category || 'category'}
           </Typography>
         </Box>
-      </StyledCard>
-    </Grid>
+      </Box>
+    </Box>
   );
 }

@@ -120,14 +120,13 @@ const Home = ({userName}) => {
         >
           {mockupProducts.map(product => {
             return (
-              <Column key={product.id}>
-                <ProductCard
-                  title={product.attributes.name}
-                  category={product.attributes.category}
-                  price={product.attributes.price}
-                  imgPath={product.attributes.image}
-                />
-              </Column>
+              <ProductCard
+                key={product.id}
+                title={product.attributes.name}
+                category={product.attributes.category}
+                price={product.attributes.price}
+                imgPath={product.attributes.image}
+              />
             );
           })}
         </Box>
