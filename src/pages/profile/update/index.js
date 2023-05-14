@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import {useRouter} from 'next/router';
-import useStyles from '@/utils/styles';
+import useOwnStyles from '@/utils/styles';
 
 import {Typography, Box, Stack, TextField} from '@mui/material';
 
