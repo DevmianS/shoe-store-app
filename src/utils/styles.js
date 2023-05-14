@@ -1,7 +1,7 @@
 import {rwdValue} from '@/utils/theme';
 import {useTheme, useMediaQuery} from '@mui/material';
 
-const useStyles = () => {
+const useOwnStyles = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -56,4 +56,4 @@ const useStyles = () => {
   };
   return {updateProfile};
 };
-export default useStyles;
+export default useOwnStyles;

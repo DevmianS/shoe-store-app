@@ -13,7 +13,7 @@ import Button from '@/components/UI/Button';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 
 const ProfileUpdate = () => {
-  const {updateProfile: styles} = useStyles();
+  const {updateProfile: styles} = useOwnStyles();
 
   const router = useRouter();
 
