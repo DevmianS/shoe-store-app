@@ -1,13 +1,11 @@
-import {Box, Typography} from '@mui/material';
-import React, {useEffect, useRef, useState} from 'react';
-import Button from '../Button';
-
-import RootForm from '@/components/Form/RootForm';
-
-import SignLayout from '@/components/Layout/SignLayout';
 import Image from 'next/image';
-
 import Link from 'next/link';
+
+import React, {useEffect, useRef, useState} from 'react';
+
+import {Box, Typography} from '@mui/material';
+
+import Button from '@/components/UI/Button';
 
 const RootMobile = () => {
   const [animationCount, setAnimationCount] = useState(1);
@@ -146,28 +144,15 @@ const RootMobile = () => {
           padding: '10px',
         }}
       >
-        <Button outlined={true} sx={{width: '47%'}}>
-          <Link
-            href="/sign-in"
-            style={{
-              width: '100%',
-              height: '100%',
-              textDecoration: 'none',
-              color: '#FE645E',
-            }}
-          >
-            Sign in
-          </Link>
+        <Button outlined={true} sx={{width: '47%'}} size="small">
+          <Link href="/sign-in">Sign in</Link>
         </Button>
-        <Button sx={{width: '47%'}}>
+        <Button sx={{width: '47%'}} size="small">
           {' '}
           <Link
             href="/sign-up"
             style={{
-              width: '100%',
-              height: '100%',
               color: 'white',
-              textDecoration: 'none',
             }}
           >
             Sign up
