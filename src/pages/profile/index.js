@@ -9,27 +9,13 @@ import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import ProductCard from '@/components/UI/ProductCard';
-import LinksList from '@/components/UI/LinksList';
 
 import bannerImg from '@/assets/banner.jpg';
 import TopBanner from '@/components/UI/TopBanner';
 
-import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 
 const Profile = ({userName}) => {
-  // we can recieve COUNT properties from REDUX
-  const profileItemsList = [
-    {name: 'My orders', icon: 'bag', click: null},
-    {name: 'Wish list', icon: 'plus-element', click: null, count: 2},
-    {name: 'Newsletters', icon: 'newsletters', click: null},
-    {name: 'My wallet', icon: 'wallet', click: null},
-    {name: 'My bonus account', icon: 'bonus-account', click: null},
-    {name: 'Premium subscription', icon: 'medal-star', click: null},
-    {name: 'My feedback', icon: 'star', click: null},
-    {name: 'Settings', icon: 'setting', click: null, count: 1},
-    {name: 'Log out', icon: 'logout', click: null},
-  ];
   const Column = styled(Box)(({theme}) => ({
     [theme.breakpoints.up('lg')]: {
       flex: '0 0 33%',
@@ -65,10 +51,7 @@ const Profile = ({userName}) => {
             paddingBottom: rwdValue(0, 40),
           }}
         >
-          <SideBar areaName="user profile actions">
-            <AvatarStaticLayout />
-            <LinksList listItems={profileItemsList} />
-          </SideBar>
+          <SideBar />
           <Box
             sx={{
               flex: '1 1 auto',

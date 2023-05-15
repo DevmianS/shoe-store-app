@@ -242,6 +242,7 @@ const NavBar = () => {
           width: '100vw',
           height: '100vh',
           backgroundColor: '#F3F3F3',
+          zIndex: 5,
         }}
       ></Box>
 
