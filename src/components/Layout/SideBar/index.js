@@ -1,25 +1,11 @@
-import {Stack, Box, useTheme, useMediaQuery, styled} from '@mui/material';
+import {Stack, Box} from '@mui/material';
+import useOwnStyles from '@/utils/styles';
 
-export default function SideBar({children, areaName}) {
-  const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
-
-  const StyledBox = styled(Box)({
-    flex: '0 0 320px',
-    display: isTablet ? 'none' : 'block',
-    width: '100%',
-    maxWidth: '320px',
-  });
+export default function SideBar({children}) {
+  const {sideBar: styles} = useOwnStyles();
   return (
-    <StyledBox>
-      <Stack
-        component="div"
-        direction="column"
-        aria-label={areaName}
-        variant="permanent"
-      >
-        {children}
-      </Stack>
-    </StyledBox>
+    <Box sx={styles}>
+      <Stack aria-label="user actions">{children}</Stack>
+    </Box>
   );
 }

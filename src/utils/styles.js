@@ -54,6 +54,12 @@ const useOwnStyles = () => {
     item: {marginBottom: rwdValue(25, 50)},
     size: isMobile ? 'small' : 'medium',
   };
-  return {updateProfile};
+  const sideBar = {
+    flex: '0 0 320px',
+    display: isTablet ? 'none' : 'block',
+    width: '100%',
+    maxWidth: '320px',
+  };
+  return {updateProfile, sideBar};
 };
 export default useOwnStyles;
