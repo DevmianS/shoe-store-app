@@ -56,7 +56,7 @@ const useOwnStyles = () => {
   };
   const sideBar = {
     flex: '0 0 320px',
-    display: isTablet ? 'none' : 'block',
+    display: isTablet || isMobile ? 'none' : 'block',
     width: '100%',
     maxWidth: '320px',
   };
