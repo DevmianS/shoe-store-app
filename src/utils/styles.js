@@ -55,10 +55,17 @@ const useOwnStyles = () => {
     size: isMobile ? 'small' : 'medium',
   };
   const sideBar = {
+    position: isTablet || isMobile ? 'fixed' : 'static',
+    maxWidth: isTablet || isMobile ? '270px' : '320px',
+    paddingTop: isTablet || isMobile ? '32px' : 0,
+    right: 0,
+    top: isTablet ? '64px' : '60px',
     flex: '0 0 320px',
-    display: isTablet || isMobile ? 'none' : 'block',
     width: '100%',
-    maxWidth: '320px',
+    height: '100%',
+    background: '#fff',
+    zIndex: 5,
+    transform: isTablet || isMobile ? 'translateX(100%)' : 'none',
   };
   return {updateProfile, sideBar};
 };
