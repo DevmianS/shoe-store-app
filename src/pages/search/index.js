@@ -30,27 +30,6 @@ const SearchResults = ({userName}) => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const Column = styled(Box)(({theme}) => ({
-    [theme.breakpoints.up('lg')]: {
-      flex: '0 0 33%',
-    },
-    [theme.breakpoints.between('md', 'lg')]: {
-      flex: '0 0 50%',
-      padding: '0 15px',
-      marginBottom: '15px',
-    },
-    [theme.breakpoints.down('md')]: {
-      flex: '0 0 50%',
-      padding: '0 8px',
-      marginBottom: '16px',
-    },
-    [theme.breakpoints.up('xl')]: {
-      flex: '0 0 25%',
-    },
-    padding: '0 24px',
-    marginBottom: '24px',
-  }));
-
   const SearchSectionWrapper = styled(Stack)(({theme}) => ({
     display: 'flex',
     flexDirection: 'col',
@@ -264,14 +243,13 @@ const SearchResults = ({userName}) => {
             >
               {mockupProducts.map(product => {
                 return (
-                  <Column key={product.id}>
-                    <ProductCard
-                      title={product.attributes.name}
-                      category={product.attributes.category}
-                      price={product.attributes.price}
-                      imgPath={product.attributes.image}
-                    />
-                  </Column>
+                  <ProductCard
+                    key={product.id}
+                    title={product.attributes.name}
+                    category={product.attributes.category}
+                    price={product.attributes.price}
+                    imgPath={product.attributes.image}
+                  />
                 );
               })}
             </Box>
