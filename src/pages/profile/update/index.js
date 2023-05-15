@@ -1,34 +1,26 @@
 import Head from 'next/head';
 import {useRouter} from 'next/router';
-import {rwdValue} from '@/utils/theme';
+import useOwnStyles from '@/utils/styles';
 
-import {Typography, styled, Box, Stack, TextField} from '@mui/material';
+import {Typography, Box, Stack, TextField} from '@mui/material';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
-import LinksList from '@/components/UI/LinksList';
-import ListItem from '@/components/UI/ListItem';
 import Button from '@/components/UI/Button';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 
 const ProfileUpdate = () => {
-  const router = useRouter();
-  const updateItemsList = [
-    {
-      name: 'My profile',
-      icon: 'profile',
-      click: () => router.push('/profile'),
-    },
-    {
-      name: 'Preferences',
-      icon: 'plus-element',
-      click: () => console.log('Preferences'),
-    },
-    {name: 'Security', icon: 'security', click: () => console.log('Security')},
-    {name: 'My wallet', icon: 'wallet', click: () => console.log('Wallet')},
-  ];
+  const {updateProfile: styles} = useOwnStyles();
 
+  const router = useRouter();
+
+  const formItems = [
+    {placeholder: 'Jane', label: 'Name', type: 'text'},
+    {placeholder: 'Meldrum', label: 'Surname', type: 'text'},
+    {placeholder: 'Email', label: 'Email', type: 'example@mail.com'},
+    {placeholder: '(949) 354-2574', label: 'Phone number', type: 'tel'},
+  ];
 
   return (
     <>
@@ -36,98 +28,37 @@ const ProfileUpdate = () => {
         <title>Wellrun | Update Profile</title>
       </Head>
       <NavBarLayout>
-        <Box justifyContent={'space-between'} padding="40px 0" display="flex">
-          <SideBar areaName="update profile actions">
-            <Stack
-              direction="row"
-              alignItems="center"
-              mb="7px"
-              borderBottom="1px solid"
-              borderColor="divider"
-            >
-              <ListItem
-                icon="chevron-left"
-                name="Settings"
-                onClick={() => console.log('SETTINGS')}
-              ></ListItem>
-            </Stack>
-            <LinksList listItems={updateItemsList} />
-          </SideBar>
-          <Box
-            sx={{
-              flex: '1 1 auto',
-              padding: {lg: '0 60px', md: '0 40px', sm: '0 30px', xs: '0 10px'},
-            }}
-          >
-            <Typography variant="h1" component="h1" mb={rwdValue(12, 50)}>
+        <Box sx={styles.row}>
+          <SideBar />
+          {/* Page content column */}
+          <Box sx={styles.content}>
+            <Typography variant="h1" component="h1" sx={styles.h1}>
               My Profile
             </Typography>
-            <Stack
-              direction="row"
-              alignItems="center"
-              flexWrap="wrap"
-              mb={rwdValue(25, 50)}
-            >
-              <AvatarStatic
-                variant="large"
-                sx={{
-                  marginRight: rwdValue(35, 75),
-                  border: '4px solid white',
-                  flex: `0 0 ${rwdValue(100, 150)}`,
-                }}
-              />
+            <Stack sx={styles.avatarRow}>
+              <AvatarStatic variant="large" sx={styles.avatar} />
               <Box>
-                <Box mb="24px">
-                  <Button outlined>Change photo</Button>
-                </Box>
-                <Button>Delete</Button>
+                <Button size={styles.size} outlined sx={styles.btn}>
+                  Change photo
+                </Button>
+                <Button size={styles.size}>Delete</Button>
               </Box>
             </Stack>
-            <Typography
-              variant="body5"
-              component="p"
-              color="text.secondary"
-              mb="50px"
-            >
+            <Typography variant="body5" component="p" sx={styles.description}>
               Welcome back! Please enter your details to log into your account.
             </Typography>
-            <Box maxWidth={450}>
-              <Box mb={rwdValue(25, 50)}>
-                <TextField
-                  fullWidth
-                  size="medium"
-                  placeholder="Jane"
-                  label="Name"
-                  type="text"
-                />
-              </Box>{' '}
-              <Box mb="25px">
-                <TextField
-                  fullWidth
-                  size="medium"
-                  placeholder="Meldrum"
-                  label="Surname"
-                  type="text"
-                />
-              </Box>
-              <Box mb="25px">
-                <TextField
-                  fullWidth
-                  size="medium"
-                  label="Email"
-                  type="email"
-                  placeholder="example@mail.com"
-                />
-              </Box>
-              <Box mb="25px">
-                <TextField
-                  fullWidth
-                  size="medium"
-                  label="Phone number"
-                  type="tel"
-                  placeholder="(949) 354-2574"
-                />
-              </Box>
+            <Box sx={styles.form}>
+              {formItems.map(input => (
+                <Box sx={styles.item} key={input.label}>
+                  <TextField
+                    fullWidth
+                    size={styles.size}
+                    placeholder={input.placeholder}
+                    label={input.label}
+                    type={input.type}
+                  />
+                </Box>
+              ))}
             </Box>
           </Box>
         </Box>

@@ -21,10 +21,8 @@ import {
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
-import LinksList from '@/components/UI/LinksList';
 import {useState} from 'react';
 import FileInput from '@/components/UI/FileInput';
-import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 
 const AddProduct = ({userName}) => {
   const [select, setSelect] = useState({gender: 'male', brand: 'nike'});
@@ -51,22 +49,12 @@ const AddProduct = ({userName}) => {
   };
 
   const user = userName || 'Jane Meldrum';
-  const profileItemsList = [
-    {name: 'My orders', icon: 'bag', click: null},
-    {name: 'Wish list', icon: 'plus-element', click: null, count: 2},
-    {name: 'Newsletters', icon: 'newsletters', click: null},
-    {name: 'My wallet', icon: 'wallet', click: null},
-    {name: 'My bonus account', icon: 'bonus-account', click: null},
-    {name: 'Premium subscription', icon: 'medal-star', click: null},
-    {name: 'My feedback', icon: 'star', click: null},
-    {name: 'Log out', icon: 'logout', click: null},
-  ];
+
 
   // STYLED COMPONENTS
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
-
 
   const HeaderRow = styled(Stack)(({theme}) => ({
     [theme.breakpoints.up('sm')]: {
@@ -148,10 +136,7 @@ const AddProduct = ({userName}) => {
       </Head>
       <NavBarLayout>
         <Row>
-          <SideBar areaName="addd product actions">
-            <AvatarStaticLayout />
-            <LinksList listItems={profileItemsList} />
-          </SideBar>
+          <SideBar />
           <Content>
             <HeaderRow>
               <Typography variant="h1" component="h1">

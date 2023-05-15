@@ -15,23 +15,15 @@ import mockupProducts from '@/utils/data';
 import SideBar from '@/components/Layout/SideBar';
 
 import ProductCard from '@/components/UI/ProductCard';
-import LinksList from '@/components/UI/LinksList';
 
 import bannerImg from '@/assets/banner2.jpg';
 import TopBanner from '@/components/UI/TopBanner';
-import AvatarStaticLayout from '../AvatarStaticLayout';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 
 const Home = ({userName}) => {
-  const router = useRouter();
-
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
-  const homeItemsList = [
-    {name: 'My profile', icon: 'profile', click: () => router.push('/profile')},
-    {name: 'Log out', icon: 'logout', click: null},
-  ];
   const Column = styled(Box)(({theme}) => ({
     [theme.breakpoints.up('lg')]: {
       flex: '0 0 33%',
@@ -61,10 +53,7 @@ const Home = ({userName}) => {
         padding: `${rwdValue(0, 40)} 0`,
       }}
     >
-      <SideBar areaName="home page actions">
-        <AvatarStaticLayout />
-        <LinksList listItems={homeItemsList} />
-      </SideBar>
+      <SideBar />
       <Box
         sx={{
           flex: '1 1 auto',
