@@ -7,7 +7,11 @@ import AvatarStaticLayout from '../AvatarStaticLayout';
 export default function SideBar({children}) {
   const router = useRouter();
   const {sideBar: styles} = useOwnStyles();
-
+  const handleLogout = () => {
+    toast.success('Logged out successfully.');
+    localStorage.removeItem('user');
+    router.push('/');
+  };
   return (
     <Box sx={styles}>
       <Stack aria-label="user actions">
@@ -23,13 +27,10 @@ export default function SideBar({children}) {
             icon="setting"
             onClick={() => router.push('/profile/update')}
           />
-          <ListItem
-            name="Log-out"
-            icon="logout"
-            onClick={() => router.push('/profile/update')}
-          />
+          <ListItem name="Log-out" icon="logout" onClick={handleLogout} />
         </List>
       </Stack>
+      {children}
     </Box>
   );
 }
