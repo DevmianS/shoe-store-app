@@ -18,11 +18,11 @@ import mockupProducts from '@/utils/data';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ProductCard from '@/components/UI/ProductCard';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
+import Filters from '@/components/UI/Filters';
 
 const SearchResults = ({userName}) => {
   // STYLED COMPONENTS
@@ -74,132 +74,12 @@ const SearchResults = ({userName}) => {
   return (
     <>
       <Head>
-        <title>Search</title>
+        <title>Wellrun | Search</title>
       </Head>
       <NavBarLayout>
         <Row>
           <SideBar areaName="search filters">
-            <SearchSectionWrapper>
-              <Typography variant="body5" component="p">
-                Shoes/Air Force 1
-              </Typography>
-              <Typography variant="h2" sx={{fontSize: 25}} component="h2">
-                Air Force 1 (137)
-              </Typography>
-              <StyledAccordion elevation={0}>
-                <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <AccordionTitle variant="body1">Gender</AccordionTitle>
-                </StyledAccordionSummary>
-                <StyledAccordionDetails>
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="Men"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="Women"
-                  />
-                </StyledAccordionDetails>
-              </StyledAccordion>
-            </SearchSectionWrapper>
-            <SearchSectionWrapper>
-              <StyledAccordion elevation={0}>
-                <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <AccordionTitle variant="body1">Kids</AccordionTitle>
-                </StyledAccordionSummary>
-                <StyledAccordionDetails>
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="Boys"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="Girls"
-                  />
-                </StyledAccordionDetails>
-              </StyledAccordion>
-            </SearchSectionWrapper>
-            <SearchSectionWrapper>
-              <StyledAccordion elevation={0}>
-                <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <AccordionTitle variant="body1">Brand</AccordionTitle>
-                </StyledAccordionSummary>
-                <StyledAccordionDetails>
-                  <TextField size="small" placeholder="Search"></TextField>
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="Adidas (+350)"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="Asics (+840)"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="New Balance (+840)"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="Nike"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="Puma (+350)"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="Reebok (+97)"
-                  />
-                </StyledAccordionDetails>
-              </StyledAccordion>
-            </SearchSectionWrapper>
-            <SearchSectionWrapper>
-              <StyledAccordion elevation={0}>
-                <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <AccordionTitle variant="body1">Price</AccordionTitle>
-                </StyledAccordionSummary>
-                <StyledAccordionDetails
-                  sx={{flexDirection: 'row', gap: 1, alignItems: 'center'}}
-                >
-                  <TextField
-                    placeholder="Min"
-                    size="small"
-                    onChange={() => {}}
-                  />
-                  -
-                  <TextField
-                    placeholder="Max"
-                    size="small"
-                    onChange={() => {}}
-                  />
-                </StyledAccordionDetails>
-              </StyledAccordion>
-            </SearchSectionWrapper>
-            <SearchSectionWrapper sx={{borderBottom: 'none'}}>
-              <StyledAccordion elevation={0}>
-                <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <AccordionTitle variant="body1">Color</AccordionTitle>
-                </StyledAccordionSummary>
-                <StyledAccordionDetails>
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="White"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="Black"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="Red"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox size="small" onChange={() => {}} />}
-                    label="Blue"
-                  />
-                </StyledAccordionDetails>
-              </StyledAccordion>
-            </SearchSectionWrapper>
+            <Filters />
           </SideBar>
           <Content>
             <Box
