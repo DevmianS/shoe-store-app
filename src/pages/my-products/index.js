@@ -14,7 +14,7 @@ import TopBanner from '@/components/UI/TopBanner';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 import Button from '@/components/UI/Button';
 
-const MyProducts = ({userName, items}) => {
+const MyProducts = ({userName, productsList}) => {
   const {myProducts: styles} = useOwnStyles();
   return (
     <>
@@ -39,9 +39,9 @@ const MyProducts = ({userName, items}) => {
               My products
             </Typography>
             <Box sx={styles.productsRow}>
-              {items &&
-                items.length > 0 &&
-                items.map(product => {
+              {productsList &&
+                productsList.length > 0 &&
+                productsList.map(product => {
                   return (
                     <ProductCard
                       key={product.id}
@@ -52,7 +52,7 @@ const MyProducts = ({userName, items}) => {
                     />
                   );
                 })}
-              {!items && (
+              {!productsList && (
                 <Box sx={styles.msgBody}>
                   <Typography
                     className="icon-bag-o"
