@@ -60,6 +60,42 @@ const useOwnStyles = () => {
     width: '100%',
     maxWidth: '320px',
   };
-  return {updateProfile, sideBar};
+  const filters = {
+    wrapper: {
+      display: 'flex',
+      flexDirection: 'col',
+      width: 320,
+      paddingLeft: '40px',
+      alignItems: 'flex-start',
+      gap: 1,
+      marginBottom: '7px',
+      borderBottom: '1px solid',
+      borderColor: theme.palette.divider,
+    },
+    accordion: {
+      width: '100%',
+    },
+    accordionDetails: {
+      padding: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      fontSize: 16,
+      fontWeight: 400,
+      paddingBottom: '32px',
+    },
+    accordionDetailsAlt: {
+      padding: 0,
+      display: 'flex',
+      fontSize: 16,
+      fontWeight: 400,
+      paddingBottom: '32px',
+      flexDirection: 'row',
+      gap: 1,
+      alignItems: 'center',
+    },
+    accordionSummary: {padding: 0},
+    accordionTitle: {fontWeight: 500},
+  };
+  return {updateProfile, sideBar, filters};
 };
 export default useOwnStyles;

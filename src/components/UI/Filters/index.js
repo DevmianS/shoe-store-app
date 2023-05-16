@@ -12,47 +12,30 @@ import {
   Checkbox,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import useOwnStyles from '@/utils/styles';
 
 export default function Filters() {
-  const SearchSectionWrapper = styled(Stack)(({theme}) => ({
-    display: 'flex',
-    flexDirection: 'col',
-    width: 320,
-    paddingLeft: '40px',
-    alignItems: 'flex-start',
-    gap: 8,
-    marginBottom: '7px',
-    borderBottom: '1px solid',
-    borderColor: theme.palette.divider,
-  }));
-  const StyledAccordion = styled(Accordion)(() => ({
-    width: '100%',
-  }));
-  const StyledAccordionDetails = styled(AccordionDetails)(() => ({
-    padding: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    fontSize: 16,
-    fontWeight: 400,
-    paddingBottom: '32px',
-  }));
-  const StyledAccordionSummary = styled(AccordionSummary)(() => ({padding: 0}));
-  const AccordionTitle = styled(Typography)(() => ({fontWeight: 500}));
+  const {filters: styles} = useOwnStyles();
 
   return (
     <>
-      <SearchSectionWrapper>
+      <Stack sx={styles.wrapper}>
         <Typography variant="body5" component="p">
           Shoes/Air Force 1
         </Typography>
         <Typography variant="h2" sx={{fontSize: 25}} component="h2">
           Air Force 1 (137)
         </Typography>
-        <StyledAccordion elevation={0}>
-          <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <AccordionTitle variant="body1">Gender</AccordionTitle>
-          </StyledAccordionSummary>
-          <StyledAccordionDetails>
+        <Accordion sx={styles.accordion} elevation={0}>
+          <AccordionSummary
+            sx={styles.accordionSummary}
+            expandIcon={<ExpandMoreIcon />}
+          >
+            <Typography variant="body1" sx={styles.accordionTitle}>
+              Gender
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={styles.accordionDetails}>
             <FormControlLabel
               control={<Checkbox size="small" onChange={() => {}} />}
               label="Men"
@@ -61,15 +44,20 @@ export default function Filters() {
               control={<Checkbox size="small" onChange={() => {}} />}
               label="Women"
             />
-          </StyledAccordionDetails>
-        </StyledAccordion>
-      </SearchSectionWrapper>
-      <SearchSectionWrapper>
-        <StyledAccordion elevation={0}>
-          <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <AccordionTitle variant="body1">Kids</AccordionTitle>
-          </StyledAccordionSummary>
-          <StyledAccordionDetails>
+          </AccordionDetails>
+        </Accordion>
+      </Stack>
+      <Stack sx={styles.wrapper}>
+        <Accordion sx={styles.accordion} elevation={0}>
+          <AccordionSummary
+            sx={styles.accordionSummary}
+            expandIcon={<ExpandMoreIcon />}
+          >
+            <Typography variant="body1" sx={styles.accordionTitle}>
+              Kids
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={styles.accordionDetails}>
             <FormControlLabel
               control={<Checkbox size="small" onChange={() => {}} />}
               label="Boys"
@@ -78,16 +66,21 @@ export default function Filters() {
               control={<Checkbox size="small" onChange={() => {}} />}
               label="Girls"
             />
-          </StyledAccordionDetails>
-        </StyledAccordion>
-      </SearchSectionWrapper>
-      <SearchSectionWrapper>
-        <StyledAccordion elevation={0}>
-          <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <AccordionTitle variant="body1">Brand</AccordionTitle>
-          </StyledAccordionSummary>
-          <StyledAccordionDetails>
-            <TextField size="small" placeholder="Search"></TextField>
+          </AccordionDetails>
+        </Accordion>
+      </Stack>
+      <Stack sx={styles.wrapper}>
+        <Accordion sx={styles.accordion} elevation={0}>
+          <AccordionSummary
+            sx={styles.accordionSummary}
+            expandIcon={<ExpandMoreIcon />}
+          >
+            <Typography variant="body1" sx={styles.accordionTitle}>
+              Brand
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={styles.accordionDetails}>
+            <TextField size="small" placeholder="Search" />
             <FormControlLabel
               control={<Checkbox size="small" onChange={() => {}} />}
               label="Adidas (+350)"
@@ -112,29 +105,37 @@ export default function Filters() {
               control={<Checkbox size="small" onChange={() => {}} />}
               label="Reebok (+97)"
             />
-          </StyledAccordionDetails>
-        </StyledAccordion>
-      </SearchSectionWrapper>
-      <SearchSectionWrapper>
-        <StyledAccordion elevation={0}>
-          <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <AccordionTitle variant="body1">Price</AccordionTitle>
-          </StyledAccordionSummary>
-          <StyledAccordionDetails
-            sx={{flexDirection: 'row', gap: 1, alignItems: 'center'}}
+          </AccordionDetails>
+        </Accordion>
+      </Stack>
+      <Stack sx={styles.wrapper}>
+        <Accordion sx={styles.accordion} elevation={0}>
+          <AccordionSummary
+            sx={styles.accordionSummary}
+            expandIcon={<ExpandMoreIcon />}
           >
+            <Typography variant="body1" sx={styles.accordionTitle}>
+              Price
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={styles.accordionDetailsAlt}>
             <TextField placeholder="Min" size="small" onChange={() => {}} />
             -
             <TextField placeholder="Max" size="small" onChange={() => {}} />
-          </StyledAccordionDetails>
-        </StyledAccordion>
-      </SearchSectionWrapper>
-      <SearchSectionWrapper sx={{borderBottom: 'none'}}>
-        <StyledAccordion elevation={0}>
-          <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <AccordionTitle variant="body1">Color</AccordionTitle>
-          </StyledAccordionSummary>
-          <StyledAccordionDetails>
+          </AccordionDetails>
+        </Accordion>
+      </Stack>
+      <Stack sx={styles.wrapper}>
+        <Accordion sx={styles.accordion} elevation={0}>
+          <AccordionSummary
+            sx={styles.accordionSummary}
+            expandIcon={<ExpandMoreIcon />}
+          >
+            <Typography variant="body1" sx={styles.accordionTitle}>
+              Color
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={styles.accordionDetails}>
             <FormControlLabel
               control={<Checkbox size="small" onChange={() => {}} />}
               label="White"
@@ -151,9 +152,9 @@ export default function Filters() {
               control={<Checkbox size="small" onChange={() => {}} />}
               label="Blue"
             />
-          </StyledAccordionDetails>
-        </StyledAccordion>
-      </SearchSectionWrapper>
+          </AccordionDetails>
+        </Accordion>
+      </Stack>
     </>
   );
 }
