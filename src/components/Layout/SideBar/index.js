@@ -19,7 +19,7 @@ export default function SideBar({children}) {
         <List>
           <ListItem
             name="My products"
-            icon="bag-o"
+            icon="orders"
             onClick={() => router.push('/my-products')}
           />
           <ListItem
