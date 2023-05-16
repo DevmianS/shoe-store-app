@@ -64,13 +64,13 @@ theme = createTheme(theme, {
     MuiButton: {
       styleOverrides: {
         sizeSmall: {
-          height: 34,
+          height: 32,
           fontSize: 11.15,
           borderRadius: 5.58,
           textTransform: 'none',
         },
         sizeMedium: {
-          height: 48,
+          height: 40,
           fontSize: 16,
           borderRadius: 8,
           textTransform: 'none',

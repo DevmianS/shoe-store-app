@@ -7,6 +7,8 @@ const useOwnStyles = () => {
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  // ====PAGES====
+  // /profile/update
   const updateProfile = {
     row: {
       display: 'flex',
@@ -54,11 +56,75 @@ const useOwnStyles = () => {
     item: {marginBottom: rwdValue(25, 50)},
     size: isMobile ? 'small' : 'medium',
   };
+  // /my-products
+  const myProducts = {
+    row: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      paddingTop: rwdValue(0, 40),
+      paddingBottom: rwdValue(0, 40),
+    },
+    header: {
+      flex: '1 1 auto',
+      paddingLeft: rwdValue(10, 60),
+      paddingRight: rwdValue(10, 60),
+    },
+    avatarWrapper: {
+      marginLeft: rwdValue(20, 50),
+      marginBottom: rwdValue(20, 30),
+      flexDirection: 'row',
+      alignItems: 'end',
+      marginTop: isMobile || isTablet ? '-15px' : '-30px',
+    },
+    avatar: {
+      marginRight: rwdValue(5, 15),
+      border: '4px solid white',
+      zIndex: 2,
+    },
+    name: {fontSize: rwdValue(14, 20)},
+    points: {
+      fontSize: rwdValue(12, 15),
+      color: theme.palette.text.tetriary,
+      marginBottom: isMobile ? 0 : rwdValue(0, 12),
+    },
+    h1: {marginBottom: rwdValue(20, 35)},
+    productsRow: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      margin: isMobile ? '0 -8px' : '0 -24px',
+    },
+    msgBody: {maxWidth: '320px', textAlign: 'center', margin: '0 auto'},
+    msgIcon: {
+      fontSize: 20,
+      width: 72,
+      height: 72,
+      borderRadius: '50%',
+      background: '#F9FAFB',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      margin: '0 auto 10px',
+    },
+    msgTitle: {fontSize: rwdValue(16, 20), marginBottom: '10px'},
+    msgText: {
+      fontSize: rwdValue(12, 15),
+      marginBottom: rwdValue(32, 40),
+    },
+    msgBtn: {maxWidth: '152px'},
+  };
+
   const sideBar = {
+    position: isTablet || isMobile ? 'fixed' : 'static',
+    maxWidth: isTablet || isMobile ? '270px' : '320px',
+    paddingTop: isTablet || isMobile ? '32px' : 0,
+    right: 0,
+    top: isTablet ? '64px' : '60px',
     flex: '0 0 320px',
-    display: isTablet ? 'none' : 'block',
     width: '100%',
-    maxWidth: '320px',
+    height: '100%',
+    background: '#fff',
+    zIndex: 5,
+    transform: isTablet || isMobile ? 'translateX(100%)' : 'none',
   };
 
   const UI = {
@@ -308,6 +374,45 @@ const useOwnStyles = () => {
       },
     },
   };
-  return {updateProfile, sideBar, UI};
+
+  const filters = {
+    wrapper: {
+      display: 'flex',
+      flexDirection: 'col',
+      width: 320,
+      paddingLeft: '40px',
+      alignItems: 'flex-start',
+      gap: 1,
+      marginBottom: '7px',
+      borderBottom: '1px solid',
+      borderColor: theme.palette.divider,
+    },
+    accordion: {
+      width: '100%',
+    },
+    accordionDetails: {
+      padding: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      fontSize: 16,
+      fontWeight: 400,
+      paddingBottom: '32px',
+    },
+    accordionDetailsAlt: {
+      padding: 0,
+      display: 'flex',
+      fontSize: 16,
+      fontWeight: 400,
+      paddingBottom: '32px',
+      flexDirection: 'row',
+      gap: 1,
+      alignItems: 'center',
+    },
+    accordionSummary: {padding: 0},
+    accordionTitle: {fontWeight: 500},
+  };
+
+  return {updateProfile, myProducts, sideBar, UI, filters};
+
 };
 export default useOwnStyles;
