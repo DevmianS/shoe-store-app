@@ -60,6 +60,19 @@ const useOwnStyles = () => {
     width: '100%',
     maxWidth: '320px',
   };
-  return {updateProfile, sideBar};
+
+  const UI = {
+    avatar: {
+      width: '100%',
+      height: '100%',
+      transition: '.3s',
+      '&:hover': {
+        boxShadow: `0 0 3px 1px grey`,
+        transform: 'scale(1.03)',
+        filter: 'brightness(1.1)',
+      },
+    },
+  };
+  return {updateProfile, sideBar, UI};
 };
 export default useOwnStyles;

@@ -1,63 +1,47 @@
 import {rwdValue} from '@/utils/theme';
-import {Avatar, Box, styled} from '@mui/material';
+import {Avatar, Box} from '@mui/material';
+import useOwnStyles from '@/utils/styles';
 
-const AvatarStatic = ({variant = 'medium', sx}) => {
+const AvatarStatic = ({username, variant = 'medium', sx}) => {
+  const {UI: styles} = useOwnStyles();
   /* placeholders to be changed to redux states */
   const srcPlaceholder = '/';
-  const altPlaceholder = 'Jane Meldrum';
+  const altPlaceholder = username || 'Jane Meldrum';
 
-  const BoxStyled = styled(Box)(() => ({
-    width:
-      variant === 'small'
-        ? rwdValue(61, 64)
-        : variant === 'medium'
-        ? rwdValue(61, 120)
-        : variant === 'large'
-        ? rwdValue(100, 150)
-        : 'unset',
-    height:
-      variant === 'small'
-        ? rwdValue(61, 64)
-        : variant === 'medium'
-        ? rwdValue(61, 120)
-        : variant === 'large'
-        ? rwdValue(100, 150)
-        : 'unset',
-    maxWidth:
-      variant === 'small'
-        ? 64
-        : variant === 'medium'
-        ? 120
-        : variant === 'large'
-        ? 150
-        : 'unset',
-    maxHeight:
-      variant === 'small'
-        ? 64
-        : variant === 'medium'
-        ? 120
-        : variant === 'large'
-        ? 150
-        : 'unset',
+  const size =
+    variant === 'small'
+      ? rwdValue(61, 64)
+      : variant === 'medium'
+      ? rwdValue(61, 120)
+      : variant === 'large'
+      ? rwdValue(100, 150)
+      : 'unset';
+  const maxSize =
+    variant === 'small'
+      ? 64
+      : variant === 'medium'
+      ? 120
+      : variant === 'large'
+      ? 150
+      : 'unset';
+
+  const avatarVariant = {
+    width: size,
+    height: size,
+    maxWidth: maxSize,
+    maxHeight: maxSize,
     borderRadius: '50%',
-  }));
+  };
 
   const nameSplit = altPlaceholder.split(' ');
   const initials = `${nameSplit[0][0]}${nameSplit[1][0]}`;
 
   return (
-      <BoxStyled sx={{...sx}}>
-        <Avatar
-          src={srcPlaceholder}
-          alt={altPlaceholder}
-          sx={{
-            width: '100%',
-            height: '100%',
-          }}
-        >
-          {initials}
-        </Avatar>
-      </BoxStyled>
+    <Box component="a" href="/profile" sx={{...avatarVariant, ...sx}}>
+      <Avatar src={srcPlaceholder} alt={altPlaceholder} sx={styles.avatar}>
+        {initials}
+      </Avatar>
+    </Box>
   );
 };
 
