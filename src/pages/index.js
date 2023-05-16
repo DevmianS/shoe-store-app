@@ -6,24 +6,26 @@ import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import Root from '@/components/UI/Root';
 import Home from '@/components/Layout/Home';
+import {useSession} from 'next-auth/react';
 
 const Index = () => {
-  const [isAuth, setIsAuth] = useState(false);
+  const {data: session, status} = useSession();
+  // const [isAuth, setIsAuth] = useState(false);
 
-  useEffect(() => {
-    if (localStorage.getItem('user')) {
-      setIsAuth(true);
-    } else {
-      setIsAuth(false);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem('user')) {
+  //     setIsAuth(true);
+  //   } else {
+  //     setIsAuth(false);
+  //   }
+  // }, []);
 
   return (
     <>
       <Head>
         <title>Wellrun | Home</title>
       </Head>
-      {isAuth ? (
+      {session ? (
         <NavBarLayout>
           <Home />
         </NavBarLayout>

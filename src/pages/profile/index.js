@@ -1,4 +1,7 @@
 import Head from 'next/head';
+import {useSession} from 'next-auth/react';
+import {getServerSession} from 'next-auth/next';
+import {authOptions} from '../api/auth/[...nextauth]';
 
 import {Typography, styled, Box, Stack} from '@mui/material';
 
@@ -18,6 +21,7 @@ import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 
 const Profile = ({userName}) => {
+  const {data: session, status} = useSession();
   // we can recieve COUNT properties from REDUX
   const profileItemsList = [
     {name: 'My orders', icon: 'bag', click: null},
@@ -72,7 +76,12 @@ const Profile = ({userName}) => {
           <Box
             sx={{
               flex: '1 1 auto',
-              padding: {lg: '0 60px', md: '0 40px', sm: '0 30px', xs: '0 10px'},
+              padding: {
+                lg: '0 60px',
+                md: '0 40px',
+                sm: '0 30px',
+                xs: '0 10px',
+              },
             }}
           >
             <TopBanner imgPath={bannerImg.src} />
@@ -131,3 +140,11 @@ const Profile = ({userName}) => {
 };
 
 export default Profile;
+
+// export async function getServerSideProps(context) {
+//   return {
+//     props: {
+//       session: await getServerSession(context.req, context.res, authOptions),
+//     },
+//   };
+// }

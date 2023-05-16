@@ -22,6 +22,7 @@ import {rwdValue} from '@/utils/theme';
 
 import Button from '@/components/UI/Button';
 import Spinner from '@/components/UI/Spinner';
+import {signIn, useSession} from 'next-auth/react';
 
 /* import {useSelector, useDispatch} from 'react-redux';
 import {setUser} from '@/features/userSlice';
@@ -46,6 +47,15 @@ const SignInForm = () => {
 
   const [nameError, setNameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+
+  const {data: session, status} = useSession();
+
+  useEffect(() => {
+    if (session?.user) {
+      router.push('/profile');
+    }
+    console.log(session);
+  }, [router, session, session?.user]);
 
   const checkErrorName = () => {
     const usernameRegex = /^[a-zA-Z0-9_-]{2,10}$/;
@@ -78,13 +88,10 @@ const SignInForm = () => {
         identifier: name,
         password: password,
       };
-      // const {data} = await fetch(process.env.NEXTAUTH_URL, {
-      //   method: 'POST',
-      //   body: user,
-      // });
-      console.log(process.env.NEXT_PUBLIC_NEXTAUTH_URL);
-      axios.post(process.env.NEXT_PUBLIC_NEXTAUTH_URL, user);
-      mutate(user);
+
+      const res = await signIn('credentials', {...user, redirect: false});
+      // executeSucces('Succesfully logged in');
+      // mutate(user);
     }
   };
 
@@ -116,11 +123,11 @@ const SignInForm = () => {
   //   }
   // }, [isSuccess, navigateRouter]);
 
-  useEffect(() => {
-    if (isError) {
-      executeError(error.response.data.error.message);
-    }
-  }, [isError, error]);
+  // useEffect(() => {
+  //   if (isError) {
+  //     executeError(error.response.data.error.message);
+  //   }
+  // }, [isError, error]);
 
   // useEffect(() => {
   //   const localMem = JSON.parse(localStorage.getItem('logInInfo'));

@@ -15,9 +15,9 @@ import {Provider} from 'react-redux';
 import {store} from '../app/store';
 
 const icons_font = localFont({src: '../font/SHOES_STORE.woff'});
-export default function App({Component, pageProps: {session, ...pageProps}}) {
+export default function App({Component, pageProps}) {
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={pageProps.session}>
       <ThemeProvider theme={theme}>
         <style jsx global>{`
           [class^='icon-'],

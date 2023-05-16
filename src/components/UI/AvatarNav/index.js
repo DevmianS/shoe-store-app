@@ -12,6 +12,7 @@ import {AccountCircle, Brightness4, ExitToApp} from '@mui/icons-material';
 
 import {useRouter} from 'next/router';
 import {toast} from 'sonner';
+import {signOut} from 'next-auth/react';
 
 const NavbarMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -34,7 +35,8 @@ const NavbarMenu = () => {
     router.push('/profile');
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await signOut();
     toast.success('Logged out successfully.');
     localStorage.removeItem('user');
     router.push('/sign-in');
