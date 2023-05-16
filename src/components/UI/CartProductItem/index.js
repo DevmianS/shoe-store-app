@@ -1,4 +1,5 @@
-import {rwdValue} from '@/utils/theme';
+import Image from 'next/image';
+
 import {
   Card,
   Typography,
@@ -8,8 +9,8 @@ import {
   FormControl,
   Box,
 } from '@mui/material';
+
 import useOwnStyles from '@/utils/styles';
-import Image from 'next/image';
 
 export default function CartProductItem({
   title,
