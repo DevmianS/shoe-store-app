@@ -3,63 +3,32 @@ import {
   Typography,
   styled,
   Box,
-  Stack,
   Button,
-  TextField,
   useTheme,
   useMediaQuery,
-  FormControlLabel,
-  Checkbox,
 } from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
 import mockupProducts from '@/utils/data';
 
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
 import ProductCard from '@/components/UI/ProductCard';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Filters from '@/components/UI/Filters';
 
-const SearchResults = ({userName}) => {
+const SearchResults = () => {
   // STYLED COMPONENTS
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const SearchSectionWrapper = styled(Stack)(({theme}) => ({
-    display: 'flex',
-    flexDirection: 'col',
-    width: 320,
-    paddingLeft: '40px',
-    alignItems: 'flex-start',
-    gap: 8,
-    marginBottom: '7px',
-    borderBottom: '1px solid',
-    borderColor: theme.palette.divider,
-  }));
-  const StyledAccordion = styled(Accordion)(() => ({
-    width: '100%',
-  }));
-  const StyledAccordionDetails = styled(AccordionDetails)(() => ({
-    padding: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    fontSize: 16,
-    fontWeight: 400,
-    paddingBottom: '32px',
-  }));
-  const StyledAccordionSummary = styled(AccordionSummary)(() => ({padding: 0}));
-  const AccordionTitle = styled(Typography)(() => ({fontWeight: 500}));
   const Row = styled(Box)({
     display: 'flex',
     justifyContent: 'space-between',
     padding: isMobile ? '25px 0' : '40px 0',
   });
-  const Content = styled(Box)(({theme}) => ({
+  const Content = styled(Box)(() => ({
     '& .MuiInputBase-root': {
       height: isDesktop ? '48px' : '33px',
       fontSize: isDesktop ? '15px' : '10px',

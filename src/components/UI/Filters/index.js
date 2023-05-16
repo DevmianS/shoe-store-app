@@ -3,11 +3,8 @@ import {
   AccordionDetails,
   AccordionSummary,
   Typography,
-  styled,
   Stack,
   TextField,
-  useTheme,
-  useMediaQuery,
   FormControlLabel,
   Checkbox,
 } from '@mui/material';
