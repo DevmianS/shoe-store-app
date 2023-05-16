@@ -16,7 +16,12 @@ const RootMobile = () => {
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
-      setAnimationCount(prevState => prevState + 1);
+      setAnimationCount(prevState => {
+        if (prevState === 4) {
+          return 1;
+        }
+        return prevState + 1;
+      });
     }, 3000);
 
     return () => {
@@ -24,11 +29,6 @@ const RootMobile = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (animationCount >= 5) {
-      setAnimationCount(1);
-    }
-  }, [animationCount]);
   return (
     <Box
       sx={{
@@ -143,36 +143,35 @@ const RootMobile = () => {
           display: 'flex',
           justifyContent: 'space-around',
           alignItems: 'center',
-          padding: '10px',
+          padding: '20px 10px',
         }}
       >
-        <Button outlined={true} sx={{width: '47%'}}>
-          <Link
-            href="/sign-in"
-            style={{
-              width: '100%',
-              height: '100%',
-              textDecoration: 'none',
-              color: '#FE645E',
-            }}
-          >
+        <Link
+          href="/sign-in"
+          style={{
+            width: '100%',
+            height: '100%',
+            textDecoration: 'none',
+            color: '#FE645E',
+            width: '47%',
+          }}
+        >
+          <Button outlined={true} sx={{width: '100%'}}>
             Sign in
-          </Link>
-        </Button>
-        <Button sx={{width: '47%'}}>
-          {' '}
-          <Link
-            href="/sign-up"
-            style={{
-              width: '100%',
-              height: '100%',
-              color: 'white',
-              textDecoration: 'none',
-            }}
-          >
-            Sign up
-          </Link>
-        </Button>
+          </Button>
+        </Link>
+        <Link
+          href="/sign-up"
+          style={{
+            width: '100%',
+            height: '100%',
+            color: 'white',
+            textDecoration: 'none',
+            width: '47%',
+          }}
+        >
+          <Button sx={{width: '100%'}}>Sign up</Button>
+        </Link>
       </Box>
     </Box>
   );

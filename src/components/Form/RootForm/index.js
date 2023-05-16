@@ -41,33 +41,32 @@ const RootForm = () => {
           flexDirection: 'column',
         }}
       >
-        <Button size="medium" outlined={true}>
-          <Link
-            href="/sign-in"
-            style={{
-              width: '100%',
-              height: '100%',
-              textDecoration: 'none',
-              color: '#FE645E',
-            }}
-          >
+        <Link
+          href="/sign-in"
+          style={{
+            width: '100%',
+            height: '100%',
+            textDecoration: 'none',
+            color: '#FE645E',
+            marginBottom: '5px',
+          }}
+        >
+          <Button size="medium" outlined={true}>
             Sign in
-          </Link>
-        </Button>
+          </Button>
+        </Link>
 
-        <Button size="medium">
-          <Link
-            href="/sign-up"
-            style={{
-              width: '100%',
-              height: '100%',
-              color: 'white',
-              textDecoration: 'none',
-            }}
-          >
-            Sign up
-          </Link>
-        </Button>
+        <Link
+          href="/sign-up"
+          style={{
+            width: '100%',
+            height: '100%',
+            color: 'white',
+            textDecoration: 'none',
+          }}
+        >
+          <Button size="medium">Sign up</Button>
+        </Link>
       </Box>
     </Box>
   );

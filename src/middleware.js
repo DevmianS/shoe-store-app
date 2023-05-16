@@ -8,4 +8,4 @@ export default withAuth({
   },
 });
 
-export const config = {matcher: ['/profile/:path*']};
+export const config = {matcher: ['/profile/:path*', '/bag', '/add-product']};

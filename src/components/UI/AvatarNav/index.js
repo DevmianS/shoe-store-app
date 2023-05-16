@@ -13,6 +13,9 @@ import {AccountCircle, Brightness4, ExitToApp} from '@mui/icons-material';
 import {useRouter} from 'next/router';
 import {toast} from 'sonner';
 import {signOut} from 'next-auth/react';
+import {redirect} from 'next/dist/server/api-utils';
+
+import Loading from '../Loading';
 
 const NavbarMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -22,6 +25,8 @@ const NavbarMenu = () => {
   const [name, setName] = useState('');
 
   const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
 
   const handleClick = event => {
     if (anchorEl) {
@@ -36,10 +41,12 @@ const NavbarMenu = () => {
   };
 
   const handleLogout = async () => {
-    await signOut();
+    setLoading(true);
+    await signOut({redirect: false});
+    await router.prefetch('/sign-in');
     toast.success('Logged out successfully.');
-    localStorage.removeItem('user');
     router.push('/sign-in');
+    setLoading(false);
   };
 
   const handleDarkModeToggle = () => {
@@ -60,6 +67,7 @@ const NavbarMenu = () => {
 
   return (
     <>
+      {loading && <Loading />}
       <Avatar
         sx={{
           cursor: 'pointer',
