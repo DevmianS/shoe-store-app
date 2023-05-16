@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useMutation} from '@tanstack/react-query';
+import axios from 'axios';
 
 import styles from '@/styles/link.module.css';
 
@@ -77,15 +78,21 @@ const SignInForm = () => {
         identifier: name,
         password: password,
       };
+      // const {data} = await fetch(process.env.NEXTAUTH_URL, {
+      //   method: 'POST',
+      //   body: user,
+      // });
+      console.log(process.env.NEXT_PUBLIC_NEXTAUTH_URL);
+      axios.post(process.env.NEXT_PUBLIC_NEXTAUTH_URL, user);
       mutate(user);
     }
   };
 
-  useEffect(() => {
-    if (localStorage.getItem('user')) {
-      router.push('/');
-    }
-  }, [data?.user?.id, router]);
+  // useEffect(() => {
+  //   if (localStorage.getItem('user')) {
+  //     router.push('/');
+  //   }
+  // }, [data?.user?.id, router]);
 
   const executeError = message => {
     toast.error(message);
@@ -102,12 +109,12 @@ const SignInForm = () => {
     [router],
   );
 
-  useEffect(() => {
-    if (isSuccess) {
-      executeSucces('Logged in successfully.');
-      navigateRouter('/');
-    }
-  }, [isSuccess, navigateRouter]);
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     executeSucces('Logged in successfully.');
+  //     navigateRouter('/');
+  //   }
+  // }, [isSuccess, navigateRouter]);
 
   useEffect(() => {
     if (isError) {
@@ -115,12 +122,12 @@ const SignInForm = () => {
     }
   }, [isError, error]);
 
-  useEffect(() => {
-    const localMem = JSON.parse(localStorage.getItem('logInInfo'));
-    setName(localMem?.user || '');
-    setPassword(localMem?.password || '');
-    setRememberMe(localMem ? true : false);
-  }, []);
+  // useEffect(() => {
+  //   const localMem = JSON.parse(localStorage.getItem('logInInfo'));
+  //   setName(localMem?.user || '');
+  //   setPassword(localMem?.password || '');
+  //   setRememberMe(localMem ? true : false);
+  // }, []);
 
   useEffect(() => {
     if (rememberMe && name && password) {

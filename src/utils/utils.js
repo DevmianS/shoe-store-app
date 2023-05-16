@@ -28,6 +28,7 @@ export const logIn = async userObj => {
     'https://shoes-shop-strapi.herokuapp.com/api/auth/local',
     userObj,
   );
+  console.log(data);
   localStorage.setItem(
     'user',
     JSON.stringify({
