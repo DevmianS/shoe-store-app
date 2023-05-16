@@ -8,4 +8,6 @@ export default withAuth({
   },
 });
 
-export const config = {matcher: ['/profile/:path*', '/bag', '/add-product']};
+export const config = {
+  matcher: ['/profile/:path*', '/bag', '/add-product', '/search/:path*'],
+};

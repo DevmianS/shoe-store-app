@@ -1,72 +1,56 @@
-import React, {useState} from 'react';
 import Button from '@/components/UI/Button';
-import {
-  Box,
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  Typography,
-} from '@mui/material';
+import {rwdValue} from '@/utils/theme';
+import {Box, Typography, useMediaQuery, useTheme} from '@mui/material';
 
 import Link from 'next/link';
 
 const RootForm = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   return (
     <Box
       sx={{
         width: '100%',
-        maxWidth: '412px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        flexDirection: 'column',
-        textAlign: 'start',
-        padding: '20px',
+        maxWidth: isMobile ? '100%' : '480px',
       }}
     >
-      <Typography component="h1" variant="h3">
+      <Typography component="h1" variant="h1" sx={{marginBottom: '10px'}}>
         Welcome to Wellrun
       </Typography>
-      <Typography component="p" variant="body1" mb={3}>
+      <Typography
+        component="p"
+        variant="body1"
+        sx={{
+          fontSize: rwdValue(10, 15),
+          color: 'text.secondary',
+          marginBottom: isMobile ? '15px' : '25px',
+        }}
+      >
         The biggest shoes business in the whole world.
       </Typography>
 
-      <Box
-        sx={{
-          width: '100%',
-          height: '100px',
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}
-      >
-        <Link
-          href="/sign-in"
-          style={{
-            width: '100%',
-            height: '100%',
-            textDecoration: 'none',
-            color: '#FE645E',
-            marginBottom: '5px',
+      <Box>
+        <Button
+          sx={{
+            marginBottom: isMobile ? '15px' : '25px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
+          outlined={true}
         >
-          <Button size="medium" outlined={true}>
-            Sign in
-          </Button>
-        </Link>
-
-        <Link
-          href="/sign-up"
-          style={{
-            width: '100%',
-            height: '100%',
-            color: 'white',
-            textDecoration: 'none',
-          }}
-        >
-          <Button size="medium">Sign up</Button>
-        </Link>
+          <Link href="/sign-in">Sign in</Link>
+        </Button>
+        <Button>
+          <Link
+            href="/sign-up"
+            style={{
+              color: 'white',
+            }}
+          >
+            Sign up
+          </Link>
+        </Button>
       </Box>
     </Box>
   );

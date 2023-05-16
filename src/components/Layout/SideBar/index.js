@@ -1,25 +1,36 @@
-import {Stack, Box, useTheme, useMediaQuery, styled} from '@mui/material';
+import {Stack, Box, List} from '@mui/material';
+import useOwnStyles from '@/utils/styles';
+import {useRouter} from 'next/router';
+import ListItem from '@/components/UI/ListItem';
+import AvatarStaticLayout from '../AvatarStaticLayout';
 
-export default function SideBar({children, areaName}) {
-  const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
-
-  const StyledBox = styled(Box)({
-    flex: '0 0 320px',
-    display: isTablet ? 'none' : 'block',
-    width: '100%',
-    maxWidth: '320px',
-  });
+export default function SideBar({children}) {
+  const router = useRouter();
+  const {sideBar: styles} = useOwnStyles();
+  const handleLogout = () => {
+    toast.success('Logged out successfully.');
+    localStorage.removeItem('user');
+    router.push('/');
+  };
   return (
-    <StyledBox>
-      <Stack
-        component="div"
-        direction="column"
-        aria-label={areaName}
-        variant="permanent"
-      >
-        {children}
+    <Box sx={styles}>
+      <Stack aria-label="user actions">
+        <AvatarStaticLayout />
+        <List>
+          <ListItem
+            name="My products"
+            icon="orders"
+            onClick={() => router.push('/my-products')}
+          />
+          <ListItem
+            name="Settings"
+            icon="setting"
+            onClick={() => router.push('/profile/update')}
+          />
+          <ListItem name="Log-out" icon="logout" onClick={handleLogout} />
+        </List>
       </Stack>
-    </StyledBox>
+      {children}
+    </Box>
   );
 }
