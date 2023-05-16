@@ -6,7 +6,9 @@ import AvatarStaticLayout from '../AvatarStaticLayout';
 
 export default function SideBar({children}) {
   const router = useRouter();
+
   const {sideBar: styles} = useOwnStyles();
+
   const handleLogout = () => {
     toast.success('Logged out successfully.');
     localStorage.removeItem('user');
