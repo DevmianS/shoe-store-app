@@ -24,6 +24,7 @@ export let theme = createTheme({
       primary: '#000000',
       secondary: '#5C5C5C',
       tetriary: '#494949',
+      light: '#8B8E93',
     },
     divider: '#EAECF0',
     common: '#494949',
@@ -41,7 +42,7 @@ theme = createTheme(theme, {
           fontWeight: 500,
         },
         h2: {fontSize: 38, fontWeight: 500},
-        h3: {fontSize: 30, fontWeight: 500},
+        h3: {fontSize: rwdValue(12, 30), fontWeight: 500},
         h4: {fontSize: 30, fontWeight: 600},
         h5: {fontSize: 10, fontWeight: 500},
         body1: {
