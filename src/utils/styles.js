@@ -290,6 +290,23 @@ const useOwnStyles = () => {
         color: 'white',
       },
     },
+    listItem: {
+      item: {marginBottom: '8px'},
+      button: {
+        display: 'flex',
+        alignItems: 'center',
+        fontWeight: 500,
+        paddingLeft: '40px',
+        '& i': {fontSize: '20px', marginRight: '15px'},
+      },
+      name: {
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        fontWeight: 500,
+        color: '#000',
+      },
+    },
   };
   return {updateProfile, sideBar, UI};
 };
