@@ -110,6 +110,26 @@ const useOwnStyles = () => {
         padding: 1,
       },
     },
+    cartNavIcon: {
+      position: 'relative',
+      display: 'inline-block',
+      minWidth: !isDesktop ? '32px' : '40px',
+      fontSize: '24px',
+      transition: '.3s',
+      color: theme.palette.text.secondary,
+      '& p': {
+        position: 'absolute',
+        top: 8,
+        left: !isDesktop ? 9 : 13,
+        width: 14,
+        textAlign: 'center',
+        fontSize: 10,
+        color: 'inherit',
+      },
+      '&:hover': {
+        color: theme.palette.primary.main,
+      },
+    },
   };
   return {updateProfile, sideBar, UI};
 };
