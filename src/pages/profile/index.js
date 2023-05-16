@@ -12,12 +12,10 @@ import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import ProductCard from '@/components/UI/ProductCard';
-import LinksList from '@/components/UI/LinksList';
 
 import bannerImg from '@/assets/banner.jpg';
 import TopBanner from '@/components/UI/TopBanner';
 
-import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 
 const Profile = ({userName}) => {
@@ -69,10 +67,7 @@ const Profile = ({userName}) => {
             paddingBottom: rwdValue(0, 40),
           }}
         >
-          <SideBar areaName="user profile actions">
-            <AvatarStaticLayout />
-            <LinksList listItems={profileItemsList} />
-          </SideBar>
+          <SideBar />
           <Box
             sx={{
               flex: '1 1 auto',
@@ -121,14 +116,13 @@ const Profile = ({userName}) => {
             >
               {mockupProducts.map(product => {
                 return (
-                  <Column key={product.id}>
-                    <ProductCard
-                      title={product.attributes.name}
-                      category={product.attributes.category}
-                      price={product.attributes.price}
-                      imgPath={product.attributes.image}
-                    />
-                  </Column>
+                  <ProductCard
+                    key={product.id}
+                    title={product.attributes.name}
+                    category={product.attributes.category}
+                    price={product.attributes.price}
+                    imgPath={product.attributes.image}
+                  />
                 );
               })}
             </Box>

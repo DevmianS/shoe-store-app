@@ -18,17 +18,11 @@ import {useState} from 'react';
 
 import NavbarMenu from '../AvatarNav';
 
-import {
-  buttonsArray,
-  buttonsArrayResponsive,
-  Search,
-  StyledInputBase,
-  SearchIconWrapper,
-  LinkStyles,
-} from './utils';
+import {buttonsArray, buttonsArrayResponsive, LinkStyles} from './utils';
 import NestedList from './allPages';
 
 import {useRouter} from 'next/router';
+import Searchbar from '../Searchbar';
 
 const NavBar = () => {
   const router = useRouter();
@@ -162,33 +156,11 @@ const NavBar = () => {
               justifyContent: 'flex-end',
             }}
           >
-            <Search
-              onClick={() => setSearchExpanded(true)}
-              onBlur={() => setSearchExpanded(false)}
-              sx={{
-                display: {
-                  xs: searchExpanded ? 'flex' : 'none',
-                  md: 'flex',
-                },
-                transition: 'all 0.7s ease-in-out',
-                marginRight: '15px',
-                minWidth: {
-                  xs: searchExpanded ? '90%' : '',
-                  md: searchExpanded ? '95%' : '0',
-                },
-              }}
-            >
-              <SearchIconWrapper>
-                <i className="icon-search"></i>
-              </SearchIconWrapper>
-
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{'aria-label': 'search'}}
-                inputRef={ref}
-              />
-            </Search>
-
+            <Searchbar
+              searchExpanded={searchExpanded}
+              setSearchExpanded={setSearchExpanded}
+              ref={ref}
+            />
             <Stack direction="row" spacing={1}>
               <IconButton
                 size="large"
@@ -270,6 +242,7 @@ const NavBar = () => {
           width: '100vw',
           height: '100vh',
           backgroundColor: '#F3F3F3',
+          zIndex: 5,
         }}
       ></Box>
 
