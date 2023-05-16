@@ -130,6 +130,95 @@ const useOwnStyles = () => {
         color: theme.palette.primary.main,
       },
     },
+    productCard: {
+      card: {
+        position: 'relative',
+        border: 0,
+        boxShadow: 'none',
+        borderRadius: 0,
+        width: '100%',
+        '& img': {
+          width: rwdValue(100, 220),
+          height: rwdValue(100, 220),
+        },
+        transition: 'transform 0.5s',
+        '&:hover': !isDesktop
+          ? {}
+          : {
+              transform: 'scale(1.01)',
+              boxShadow: '0 0 3px 1px rgba(100,100,100,0.1)',
+              cursor: 'pointer',
+            },
+      },
+      content: {
+        flexGrow: 1,
+        paddingRight: '5px',
+        paddingBottom: !isDesktop ? 0 : rwdValue(10, 25),
+        paddingLeft: rwdValue(20, 50),
+      },
+      header: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+      },
+      category: {
+        color: theme.palette.text.secondary,
+        marginBottom: '12px',
+        fontSize: rwdValue(8, 20),
+      },
+      stock: {
+        color: theme.palette.primary.main,
+        fontWeight: 600,
+        fontSize: rwdValue(8, 25),
+        display: !isDesktop ? 'none' : 'block',
+      },
+      footer: {
+        display: 'flex',
+        flexGrow: '1',
+        flexDirection: 'row',
+        alignItems: 'end',
+        justifyContent: 'space-between',
+      },
+      select: {
+        minWidth: '70px',
+        '& .MuiSelect-select': {
+          fontSize: rwdValue(12, 24),
+          lineHeight: 1,
+          maxWidth: !isDesktop ? '90px' : 'auto',
+          width: !isDesktop ? 'auto' : '100%',
+          paddingLeft: 0,
+          paddingRight: !isDesktop ? '0' : '24px',
+        },
+        '& .MuiSelect-icon': {
+          position: 'static',
+          transform: !isDesktop ? 'translateX(-20px)' : 'translateX(-12px)',
+          width: !isDesktop ? '8px' : '1rem',
+          height: !isDesktop ? '8px' : '1rem',
+        },
+        '& .MuiInputBase-input': {
+          paddingTop: 0,
+          paddingBottom: 0,
+        },
+      },
+      delete: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        color: theme.palette.text.light,
+        '& span': {
+          fontSize: rwdValue(12, 24),
+        },
+        '& i': {
+          fontSize: rwdValue(12, 24),
+          color: 'inherit',
+          marginRight: '3px',
+        },
+        '&:hover': {
+          color: theme.palette.primary.main,
+          cursor: 'pointer',
+        },
+      },
+    },
   };
   return {updateProfile, sideBar, UI};
 };
