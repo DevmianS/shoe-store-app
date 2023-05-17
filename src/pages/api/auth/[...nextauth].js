@@ -53,8 +53,8 @@ export default async function auth(req, res) {
     session: {
       strategy: 'jwt',
     },
-    cookies: cookies,
-    callbacks: {
+    /*     cookies: cookies,
+     */ callbacks: {
       session,
       jwt,
     },
