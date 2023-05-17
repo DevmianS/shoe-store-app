@@ -3,6 +3,7 @@ import useOwnStyles from '@/utils/styles';
 import {useRouter} from 'next/router';
 import ListItem from '@/components/UI/ListItem';
 import AvatarStaticLayout from '../AvatarStaticLayout';
+import {toast} from 'sonner';
 
 export default function SideBar({children}) {
   const router = useRouter();

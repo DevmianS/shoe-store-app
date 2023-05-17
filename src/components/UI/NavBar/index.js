@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import {memo, useRef, useState} from 'react';
+import {memo, useRef} from 'react';
 
 import {
   AppBar,
@@ -11,17 +11,18 @@ import {
   Typography,
 } from '@mui/material';
 
-import {useToggle} from '@/context/ToggleContext';
-
 import Cart from '@/components/UI/Cart';
 import Searchbar from '@/components/UI/Searchbar';
+
+import {useSearch} from '@/context/SearchContext';
+import {useToggle} from '@/context/ToggleContext';
 
 // TEMP
 import NestedList from './allPages';
 
 const NavBar = () => {
-  const [searchExpanded, setSearchExpanded] = useState(false);
   const {isToggled, toggle} = useToggle();
+  const {searchExpanded, setSearchExpanded} = useSearch();
   const searchInputRef = useRef();
 
   const handleFocusInputResponsive = () => {
@@ -165,19 +166,6 @@ const NavBar = () => {
 
               <IconButton
                 size="large"
-                sx={{
-                  display: searchExpanded ? 'flex' : 'none',
-                  marginInline: '30px',
-                }}
-                edge="start"
-                color="inherit"
-                aria-label="Close"
-                onClick={() => setSearchExpanded(false)}
-              >
-                <i className={`icon-close `}></i>
-              </IconButton>
-              <IconButton
-                size="large"
                 edge="start"
                 color="inherit"
                 aria-label="Menu"
@@ -190,7 +178,11 @@ const NavBar = () => {
                 }}
                 onClick={toggle}
               >
-                <i className={`icon-menu `}></i>
+                <Typography
+                  sx={{fontSize: '24px'}}
+                  component="i"
+                  className={isToggled ? `icon-close` : 'icon-menu'}
+                ></Typography>
               </IconButton>
             </Stack>
           </Box>
