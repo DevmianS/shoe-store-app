@@ -1,3 +1,4 @@
+import {SessionProvider} from 'next-auth/react';
 import '@/styles/globals.css';
 import localFont from 'next/font/local';
 import {ThemeProvider} from '@mui/material';
@@ -11,14 +12,15 @@ const queryClient = new QueryClient();
 import {Toaster} from 'sonner';
 
 import {Provider} from 'react-redux';
-import {store} from '../app/store';
+import {store} from '../reduxStore/store';
 
 import {ToggleProvider} from '@/context/ToggleContext';
 
 const icons_font = localFont({src: '../font/SHOES_STORE.woff'});
 export default function App({Component, pageProps}) {
   return (
-    <ToggleProvider>
+    <SessionProvider session={pageProps.session}>
+     <ToggleProvider> 
       <ThemeProvider theme={theme}>
         <style jsx global>{`
           [class^='icon-'],
@@ -43,5 +45,6 @@ export default function App({Component, pageProps}) {
         </QueryClientProvider>
       </ThemeProvider>
     </ToggleProvider>
+    </SessionProvider>
   );
 }

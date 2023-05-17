@@ -21,19 +21,20 @@ export const registerNewUser = async userObj => {
   return data;
 };
 
-export const logIn = async userObj => {
-  console.log('Login:', userObj);
-  if (!userObj) return null;
-  const {data} = await axios.post(
-    'https://shoes-shop-strapi.herokuapp.com/api/auth/local',
-    userObj,
-  );
-  localStorage.setItem(
-    'user',
-    JSON.stringify({
-      jwt: data.jwt,
-      userData: data.user,
-    }),
-  );
-  return data;
-};
+// export const logIn = async userObj => {
+//   console.log('Login:', userObj);
+//   if (!userObj) return null;
+//   const {data} = await axios.post(
+//     'https://shoes-shop-strapi.herokuapp.com/api/auth/local',
+//     userObj,
+//   );
+//   console.log(data);
+//   localStorage.setItem(
+//     'user',
+//     JSON.stringify({
+//       jwt: data.jwt,
+//       userData: data.user,
+//     }),
+//   );
+//   return data;
+// };
