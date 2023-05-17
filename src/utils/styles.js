@@ -1,8 +1,12 @@
 import {rwdValue} from '@/utils/theme';
 import {useTheme, useMediaQuery} from '@mui/material';
+import {useToggle} from '@/context/ToggleContext';
+import {useRouter} from 'next/router';
 
 const useOwnStyles = () => {
+  const router = useRouter();
   const theme = useTheme();
+  const {isToggled, toggle} = useToggle();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -114,17 +118,24 @@ const useOwnStyles = () => {
   };
 
   const sideBar = {
-    position: isTablet || isMobile ? 'fixed' : 'static',
-    maxWidth: isTablet || isMobile ? '270px' : '320px',
-    paddingTop: isTablet || isMobile ? '32px' : 0,
+    position: !isDesktop ? 'fixed' : 'static',
+    maxWidth: !isDesktop ? '270px' : '320px',
+    paddingTop: !isDesktop ? '32px' : 0,
+    display: router.asPath.includes('/bag') && isDesktop ? 'none' : 'block',
     right: 0,
+    overflowY: 'auto',
     top: isTablet ? '64px' : '60px',
-    flex: '0 0 320px',
+    flex: `0 0 ${!isDesktop ? '270px' : '320px'}`,
     width: '100%',
     height: '100%',
     background: '#fff',
     zIndex: 5,
-    transform: isTablet || isMobile ? 'translateX(100%)' : 'none',
+    transition: '0.5s',
+    transform: !isDesktop
+      ? isToggled
+        ? 'translateX(0)'
+        : 'translateX(100%)'
+      : 'none',
   };
 
   const UI = {
@@ -248,7 +259,6 @@ const useOwnStyles = () => {
       select: {
         minWidth: '70px',
         '& .MuiSelect-select': {
-          fontSize: rwdValue(12, 24),
           lineHeight: 1,
           maxWidth: !isDesktop ? '90px' : 'auto',
           width: !isDesktop ? 'auto' : '100%',
@@ -413,6 +423,5 @@ const useOwnStyles = () => {
   };
 
   return {updateProfile, myProducts, sideBar, UI, filters};
-
 };
 export default useOwnStyles;

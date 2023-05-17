@@ -3,7 +3,7 @@ import {styled, alpha} from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider';
+import Box from '@mui/material/Box';
 import Link from 'next/link';
 
 const StyledMenu = styled(props => (
@@ -55,7 +55,7 @@ export default function CustomizedMenus() {
   };
 
   return (
-    <div>
+    <Box sx={{display: {xs: 'none', md: 'block'}}}>
       <Button
         id="demo-customized-button"
         aria-controls={open ? 'demo-customized-menu' : undefined}
@@ -122,6 +122,6 @@ export default function CustomizedMenus() {
           <MenuItem>Sign-up</MenuItem>
         </Link>
       </StyledMenu>
-    </div>
+    </Box>
   );
 }
