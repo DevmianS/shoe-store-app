@@ -1,63 +1,24 @@
-import React from 'react';
+import Image from 'next/image';
+
+import useOwnStyles from '@/utils/styles';
 
 import {Box} from '@mui/material';
 
-import Image from 'next/image';
-
 const Banner = ({children, src}) => {
+  const {UI} = useOwnStyles();
+  const {rootBanner: styles} = UI;
   return (
-    <Box
-      sx={{
-        width: '50%',
-        height: '100vh',
-        overflow: 'hidden',
-        position: 'relative',
-        display: {
-          xs: 'none',
-          md: 'flex',
-        },
-      }}
-    >
+    <Box sx={styles.column}>
       <Image
         src={src}
         alt="banner"
         width={960}
         height={1080}
-        style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          position: 'absolute',
-          zIndex: '-1',
-        }}
+        style={styles.image}
       />
-      <Box
-        sx={{
-          zIndex: '100',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <Box
-          sx={{
-            width: '100%',
-            height: '50%',
-          }}
-        ></Box>
-        <Box
-          sx={{
-            width: '100%',
-            height: '50%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignContent: 'flex-start',
-            padding: 1,
-          }}
-        >
-          {children}
-        </Box>
+      <Box sx={styles.right}>
+        <Box sx={styles.rightTop} />
+        <Box sx={styles.rightBot}>{children}</Box>
       </Box>
     </Box>
   );

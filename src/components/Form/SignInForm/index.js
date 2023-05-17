@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useMutation} from '@tanstack/react-query';
+import axios from 'axios';
 
 import styles from '@/styles/link.module.css';
 
@@ -20,38 +21,33 @@ import {logIn} from '@/utils/utils';
 import {rwdValue} from '@/utils/theme';
 
 import Button from '@/components/UI/Button';
-import Spinner from '@/components/UI/Spinner';
+import Loading from '@/components/UI/Loading';
+import {signIn, useSession} from 'next-auth/react';
 
-/* import {useSelector, useDispatch} from 'react-redux';
-import {setUser} from '@/features/userSlice';
- */
 const SignInForm = () => {
-  // Redux test
-  /*  const user = useSelector(state => state.user);
-  const dispatch = useDispatch();
-
-  const handleAddUserTest = user => {
-    dispatch(setUser(user));
-  }; */
-
   const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const [rememberMe, setRememberMe] = useState(true);
 
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [nameError, setNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
-  const checkErrorName = () => {
-    const usernameRegex = /^[a-zA-Z0-9_-]{2,10}$/;
-    if (usernameRegex.test(name) && !/\s/.test(name)) {
-      setNameError(false);
+  //const {data: session, status} = useSession();
+  //In session is the user data
+
+  const [loading, setLoading] = useState(false);
+
+  const checkErrorEmail = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(email)) {
+      setEmailError(false);
     } else {
-      setNameError(true);
+      setEmailError(true);
     }
   };
 
@@ -64,28 +60,35 @@ const SignInForm = () => {
     }
   };
 
-  const {data, isLoading, isError, isSuccess, mutate, error} = useMutation({
-    mutationKey: ['logIn'],
-    mutationFn: async user => logIn(user),
-  });
-
   const handleSubmit = async event => {
-    console.log('handleSubmit');
     event.preventDefault();
-    if (!nameError && !passwordError) {
+    setLoading(true);
+    await router.prefetch('/');
+    checkErrorEmail();
+    checkErrorPassword();
+    console.log('handleSubmit');
+    if (!emailError && !passwordError) {
       const user = {
-        identifier: name,
+        identifier: email,
         password: password,
       };
-      mutate(user);
+      const res = await signIn('credentials', {
+        ...user,
+        redirect: false,
+      });
+      if (res.ok) {
+        executeSucces('Successfully logged in.');
+        router.push('/');
+      } else {
+        executeError(JSON.stringify(res.error));
+      }
+    } else {
+      emailError && executeError('The email is wrong. Please write it again.');
+      passwordError &&
+        executeError('The password is wrong. Please write it again.');
     }
+    setLoading(false);
   };
-
-  useEffect(() => {
-    if (localStorage.getItem('user')) {
-      router.push('/');
-    }
-  }, [data?.user?.id, router]);
 
   const executeError = message => {
     toast.error(message);
@@ -95,73 +98,26 @@ const SignInForm = () => {
     toast.success(message);
   };
 
-  const navigateRouter = useCallback(
-    route => {
-      router.push(route);
-    },
-    [router],
-  );
-
   useEffect(() => {
-    if (isSuccess) {
-      executeSucces('Logged in successfully.');
-      navigateRouter('/');
-    }
-  }, [isSuccess, navigateRouter]);
-
-  useEffect(() => {
-    if (isError) {
-      executeError(error.response.data.error.message);
-    }
-  }, [isError, error]);
-
-  useEffect(() => {
-    const localMem = JSON.parse(localStorage.getItem('logInInfo'));
-    setName(localMem?.user || '');
-    setPassword(localMem?.password || '');
-    setRememberMe(localMem ? true : false);
-  }, []);
-
-  useEffect(() => {
-    if (rememberMe && name && password) {
+    if (rememberMe && email && password) {
       localStorage.setItem(
         'logInInfo',
-        JSON.stringify({user: name, password: password}),
+        JSON.stringify({user: email, password: password}),
       );
-      console.log('as2d');
     }
     if (!rememberMe) {
-      console.log('asd');
       localStorage.removeItem('logInInfo');
     }
-  }, [rememberMe, name, password]);
+  }, [rememberMe, email, password]);
 
   useEffect(() => {
-    setName(JSON.parse(localStorage.getItem('logInInfo'))?.user || '');
+    setEmail(JSON.parse(localStorage.getItem('logInInfo'))?.user || '');
     setPassword(JSON.parse(localStorage.getItem('logInInfo'))?.password || '');
   }, []);
 
   return (
     <>
-      {isLoading && (
-        <Box
-          sx={{
-            width: '100vw',
-            height: '100vh',
-            position: 'fixed',
-            top: '0',
-            left: '0',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            background: '#F3F3F3',
-            zIndex: '200',
-            opacity: 0.8,
-          }}
-        >
-          <Spinner />
-        </Box>
-      )}
+      {loading && <Loading />}
       <Box
         sx={{
           width: '100%',
@@ -197,20 +153,16 @@ const SignInForm = () => {
             sx={{marginBottom: '25px', marginTop: 0}}
             fullWidth
             size={isMobile ? 'small' : 'medium'}
-            label="User"
+            label="Email"
             type="text"
             margin="normal"
-            required
-            value={name}
-            onChange={e => setName(e.target.value)}
-            placeholder="Type your user name here"
-            error={nameError}
-            helperText={
-              nameError &&
-              "The user's name should be greater than 2, less than 10 characters and contain no spaces."
-            }
-            onFocus={() => setNameError(false)}
-            onBlur={checkErrorName}
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="Type your email here"
+            error={emailError}
+            helperText={emailError && "The user's email should be valid."}
+            onFocus={() => setEmailError(false)}
+            onBlur={checkErrorEmail}
           />
           <TextField
             sx={{marginBottom: '15px', marginTop: 0}}
@@ -219,7 +171,6 @@ const SignInForm = () => {
             label="Password"
             type="password"
             margin="normal"
-            required
             value={password}
             onChange={e => setPassword(e.target.value)}
             placeholder="Type your password here"

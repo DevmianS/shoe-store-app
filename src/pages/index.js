@@ -1,37 +1,56 @@
 import Head from 'next/head';
-
-import {useEffect, useState} from 'react';
-
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import Root from '@/components/UI/Root';
 import Home from '@/components/Layout/Home';
+import {useSession, getSession} from 'next-auth/react';
+
+import Loading from '@/components/UI/Loading';
 
 const Index = () => {
-  const [isAuth, setIsAuth] = useState(false);
+  //Client option
+  const {status} = useSession();
 
-  useEffect(() => {
-    if (localStorage.getItem('user')) {
-      setIsAuth(true);
-    } else {
-      setIsAuth(false);
+  const render = () => {
+    switch (status) {
+      case 'loading':
+        return <Loading />;
+      case 'authenticated':
+        return (
+          <NavBarLayout>
+            <Home />
+          </NavBarLayout>
+        );
+      default:
+        return <Root />;
     }
-  }, []);
+  };
 
   return (
     <>
       <Head>
         <title>Wellrun | Home</title>
       </Head>
-      {isAuth ? (
-        <NavBarLayout>
-          <Home />
-        </NavBarLayout>
-      ) : (
-        <Root />
-      )}
+      {render()}
     </>
   );
 };
 
 export default Index;
+
+// Server way without showing important code to the users EJ: ADMIN PANEL
+/* export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    // Redirect the user to the login page or show an error message
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+} 
+ */

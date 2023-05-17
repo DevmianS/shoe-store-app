@@ -30,27 +30,27 @@ const RootForm = () => {
       </Typography>
 
       <Box>
-        <Button
-          sx={{
-            marginBottom: isMobile ? '15px' : '25px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          outlined={true}
-        >
-          <Link href="/sign-in">Sign in</Link>
-        </Button>
-        <Button>
-          <Link
-            href="/sign-up"
-            style={{
-              color: 'white',
+        <Link href="/sign-in">
+          <Button
+            sx={{
+              marginBottom: isMobile ? '15px' : '25px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
+            outlined={true}
           >
-            Sign up
-          </Link>
-        </Button>
+            Sign in
+          </Button>
+        </Link>
+        <Link
+          href="/sign-up"
+          style={{
+            color: 'white',
+          }}
+        >
+          <Button>Sign up</Button>
+        </Link>
       </Box>
     </Box>
   );
