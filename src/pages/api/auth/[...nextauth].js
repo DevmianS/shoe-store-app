@@ -43,7 +43,7 @@ export default async function auth(req, res) {
         credentials: {},
         async authorize(credentials) {
           const {data: userData} = await axios.post(
-            process.env.NEXT_PUBLIC_NEXTAUTH_URL,
+            'https://shoes-shop-strapi.herokuapp.com/api/auth/local',
             credentials,
           );
           return userData;
@@ -59,7 +59,7 @@ export default async function auth(req, res) {
       jwt,
     },
     jwt: {
-      secret: process.env.NEXTAUTH_SECRET,
+      secret: '+RoMAoY+nDsronaB2aVmKdo0avELbxIdstdn6teVpf4=',
     },
     pages: {signIn: '/sign-in'},
   });
