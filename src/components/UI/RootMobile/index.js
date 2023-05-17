@@ -144,20 +144,22 @@ const RootMobile = () => {
           padding: '20px 10px',
         }}
       >
-        <Button outlined={true} sx={{width: '47%'}} size="small">
-          <Link href="/sign-in">Sign in</Link>
-        </Button>
-        <Button sx={{width: '47%'}} size="small">
-          {' '}
-          <Link
-            href="/sign-up"
-            style={{
-              color: 'white',
-            }}
-          >
+        <Link href="/sign-in" style={{width: '47%'}}>
+          <Button outlined={true} sx={{width: '100%'}} size="small">
+            Sign in
+          </Button>
+        </Link>
+        <Link
+          href="/sign-up"
+          style={{
+            color: 'white',
+            width: '47%',
+          }}
+        >
+          <Button sx={{width: '100%'}} size="small">
             Sign up
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </Box>
     </Box>
   );
