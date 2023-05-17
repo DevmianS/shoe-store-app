@@ -12,8 +12,7 @@ import {AccountCircle, Brightness4, ExitToApp} from '@mui/icons-material';
 
 import {useRouter} from 'next/router';
 import {toast} from 'sonner';
-import {signOut} from 'next-auth/react';
-import {redirect} from 'next/dist/server/api-utils';
+import {signOut, useSession} from 'next-auth/react';
 
 import Loading from '../Loading';
 
@@ -21,8 +20,6 @@ const NavbarMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [color, setColor] = useState('#FE645E');
-
-  const [name, setName] = useState('');
 
   const router = useRouter();
 
@@ -54,16 +51,12 @@ const NavbarMenu = () => {
     // Handle dark mode toggle logic
   };
 
-  const initials = name.substring(0, 2).toUpperCase();
-
-  useEffect(() => {
-    const nameLocalUser = localStorage.getItem('user');
-    if (nameLocalUser) {
-      setName(JSON.parse(nameLocalUser).userData.username);
-    } else {
-      setName('Valeri');
-    }
-  }, []);
+  const {data, status} = useSession();
+  let name = data?.user?.user?.username;
+  let initials;
+  if (name) {
+    initials = name.substring(0, 2).toUpperCase();
+  }
 
   return (
     <>

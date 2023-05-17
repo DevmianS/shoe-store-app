@@ -33,14 +33,13 @@ const NavBar = () => {
   const ref = useRef(null);
 
   const handleFocusInputResponsive = () => {
-    setSearchExpanded(true);
     setTimeout(() => {
-      ref.current.focus();
+      ref.current && ref.current.focus();
     }, 0);
+    setSearchExpanded(true);
   };
 
   useEffect(() => {
-    console.log('router', router.asPath);
     if (router.asPath.includes('search')) {
       handleFocusInputResponsive();
     }

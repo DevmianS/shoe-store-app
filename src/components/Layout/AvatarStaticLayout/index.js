@@ -1,6 +1,8 @@
 import {Typography, styled, Box, Stack} from '@mui/material';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 
+import {useSession} from 'next-auth/react';
+
 const AvatarStaticLayout = () => {
   const AvatarWrapper = styled(Stack)(({theme}) => ({
     display: 'flex',
@@ -12,14 +14,18 @@ const AvatarStaticLayout = () => {
     borderBottom: '1px solid',
     borderColor: theme.palette.divider,
   }));
+
+  const {data, status} = useSession();
+  const name = data?.user?.user?.username;
+
   return (
     <AvatarWrapper>
-      <AvatarStatic variant="small" />
+      <AvatarStatic variant="small" username={name} />
       <Box sx={{ml: 2}}>
         <Typography color="text.tetriary" fontSize={12}>
           Welcome
         </Typography>
-        <Typography fontWeight={500}>{'Jane Meldrum'}</Typography>
+        <Typography fontWeight={500}>{name}</Typography>
       </Box>
     </AvatarWrapper>
   );

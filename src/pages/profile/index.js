@@ -19,7 +19,6 @@ import TopBanner from '@/components/UI/TopBanner';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 
 const Profile = ({userName}) => {
-  const {data: session, status} = useSession();
   // we can recieve COUNT properties from REDUX
   const profileItemsList = [
     {name: 'My orders', icon: 'bag', click: null},
@@ -53,6 +52,8 @@ const Profile = ({userName}) => {
     marginBottom: '24px',
   }));
 
+  const {data, status} = useSession();
+  let name = data?.user?.user?.username;
   return (
     <>
       <Head>
@@ -96,10 +97,11 @@ const Profile = ({userName}) => {
                   border: '4px solid white',
                   zIndex: 2,
                 }}
+                username={name && name}
               />
               <Box>
                 <Typography variant="body2" component="h3">
-                  {userName || 'Jane Meldrum'}
+                  {name}
                 </Typography>
                 <Typography color="text.tetriary" fontSize={15} mb="12px">
                   1 374 bonus points

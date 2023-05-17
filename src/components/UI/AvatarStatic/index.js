@@ -6,7 +6,10 @@ const AvatarStatic = ({username, variant = 'medium', sx}) => {
   const {UI: styles} = useOwnStyles();
   /* placeholders to be changed to redux states */
   const srcPlaceholder = '/';
-  const altPlaceholder = username || 'Jane Meldrum';
+  let altPlaceholder = username || '';
+  if (altPlaceholder) {
+    altPlaceholder = altPlaceholder.slice(0, 2).toUpperCase();
+  }
 
   const size =
     variant === 'small'
@@ -33,13 +36,10 @@ const AvatarStatic = ({username, variant = 'medium', sx}) => {
     borderRadius: '50%',
   };
 
-  const nameSplit = altPlaceholder.split(' ');
-  const initials = `${nameSplit[0][0]}${nameSplit[1][0]}`;
-
   return (
     <Box component="a" href="/profile" sx={{...avatarVariant, ...sx}}>
-      <Avatar src={srcPlaceholder} alt={altPlaceholder} sx={styles.avatar}>
-        {initials}
+      <Avatar alt={altPlaceholder} sx={styles.avatar}>
+        {altPlaceholder}
       </Avatar>
     </Box>
   );

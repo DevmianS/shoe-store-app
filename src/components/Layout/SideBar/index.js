@@ -3,14 +3,19 @@ import useOwnStyles from '@/utils/styles';
 import {useRouter} from 'next/router';
 import ListItem from '@/components/UI/ListItem';
 import AvatarStaticLayout from '../AvatarStaticLayout';
+import { signOut } from 'next-auth/react';
 
 export default function SideBar({children}) {
   const router = useRouter();
   const {sideBar: styles} = useOwnStyles();
-  const handleLogout = () => {
-    toast.success('Logged out successfully.');
-    localStorage.removeItem('user');
-    router.push('/');
+
+  const handleLogout = async () => {
+      setLoading(true);
+      await signOut({redirect: false});
+      await router.prefetch('/sign-in');
+      toast.success('Logged out successfully.');
+      router.push('/sign-in');
+      setLoading(false);
   };
   return (
     <Box sx={styles}>

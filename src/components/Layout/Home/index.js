@@ -19,6 +19,10 @@ import ProductCard from '@/components/UI/ProductCard';
 import bannerImg from '@/assets/banner2.jpg';
 import TopBanner from '@/components/UI/TopBanner';
 import AvatarStatic from '@/components/UI/AvatarStatic';
+import {useSession} from 'next-auth/react';
+import {useQuery} from '@tanstack/react-query';
+
+import axios from 'axios';
 
 const Home = ({userName}) => {
   const theme = useTheme();
@@ -44,6 +48,27 @@ const Home = ({userName}) => {
     padding: '0 24px',
     marginBottom: '24px',
   }));
+
+  const {
+    data: products,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const {data} = await axios.get(
+        'https://shoes-shop-strapi.herokuapp.com/api/products',
+      );
+      console.log('axios rta: ', data);
+      return data;
+    },
+  });
+
+  console.log('products: ', products);
+
+  const {data, status} = useSession();
+  const name = data?.user?.user?.username;
 
   return (
     <Box
@@ -77,6 +102,7 @@ const Home = ({userName}) => {
               border: '4px solid white',
               zIndex: 2,
             }}
+            username={name && name}
           />
           <Box>
             <Typography
@@ -84,7 +110,7 @@ const Home = ({userName}) => {
               component="h3"
               fontSize={rwdValue(14, 20)}
             >
-              {userName || 'Jane Meldrum'}
+              {name}
             </Typography>
             <Typography
               color="text.tetriary"
