@@ -1,8 +1,9 @@
 import Image from 'next/image';
+import {useState} from 'react';
 import {Typography, Stack, Box, useMediaQuery, IconButton} from '@mui/material';
 import {useTheme} from '@mui/material/styles';
+
 import {rwdValue} from '@/utils/theme';
-import {useState} from 'react';
 
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
