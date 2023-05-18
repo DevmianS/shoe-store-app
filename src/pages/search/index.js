@@ -9,19 +9,21 @@ import {
 } from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
-import mockupProducts from '@/utils/data';
 
 import ProductCard from '@/components/UI/ProductCard';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Filters from '@/components/UI/Filters';
+import useProducts from '@/hooks/useProducts';
 
 const SearchResults = () => {
   // STYLED COMPONENTS
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const {products} = useProducts();
 
   const Row = styled(Box)({
     display: 'flex',
@@ -90,17 +92,19 @@ const SearchResults = () => {
               flexWrap="wrap"
               margin={{sm: '0 -8px', md: '0 -24px'}}
             >
-              {mockupProducts.map(product => {
-                return (
-                  <ProductCard
-                    key={product.id}
-                    title={product.attributes.name}
-                    category={product.attributes.category}
-                    price={product.attributes.price}
-                    imgPath={product.attributes.image}
-                  />
-                );
-              })}
+              {products &&
+                products.map(product => {
+                  const {id, attributes} = product;
+                  return (
+                    <ProductCard
+                      key={id}
+                      title={attributes.name}
+                      price={attributes.price}
+                      imgPath={attributes.images.data}
+                      category={attributes.categories.data}
+                    />
+                  );
+                })}
             </Box>
           </Content>
         </Row>
