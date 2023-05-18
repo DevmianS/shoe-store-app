@@ -19,7 +19,7 @@ const ProfileUpdate = () => {
   const [userData, setUserData] = useState({});
   const [newUserData, setNewUserData] = useState({});
   const {updateProfile: styles} = useOwnStyles();
-  const {data: session} = useSession();
+  const {data: session, update: updateSession} = useSession();
 
   const udpateUserMutation = useMutation({
     mutationFn: () => {
@@ -31,11 +31,17 @@ const ProfileUpdate = () => {
         },
       );
     },
-    onSuccess: () => {
-      toast.success('Data changed successfully!');
-      setUserData(data => ({...data, ...newUserData}));
-      // signOut();
-      //TODO refresh session user data
+    onSuccess: async () => {
+      await updateSession({
+        ...session,
+        user: {
+          ...session?.user,
+          user: {...session.user.user, ...newUserData},
+          jwt: session.user.jwt,
+        },
+      }).then(() => {
+        toast.success('Data changed successfully!');
+      });
     },
   });
 

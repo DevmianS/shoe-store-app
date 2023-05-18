@@ -2,7 +2,10 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import axios from 'axios';
 
-export const jwt = async ({token, user}) => {
+export const jwt = async ({token, user, trigger, session}) => {
+  if (trigger === 'update') {
+    return {...token, ...session.user};
+  }
   return {...token, ...user};
 };
 
