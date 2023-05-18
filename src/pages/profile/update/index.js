@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import {useRouter} from 'next/router';
 import useOwnStyles from '@/utils/styles';
+import {useMutation} from '@tanstack/react-query';
+import {toast} from 'sonner';
 
 import {Typography, Box, Stack, TextField} from '@mui/material';
 
@@ -9,9 +11,43 @@ import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import Button from '@/components/UI/Button';
 import AvatarStatic from '@/components/UI/AvatarStatic';
+import {signIn, signOut, useSession} from 'next-auth/react';
+import {useEffect, useState} from 'react';
+import axios from 'axios';
 
 const ProfileUpdate = () => {
+  const [userData, setUserData] = useState({});
+  const [newUserData, setNewUserData] = useState({});
   const {updateProfile: styles} = useOwnStyles();
+  const {data: session, update: updateSession} = useSession();
+
+  const udpateUserMutation = useMutation({
+    mutationFn: () => {
+      return axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}users/${session.user.user.id}`,
+        newUserData,
+        {
+          headers: {Authorization: `Bearer ${session.user.jwt}`},
+        },
+      );
+    },
+    onSuccess: async () => {
+      await updateSession({
+        ...session,
+        user: {
+          ...session?.user,
+          user: {...session.user.user, ...newUserData},
+          jwt: session.user.jwt,
+        },
+      }).then(() => {
+        toast.success('Data changed successfully!');
+      });
+    },
+  });
+
+  const updateUserDataHandler = () => {
+    udpateUserMutation.mutate();
+  };
 
   const router = useRouter();
 
@@ -21,7 +57,12 @@ const ProfileUpdate = () => {
     {placeholder: 'Email', label: 'Email', type: 'example@mail.com'},
     {placeholder: '(949) 354-2574', label: 'Phone number', type: 'tel'},
   ];
-
+  useEffect(() => {
+    if (session?.user) {
+      setUserData(session.user.user);
+    }
+    console.log(session);
+  }, [session]);
   return (
     <>
       <Head>
@@ -48,17 +89,80 @@ const ProfileUpdate = () => {
               Welcome back! Please enter your details to log into your account.
             </Typography>
             <Box sx={styles.form}>
-              {formItems.map(input => (
-                <Box sx={styles.item} key={input.label}>
+              <Box component="form" autoComplete="off">
+                <Box sx={styles.item}>
                   <TextField
                     fullWidth
                     size={styles.size}
-                    placeholder={input.placeholder}
-                    label={input.label}
-                    type={input.type}
+                    placeholder={userData.firstName}
+                    label="Name"
+                    type="text"
+                    onChange={e => {
+                      setNewUserData(data => ({
+                        ...data,
+                        firstName: e.target.value,
+                      }));
+                    }}
                   />
                 </Box>
-              ))}
+                <Box sx={styles.item}>
+                  <TextField
+                    fullWidth
+                    size={styles.size}
+                    placeholder={userData.lastName}
+                    label="Surname"
+                    type="text"
+                    onChange={e => {
+                      setNewUserData(data => ({
+                        ...data,
+                        lastName: e.target.value,
+                      }));
+                    }}
+                  />
+                </Box>
+                <Box sx={styles.item}>
+                  <TextField
+                    fullWidth
+                    size={styles.size}
+                    placeholder={userData.email}
+                    label="Email"
+                    type="email"
+                    disabled
+                  />
+                </Box>
+                <Box sx={styles.item}>
+                  <TextField
+                    fullWidth
+                    size={styles.size}
+                    placeholder={userData.phoneNumber}
+                    label="Phone number"
+                    type="text"
+                    onChange={e => {
+                      setNewUserData(data => ({
+                        ...data,
+                        phoneNumber: e.target.value,
+                      }));
+                    }}
+                  />
+                </Box>
+                <Box sx={styles.saveChangesBox}>
+                  <Button
+                    disabled={
+                      //TODO add validation logic
+                      udpateUserMutation.isLoading ||
+                      (!newUserData?.firstName?.trim() &&
+                        !newUserData?.lastName?.trim() &&
+                        !newUserData?.phoneNumber?.trim())
+                    }
+                    type="button"
+                    onClick={updateUserDataHandler}
+                    size={styles.size}
+                    sx={styles.saveChangesBtn}
+                  >
+                    Save changes
+                  </Button>
+                </Box>
+              </Box>
             </Box>
           </Box>
         </Box>
