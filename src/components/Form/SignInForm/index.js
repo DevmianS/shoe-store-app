@@ -37,17 +37,16 @@ const SignInForm = () => {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
-  //const {data: session, status} = useSession();
-  //In session is the user data
-
   const [loading, setLoading] = useState(false);
 
   const checkErrorEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailRegex.test(email)) {
       setEmailError(false);
+      return false;
     } else {
       setEmailError(true);
+      return true;
     }
   };
 
@@ -55,8 +54,10 @@ const SignInForm = () => {
     const emailRegex = /^\S{8,}$/;
     if (emailRegex.test(password)) {
       setPasswordError(false);
+      return false;
     } else {
       setPasswordError(true);
+      return true;
     }
   };
 
@@ -64,23 +65,21 @@ const SignInForm = () => {
     event.preventDefault();
     setLoading(true);
     await router.prefetch('/');
-    checkErrorEmail();
-    checkErrorPassword();
     console.log('handleSubmit');
-    if (!emailError && !passwordError) {
+    if (!checkErrorEmail() && !checkErrorPassword()) {
       const user = {
         identifier: email,
         password: password,
       };
-      const res = await signIn('credentials', {
+      const {ok, error} = await signIn('credentials', {
         ...user,
         redirect: false,
       });
-      if (res.ok) {
+      if (ok) {
         executeSucces('Successfully logged in.');
         router.push('/');
       } else {
-        executeError(JSON.stringify(res.error));
+        executeError(error);
       }
     } else {
       emailError && executeError('The email is wrong. Please write it again.');

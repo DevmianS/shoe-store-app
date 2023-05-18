@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import {getServerSession} from 'next-auth/next';
 
-import {Typography, Box, Stack} from '@mui/material';
+import {Typography, Box, Stack, Skeleton} from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
 
@@ -15,9 +15,10 @@ import TopBanner from '@/components/UI/TopBanner';
 
 import useProducts from '@/hooks/useProducts';
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
+import { SkeletonProducts } from '@/utils/utils';
 
 const Profile = () => {
-  const {products} = useProducts();
+  const {products, isLoading} = useProducts();
   return (
     <>
       <Head>
@@ -54,6 +55,8 @@ const Profile = () => {
               flexWrap="wrap"
               margin={{sm: '0 -8px', md: '0 -24px'}}
             >
+              {isLoading && SkeletonProducts()}
+
               {products &&
                 products.map(product => {
                   const {id, attributes} = product;

@@ -18,7 +18,7 @@ const Banner = ({children, src}) => {
       />
       <Box sx={styles.right}>
         <Box sx={styles.rightTop} />
-        <Box sx={styles.rightBot}>{children}</Box>
+        <Box sx={{...styles.rightBot, padding: '30px'}}>{children}</Box>
       </Box>
     </Box>
   );

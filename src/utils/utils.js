@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {Skeleton} from '@mui/material';
 
 export const getStuff = async type => {
   console.log('getStuff:', type);
@@ -38,3 +39,17 @@ export const registerNewUser = async userObj => {
 //   );
 //   return data;
 // };
+
+export const SkeletonProducts = () => {
+  return Array(20)
+    .fill()
+    .map((_, index) => (
+      <Skeleton
+        key={index}
+        variant="rectangular"
+        width={300}
+        height={300}
+        sx={{margin: '25px'}}
+      />
+    ));
+};
