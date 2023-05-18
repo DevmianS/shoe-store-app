@@ -13,9 +13,13 @@ import ProductCard from '@/components/UI/ProductCard';
 import TopBanner from '@/components/UI/TopBanner';
 import Button from '@/components/UI/Button';
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
+import AvatarStatic from '@/components/UI/AvatarStatic';
+import {rwdValue} from '@/utils/theme';
+import useUser from '@/hooks/useUser';
 
 const MyProducts = ({productsList}) => {
   const {myProducts: styles} = useOwnStyles();
+  const {name} = useUser();
   return (
     <>
       <Head>
@@ -26,9 +30,35 @@ const MyProducts = ({productsList}) => {
           <SideBar />
           <Box sx={styles.header}>
             <TopBanner imgPath={bannerImg.src} />
-            <AvatarStaticLayout />
-            <Typography variant="h1" component="h1" sx={styles.h1}>
-              My products
+            <Stack
+              direction="row"
+              alignItems="end"
+              sx={{
+                ml: {xl: '70px', md: '50px', sm: '30px', xs: '30px'},
+                mb: '50px',
+                mt: '-30px',
+              }}
+            >
+              <AvatarStatic
+                variant="medium"
+                sx={{
+                  marginRight: rwdValue(5, 15),
+                  border: '4px solid white',
+                  zIndex: 2,
+                }}
+                username={name}
+              />
+              <Box>
+                <Typography variant="body2" component="h3">
+                  {name}
+                </Typography>
+                <Typography color="text.tetriary" fontSize={15} mb="12px">
+                  1 374 bonus points
+                </Typography>
+              </Box>
+            </Stack>
+            <Typography variant="h1" component="h1" mb="40px">
+              Last viewed products
             </Typography>
             <Box sx={styles.productsRow}>
               {productsList &&
