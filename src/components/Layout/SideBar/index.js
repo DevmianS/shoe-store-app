@@ -15,7 +15,7 @@ export default function SideBar({children}) {
   return (
     <Box sx={styles}>
       <Stack aria-label="user actions">
-        <AvatarStaticLayout />
+        <AvatarStaticLayout variant="card" />
         <List>
           <ListItem
             name="My products"

@@ -11,10 +11,10 @@ import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import ProductCard from '@/components/UI/ProductCard';
 import TopBanner from '@/components/UI/TopBanner';
-import AvatarStatic from '@/components/UI/AvatarStatic';
 import Button from '@/components/UI/Button';
+import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 
-const MyProducts = ({userName, productsList}) => {
+const MyProducts = ({productsList}) => {
   const {myProducts: styles} = useOwnStyles();
   return (
     <>
@@ -26,15 +26,7 @@ const MyProducts = ({userName, productsList}) => {
           <SideBar />
           <Box sx={styles.header}>
             <TopBanner imgPath={bannerImg.src} />
-            <Stack sx={styles.avatarWrapper}>
-              <AvatarStatic variant="medium" sx={styles.avatar} />
-              <Box>
-                <Typography variant="body2" component="h3" sx={styles.name}>
-                  {userName || 'Jane Meldrum'}
-                </Typography>
-                <Typography sx={styles.points}>1 374 bonus points</Typography>
-              </Box>
-            </Stack>
+            <AvatarStaticLayout />
             <Typography variant="h1" component="h1" sx={styles.h1}>
               My products
             </Typography>
