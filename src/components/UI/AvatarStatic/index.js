@@ -1,12 +1,9 @@
 import {rwdValue} from '@/utils/theme';
-import {Avatar, Box} from '@mui/material';
+import {Avatar, Box, Link} from '@mui/material';
 import useOwnStyles from '@/utils/styles';
 
-const AvatarStatic = ({username, variant = 'medium', sx}) => {
+const AvatarStatic = ({userName, variant = 'medium', sx}) => {
   const {UI: styles} = useOwnStyles();
-  /* placeholders to be changed to redux states */
-  const srcPlaceholder = '/';
-  const altPlaceholder = username || 'Jane Meldrum';
 
   const size =
     variant === 'small'
@@ -33,16 +30,31 @@ const AvatarStatic = ({username, variant = 'medium', sx}) => {
     borderRadius: '50%',
   };
 
-  const nameSplit = altPlaceholder.split(' ');
-  const initials = `${nameSplit[0][0]}${nameSplit[1][0]}`;
+  let userInitials = null;
+  if (userName?.includes(' ')) {
+    const [firstName, lastName] = userName?.split(' ');
+    userInitials = `${firstName[0]}${lastName[0]}`.toLocaleUpperCase();
+  } else {
+    userInitials = userName?.substring(0, 2).toLocaleUpperCase();
+  }
 
-  return (
-    <Box component="a" href="/profile" sx={{...avatarVariant, ...sx}}>
-      <Avatar src={srcPlaceholder} alt={altPlaceholder} sx={styles.avatar}>
-        {initials}
-      </Avatar>
-    </Box>
-  );
+  if (variant === 'small') {
+    return (
+      <Link component="a" href="/profile" sx={{...avatarVariant, ...sx}}>
+        <Avatar src={'/'} sx={styles.avatarLink}>
+          {userInitials}
+        </Avatar>
+      </Link>
+    );
+  } else {
+    return (
+      <Box sx={{...avatarVariant, ...sx}}>
+        <Avatar src={'/'} sx={styles.avatar}>
+          {userInitials}
+        </Avatar>
+      </Box>
+    );
+  }
 };
 
 export default AvatarStatic;
