@@ -1,9 +1,11 @@
 import {rwdValue} from '@/utils/theme';
 import {Avatar, Box, Link} from '@mui/material';
 import useOwnStyles from '@/utils/styles';
+import useUser from '@/hooks/useUser';
 
 const AvatarStatic = ({userName, variant = 'medium', sx}) => {
   const {UI: styles} = useOwnStyles();
+
 
   const size =
     variant === 'small'
@@ -30,31 +32,16 @@ const AvatarStatic = ({userName, variant = 'medium', sx}) => {
     borderRadius: '50%',
   };
 
-  let userInitials = null;
-  if (userName?.includes(' ')) {
-    const [firstName, lastName] = userName?.split(' ');
-    userInitials = `${firstName[0]}${lastName[0]}`.toLocaleUpperCase();
-  } else {
-    userInitials = userName?.substring(0, 2).toLocaleUpperCase();
-  }
+  const {initials,name} = useUser()
 
-  if (variant === 'small') {
-    return (
-      <Link component="a" href="/profile" sx={{...avatarVariant, ...sx}}>
-        <Avatar src={'/'} sx={styles.avatarLink}>
-          {userInitials}
-        </Avatar>
-      </Link>
-    );
-  } else {
-    return (
-      <Box sx={{...avatarVariant, ...sx}}>
-        <Avatar src={'/'} sx={styles.avatar}>
-          {userInitials}
-        </Avatar>
-      </Box>
-    );
-  }
+  return (
+    <Box component="a" href="/profile" sx={{...avatarVariant, ...sx}}>
+      <Avatar alt={name} sx={styles.avatar}>
+        {initials}
+      </Avatar>
+    </Box>
+  );
+
 };
 
 export default AvatarStatic;
