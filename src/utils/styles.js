@@ -131,6 +131,10 @@ const useOwnStyles = () => {
     avatar: {
       width: '100%',
       height: '100%',
+    },
+    avatarLink: {
+      width: '100%',
+      height: '100%',
       transition: '.3s',
       '&:hover': {
         boxShadow: `0 0 3px 1px grey`,
@@ -412,7 +416,24 @@ const useOwnStyles = () => {
     accordionTitle: {fontWeight: 500},
   };
 
-  return {updateProfile, myProducts, sideBar, UI, filters};
+  const avatarLayout = {
+    wrapper: {
+      display: 'flex',
+      flexDirection: 'row',
+      paddingLeft: '40px',
+      alignItems: 'center',
+      marginBottom: '7px',
+      paddingBottom: '32px',
+      borderBottom: '1px solid',
+      borderColor: theme.palette.divider,
+    },
+    name: {
+      color: theme.palette.text.primary,
+      fontSize: 12,
+      fontWeight: 500,
+    },
+  };
 
+  return {updateProfile, myProducts, sideBar, UI, filters, avatarLayout};
 };
 export default useOwnStyles;
