@@ -11,9 +11,6 @@ const queryClient = new QueryClient();
 
 import {Toaster} from 'sonner';
 
-import {Provider} from 'react-redux';
-import {store} from '../reduxStore/store';
-
 import {ToggleProvider} from '@/context/ToggleContext';
 import {SearchProvider} from '@/context/SearchContext';
 

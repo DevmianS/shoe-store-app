@@ -5,11 +5,6 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'nikearprod.vtexassets.com',
-        port: '',
-      },
-      {
-        protocol: 'https',
         hostname: 'shoes-shop-strapi.herokuapp.com',
         port: '',
       },
