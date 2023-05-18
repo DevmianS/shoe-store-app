@@ -100,25 +100,27 @@ export default function ProductCard({title, price, category, imgPath}) {
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
+      alignItems: 'start',
     },
     title: {
       fontSize: rwdValue(10, 22),
       fontWeight: 500,
+      marginBottom: '5px',
     },
     categoryRow: {
-      fontSize: rwdValue(8, 18),
       color: theme.palette.text.secondary,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'start',
       flexDirection: 'row',
       flexWrap: 'wrap',
-      columnGap: '5px',
+
       '& h4': {
+        fontSize: rwdValue(8, 18),
         background: '#B9B8B4',
         padding: '0 5px',
         borderRadius: '10px',
+        margin: '3px',
         color: '#fff',
         '&.Running': {background: '#E16200'},
         '&.Athletic': {background: '#D18D47'},
