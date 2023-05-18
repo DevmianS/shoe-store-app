@@ -2,7 +2,9 @@ import {Stack, Box, List} from '@mui/material';
 import useOwnStyles from '@/utils/styles';
 import {useRouter} from 'next/router';
 import ListItem from '@/components/UI/ListItem';
+import {toast} from 'sonner';
 import AvatarStaticLayout from '../AvatarStaticLayout';
+import {signOut} from 'next-auth/react';
 
 export default function SideBar({children}) {
   const router = useRouter();
@@ -10,9 +12,8 @@ export default function SideBar({children}) {
   const {sideBar: styles} = useOwnStyles();
 
   const handleLogout = () => {
+    signOut();
     toast.success('Logged out successfully.');
-    localStorage.removeItem('user');
-    router.push('/');
   };
   return (
     <Box sx={styles}>
