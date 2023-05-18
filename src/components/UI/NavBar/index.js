@@ -1,8 +1,16 @@
 import Link from 'next/link';
-import {memo, useRef} from 'react';
+import {useRouter} from 'next/router';
+import {memo, useRef, useEffect} from 'react';
 
-
-import {AppBar, Button, IconButton, Stack, Toolbar, Box, Typography} from '@mui/material';
+import {
+  AppBar,
+  Button,
+  IconButton,
+  Stack,
+  Toolbar,
+  Box,
+  Typography,
+} from '@mui/material';
 
 import Cart from '@/components/UI/Cart';
 import Searchbar from '@/components/UI/Searchbar';
@@ -14,17 +22,17 @@ import {useToggle} from '@/context/ToggleContext';
 import NestedList from './allPages';
 import useOwnStyles from '@/utils/styles';
 
-
 const NavBar = () => {
   const {isToggled, toggle} = useToggle();
   const {searchExpanded, setSearchExpanded} = useSearch();
   const searchInputRef = useRef();
+  const router = useRouter();
 
   const {navBar: styles} = useOwnStyles();
 
   const handleFocusInputResponsive = () => {
     setTimeout(() => {
-      ref.current && ref.current.focus();
+      searchInputRef.current && searchInputRef.current.focus();
     }, 100);
     setSearchExpanded(true);
   };
@@ -60,7 +68,7 @@ const NavBar = () => {
             <Searchbar
               searchExpanded={searchExpanded}
               setSearchExpanded={setSearchExpanded}
-              ref={ref}
+              ref={searchInputRef}
             />
             <Box sx={styles.icons}>
               <IconButton size="large" aria-label="Bag" sx={styles.bagIcon}>
@@ -90,7 +98,6 @@ const NavBar = () => {
         </Toolbar>
       </AppBar>
       <Box sx={styles.overlay} onClick={() => setSearchExpanded(false)}></Box>
-
     </>
   );
 };
