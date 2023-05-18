@@ -17,31 +17,7 @@ import Button from '@/components/UI/Button';
 import CartProductItem from '@/components/UI/CartProductItem';
 import SideBar from '@/components/Layout/SideBar';
 
-// Test import
-/* import {useSelector, useDispatch} from 'react-redux';
-import {addProduct, deleteProduct} from '../../features/bagSlice';
- */
-
 const Bag = () => {
-  // Test code
-  /* 
-  const bag = useSelector(state => state.bag);
-  const dispatch = useDispatch();
-
-  const handleAddproduct = product => {
-    dispatch(addProduct(product));
-  };
-  const handleDeleteproduct = id => {
-    dispatch(deleteProduct(id));
-  };
-
-  const testBag = {id: 3, name: 'Jordan 3', price: 99.9};
-
-  useEffect(() => {
-    handleAddproduct(testBag);
-  }, []); 
-  */
-
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
