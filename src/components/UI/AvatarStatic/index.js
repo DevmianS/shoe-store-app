@@ -3,9 +3,8 @@ import {Avatar, Box, Link} from '@mui/material';
 import useOwnStyles from '@/utils/styles';
 import useUser from '@/hooks/useUser';
 
-const AvatarStatic = ({userName, variant = 'medium', sx}) => {
+const AvatarStatic = ({variant = 'medium', sx}) => {
   const {UI: styles} = useOwnStyles();
-
 
   const size =
     variant === 'small'
@@ -32,16 +31,25 @@ const AvatarStatic = ({userName, variant = 'medium', sx}) => {
     borderRadius: '50%',
   };
 
-  const {initials,name} = useUser()
+  const {initials} = useUser();
 
-  return (
-    <Box component="a" href="/profile" sx={{...avatarVariant, ...sx}}>
-      <Avatar alt={name} sx={styles.avatar}>
-        {initials}
-      </Avatar>
-    </Box>
-  );
-
+  if (variant === 'small') {
+    return (
+      <Link component="a" href="/profile" sx={{...avatarVariant, ...sx}}>
+        <Avatar src={'/'} sx={styles.avatarLink}>
+          {initials}
+        </Avatar>
+      </Link>
+    );
+  } else {
+    return (
+      <Box sx={{...avatarVariant, ...sx}}>
+        <Avatar src={'/'} sx={styles.avatar}>
+          {initials}
+        </Avatar>
+      </Box>
+    );
+  }
 };
 
 export default AvatarStatic;

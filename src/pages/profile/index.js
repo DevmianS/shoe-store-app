@@ -13,13 +13,10 @@ import ProductCard from '@/components/UI/ProductCard';
 import bannerImg from '@/assets/banner.jpg';
 import TopBanner from '@/components/UI/TopBanner';
 
-import AvatarStatic from '@/components/UI/AvatarStatic';
-import useUser from '@/hooks/useUser';
 import useProducts from '@/hooks/useProducts';
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 
 const Profile = () => {
-  const {name} = useUser();
   const {products} = useProducts();
   return (
     <>
@@ -48,33 +45,7 @@ const Profile = () => {
             }}
           >
             <TopBanner imgPath={bannerImg.src} />
-            <Stack
-              direction="row"
-              alignItems="end"
-              sx={{
-                ml: {xl: '70px', md: '50px', sm: '30px', xs: '30px'},
-                mb: '50px',
-                mt: '-30px',
-              }}
-            >
-              <AvatarStatic
-                variant="medium"
-                sx={{
-                  marginRight: rwdValue(5, 15),
-                  border: '4px solid white',
-                  zIndex: 2,
-                }}
-                username={name}
-              />
-              <Box>
-                <Typography variant="body2" component="h3">
-                  {name}
-                </Typography>
-                <Typography color="text.tetriary" fontSize={15} mb="12px">
-                  1 374 bonus points
-                </Typography>
-              </Box>
-            </Stack>
+            <AvatarStaticLayout />
             <Typography variant="h1" component="h1" mb="40px">
               Last viewed products
             </Typography>
