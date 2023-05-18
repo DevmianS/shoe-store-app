@@ -1,4 +1,3 @@
-import useOwnStyles from '@/utils/styles';
 import {
   Typography,
   ListItem as MUItem,
@@ -7,9 +6,23 @@ import {
 } from '@mui/material';
 
 export default function ListItem({name, icon, onClick}) {
-  const {UI} = useOwnStyles();
-  const {listItem: styles} = UI;
-
+  const styles = {
+    item: {marginBottom: '8px'},
+    button: {
+      display: 'flex',
+      alignItems: 'center',
+      fontWeight: 500,
+      paddingLeft: '40px',
+      '& i': {fontSize: '20px', marginRight: '15px'},
+    },
+    name: {
+      display: 'flex',
+      alignItems: 'center',
+      width: '100%',
+      fontWeight: 500,
+      color: '#000',
+    },
+  };
   return (
     <MUItem disablePadding sx={styles.item}>
       <ListItemButton sx={styles.button} onClick={onClick}>
