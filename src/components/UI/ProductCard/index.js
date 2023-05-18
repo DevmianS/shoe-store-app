@@ -106,9 +106,26 @@ export default function ProductCard({title, price, category, imgPath}) {
       fontSize: rwdValue(10, 22),
       fontWeight: 500,
     },
-    category: {
+    categoryRow: {
       fontSize: rwdValue(8, 18),
       color: theme.palette.text.secondary,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'start',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      columnGap: '5px',
+      '& h4': {
+        background: '#B9B8B4',
+        padding: '0 5px',
+        borderRadius: '10px',
+        color: '#fff',
+        '&.Running': {background: '#E16200'},
+        '&.Athletic': {background: '#D18D47'},
+        '&.Tennis': {background: '#31C1B0'},
+        '&.Casual': {background: '#92BB41'},
+        '&.Tracking': {background: '#19976A'},
+      },
     },
     iconBtn: {
       width: 28,
@@ -173,17 +190,22 @@ export default function ProductCard({title, price, category, imgPath}) {
               ${price || '100'}
             </Typography>
           </Stack>
-          <Typography sx={styles.category} component="h4">
+          <Stack sx={styles.categoryRow}>
             {typeof imgPath?.src === 'string'
               ? category
               : category.map(cat => {
                   return (
-                    <Typography component="p" key={cat.id}>
+                    <Typography
+                      sx={styles.category}
+                      component="h4"
+                      key={cat.id}
+                      className={cat.attributes.name}
+                    >
                       {cat.attributes.name}
                     </Typography>
                   );
                 })}
-          </Typography>
+          </Stack>
         </Box>
       </Box>
     </Box>
