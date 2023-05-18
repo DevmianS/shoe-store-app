@@ -1,9 +1,4 @@
-import {
-  Typography,
-  ListItem as MUItem,
-  ListItemButton,
-  ListItemText,
-} from '@mui/material';
+import {Typography, ListItem as MUItem, ListItemButton} from '@mui/material';
 
 export default function ListItem({name, icon, onClick}) {
   const styles = {
@@ -12,8 +7,9 @@ export default function ListItem({name, icon, onClick}) {
       display: 'flex',
       alignItems: 'center',
       fontWeight: 500,
+      color: '#000',
       paddingLeft: '40px',
-      '& i': {fontSize: '20px', marginRight: '15px'},
+      '& i': {fontSize: '20px', marginRight: '15px', color: 'text.secondary'},
     },
     name: {
       display: 'flex',
@@ -27,7 +23,9 @@ export default function ListItem({name, icon, onClick}) {
     <MUItem disablePadding sx={styles.item}>
       <ListItemButton sx={styles.button} onClick={onClick}>
         <Typography component="i" className={`icon-${icon}`} />
-        <ListItemText sx={styles.name}>{name}</ListItemText>
+        <Typography component="span" sx={styles.name}>
+          {name}
+        </Typography>
       </ListItemButton>
     </MUItem>
   );
