@@ -1,24 +1,20 @@
-import {Box, Typography} from '@mui/material';
-import React, {useEffect, useRef, useState} from 'react';
-import Button from '../Button';
+import {Box} from '@mui/material';
 
 import RootForm from '@/components/Form/RootForm';
-
 import SignLayout from '@/components/Layout/SignLayout';
-import Image from 'next/image';
+
 import RootMobile from '../RootMobile';
 
 const Root = () => {
+  const styles = {
+    width: '100%',
+    heigth: '100vh',
+    display: {xs: 'none', md: 'flex'},
+    overflow: 'hidden',
+  };
   return (
     <>
-      <Box
-        sx={{
-          width: '100%',
-          heigth: '100vh',
-          display: {xs: 'none', md: 'flex'},
-          overflow: 'hidden',
-        }}
-      >
+      <Box sx={styles}>
         <SignLayout form={<RootForm />} src={`/product8.jpg`} />
       </Box>
       <RootMobile />
