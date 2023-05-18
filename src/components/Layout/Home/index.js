@@ -1,4 +1,11 @@
-import {Typography, Box, Stack, useTheme, useMediaQuery} from '@mui/material';
+import {
+  Typography,
+  Box,
+  Stack,
+  useTheme,
+  useMediaQuery,
+  Skeleton,
+} from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
 
@@ -10,9 +17,10 @@ import bannerImg from '@/assets/banner2.jpg';
 import TopBanner from '@/components/UI/TopBanner';
 import useProducts from '@/hooks/useProducts';
 import AvatarStaticLayout from '../AvatarStaticLayout';
+import {SkeletonProducts} from '@/utils/utils';
 
 const Home = () => {
-  const {products} = useProducts();
+  const {products, isLoading} = useProducts();
 
   console.log('products', products);
 
@@ -45,6 +53,7 @@ const Home = () => {
           flexWrap="wrap"
           margin={{sm: '0 -8px', md: '0 -24px'}}
         >
+          {isLoading && SkeletonProducts()}
           {products &&
             products.map(product => {
               const {id, attributes} = product;

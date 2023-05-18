@@ -23,11 +23,20 @@ export default async function auth(req, res) {
         id: 'credentials',
         credentials: {},
         async authorize(credentials) {
-          const {data: userData} = await axios.post(
-            process.env.NEXT_PUBLIC_NEXTAUTH_URL,
-            credentials,
-          );
-          return userData;
+          try {
+            const {data: userData} = await axios.post(
+              process.env.NEXT_PUBLIC_NEXTAUTH_URL,
+              credentials,
+            );
+            return userData;
+          } catch (error) {
+            // Extract the error message from the server response and throw it
+            const errorMessage = error?.response?.data?.error?.message?.replace(
+              /"/g,
+              '',
+            );
+            throw new Error(errorMessage);
+          }
         },
       }),
     ],

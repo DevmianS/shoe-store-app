@@ -6,6 +6,7 @@ import {
   Button,
   useTheme,
   useMediaQuery,
+  Skeleton,
 } from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
@@ -16,6 +17,7 @@ import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Filters from '@/components/UI/Filters';
 import useProducts from '@/hooks/useProducts';
+import {SkeletonProducts} from '@/utils/utils';
 
 const SearchResults = () => {
   // STYLED COMPONENTS
@@ -23,7 +25,7 @@ const SearchResults = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const {products} = useProducts();
+  const {products, isLoading} = useProducts();
 
   const Row = styled(Box)({
     display: 'flex',
@@ -92,6 +94,7 @@ const SearchResults = () => {
               flexWrap="wrap"
               margin={{sm: '0 -8px', md: '0 -24px'}}
             >
+              {isLoading && SkeletonProducts()}
               {products &&
                 products.map(product => {
                   const {id, attributes} = product;

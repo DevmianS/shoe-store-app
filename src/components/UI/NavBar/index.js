@@ -45,6 +45,7 @@ const NavBar = () => {
 
   return (
     <>
+    
       <Box sx={styles.box} />
       <AppBar sx={styles.appBar}>
         <Toolbar sx={styles.toolBar}>

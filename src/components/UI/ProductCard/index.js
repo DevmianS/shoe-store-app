@@ -40,7 +40,6 @@ export default function ProductCard({title, price, category, imgPath}) {
     }
   };
 
-
   const goToNextImage = () => {
     console.log(
       'next',

@@ -16,7 +16,6 @@ import {
 
 import styles from '@/styles/link.module.css';
 
-
 import {registerNewUser} from '@/utils/utils';
 import {rwdValue} from '@/utils/theme';
 
@@ -41,8 +40,10 @@ const SignUpForm = () => {
     const usernameRegex = /^[a-zA-Z0-9_-]{2,10}$/;
     if (usernameRegex.test(name) && !/\s/.test(name)) {
       setNameError(false);
+      return false;
     } else {
       setNameError(true);
+      return true;
     }
   };
 
@@ -50,8 +51,10 @@ const SignUpForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailRegex.test(email)) {
       setEmailError(false);
+      return false;
     } else {
       setEmailError(true);
+      return true;
     }
   };
 
@@ -59,20 +62,25 @@ const SignUpForm = () => {
     const emailRegex = /^\S{8,}$/;
     if (emailRegex.test(password)) {
       setPasswordError(false);
+      return false;
     } else {
       setPasswordError(true);
+      return true;
     }
   };
 
   const checkErrorConfirm = () => {
-    password === confirmPassword
-      ? setConfirmPasswordError(false)
-      : setConfirmPasswordError(true);
+    if (password === confirmPassword) {
+      setConfirmPasswordError(false);
+      return false;
+    } else {
+      setConfirmPasswordError(true);
+      return true;
+    }
   };
 
   const router = useRouter();
 
-  const [rememberMe, setRememberMe] = useState(true);
 
   const {data, isLoading, isError, isSuccess, error, mutate} = useMutation({
     mutationKey: ['registerNewUser'],
@@ -81,11 +89,12 @@ const SignUpForm = () => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    checkErrorConfirm();
-    checkErrorPassword();
-    checkErrorEmail();
-    checkErrorName();
-    if (!nameError && !passwordError && !emailError && !confirmPasswordError) {
+    if (
+      !checkErrorConfirm() &&
+      !checkErrorPassword() &&
+      !checkErrorEmail() &&
+      !checkErrorName()
+    ) {
       console.log('handleSubmit pass');
       const user = {
         username: name,
@@ -101,20 +110,6 @@ const SignUpForm = () => {
       router.push('/');
     }
   }, [data?.user?.id, router]);
-
-  useEffect(() => {
-    if (rememberMe && name && password) {
-      localStorage.setItem(
-        'logInInfo',
-        JSON.stringify({user: name, password: password}),
-      );
-      console.log('as2d');
-    }
-    if (!rememberMe) {
-      console.log('asd');
-      localStorage.removeItem('logInInfo');
-    }
-  }, [rememberMe, name, password]);
 
   const executeError = message => {
     toast.error(message);
@@ -157,29 +152,6 @@ const SignUpForm = () => {
       executeError(error.response.data.error.message);
     }
   }, [isError, error]);
-
-  useEffect(() => {
-    const localMem = JSON.parse(localStorage.getItem('logInInfo'));
-    setName(localMem?.user || '');
-    setPassword(localMem?.password || '');
-    setRememberMe(localMem ? true : false);
-  }, []);
-
-  useEffect(() => {
-    if (rememberMe && name && password) {
-      localStorage.setItem(
-        'logInInfo',
-        JSON.stringify({user: name, password: password}),
-      );
-      console.log('as2d');
-    }
-    if (!rememberMe) {
-      console.log('asd');
-      localStorage.removeItem('logInInfo');
-    }
-  }, [rememberMe, name, password]);
-
-  console.log('rememberMe', rememberMe);
 
   useEffect(() => {
     setName(JSON.parse(localStorage.getItem('logInInfo'))?.user || '');
@@ -292,40 +264,12 @@ const SignUpForm = () => {
               }
               onBlur={checkErrorConfirm}
             />
-            <Box
-              mb={6}
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
+
+            <Button
+              size={isMobile ? 'small' : 'medium'}
+              sx={{mt: '80px'}}
+              type={'submit'}
             >
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={rememberMe}
-                    onChange={() => setRememberMe(!rememberMe)}
-                  />
-                }
-                label="Remember me"
-                sx={{
-                  fontSize: rwdValue(10, 15),
-                  paddingLeft: '16px',
-                  '& .MuiCheckbox-root': {
-                    width: '16px',
-                    height: '16px',
-                    padding: 0,
-                    marginRight: '4px',
-                  },
-                  '& .MuiFormControlLabel-label': {
-                    fontSize: rwdValue(10, 15),
-                    fontWeight: 500,
-                  },
-                }}
-              />
-            </Box>
-            <Button size={isMobile ? 'small' : 'medium'} type={'submit'}>
               Sign up
             </Button>
           </form>
@@ -345,7 +289,9 @@ const SignUpForm = () => {
           >
             <Typography component="span">Already have an account?</Typography>
             <Typography component="span">
-              <Link href="/sign-in" className={styles.link}>Log in</Link>
+              <Link href="/sign-in" className={styles.link}>
+                Log in
+              </Link>
             </Typography>
           </Box>
         </Box>
