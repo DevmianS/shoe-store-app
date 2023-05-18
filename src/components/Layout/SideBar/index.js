@@ -6,7 +6,9 @@ import AvatarStaticLayout from '../AvatarStaticLayout';
 
 export default function SideBar({children}) {
   const router = useRouter();
+
   const {sideBar: styles} = useOwnStyles();
+
   const handleLogout = () => {
     toast.success('Logged out successfully.');
     localStorage.removeItem('user');
@@ -15,7 +17,7 @@ export default function SideBar({children}) {
   return (
     <Box sx={styles}>
       <Stack aria-label="user actions">
-        <AvatarStaticLayout />
+        <AvatarStaticLayout variant="card" />
         <List>
           <ListItem
             name="My products"

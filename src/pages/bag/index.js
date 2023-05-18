@@ -15,6 +15,7 @@ import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import Button from '@/components/UI/Button';
 import CartProductItem from '@/components/UI/CartProductItem';
+import SideBar from '@/components/Layout/SideBar';
 
 // Test import
 /* import {useSelector, useDispatch} from 'react-redux';
@@ -88,6 +89,7 @@ const Bag = () => {
       </Head>
       <NavBarLayout>
         <ContentWrap>
+          <SideBar />
           <FlexRow>
             <FlexColumnBig>
               <Typography variant="h1" component="h1">
