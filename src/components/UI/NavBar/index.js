@@ -1,15 +1,7 @@
 import Link from 'next/link';
-import {memo, useRef, useState} from 'react';
+import {memo, useRef, useState, useEffect} from 'react';
 
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Stack,
-  Toolbar,
-  Box,
-  Typography,
-} from '@mui/material';
+import {AppBar, Button, IconButton, Stack, Toolbar, Box} from '@mui/material';
 
 import {useToggle} from '@/context/ToggleContext';
 
@@ -18,18 +10,27 @@ import Searchbar from '@/components/UI/Searchbar';
 
 // TEMP
 import NestedList from './allPages';
+import {useRouter} from 'next/router';
 
 const NavBar = () => {
   const [searchExpanded, setSearchExpanded] = useState(false);
   const {isToggled, toggle} = useToggle();
-  const searchInputRef = useRef();
+  const router = useRouter();
+
+  const ref = useRef(null);
 
   const handleFocusInputResponsive = () => {
-    setSearchExpanded(true);
     setTimeout(() => {
-      searchInputRef.current.focus();
+      ref.current && ref.current.focus();
     }, 100);
+    setSearchExpanded(true);
   };
+
+  useEffect(() => {
+    if (router.asPath.includes('search')) {
+      handleFocusInputResponsive();
+    }
+  }, [router]);
 
   return (
     <>
@@ -133,7 +134,7 @@ const NavBar = () => {
             <Searchbar
               searchExpanded={searchExpanded}
               setSearchExpanded={setSearchExpanded}
-              ref={searchInputRef}
+              ref={ref}
             />
             <Stack direction="row" spacing={1}>
               <IconButton
@@ -206,7 +207,7 @@ const NavBar = () => {
           width: '100vw',
           height: '100vh',
           backgroundColor: '#F3F3F3',
-          zIndex: 5,
+          zIndex: 10,
         }}
       ></Box>
     </>
