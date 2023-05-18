@@ -4,7 +4,6 @@ import {useRouter} from 'next/router';
 import ListItem from '@/components/UI/ListItem';
 import {toast} from 'sonner';
 import AvatarStaticLayout from '../AvatarStaticLayout';
-import {toast} from 'sonner';
 import {signOut} from 'next-auth/react';
 
 import Loading from '@/components/UI/Loading';
