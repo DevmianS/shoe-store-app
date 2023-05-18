@@ -11,13 +11,11 @@ const queryClient = new QueryClient();
 
 import {Toaster} from 'sonner';
 
-import {Provider} from 'react-redux';
-import {store} from '../reduxStore/store';
-
 import {ToggleProvider} from '@/context/ToggleContext';
 import {SearchProvider} from '@/context/SearchContext';
 
 const icons_font = localFont({src: '../font/SHOES_STORE.woff'});
+
 export default function App({Component, pageProps}) {
   return (
     <SessionProvider session={pageProps.session}>
