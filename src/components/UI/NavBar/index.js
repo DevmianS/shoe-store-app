@@ -2,7 +2,7 @@ import Link from 'next/link';
 import {memo, useRef} from 'react';
 
 
-import {AppBar, Button, IconButton, Stack, Toolbar, Box} from '@mui/material';
+import {AppBar, Button, IconButton, Stack, Toolbar, Box, Typography} from '@mui/material';
 
 import Cart from '@/components/UI/Cart';
 import Searchbar from '@/components/UI/Searchbar';
