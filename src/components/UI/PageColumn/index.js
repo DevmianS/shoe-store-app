@@ -1,23 +1,23 @@
-import {Box, styled} from '@mui/material';
+import {Box, useTheme} from '@mui/material';
 
-const PageColumn = styled(Box)(({theme}) => ({
-  flex: '0 0 100%',
-  position: 'relative',
-  minHeight: '100%',
-  padding: '0 30px',
-  marginBottom: '30px',
-  '& img': {
-    height: '100%',
-    maxHeight: '60vh',
-    width: '100%',
-    objectFit: 'cover',
-    objectPosition: 'top center',
-  },
-  [theme.breakpoints.up('md')]: {
-    flex: '0 0 50%',
+const PageColumn = ({children, sx}) => {
+  const theme = useTheme();
+  const isDesktop = theme.breakpoints.up('md');
+
+  const pageColStyles = {
+    flex: `0 0 ${isDesktop ? '100%' : '50%'}`,
+    position: 'relative',
+    minHeight: '100%',
+    padding: '0 30px',
+    marginBottom: '30px',
     '& img': {
-      objectFit: 'contain',
+      height: '100%',
+      maxHeight: '60vh',
+      width: '100%',
+      objectFit: isDesktop ? 'cover' : 'contain',
+      objectPosition: 'top center',
     },
-  },
-}));
+  };
+  return <Box sx={{...pageColStyles, sx}}>{children}</Box>;
+};
 export default PageColumn;
