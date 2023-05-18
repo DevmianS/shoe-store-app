@@ -17,43 +17,12 @@ import bannerImg from '@/assets/banner.jpg';
 import TopBanner from '@/components/UI/TopBanner';
 
 import AvatarStatic from '@/components/UI/AvatarStatic';
+import useUser from '@/hooks/useUser';
+import useProducts from '@/hooks/useProducts';
 
 const Profile = ({userName}) => {
-  // we can recieve COUNT properties from REDUX
-  const profileItemsList = [
-    {name: 'My orders', icon: 'bag', click: null},
-    {name: 'Wish list', icon: 'plus-element', click: null, count: 2},
-    {name: 'Newsletters', icon: 'newsletters', click: null},
-    {name: 'My wallet', icon: 'wallet', click: null},
-    {name: 'My bonus account', icon: 'bonus-account', click: null},
-    {name: 'Premium subscription', icon: 'medal-star', click: null},
-    {name: 'My feedback', icon: 'star', click: null},
-    {name: 'Settings', icon: 'setting', click: null, count: 1},
-    {name: 'Log out', icon: 'logout', click: null},
-  ];
-  const Column = styled(Box)(({theme}) => ({
-    [theme.breakpoints.up('lg')]: {
-      flex: '0 0 33%',
-    },
-    [theme.breakpoints.between('md', 'lg')]: {
-      flex: '0 0 50%',
-      padding: '0 15px',
-      marginBottom: '15px',
-    },
-    [theme.breakpoints.down('md')]: {
-      flex: '0 0 50%',
-      padding: '0 8px',
-      marginBottom: '16px',
-    },
-    [theme.breakpoints.up('xl')]: {
-      flex: '0 0 25%',
-    },
-    padding: '0 24px',
-    marginBottom: '24px',
-  }));
-
-  const {data, status} = useSession();
-  let name = data?.user?.user?.username;
+  const {name} = useUser();
+  const {products} = useProducts();
   return (
     <>
       <Head>
@@ -97,7 +66,7 @@ const Profile = ({userName}) => {
                   border: '4px solid white',
                   zIndex: 2,
                 }}
-                username={name && name}
+                username={name}
               />
               <Box>
                 <Typography variant="body2" component="h3">
@@ -116,17 +85,19 @@ const Profile = ({userName}) => {
               flexWrap="wrap"
               margin={{sm: '0 -8px', md: '0 -24px'}}
             >
-              {mockupProducts.map(product => {
-                return (
-                  <ProductCard
-                    key={product.id}
-                    title={product.attributes.name}
-                    category={product.attributes.category}
-                    price={product.attributes.price}
-                    imgPath={product.attributes.image}
-                  />
-                );
-              })}
+              {products &&
+                products.map(product => {
+                  const {id, attributes} = product;
+                  return (
+                    <ProductCard
+                      key={id}
+                      title={attributes.name}
+                      price={attributes.price}
+                      imgPath={attributes.images.data}
+                      category={attributes.categories.data}
+                    />
+                  );
+                })}
             </Box>
           </Box>
         </Box>

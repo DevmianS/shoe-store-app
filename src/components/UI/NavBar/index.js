@@ -35,7 +35,7 @@ const NavBar = () => {
   const handleFocusInputResponsive = () => {
     setTimeout(() => {
       ref.current && ref.current.focus();
-    }, 0);
+    }, 100);
     setSearchExpanded(true);
   };
 

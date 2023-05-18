@@ -15,11 +15,11 @@ import {toast} from 'sonner';
 import {signOut, useSession} from 'next-auth/react';
 
 import Loading from '../Loading';
+import useUser from '@/hooks/useUser';
 
 const NavbarMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [color, setColor] = useState('#FE645E');
 
   const router = useRouter();
 
@@ -48,15 +48,9 @@ const NavbarMenu = () => {
 
   const handleDarkModeToggle = () => {
     setIsDarkMode(!isDarkMode);
-    // Handle dark mode toggle logic
   };
 
-  const {data, status} = useSession();
-  let name = data?.user?.user?.username;
-  let initials;
-  if (name) {
-    initials = name.substring(0, 2).toUpperCase();
-  }
+  const {initials} = useUser();
 
   return (
     <>
@@ -67,7 +61,7 @@ const NavbarMenu = () => {
           border: '1px solid black',
           boxShadow: '0px 0px 7px black',
         }}
-        style={{backgroundColor: color}}
+        style={{backgroundColor: '#FE645E'}}
         onClick={handleClick}
       >
         {initials}

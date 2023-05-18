@@ -19,56 +19,17 @@ import ProductCard from '@/components/UI/ProductCard';
 import bannerImg from '@/assets/banner2.jpg';
 import TopBanner from '@/components/UI/TopBanner';
 import AvatarStatic from '@/components/UI/AvatarStatic';
-import {useSession} from 'next-auth/react';
-import {useQuery} from '@tanstack/react-query';
+import useProducts from '@/hooks/useProducts';
+import useUser from '@/hooks/useUser';
 
-import axios from 'axios';
-
-const Home = ({userName}) => {
+const Home = () => {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
-  const Column = styled(Box)(({theme}) => ({
-    [theme.breakpoints.up('lg')]: {
-      flex: '0 0 33%',
-    },
-    [theme.breakpoints.between('md', 'lg')]: {
-      flex: '0 0 50%',
-      padding: '0 15px',
-      marginBottom: '15px',
-    },
-    [theme.breakpoints.down('md')]: {
-      flex: '0 0 50%',
-      padding: '0 8px',
-      marginBottom: '16px',
-    },
-    [theme.breakpoints.up('xl')]: {
-      flex: '0 0 25%',
-    },
-    padding: '0 24px',
-    marginBottom: '24px',
-  }));
+  const {products} = useProducts();
+  const {name} = useUser();
 
-  const {
-    data: products,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['products'],
-    queryFn: async () => {
-      const {data} = await axios.get(
-        'https://shoes-shop-strapi.herokuapp.com/api/products',
-      );
-      console.log('axios rta: ', data);
-      return data;
-    },
-  });
-
-  console.log('products: ', products);
-
-  const {data, status} = useSession();
-  const name = data?.user?.user?.username;
+  console.log('products', products);
 
   return (
     <Box
@@ -102,7 +63,7 @@ const Home = ({userName}) => {
               border: '4px solid white',
               zIndex: 2,
             }}
-            username={name && name}
+            username={name}
           />
           <Box>
             <Typography
@@ -133,17 +94,19 @@ const Home = ({userName}) => {
           flexWrap="wrap"
           margin={{sm: '0 -8px', md: '0 -24px'}}
         >
-          {mockupProducts.map(product => {
-            return (
-              <ProductCard
-                key={product.id}
-                title={product.attributes.name}
-                category={product.attributes.category}
-                price={product.attributes.price}
-                imgPath={product.attributes.image}
-              />
-            );
-          })}
+          {products &&
+            products.map(product => {
+              const {id, attributes} = product;
+              return (
+                <ProductCard
+                  key={id}
+                  title={attributes.name}
+                  price={attributes.price}
+                  imgPath={attributes.images.data}
+                  category={attributes.categories.data}
+                />
+              );
+            })}
         </Box>
       </Box>
     </Box>
