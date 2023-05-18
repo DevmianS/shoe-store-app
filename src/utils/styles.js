@@ -55,6 +55,8 @@ const useOwnStyles = () => {
     form: {maxWidth: '450px'},
     item: {marginBottom: rwdValue(25, 50)},
     size: isMobile ? 'small' : 'medium',
+    saveChangesBox: {display: 'flex', justifyContent: 'flex-end'},
+    saveChangesBtn: {width: 'fit-content'},
   };
   // /my-products
   const myProducts = {
@@ -413,6 +415,5 @@ const useOwnStyles = () => {
   };
 
   return {updateProfile, myProducts, sideBar, UI, filters};
-
 };
 export default useOwnStyles;
