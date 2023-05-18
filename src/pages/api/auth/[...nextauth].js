@@ -21,7 +21,7 @@ export default async function auth(req, res) {
         credentials: {},
         async authorize(credentials) {
           const {data: userData} = await axios.post(
-            NEXT_PUBLIC_NEXTAUTH_URL,
+            process.env.NEXT_PUBLIC_NEXTAUTH_URL,
             credentials,
           );
           return userData;

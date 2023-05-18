@@ -14,10 +14,13 @@ import {Toaster} from 'sonner';
 import {Provider} from 'react-redux';
 import {store} from '../reduxStore/store';
 
+import {ToggleProvider} from '@/context/ToggleContext';
+
 const icons_font = localFont({src: '../font/SHOES_STORE.woff'});
 export default function App({Component, pageProps}) {
   return (
     <SessionProvider session={pageProps.session}>
+     <ToggleProvider> 
       <ThemeProvider theme={theme}>
         <style jsx global>{`
           [class^='icon-'],
@@ -41,6 +44,7 @@ export default function App({Component, pageProps}) {
           <Toaster richColors expand={true} position="top-center" closeButton />
         </QueryClientProvider>
       </ThemeProvider>
+    </ToggleProvider>
     </SessionProvider>
   );
 }
