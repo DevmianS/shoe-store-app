@@ -8,16 +8,11 @@ import ProductCard from '@/components/UI/ProductCard';
 
 import bannerImg from '@/assets/banner2.jpg';
 import TopBanner from '@/components/UI/TopBanner';
-import AvatarStatic from '@/components/UI/AvatarStatic';
 import useProducts from '@/hooks/useProducts';
-import useUser from '@/hooks/useUser';
+import AvatarStaticLayout from '../AvatarStaticLayout';
 
 const Home = () => {
-  const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
-
   const {products} = useProducts();
-  const {name} = useUser();
 
   console.log('products', products);
 
@@ -37,41 +32,7 @@ const Home = () => {
         }}
       >
         <TopBanner imgPath={bannerImg.src} />
-        <Stack
-          direction="row"
-          alignItems="end"
-          sx={{
-            marginLeft: rwdValue(20, 50),
-            marginBottom: rwdValue(20, 30),
-            marginTop: isTablet ? '-15px' : '-30px',
-          }}
-        >
-          <AvatarStatic
-            variant="medium"
-            sx={{
-              marginRight: rwdValue(5, 15),
-              border: '4px solid white',
-              zIndex: 2,
-            }}
-            username={name}
-          />
-          <Box>
-            <Typography
-              variant="body2"
-              component="h3"
-              fontSize={rwdValue(14, 20)}
-            >
-              {name}
-            </Typography>
-            <Typography
-              color="text.tetriary"
-              fontSize={rwdValue(12, 15)}
-              mb={isTablet ? 0 : '12px'}
-            >
-              1 374 bonus points
-            </Typography>
-          </Box>
-        </Stack>
+        <AvatarStaticLayout />
         <Typography
           variant="h1"
           component="h1"

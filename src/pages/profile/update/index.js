@@ -8,9 +8,9 @@ import {Typography, Box, Stack, TextField} from '@mui/material';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
+import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 
 import Button from '@/components/UI/Button';
-import AvatarStatic from '@/components/UI/AvatarStatic';
 import {signIn, signOut, useSession} from 'next-auth/react';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
@@ -77,7 +77,7 @@ const ProfileUpdate = () => {
               My Profile
             </Typography>
             <Stack sx={styles.avatarRow}>
-              <AvatarStatic variant="large" sx={styles.avatar} />
+              <AvatarStaticLayout variant="avatar" />
               <Box>
                 <Button size={styles.size} outlined sx={styles.btn}>
                   Change photo
