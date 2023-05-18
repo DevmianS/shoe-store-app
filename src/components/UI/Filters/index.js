@@ -7,21 +7,58 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
+  useTheme,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import useOwnStyles from '@/utils/styles';
 
-export default function Filters() {
-  const {filters: styles} = useOwnStyles();
+export default function Filters({filterResult, filterCategory}) {
+  const theme = useTheme();
+  const styles = {
+    wrapper: {
+      display: 'flex',
+      flexDirection: 'col',
+      width: 320,
+      paddingLeft: '40px',
+      alignItems: 'flex-start',
+      gap: 1,
+      marginBottom: '7px',
+      borderBottom: '1px solid',
+      borderColor: theme.palette.divider,
+    },
+    accordion: {
+      width: '100%',
+    },
+    accordionDetails: {
+      padding: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      fontSize: 16,
+      fontWeight: 400,
+      paddingBottom: '32px',
+    },
+    accordionDetailsAlt: {
+      padding: 0,
+      display: 'flex',
+      fontSize: 16,
+      fontWeight: 400,
+      paddingBottom: '32px',
+      flexDirection: 'row',
+      gap: 1,
+      alignItems: 'center',
+    },
+    accordionSummary: {padding: 0},
+    accordionTitle: {fontWeight: 500},
+    accordionSubTitle: {fontSize: 25},
+  };
 
   return (
     <>
       <Stack sx={styles.wrapper}>
         <Typography variant="body5" component="p">
-          Shoes/Air Force 1
+          {filterCategory || 'Shoes/Air Force 1'}
         </Typography>
-        <Typography variant="h2" sx={{fontSize: 25}} component="h2">
-          Air Force 1 (137)
+        <Typography variant="h2" sx={styles.accordionSubTitle} component="h2">
+          {filterResult || 'Nike (7)'}
         </Typography>
         <Accordion sx={styles.accordion} elevation={0}>
           <AccordionSummary
