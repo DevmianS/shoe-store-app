@@ -18,32 +18,12 @@ import ProductCard from '@/components/UI/ProductCard';
 
 import bannerImg from '@/assets/banner2.jpg';
 import TopBanner from '@/components/UI/TopBanner';
-import AvatarStatic from '@/components/UI/AvatarStatic';
+import AvatarStaticLayout from '../AvatarStaticLayout';
 
-const Home = ({userName}) => {
+const Home = () => {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
-  const Column = styled(Box)(({theme}) => ({
-    [theme.breakpoints.up('lg')]: {
-      flex: '0 0 33%',
-    },
-    [theme.breakpoints.between('md', 'lg')]: {
-      flex: '0 0 50%',
-      padding: '0 15px',
-      marginBottom: '15px',
-    },
-    [theme.breakpoints.down('md')]: {
-      flex: '0 0 50%',
-      padding: '0 8px',
-      marginBottom: '16px',
-    },
-    [theme.breakpoints.up('xl')]: {
-      flex: '0 0 25%',
-    },
-    padding: '0 24px',
-    marginBottom: '24px',
-  }));
 
   return (
     <Box
@@ -61,40 +41,7 @@ const Home = ({userName}) => {
         }}
       >
         <TopBanner imgPath={bannerImg.src} />
-        <Stack
-          direction="row"
-          alignItems="end"
-          sx={{
-            marginLeft: rwdValue(20, 50),
-            marginBottom: rwdValue(20, 30),
-            marginTop: isTablet ? '-15px' : '-30px',
-          }}
-        >
-          <AvatarStatic
-            variant="medium"
-            sx={{
-              marginRight: rwdValue(5, 15),
-              border: '4px solid white',
-              zIndex: 2,
-            }}
-          />
-          <Box>
-            <Typography
-              variant="body2"
-              component="h3"
-              fontSize={rwdValue(14, 20)}
-            >
-              {userName || 'Jane Meldrum'}
-            </Typography>
-            <Typography
-              color="text.tetriary"
-              fontSize={rwdValue(12, 15)}
-              mb={isTablet ? 0 : '12px'}
-            >
-              1 374 bonus points
-            </Typography>
-          </Box>
-        </Stack>
+        <AvatarStaticLayout />
         <Typography
           variant="h1"
           component="h1"
