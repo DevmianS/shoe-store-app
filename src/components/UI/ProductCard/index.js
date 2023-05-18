@@ -101,6 +101,7 @@ export default function ProductCard({title, price, category, imgPath}) {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'start',
+      gap: '5px',
     },
     title: {
       fontSize: rwdValue(10, 22),
@@ -116,9 +117,9 @@ export default function ProductCard({title, price, category, imgPath}) {
       flexWrap: 'wrap',
 
       '& h4': {
-        fontSize: rwdValue(8, 18),
+        fontSize: rwdValue(7, 16),
         background: '#B9B8B4',
-        padding: '0 5px',
+        padding: '3px 12px',
         borderRadius: '10px',
         margin: '3px',
         color: '#fff',
