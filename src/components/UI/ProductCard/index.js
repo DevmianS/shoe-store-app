@@ -124,11 +124,13 @@ export default function ProductCard({title, price, category, imgPath}) {
       opacity: 0,
       transition: '0.3s all',
       '&:disabled': {backgroundColor: 'lightgrey', borderColor: 'lightgrey'},
-      '&:hover': {
-        backgroundColor: '#fe645e',
-        borderColor: '#fe645e',
-        color: '#fff',
-      },
+      '&:hover': isDesktop
+        ? {
+            backgroundColor: '#fe645e',
+            borderColor: '#fe645e',
+            color: '#fff',
+          }
+        : {},
     },
   };
   if (!imgPath) {
