@@ -19,8 +19,9 @@ import TopBanner from '@/components/UI/TopBanner';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 import useUser from '@/hooks/useUser';
 import useProducts from '@/hooks/useProducts';
+import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 
-const Profile = ({userName}) => {
+const Profile = () => {
   const {name} = useUser();
   const {products} = useProducts();
   return (
@@ -77,6 +78,7 @@ const Profile = ({userName}) => {
                 </Typography>
               </Box>
             </Stack>
+            <AvatarStaticLayout />
             <Typography variant="h1" component="h1" mb="40px">
               Last viewed products
             </Typography>

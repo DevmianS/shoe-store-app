@@ -1,16 +1,6 @@
-import {useRouter} from 'next/router';
-
-import {
-  Typography,
-  styled,
-  Box,
-  Stack,
-  useTheme,
-  useMediaQuery,
-} from '@mui/material';
+import {Typography, Box, Stack, useTheme, useMediaQuery} from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
-import mockupProducts from '@/utils/data';
 
 import SideBar from '@/components/Layout/SideBar';
 
@@ -21,6 +11,7 @@ import TopBanner from '@/components/UI/TopBanner';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 import useProducts from '@/hooks/useProducts';
 import useUser from '@/hooks/useUser';
+import AvatarStaticLayout from '../AvatarStaticLayout';
 
 const Home = () => {
   const theme = useTheme();

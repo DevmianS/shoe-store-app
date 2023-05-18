@@ -2,11 +2,14 @@ import {Stack, Box, List} from '@mui/material';
 import useOwnStyles from '@/utils/styles';
 import {useRouter} from 'next/router';
 import ListItem from '@/components/UI/ListItem';
+import {toast} from 'sonner';
 import AvatarStaticLayout from '../AvatarStaticLayout';
 import { signOut } from 'next-auth/react';
+import {signOut} from 'next-auth/react';
 
 export default function SideBar({children}) {
   const router = useRouter();
+
   const {sideBar: styles} = useOwnStyles();
 
   const handleLogout = async () => {
@@ -16,11 +19,15 @@ export default function SideBar({children}) {
       toast.success('Logged out successfully.');
       router.push('/sign-in');
       setLoading(false);
+
+  const handleLogout = () => {
+    signOut();
+    toast.success('Logged out successfully.');
   };
   return (
     <Box sx={styles}>
       <Stack aria-label="user actions">
-        <AvatarStaticLayout />
+        <AvatarStaticLayout variant="card" />
         <List>
           <ListItem
             name="My products"

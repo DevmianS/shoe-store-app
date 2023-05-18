@@ -1,4 +1,5 @@
-import React, {useEffect, useRef, memo} from 'react';
+import Link from 'next/link';
+import {memo, useRef, useState} from 'react';
 
 import {
   AppBar,
@@ -7,28 +8,21 @@ import {
   Stack,
   Toolbar,
   Box,
-  Typography,
 } from '@mui/material';
 
-import Link from 'next/link';
+import {useToggle} from '@/context/ToggleContext';
 
-import Cart from '../Cart';
+import Cart from '@/components/UI/Cart';
+import Searchbar from '@/components/UI/Searchbar';
 
-import {useState} from 'react';
-
-import NavbarMenu from '../AvatarNav';
-
-import {buttonsArray, buttonsArrayResponsive, LinkStyles} from './utils';
+// TEMP
 import NestedList from './allPages';
-
 import {useRouter} from 'next/router';
-import Searchbar from '../Searchbar';
 
 const NavBar = () => {
-  const router = useRouter();
-
-  const [mobileMenu, setMobileMenu] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
+  const {isToggled, toggle} = useToggle();
+  const router = useRouter();
 
   const ref = useRef(null);
 
@@ -47,16 +41,20 @@ const NavBar = () => {
 
   return (
     <>
+      <style jsx global>{`
+        body {
+          overflow: ${isToggled ? 'hidden' : 'visible'};
+        }
+      `}</style>
       <Box
         sx={{
+          width: '100%',
           minHeight: {
             xs: '60px',
             md: '120px',
           },
-          width: '100%',
         }}
-      ></Box>
-
+      />
       <AppBar
         position="static"
         sx={{
@@ -85,14 +83,10 @@ const NavBar = () => {
               xs: '60px',
               md: '120px',
             },
+            '& a': {color: '#000'},
           }}
         >
-          <Link
-            href="/"
-            style={{
-              ...LinkStyles,
-            }}
-          >
+          <Link href="/">
             <IconButton
               size="large"
               edge="start"
@@ -127,23 +121,12 @@ const NavBar = () => {
             direction="row"
             spacing={2}
             sx={{
-              display: {
-                xs: 'none',
-                md: searchExpanded ? 'none' : 'flex',
-              },
+              display: searchExpanded ? 'none' : 'flex',
             }}
           >
-            {buttonsArray.map(button => (
-              <Link
-                key={button.text}
-                href={`/${button.link}`}
-                style={{
-                  ...LinkStyles,
-                }}
-              >
-                <Button color="inherit">{button.text}</Button>
-              </Link>
-            ))}
+            <Link href="/">
+              <Button sx={{color: '#000'}}>Products</Button>
+            </Link>
             <NestedList />
           </Stack>
           <Box
@@ -158,7 +141,7 @@ const NavBar = () => {
             <Searchbar
               searchExpanded={searchExpanded}
               setSearchExpanded={setSearchExpanded}
-              ref={ref}
+              ref={searchInputRef}
             />
             <Stack direction="row" spacing={1}>
               <IconButton
@@ -170,17 +153,7 @@ const NavBar = () => {
               >
                 <Cart count={5} />
               </IconButton>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="Bag"
-                sx={{
-                  display: {xs: 'none', md: searchExpanded ? 'none' : 'flex'},
-                }}
-              >
-                <NavbarMenu name="brunito" />
-              </IconButton>
+
               <IconButton
                 size="large"
                 onClick={handleFocusInputResponsive}
@@ -223,7 +196,7 @@ const NavBar = () => {
                   },
                   marginInline: '30px',
                 }}
-                onClick={() => setMobileMenu(true)}
+                onClick={toggle}
               >
                 <i className={`icon-menu `}></i>
               </IconButton>
@@ -233,8 +206,8 @@ const NavBar = () => {
       </AppBar>
       <Box
         sx={{
-          display: searchExpanded || mobileMenu ? 'flex' : 'none',
-          opacity: searchExpanded || mobileMenu ? '0.85' : '0',
+          display: searchExpanded || isToggled ? 'flex' : 'none',
+          opacity: searchExpanded || isToggled ? '0.85' : '0',
           position: 'fixed',
           top: '0',
           right: '0',
@@ -244,83 +217,6 @@ const NavBar = () => {
           zIndex: 5,
         }}
       ></Box>
-
-      <Box
-        sx={{
-          transform: mobileMenu ? '' : 'translateX(1000px)',
-          position: 'fixed',
-          top: '0',
-          right: '0',
-          width: '270px',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          backgroundColor: '#fff',
-          borderLeft: '1px solid #eaecf0',
-          transition: 'all 0.5s ease-in-out',
-          zIndex: '300',
-        }}
-      >
-        <Button
-          color="inherit"
-          onClick={() => setMobileMenu(false)}
-          sx={{
-            width: '100%',
-            height: '60px',
-            padding: '10px',
-            display: 'flex',
-            justifyContent: 'flex-end',
-            color: '#000',
-          }}
-        >
-          <Box className="icon-close" sx={{fontSize: '25px'}}></Box>
-        </Button>
-        <Stack
-          direction="column"
-          spacing={1}
-          sx={{
-            width: '100%',
-            height: '100%',
-            textAlign: 'start',
-            padding: '30px',
-          }}
-        >
-          {buttonsArrayResponsive.map(button => (
-            <Link
-              color="inherit"
-              href={`/${button.link}`}
-              style={{
-                ...LinkStyles,
-              }}
-              key={button.text}
-            >
-              <Button
-                color="inherit"
-                sx={{
-                  width: '150px',
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  alignCtems: 'center',
-                  color: '#000',
-                }}
-              >
-                <Box
-                  className={`icon-${button.icon}`}
-                  sx={{fontSize: '25px'}}
-                ></Box>
-
-                <Typography color="inherit" sx={{marginLeft: ' 20px'}}>
-                  {button.text}
-                </Typography>
-              </Button>
-            </Link>
-          ))}
-          {/* TEMP */}
-          <NestedList />
-        </Stack>
-      </Box>
     </>
   );
 };

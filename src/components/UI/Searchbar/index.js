@@ -1,18 +1,23 @@
+import {useRouter} from 'next/router';
 import {forwardRef, useState} from 'react';
 import {Search, SearchIconWrapper, StyledInputBase} from './styles';
 
 const Searchbar = forwardRef(({searchExpanded, setSearchExpanded}, ref) => {
   const [input, setInput] = useState('');
+  const router = useRouter();
 
-  const handleInput = event => {
-    setInput(event.target.value);
+  const handleInput = e => {
+    setInput(e.target.value);
   };
+  const handleSearch = e =>
+    e.key === 'Enter' && router.push(`/search?${e.target.value}`);
 
   return (
     <Search
       onClick={() => setSearchExpanded(true)}
       onBlur={() => setSearchExpanded(false)}
-      onChange={event => handleInput(event)}
+      onChange={handleInput}
+      onKeyDown={handleSearch}
       sx={{
         display: {
           xs: searchExpanded ? 'flex' : 'none',
