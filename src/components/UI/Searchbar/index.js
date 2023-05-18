@@ -6,6 +6,19 @@ const Searchbar = forwardRef(({searchExpanded, setSearchExpanded}, ref) => {
   const [input, setInput] = useState('');
   const router = useRouter();
 
+  const searchBarStyles = {
+    display: {
+      xs: searchExpanded ? 'flex' : 'none',
+      md: 'flex',
+    },
+    transition: 'all 0.7s ease-in-out',
+    marginRight: '15px',
+    minWidth: {
+      xs: searchExpanded ? '90%' : '',
+      md: searchExpanded ? '95%' : '0',
+    },
+  };
+
   const handleInput = e => {
     setInput(e.target.value);
   };
@@ -18,18 +31,7 @@ const Searchbar = forwardRef(({searchExpanded, setSearchExpanded}, ref) => {
       onBlur={() => setSearchExpanded(false)}
       onChange={handleInput}
       onKeyDown={handleSearch}
-      sx={{
-        display: {
-          xs: searchExpanded ? 'flex' : 'none',
-          md: 'flex',
-        },
-        transition: 'all 0.7s ease-in-out',
-        marginRight: '15px',
-        minWidth: {
-          xs: searchExpanded ? '90%' : '',
-          md: searchExpanded ? '95%' : '0',
-        },
-      }}
+      sx={searchBarStyles}
     >
       <SearchIconWrapper>
         <i className="icon-search"></i>
