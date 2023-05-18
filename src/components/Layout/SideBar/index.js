@@ -9,7 +9,7 @@ import {signOut} from 'next-auth/react';
 import Loading from '@/components/UI/Loading';
 import {useState} from 'react';
 
-export default function SideBar({children}) {
+export default function SideBar({children, isFilter}) {
   const router = useRouter();
 
   const [loading, setLoading] = useState();
@@ -29,22 +29,24 @@ export default function SideBar({children}) {
     <>
       {loading && <Loading />}
       <Box sx={styles}>
-        <Stack aria-label="user actions">
-          <AvatarStaticLayout variant="card" />
-          <List>
-            <ListItem
-              name="My products"
-              icon="orders"
-              onClick={() => router.push('/my-products')}
-            />
-            <ListItem
-              name="Settings"
-              icon="setting"
-              onClick={() => router.push('/profile/update')}
-            />
-            <ListItem name="Log-out" icon="logout" onClick={handleLogout} />
-          </List>
-        </Stack>
+        {!isFilter && (
+          <Stack aria-label="user actions">
+            <AvatarStaticLayout variant="card" />
+            <List>
+              <ListItem
+                name="My products"
+                icon="orders"
+                onClick={() => router.push('/my-products')}
+              />
+              <ListItem
+                name="Settings"
+                icon="setting"
+                onClick={() => router.push('/profile/update')}
+              />
+              <ListItem name="Log-out" icon="logout" onClick={handleLogout} />
+            </List>
+          </Stack>
+        )}
         {children}
       </Box>
     </>

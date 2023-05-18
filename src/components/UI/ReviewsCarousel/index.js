@@ -1,8 +1,10 @@
+import {useCallback, useEffect, useRef, useState} from 'react';
+
 import {Box, IconButton, Paper, Rating, Stack, Typography} from '@mui/material';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {reviews} from '@/components/UI/ReviewsCarousel/utils';
+
+import {reviews} from '@/components/UI/ReviewsCarousel/slides';
 
 export default function ReviewsCarousel() {
   const timerRef = useRef(null);
@@ -31,49 +33,52 @@ export default function ReviewsCarousel() {
     return () => clearTimeout(timerRef.current);
   }, [goToNext]);
 
+  const styles = {
+    wrap: {
+      background:
+        'radial-gradient(55.99% 112.1% at 69.71% 44.01%, rgba(253, 253, 253, 0.074) 0%, rgba(0, 0, 0, 0) 100%),radial-gradient(64.9% 185.04% at 19.81% 27.89%, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.06) 100%)',
+      backdropFilter: 'blur(12px)',
+      border: '2px solid rgba(255, 255, 255, 0.64)',
+      borderRadius: 8,
+      maxWidth: 756,
+      maxHeight: 317,
+      p: 9,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    },
+    title: {width: '100%', lineHeight: '135.3%'},
+    icon: {
+      width: 38,
+      height: 38,
+      border: '1px solid #FFFFFF',
+      borderRadius: 32,
+      m: 1,
+    },
+    text: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'end',
+      minWidth: '50%',
+      columnGap: 3,
+    },
+    grey: {color: '#797979'},
+    rate: {
+      color: '#FE645E',
+      columnGap: 2,
+    },
+  };
   return (
     <>
-      <Paper
-        elevation={1}
-        sx={{
-          background:
-            'radial-gradient(55.99% 112.1% at 69.71% 44.01%, rgba(253, 253, 253, 0.074) 0%, rgba(0, 0, 0, 0) 100%),radial-gradient(64.9% 185.04% at 19.81% 27.89%, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.06) 100%)',
-          backdropFilter: 'blur(12px)',
-          border: '2px solid rgba(255, 255, 255, 0.64)',
-          borderRadius: 8,
-          maxWidth: 756,
-          maxHeight: 317,
-          p: 9,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Box sx={{width: '100%', lineHeight: '135.3%'}}>
+      <Paper elevation={1} sx={styles.wrap}>
+        <Box sx={styles.title}>
           <Typography component="span">
             <Box sx={{float: 'right'}}>
-              <IconButton
-                sx={{
-                  width: 38,
-                  height: 38,
-                  border: '1px solid #FFFFFF',
-                  borderRadius: 32,
-                  m: 1,
-                }}
-                onClick={goToPrevious}
-              >
+              <IconButton sx={styles.icon} onClick={goToPrevious}>
                 <KeyboardArrowLeft />
               </IconButton>
-              <IconButton
-                sx={{
-                  width: 38,
-                  height: 38,
-                  border: '1px solid #FFFFFF',
-                  borderRadius: 32,
-                  m: 1,
-                }}
-                onClick={goToNext}
-              >
+              <IconButton sx={styles.icon} onClick={goToNext}>
                 <KeyboardArrowRight />
               </IconButton>
             </Box>
@@ -81,36 +86,18 @@ export default function ReviewsCarousel() {
           </Typography>
         </Box>
         <Box sx={{mt: 2}}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'end',
-              minWidth: '50%',
-              columnGap: 3,
-            }}
-          >
-            <Typography
-              component="span"
-              variant="body4"
-              sx={{
-                fontWeight: 700,
-              }}
-            >
+          <Box sx={styles.text}>
+            <Typography component="span" variant="body4">
               {reviews[currentIndex].user}
             </Typography>
             <Rating
               precision={0.5}
               value={reviews[currentIndex].rating}
               readOnly
-              sx={{
-                color: '#FE645E',
-                columnGap: 2,
-              }}
+              sx={styles.rate}
             />
           </Box>
-          <Typography component="p" variant="body2" sx={{color: '#797979'}}>
+          <Typography component="p" variant="body2" sx={styles.grey}>
             {reviews[currentIndex].location}
           </Typography>
         </Box>

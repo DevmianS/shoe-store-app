@@ -38,3 +38,4 @@ export const StyledInputBase = styled(InputBase)(({theme}) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
   },
 }));
+

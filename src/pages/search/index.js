@@ -51,7 +51,7 @@ const SearchResults = () => {
       </Head>
       <NavBarLayout>
         <Row>
-          <SideBar areaName="search filters">
+          <SideBar areaName="search filters" isFilter>
             <Filters />
           </SideBar>
           <Content>

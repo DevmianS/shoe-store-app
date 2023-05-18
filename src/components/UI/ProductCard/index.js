@@ -1,28 +1,12 @@
 import Image from 'next/image';
+import {useState} from 'react';
 import {Typography, Stack, Box, useMediaQuery, IconButton} from '@mui/material';
 import {useTheme} from '@mui/material/styles';
+
 import {rwdValue} from '@/utils/theme';
-import {useState} from 'react';
 
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-
-const testArr = [
-  {
-    id: 1,
-    attributes: {
-      alternativeText: 'alternativeText1',
-      url: 'https://nikearprod.vtexassets.com/arquivos/ids/452149-800-800?v=638149279495400000&width=800&height=800&aspect=true',
-    },
-  },
-  {
-    id: 2,
-    attributes: {
-      alternativeText: 'alternativeText2',
-      url: 'https://nikearprod.vtexassets.com/arquivos/ids/439639-800-800?v=638145705671000000&width=800&height=800&aspect=true',
-    },
-  },
-];
 
 export default function ProductCard({title, price, category, imgPath}) {
   const theme = useTheme();
@@ -33,7 +17,7 @@ export default function ProductCard({title, price, category, imgPath}) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const goToPreviousImage = () => {
-    console.log('prev', currentImageIndex, testArr);
+    console.log('prev', currentImageIndex);
     if (currentImageIndex > 0) {
       console.log('true');
       setCurrentImageIndex(prevState => prevState - 1);
@@ -44,7 +28,6 @@ export default function ProductCard({title, price, category, imgPath}) {
     console.log(
       'next',
       currentImageIndex,
-      testArr,
       currentImageIndex < imgPath.length - 1,
       currentImageIndex,
       imgPath.length - 1,
@@ -103,44 +86,81 @@ export default function ProductCard({title, price, category, imgPath}) {
               transition: '1s',
               transform: 'scale(1.25)',
             },
+            '& > button': {
+              opacity: 1,
+            },
           }
         : {},
+      '& > button': {
+        opacity: isDesktop ? 0 : 1,
+      },
     },
+
     body: {position: 'relative'},
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
+      alignItems: 'start',
     },
     title: {
       fontSize: rwdValue(10, 22),
       fontWeight: 500,
+      marginBottom: '5px',
     },
-    category: {
-      fontSize: rwdValue(8, 18),
+    categoryRow: {
       color: theme.palette.text.secondary,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'start',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+
+      '& h4': {
+        fontSize: rwdValue(8, 18),
+        background: '#B9B8B4',
+        padding: '0 5px',
+        borderRadius: '10px',
+        margin: '3px',
+        color: '#fff',
+        '&.Running': {background: '#E16200'},
+        '&.Athletic': {background: '#D18D47'},
+        '&.Tennis': {background: '#31C1B0'},
+        '&.Casual': {background: '#92BB41'},
+        '&.Tracking': {background: '#19976A'},
+      },
+    },
+    iconBtn: {
+      width: 28,
+      height: 28,
+      border: '1px solid #fff',
+      borderRadius: 32,
+      backgroundColor: '#fff',
+      m: 1,
+      position: 'absolute',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      zIndex: 3,
+      opacity: 0,
+      transition: '0.3s all',
+      '&:disabled': {backgroundColor: 'lightgrey', borderColor: 'lightgrey'},
+      '&:hover': isDesktop
+        ? {
+            backgroundColor: '#fe645e',
+            borderColor: '#fe645e',
+            color: '#fff',
+          }
+        : {},
     },
   };
-
+  if (!imgPath) {
+    return;
+  }
   return (
     <Box sx={styles.column}>
       <Box sx={styles.card}>
         <Box
           sx={{
             ...styles.image,
-            position: 'relative',
-            '&:hover': isDesktop
-              ? {
-                  cursor: 'pointer',
-                  '& img': {
-                    transition: '1s',
-                    transform: 'scale(1.25)',
-                  },
-                  '& > button': {
-                    opacity: 1,
-                  },
-                }
-              : {},
           }}
         >
           <Image
@@ -149,39 +169,16 @@ export default function ProductCard({title, price, category, imgPath}) {
             alt={`Shoes name: ${title} ${imgPath[currentImageIndex]?.attributes?.alternativeText}`}
           />
           <IconButton
-            sx={{
-              width: 28,
-              height: 28,
-              border: '1px solid #000',
-              borderRadius: 32,
-              m: 1,
-              position: 'absolute',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              zIndex: 300,
-              opacity: 0,
-              transition: '0.3s all',
-            }}
+            sx={styles.iconBtn}
             onClick={goToPreviousImage}
+            disabled={currentImageIndex === 0}
           >
             <KeyboardArrowLeft />
           </IconButton>
           <IconButton
-            sx={{
-              width: 28,
-              height: 28,
-              border: '1px solid #000',
-              borderRadius: 32,
-              m: 1,
-              position: 'absolute',
-              right: '0',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              zIndex: 300,
-              opacity: 0,
-              transition: '0.3s all',
-            }}
+            sx={{...styles.iconBtn, right: 0}}
             onClick={goToNextImage}
+            disabled={currentImageIndex === imgPath.length - 1}
           >
             <KeyboardArrowRight />
           </IconButton>
@@ -195,13 +192,22 @@ export default function ProductCard({title, price, category, imgPath}) {
               ${price || '100'}
             </Typography>
           </Stack>
-          <Typography sx={styles.category} component="h4">
+          <Stack sx={styles.categoryRow}>
             {typeof imgPath?.src === 'string'
               ? category
               : category.map(cat => {
-                  return <p key={cat.id}>{cat.attributes.name}</p>;
+                  return (
+                    <Typography
+                      sx={styles.category}
+                      component="h4"
+                      key={cat.id}
+                      className={cat.attributes.name}
+                    >
+                      {cat.attributes.name}
+                    </Typography>
+                  );
                 })}
-          </Typography>
+          </Stack>
         </Box>
       </Box>
     </Box>

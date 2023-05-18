@@ -1,9 +1,18 @@
-import React from 'react';
+import {Box} from '@mui/material';
+import {theme} from '@/utils/theme';
 
-import styles from './spinner.module.css';
+const spinnerStyles = {
+  width: '40px',
+  height: '40px',
+  margin: '100px auto',
+  backgroundColor: theme.palette.primary.main,
+  borderRadius: '100%',
+  animation: 'sk-scaleout 0.3s infinite ease-in-out',
+  '-webkit-animation': 'sk-scaleout 1s infinite ease-in-out',
+};
 
-const Spinner = ({style}) => {
-  return <div className={styles.spinner} style={{...style}}></div>;
+const Spinner = () => {
+  return <Box sx={spinnerStyles} />;
 };
 
 export default Spinner;
