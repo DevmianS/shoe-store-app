@@ -7,23 +7,6 @@ import {useState} from 'react';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
-const testArr = [
-  {
-    id: 1,
-    attributes: {
-      alternativeText: 'alternativeText1',
-      url: 'https://nikearprod.vtexassets.com/arquivos/ids/452149-800-800?v=638149279495400000&width=800&height=800&aspect=true',
-    },
-  },
-  {
-    id: 2,
-    attributes: {
-      alternativeText: 'alternativeText2',
-      url: 'https://nikearprod.vtexassets.com/arquivos/ids/439639-800-800?v=638145705671000000&width=800&height=800&aspect=true',
-    },
-  },
-];
-
 export default function ProductCard({title, price, category, imgPath}) {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -33,19 +16,17 @@ export default function ProductCard({title, price, category, imgPath}) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const goToPreviousImage = () => {
-    console.log('prev', currentImageIndex, testArr);
+    console.log('prev', currentImageIndex);
     if (currentImageIndex > 0) {
       console.log('true');
       setCurrentImageIndex(prevState => prevState - 1);
     }
   };
 
-
   const goToNextImage = () => {
     console.log(
       'next',
       currentImageIndex,
-      testArr,
       currentImageIndex < imgPath.length - 1,
       currentImageIndex,
       imgPath.length - 1,
@@ -104,9 +85,16 @@ export default function ProductCard({title, price, category, imgPath}) {
               transition: '1s',
               transform: 'scale(1.25)',
             },
+            '& > button': {
+              opacity: 1,
+            },
           }
         : {},
+      '& > button': {
+        opacity: isDesktop ? 0 : 1,
+      },
     },
+
     body: {position: 'relative'},
     header: {
       flexDirection: 'row',
@@ -121,27 +109,36 @@ export default function ProductCard({title, price, category, imgPath}) {
       fontSize: rwdValue(8, 18),
       color: theme.palette.text.secondary,
     },
+    iconBtn: {
+      width: 28,
+      height: 28,
+      border: '1px solid #fff',
+      borderRadius: 32,
+      backgroundColor: '#fff',
+      m: 1,
+      position: 'absolute',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      zIndex: 3,
+      opacity: 0,
+      transition: '0.3s all',
+      '&:disabled': {backgroundColor: 'lightgrey', borderColor: 'lightgrey'},
+      '&:hover': {
+        backgroundColor: '#fe645e',
+        borderColor: '#fe645e',
+        color: '#fff',
+      },
+    },
   };
-
+  if (!imgPath) {
+    return;
+  }
   return (
     <Box sx={styles.column}>
       <Box sx={styles.card}>
         <Box
           sx={{
             ...styles.image,
-            position: 'relative',
-            '&:hover': isDesktop
-              ? {
-                  cursor: 'pointer',
-                  '& img': {
-                    transition: '1s',
-                    transform: 'scale(1.25)',
-                  },
-                  '& > button': {
-                    opacity: 1,
-                  },
-                }
-              : {},
           }}
         >
           <Image
@@ -150,39 +147,16 @@ export default function ProductCard({title, price, category, imgPath}) {
             alt={`Shoes name: ${title} ${imgPath[currentImageIndex]?.attributes?.alternativeText}`}
           />
           <IconButton
-            sx={{
-              width: 28,
-              height: 28,
-              border: '1px solid #000',
-              borderRadius: 32,
-              m: 1,
-              position: 'absolute',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              zIndex: 300,
-              opacity: 0,
-              transition: '0.3s all',
-            }}
+            sx={styles.iconBtn}
             onClick={goToPreviousImage}
+            disabled={currentImageIndex === 0}
           >
             <KeyboardArrowLeft />
           </IconButton>
           <IconButton
-            sx={{
-              width: 28,
-              height: 28,
-              border: '1px solid #000',
-              borderRadius: 32,
-              m: 1,
-              position: 'absolute',
-              right: '0',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              zIndex: 300,
-              opacity: 0,
-              transition: '0.3s all',
-            }}
+            sx={{...styles.iconBtn, right: 0}}
             onClick={goToNextImage}
+            disabled={currentImageIndex === imgPath.length - 1}
           >
             <KeyboardArrowRight />
           </IconButton>
@@ -200,7 +174,11 @@ export default function ProductCard({title, price, category, imgPath}) {
             {typeof imgPath?.src === 'string'
               ? category
               : category.map(cat => {
-                  return <p key={cat.id}>{cat.attributes.name}</p>;
+                  return (
+                    <Typography component="p" key={cat.id}>
+                      {cat.attributes.name}
+                    </Typography>
+                  );
                 })}
           </Typography>
         </Box>
