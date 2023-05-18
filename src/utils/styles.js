@@ -541,7 +541,7 @@ const useOwnStyles = () => {
     },
     name: {
       color: theme.palette.text.primary,
-      fontSize: 12,
+      fontSize: 16,
       fontWeight: 500,
     },
   };

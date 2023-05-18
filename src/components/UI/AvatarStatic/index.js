@@ -2,6 +2,7 @@ import {rwdValue} from '@/utils/theme';
 import {Avatar, Box, Link} from '@mui/material';
 import useOwnStyles from '@/utils/styles';
 import useUser from '@/hooks/useUser';
+import {useRouter} from 'next/router';
 
 const AvatarStatic = ({variant = 'medium', sx}) => {
   const {UI: styles} = useOwnStyles();
@@ -32,14 +33,18 @@ const AvatarStatic = ({variant = 'medium', sx}) => {
   };
 
   const {initials} = useUser();
+  const router = useRouter();
 
   if (variant === 'small') {
     return (
-      <Link component="a" href="/profile" sx={{...avatarVariant, ...sx}}>
+      <Box
+        onClick={() => router.push('/profile')}
+        sx={{...avatarVariant, ...sx}}
+      >
         <Avatar src={'/'} sx={styles.avatarLink}>
           {initials}
         </Avatar>
-      </Link>
+      </Box>
     );
   } else {
     return (
