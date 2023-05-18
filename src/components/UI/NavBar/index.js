@@ -1,14 +1,7 @@
 import Link from 'next/link';
-import {memo, useRef, useState} from 'react';
+import {memo, useRef, useState, useEffect} from 'react';
 
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Stack,
-  Toolbar,
-  Box,
-} from '@mui/material';
+import {AppBar, Button, IconButton, Stack, Toolbar, Box} from '@mui/material';
 
 import {useToggle} from '@/context/ToggleContext';
 
@@ -141,7 +134,7 @@ const NavBar = () => {
             <Searchbar
               searchExpanded={searchExpanded}
               setSearchExpanded={setSearchExpanded}
-              ref={searchInputRef}
+              ref={ref}
             />
             <Stack direction="row" spacing={1}>
               <IconButton

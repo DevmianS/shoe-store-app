@@ -1,12 +1,9 @@
 import Head from 'next/head';
-import {useSession} from 'next-auth/react';
 import {getServerSession} from 'next-auth/next';
-import {authOptions} from '../api/auth/[...nextauth]';
 
-import {Typography, styled, Box, Stack} from '@mui/material';
+import {Typography, Box, Stack} from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
-import mockupProducts from '@/utils/data';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
@@ -78,7 +75,6 @@ const Profile = () => {
                 </Typography>
               </Box>
             </Stack>
-            <AvatarStaticLayout />
             <Typography variant="h1" component="h1" mb="40px">
               Last viewed products
             </Typography>

@@ -11,7 +11,6 @@ import TopBanner from '@/components/UI/TopBanner';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 import useProducts from '@/hooks/useProducts';
 import useUser from '@/hooks/useUser';
-import AvatarStaticLayout from '../AvatarStaticLayout';
 
 const Home = () => {
   const theme = useTheme();

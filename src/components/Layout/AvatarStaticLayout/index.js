@@ -3,23 +3,15 @@ import AvatarStatic from '@/components/UI/AvatarStatic';
 import {useSession} from 'next-auth/react';
 import useOwnStyles from '@/utils/styles';
 import {rwdValue} from '@/utils/theme';
+import useUser from '@/hooks/useUser';
+import styled from '@emotion/styled';
 
 const AvatarStaticLayout = ({variant}) => {
   const {avatarLayout: styles, updateProfile} = useOwnStyles();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
-  const {data: sessionData} = useSession();
-  const userDetails = sessionData?.user?.user;
-
-  let userName = null;
-  if (userDetails?.firstName && userDetails?.lastName) {
-    userName = `${userDetails.firstName} ${userDetails.lastName}`;
-  } else {
-    userName = userDetails?.username;
-  }
-
-const AvatarStaticLayout = () => {
+  const {name} = useUser();
   const AvatarWrapper = styled(Stack)(({theme}) => ({
     display: 'flex',
     flexDirection: 'row',
@@ -37,7 +29,7 @@ const AvatarStaticLayout = () => {
         <Typography color="text.tetriary" fontSize={12}>
           Welcome
         </Typography>
-        <Typography fontWeight={500}>{'Jane Meldrum'}</Typography>
+        <Typography fontWeight={500}>{name}</Typography>
       </Box>
     </AvatarWrapper>
   );
