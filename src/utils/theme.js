@@ -179,7 +179,7 @@ theme = createTheme(theme, {
           color: theme.palette.text.secondary,
         },
         standard: {
-          fontSize: 24,
+          fontSize: rwdValue(12, 24),
           fontWeight: 400,
           color: theme.palette.text.tetriary,
         },
