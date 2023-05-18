@@ -530,6 +530,7 @@ const useOwnStyles = () => {
   const avatarLayout = {
     wrapper: {
       display: 'flex',
+      minHeight: '105px',
       flexDirection: 'row',
       paddingLeft: '40px',
       alignItems: 'center',
@@ -545,6 +546,14 @@ const useOwnStyles = () => {
     },
   };
 
-  return {updateProfile, myProducts, sideBar, UI, filters, avatarLayout,navBar};
+  return {
+    updateProfile,
+    myProducts,
+    sideBar,
+    UI,
+    filters,
+    avatarLayout,
+    navBar,
+  };
 };
 export default useOwnStyles;
