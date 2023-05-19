@@ -15,27 +15,48 @@ import Loading from '@/components/UI/Loading';
 import Button from '@/components/UI/Button';
 
 import {rwdValue} from '@/utils/theme';
+import {
+  checkErrorEmail,
+  executeError,
+  executeInfo,
+  executeSucces,
+  forgotPassword,
+} from '@/utils/utils';
 
 const ForgotPasswordForm = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const handleSignIn = () => {
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);
+
+  const handleSignIn = async () => {
+    setLoading(true);
     console.log('Clicked');
+    if (!checkErrorEmail(email, setEmailError)) {
+      try {
+        const {data, status} = await forgotPassword(email);
+
+        if (status) {
+          executeSucces('Mail sent successfully.');
+          executeInfo(
+            'Check your email',
+            'Click the link received in your email to reset your password',
+          );
+        } else {
+          executeError('There was an error. Please try again.');
+        }
+      } catch (error) {
+        console.log('my error: ', error);
+        executeError(error);
+      }
+    } else {
+      executeError('The email is wrong. Please write it again.');
+    }
+    setLoading(false);
   };
 
   const [loading, setLoading] = useState(false);
-
-  const checkErrorEmail = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailRegex.test(email)) {
-      setEmailError(false);
-      return false;
-    } else {
-      setEmailError(true);
-      return true;
-    }
-  };
 
   return (
     <>
@@ -65,12 +86,19 @@ const ForgotPasswordForm = () => {
         <Box sx={{width: '100%'}}>
           <FormControl sx={{width: '100%'}}>
             <TextField
+              sx={{marginBottom: '25px', marginTop: '60px'}}
+              fullWidth
               size={isMobile ? 'small' : 'medium'}
               label="Email"
-              type="email"
+              type="text"
               margin="normal"
-              placeholder="Enter your email"
-              sx={{marginBottom: '20px'}}
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="Type your email here"
+              error={emailError}
+              helperText={emailError && "The user's email should be valid."}
+              onFocus={() => setEmailError(false)}
+              onBlur={() => checkErrorEmail(email, setEmailError)}
             />
 
             <Button size={isMobile ? 'small' : 'medium'} onClick={handleSignIn}>

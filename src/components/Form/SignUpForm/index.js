@@ -16,7 +16,17 @@ import {
 
 import styles from '@/styles/link.module.css';
 
-import {registerNewUser} from '@/utils/utils';
+import {
+  checkErrorConfirm,
+  checkErrorEmail,
+  checkErrorName,
+  checkErrorPassword,
+  executeError,
+  executeInfo,
+  executeSucces,
+  registerNewUser,
+} from '@/utils/utils';
+
 import {rwdValue} from '@/utils/theme';
 
 import Button from '@/components/UI/Button';
@@ -36,51 +46,7 @@ const SignUpForm = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const checkErrorName = () => {
-    const usernameRegex = /^[a-zA-Z0-9_-]{2,10}$/;
-    if (usernameRegex.test(name) && !/\s/.test(name)) {
-      setNameError(false);
-      return false;
-    } else {
-      setNameError(true);
-      return true;
-    }
-  };
-
-  const checkErrorEmail = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailRegex.test(email)) {
-      setEmailError(false);
-      return false;
-    } else {
-      setEmailError(true);
-      return true;
-    }
-  };
-
-  const checkErrorPassword = () => {
-    const emailRegex = /^\S{8,}$/;
-    if (emailRegex.test(password)) {
-      setPasswordError(false);
-      return false;
-    } else {
-      setPasswordError(true);
-      return true;
-    }
-  };
-
-  const checkErrorConfirm = () => {
-    if (password === confirmPassword) {
-      setConfirmPasswordError(false);
-      return false;
-    } else {
-      setConfirmPasswordError(true);
-      return true;
-    }
-  };
-
   const router = useRouter();
-
 
   const {data, isLoading, isError, isSuccess, error, mutate} = useMutation({
     mutationKey: ['registerNewUser'],
@@ -90,10 +56,10 @@ const SignUpForm = () => {
   const handleSubmit = async event => {
     event.preventDefault();
     if (
-      !checkErrorConfirm() &&
-      !checkErrorPassword() &&
-      !checkErrorEmail() &&
-      !checkErrorName()
+      !checkErrorConfirm(password, confirmPassword, setConfirmPasswordError) &&
+      !checkErrorPassword(password, setPasswordError) &&
+      !checkErrorEmail(email, setEmailError) &&
+      !checkErrorName(name, setNameError)
     ) {
       console.log('handleSubmit pass');
       const user = {
@@ -106,57 +72,21 @@ const SignUpForm = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem('user')) {
-      router.push('/');
-    }
-  }, [data?.user?.id, router]);
-
-  const executeError = message => {
-    toast.error(message);
-  };
-
-  const executeSucces = message => {
-    toast.success(message);
-  };
-
-  const executeInfo = (message, description) => {
-    toast.message(message, {
-      description: description,
-      action: {
-        label: 'Go',
-        onClick: () => window.open('https://mail.google.com/mail/u/0/#inbox'),
-      },
-    });
-  };
-
-  const navigateRouter = useCallback(
-    route => {
-      router.push(route);
-    },
-    [router],
-  );
-
-  useEffect(() => {
     if (isSuccess) {
       executeSucces('New user created successfully. ');
       executeInfo(
         'Verify you account',
         'Click the link received in your email to verify your user',
       );
-      navigateRouter('/sign-in');
+      router.push('/sign-in');
     }
-  }, [isSuccess, navigateRouter]);
+  }, [isSuccess, router]);
 
   useEffect(() => {
     if (isError) {
       executeError(error.response.data.error.message);
     }
   }, [isError, error]);
-
-  useEffect(() => {
-    setName(JSON.parse(localStorage.getItem('logInInfo'))?.user || '');
-    setPassword(JSON.parse(localStorage.getItem('logInInfo'))?.password || '');
-  }, []);
 
   return (
     <>
@@ -215,7 +145,7 @@ const SignUpForm = () => {
                 nameError &&
                 "The user's name should be greater than 2, less than 10 characters and contain no spaces."
               }
-              onBlur={checkErrorName}
+              onBlur={() => checkErrorName(name, setNameError)}
             />
             <TextField
               size={isMobile ? 'small' : 'medium'}
@@ -229,7 +159,7 @@ const SignUpForm = () => {
               sx={{width: '100%'}}
               error={emailError}
               helperText={emailError && 'Email should be valid.'}
-              onBlur={checkErrorEmail}
+              onBlur={() => checkErrorEmail(email, setEmailError)}
             />
             <TextField
               size={isMobile ? 'small' : 'medium'}
@@ -246,7 +176,7 @@ const SignUpForm = () => {
                 passwordError &&
                 'Password should contain at least 8 characters and no spaces.'
               }
-              onBlur={checkErrorPassword}
+              onBlur={() => checkErrorPassword(password, setPasswordError)}
             />
             <TextField
               size={isMobile ? 'small' : 'medium'}
@@ -262,7 +192,13 @@ const SignUpForm = () => {
               helperText={
                 confirmPasswordError && 'Both passwords should be equal.'
               }
-              onBlur={checkErrorConfirm}
+              onBlur={() =>
+                checkErrorConfirm(
+                  password,
+                  confirmPassword,
+                  setConfirmPasswordError,
+                )
+              }
             />
 
             <Button

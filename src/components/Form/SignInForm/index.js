@@ -17,7 +17,13 @@ import {
   useTheme,
 } from '@mui/material';
 
-import {logIn} from '@/utils/utils';
+import {
+  checkErrorEmail,
+  checkErrorPassword,
+  executeError,
+  executeSucces,
+  logIn,
+} from '@/utils/utils';
 import {rwdValue} from '@/utils/theme';
 
 import Button from '@/components/UI/Button';
@@ -39,34 +45,15 @@ const SignInForm = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const checkErrorEmail = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailRegex.test(email)) {
-      setEmailError(false);
-      return false;
-    } else {
-      setEmailError(true);
-      return true;
-    }
-  };
-
-  const checkErrorPassword = () => {
-    const emailRegex = /^\S{8,}$/;
-    if (emailRegex.test(password)) {
-      setPasswordError(false);
-      return false;
-    } else {
-      setPasswordError(true);
-      return true;
-    }
-  };
-
   const handleSubmit = async event => {
     event.preventDefault();
     setLoading(true);
     await router.prefetch('/');
     console.log('handleSubmit');
-    if (!checkErrorEmail() && !checkErrorPassword()) {
+    if (
+      !checkErrorEmail(email, setEmailError) &&
+      !checkErrorPassword(password, setPasswordError)
+    ) {
       const user = {
         identifier: email,
         password: password,
@@ -87,14 +74,6 @@ const SignInForm = () => {
         executeError('The password is wrong. Please write it again.');
     }
     setLoading(false);
-  };
-
-  const executeError = message => {
-    toast.error(message);
-  };
-
-  const executeSucces = message => {
-    toast.success(message);
   };
 
   useEffect(() => {
@@ -161,7 +140,7 @@ const SignInForm = () => {
             error={emailError}
             helperText={emailError && "The user's email should be valid."}
             onFocus={() => setEmailError(false)}
-            onBlur={checkErrorEmail}
+            onBlur={() => checkErrorEmail(email, setEmailError)}
           />
           <TextField
             sx={{marginBottom: '15px', marginTop: 0}}
@@ -179,7 +158,7 @@ const SignInForm = () => {
               'Password should contain at least 8 characters and no spaces.'
             }
             onFocus={() => setPasswordError(false)}
-            onBlur={checkErrorPassword}
+            onBlur={() => checkErrorPassword(password, setPasswordError)}
           />
           <Box
             sx={{
