@@ -5,7 +5,22 @@ import useUser from '@/hooks/useUser';
 import {useRouter} from 'next/router';
 
 const AvatarStatic = ({variant = 'medium', sx}) => {
-  const {UI: styles} = useOwnStyles();
+  const styles = {
+    avatar: {
+      width: '100%',
+      height: '100%',
+    },
+    avatarLink: {
+      width: '100%',
+      height: '100%',
+      transition: '.3s',
+      '&:hover': {
+        boxShadow: `0 0 3px 1px grey`,
+        transform: 'scale(1.03)',
+        filter: 'brightness(1.1)',
+      },
+    },
+  };
 
   const size =
     variant === 'small'

@@ -5,11 +5,35 @@ import {rwdValue} from '@/utils/theme';
 import useUser from '@/hooks/useUser';
 
 const AvatarStaticLayout = ({variant}) => {
-  const {avatarLayout: styles, updateProfile} = useOwnStyles();
+  // const {avatarLayout: styles, updateProfile} = useOwnStyles();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const {name} = useUser();
+
+  const styles = {
+    wrapper: {
+      display: 'flex',
+      minHeight: '105px',
+      flexDirection: 'row',
+      paddingLeft: '40px',
+      alignItems: 'center',
+      marginBottom: '7px',
+      paddingBottom: '32px',
+      borderBottom: '1px solid',
+      borderColor: theme.palette.divider,
+    },
+    name: {
+      color: theme.palette.text.primary,
+      fontSize: 16,
+      fontWeight: 500,
+    },
+    avatar: {
+      marginRight: rwdValue(28, 75),
+      border: '4px solid white',
+      flex: `0 0 ${rwdValue(100, 150)}`,
+    },
+  };
 
   if (variant === 'card') {
     return (
@@ -26,7 +50,7 @@ const AvatarStaticLayout = ({variant}) => {
       </Stack>
     );
   } else if (variant === 'avatar') {
-    return <AvatarStatic variant="large" sx={updateProfile.avatar} />;
+    return <AvatarStatic variant="large" sx={styles.avatar} />;
   } else {
     return (
       <Stack
