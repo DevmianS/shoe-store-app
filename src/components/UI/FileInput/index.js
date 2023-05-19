@@ -3,8 +3,6 @@ import {useState} from 'react';
 
 import {Box, Typography, useMediaQuery, useTheme} from '@mui/material';
 
-import useOwnStyles from '@/utils/styles';
-
 import Button from '@/components/UI/Button';
 import {rwdValue} from '@/utils/theme';
 

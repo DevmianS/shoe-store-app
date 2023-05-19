@@ -1,10 +1,9 @@
 import Head from 'next/head';
 import {useRouter} from 'next/router';
-import useOwnStyles from '@/utils/styles';
 import {useMutation} from '@tanstack/react-query';
 import {toast} from 'sonner';
 
-import {Typography, Box, Stack, TextField} from '@mui/material';
+import {Typography, Box, Stack, TextField, useTheme, useMediaQuery} from '@mui/material';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
@@ -15,10 +14,64 @@ import {signIn, signOut, useSession} from 'next-auth/react';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 
+import {rwdValue} from '@/utils/theme';
+
 const ProfileUpdate = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const styles = {
+    row: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      paddingTop: rwdValue(20, 40),
+      paddingBottom: rwdValue(20, 40),
+    },
+    sidebar: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: '7px',
+      borderBottom: '1px solid',
+      borderColor: 'divider',
+    },
+    content: {
+      flex: '1 1 auto',
+      paddingLeft: rwdValue(10, 60),
+      paddingRight: rwdValue(10, 60),
+    },
+    avatarRow: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      marginBottom: rwdValue(25, 50),
+    },
+    avatar: {
+      marginRight: rwdValue(28, 75),
+      border: '4px solid white',
+      flex: `0 0 ${rwdValue(100, 150)}`,
+    },
+    h1: {
+      marginBottom: rwdValue(12, 50),
+    },
+    btn: {
+      marginBottom: rwdValue(16, 25),
+    },
+    description: {
+      color: theme.palette.text.secondary,
+      marginBottom: rwdValue(25, 50),
+      fontSize: rwdValue(12, 15),
+    },
+    form: {maxWidth: '450px'},
+    item: {marginBottom: rwdValue(25, 50)},
+    size: isMobile ? 'small' : 'medium',
+    saveChangesBox: {display: 'flex', justifyContent: 'flex-end'},
+    saveChangesBtn: {width: 'fit-content'},
+  };
+
   const [userData, setUserData] = useState({});
   const [newUserData, setNewUserData] = useState({});
-  const {updateProfile: styles} = useOwnStyles();
   const {data: session, update: updateSession} = useSession();
 
   const udpateUserMutation = useMutation({
