@@ -106,7 +106,7 @@ export default function CustomizedMenus() {
         <Link href="/forgot-password">
           <MenuItem>Forgot password</MenuItem>
         </Link>
-        <Link href="/reset-password">
+        <Link href="/auth/reset-password">
           <MenuItem>Reset password</MenuItem>
         </Link>
         <Link href="/profile">

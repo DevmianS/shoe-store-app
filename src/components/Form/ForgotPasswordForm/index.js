@@ -37,7 +37,7 @@ const ForgotPasswordForm = () => {
       try {
         const {data, status} = await forgotPassword(email);
 
-        if (status) {
+        if (status == '200') {
           executeSucces('Mail sent successfully.');
           executeInfo(
             'Check your email',
