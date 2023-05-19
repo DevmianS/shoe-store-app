@@ -19,6 +19,7 @@ import Searchbar from '@/components/UI/Searchbar';
 
 import {useSearch} from '@/context/SearchContext';
 import {useToggle} from '@/context/ToggleContext';
+import {useCart} from '@/context/CartContext';
 
 // TEMP
 import NestedList from './allPages';
@@ -29,6 +30,7 @@ const NavBar = () => {
 
   const {isToggled, toggle} = useToggle();
   const {searchExpanded, setSearchExpanded} = useSearch();
+  const {cartCount} = useCart();
 
   const searchInputRef = useRef();
   const router = useRouter();
@@ -173,7 +175,7 @@ const NavBar = () => {
             />
             <Box sx={styles.icons}>
               <IconButton size="large" aria-label="Bag" sx={styles.bagIcon}>
-                <Cart count={5} />
+                <Cart count={cartCount} />
               </IconButton>
               <IconButton
                 size="large"
