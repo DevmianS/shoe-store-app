@@ -20,26 +20,8 @@ a:hover {
   color: #b83530;
 }
 
-.icon-chevron-down:before {
-  content: '\e900';
-}
-.icon-chevron-left:before {
-  content: '\e901';
-}
-.icon-chevron-right:before {
-  content: '\e902';
-}
-.icon-chevron-up:before {
-  content: '\e903';
-}
-.icon-menu:before {
-  content: '\e90a';
-}
-.icon-more:before {
-  content: '\e918';
-}
-.icon-close:before {
-  content: '\e919';
+.icon-add-to-cart:before {
+  content: '\e91a';
 }
 .icon-search:before {
   content: '\e904';
@@ -97,6 +79,27 @@ a:hover {
 }
 .icon-logo:before {
   content: '\e917';
+}
+.icon-chevron-down:before {
+  content: '\e900';
+}
+.icon-chevron-left:before {
+  content: '\e901';
+}
+.icon-chevron-right:before {
+  content: '\e902';
+}
+.icon-chevron-up:before {
+  content: '\e903';
+}
+.icon-menu:before {
+  content: '\e90a';
+}
+.icon-more:before {
+  content: '\e918';
+}
+.icon-close:before {
+  content: '\e919';
 }
 .icon-star-full:before {
   content: '\e9d9';
