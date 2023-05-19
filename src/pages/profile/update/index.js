@@ -136,7 +136,7 @@ const ProfileUpdate = () => {
                     size={styles.size}
                     placeholder={userData.phoneNumber}
                     label="Phone number"
-                    type="text"
+                    type="tel"
                     onChange={e => {
                       setNewUserData(data => ({
                         ...data,
