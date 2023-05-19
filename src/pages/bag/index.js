@@ -1,12 +1,5 @@
 import Head from 'next/head';
-import {
-  Typography,
-  Box,
-  styled,
-  Stack,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import {Typography, Box, Stack, useMediaQuery, useTheme} from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
 import mockupProducts from '@/utils/data';
@@ -21,59 +14,54 @@ const Bag = () => {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
-  const saveClickHandler = () => {
-    console.log('SAVED');
-  };
   const deleteClickHandler = () => {
     console.log('DELETED');
   };
-  const CardWrapper = styled(Box)({
-    borderBottom: '1px solid #EAECF0',
-    paddingBottom: rwdValue(20, 60),
-    marginBottom: rwdValue(20, 60),
-    '&:first-of-type': {
-      borderTop: isTablet ? '1px solid #EAECF0' : 'none',
-      paddingTop: rwdValue(20, 60),
-      marginTop: isTablet ? '20px' : 0,
-    },
-  });
-  const FlexRow = styled(Box)({
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-  });
-  const FlexColumnBig = styled(Box)({
-    flex: isTablet ? '0 0 100%' : '0 1 62%',
-  });
-  const FlexColumnSmall = styled(Box)({
-    flex: isTablet ? '0 0 100%' : '0 0 26%',
-  });
-  const ContentWrap = styled(Box)({
-    marginTop: rwdValue(20, 80),
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    padding: '0 20px',
-    maxWidth: '1570px',
-    width: '100%',
-    marginBottom: rwdValue(40, 80),
-  });
 
+  const styles = {
+    wrapper: {
+      marginTop: rwdValue(20, 80),
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      padding: '0 20px',
+      maxWidth: '1570px',
+      width: '100%',
+      marginBottom: rwdValue(40, 80),
+    },
+    card: {
+      borderBottom: '1px solid #EAECF0',
+      paddingBottom: rwdValue(20, 60),
+      marginBottom: rwdValue(20, 60),
+      '&:first-of-type': {
+        borderTop: isTablet ? '1px solid #EAECF0' : 'none',
+        paddingTop: rwdValue(20, 60),
+        marginTop: isTablet ? '20px' : 0,
+      },
+    },
+    row: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      flexWrap: 'wrap',
+    },
+    colBig: {flex: isTablet ? '0 0 100%' : '0 1 62%'},
+    colSm: {flex: isTablet ? '0 0 100%' : '0 0 26%'},
+  };
   return (
     <>
       <Head>
         <title>Wellrun | Your Bag</title>
       </Head>
       <NavBarLayout>
-        <ContentWrap>
+        <Box sx={styles.wrapper}>
           <SideBar />
-          <FlexRow>
-            <FlexColumnBig>
+          <Box sx={styles.row}>
+            <Box sx={styles.colBig}>
               <Typography variant="h1" component="h1">
                 Cart
               </Typography>
               {mockupProducts.map(product => {
                 return (
-                  <CardWrapper key={product.id}>
+                  <Box sx={styles.card} key={product.id}>
                     <CartProductItem
                       title={product.attributes.name}
                       category={product.attributes.category}
@@ -84,13 +72,12 @@ const Bag = () => {
                       color={['green', 'black', 'white', 'blue', 'red']}
                       // quantity={3}
                       onDelete={deleteClickHandler}
-                      onSave={saveClickHandler}
                     />
-                  </CardWrapper>
+                  </Box>
                 );
               })}
-            </FlexColumnBig>
-            <FlexColumnSmall>
+            </Box>
+            <Box sx={styles.colSm}>
               <Typography
                 variant="h1"
                 component="h2"
@@ -230,9 +217,9 @@ const Bag = () => {
                   <Button>Checkout</Button>
                 </Stack>
               </Box>
-            </FlexColumnSmall>
-          </FlexRow>
-        </ContentWrap>
+            </Box>
+          </Box>
+        </Box>
       </NavBarLayout>
     </>
   );
