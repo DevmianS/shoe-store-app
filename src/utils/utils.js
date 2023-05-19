@@ -39,6 +39,30 @@ export const forgotPassword = async email => {
   }
 };
 
+export const resetPassword = async (
+  newPassword,
+  passwordConfirmation,
+  code,
+) => {
+  try {
+    console.log('resetPassword:', newPassword);
+    if (!newPassword) return null;
+    const res = await axios.post(
+      'https://shoes-shop-strapi.herokuapp.com/api/auth/reset-password',
+      {
+        password: newPassword,
+        passwordConfirmation: passwordConfirmation,
+        code: code,
+      },
+    );
+    return res;
+  } catch (error) {
+    // Extract the error message from the server response and throw it
+    const errorMessage = error?.response?.data?.error?.message;
+    throw new Error(errorMessage);
+  }
+};
+
 export const SkeletonProducts = () => {
   return Array(20)
     .fill()
