@@ -1,7 +1,5 @@
 import Link from 'next/link';
 
-import useOwnStyles from '@/utils/styles';
-
 import {Typography, Box, useMediaQuery} from '@mui/material';
 import {theme} from '@/utils/theme';
 

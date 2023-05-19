@@ -1,6 +1,5 @@
 import {rwdValue} from '@/utils/theme';
 import {Avatar, Box, Link} from '@mui/material';
-import useOwnStyles from '@/utils/styles';
 import useUser from '@/hooks/useUser';
 import {useRouter} from 'next/router';
 
@@ -19,6 +18,7 @@ const AvatarStatic = ({variant = 'medium', sx}) => {
         transform: 'scale(1.03)',
         filter: 'brightness(1.1)',
       },
+      cursor: 'pointer',
     },
   };
 

@@ -1,11 +1,9 @@
 import {Typography, Box, Stack, useTheme, useMediaQuery} from '@mui/material';
 import AvatarStatic from '@/components/UI/AvatarStatic';
-import useOwnStyles from '@/utils/styles';
 import {rwdValue} from '@/utils/theme';
 import useUser from '@/hooks/useUser';
 
 const AvatarStaticLayout = ({variant}) => {
-  // const {avatarLayout: styles, updateProfile} = useOwnStyles();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
