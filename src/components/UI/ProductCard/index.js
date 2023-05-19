@@ -164,8 +164,9 @@ export default function ProductCard({title, price, category, imgPath}) {
       height: rwdValue(32, 40),
       zIndex: 3,
       transition: '.3s',
-      '& i': {
+      '& span': {
         fontSize: rwdValue(18, 24),
+        lineHeight: rwdValue(32, 40),
         color: '#fff',
       },
     },
@@ -182,7 +183,7 @@ export default function ProductCard({title, price, category, imgPath}) {
             sx={styles.addBtn}
             onClick={addToCartHandler}
           >
-            <Typography component="i" className="icon-bag" />
+            <Typography component="span" className="icon-add-to-cart" />
           </Button>
           <Image
             layout="fill"
