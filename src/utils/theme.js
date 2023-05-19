@@ -164,7 +164,6 @@ theme = createTheme(theme, {
     },
     MuiSelect: {
       defaultProps: {
-        disableUnderline: true,
         IconComponent: ExpandMoreIcon,
         SelectDisplayProps: {
           style: {
