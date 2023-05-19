@@ -18,7 +18,6 @@ export default function CartProductItem({
   title,
   price,
   category,
-  inStock,
   quantity,
   onDelete,
   image,
@@ -61,12 +60,6 @@ export default function CartProductItem({
       color: theme.palette.text.secondary,
       marginBottom: '12px',
       fontSize: rwdValue(8, 20),
-    },
-    stock: {
-      color: theme.palette.primary.main,
-      fontWeight: 600,
-      fontSize: rwdValue(8, 25),
-      display: !isDesktop ? 'none' : 'block',
     },
     footer: {
       display: 'flex',
@@ -118,7 +111,12 @@ export default function CartProductItem({
   return (
     <Card sx={styles.card}>
       <Stack direction="row">
-        <Image width={220} height={220} alt={title} src={image} />
+        <Image
+          width={600}
+          height={600}
+          alt={title}
+          src={`https://shoes-shop-strapi.herokuapp.com${image[0]?.attributes?.url}`}
+        />
         <Stack sx={styles.content}>
           <Stack sx={styles.header}>
             <Typography variant="h3" component="h3">
@@ -131,9 +129,6 @@ export default function CartProductItem({
           <Typography variant="body2" component="span" sx={styles.category}>
             {category}
           </Typography>
-          <Typography variant="body4" sx={styles.stock}>
-            {inStock ? 'In Stock' : 'Not available'}
-          </Typography>
           <Stack sx={styles.footer}>
             <FormControl sx={styles.select}>
               <Select
@@ -141,16 +136,13 @@ export default function CartProductItem({
                 variant="standard"
                 defaultValue={'quantity'}
                 disableUnderline
+                value={quantity}
               >
                 <MenuItem value="quantity" disabled>
                   Quantity
                 </MenuItem>
                 {[...Array(10)].map((_, index) => (
-                  <MenuItem
-                    key={index}
-                    value={index + 1}
-                    defaultChecked={quantity === index + 1}
-                  >
+                  <MenuItem key={index} value={index + 1}>
                     {index + 1}
                   </MenuItem>
                 ))}

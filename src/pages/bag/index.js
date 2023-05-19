@@ -1,22 +1,34 @@
 import Head from 'next/head';
+import {useState, useEffect} from 'react';
 import {Typography, Box, Stack, useMediaQuery, useTheme} from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
 import mockupProducts from '@/utils/data';
+import {SkeletonProducts} from '@/utils/utils';
+
+import {useCart} from '@/context/CartContext';
+import useProducts from '@/hooks/useProducts';
 
 import NavBarLayout from '@/components/Layout/NavBarLayout';
+import SideBar from '@/components/Layout/SideBar';
 
 import Button from '@/components/UI/Button';
 import CartProductItem from '@/components/UI/CartProductItem';
-import SideBar from '@/components/Layout/SideBar';
 
 const Bag = () => {
+  const {products, isLoading} = useProducts();
+  const [items, setItems] = useState([]);
+  const {cartItems} = useCart();
+  useEffect(() => {
+    const keys = Object.keys(cartItems);
+    if (products && products.length > 0)
+      setItems([
+        ...products.filter(item => keys.includes(item.attributes.name)),
+      ]);
+  }, [isLoading]);
+  const {removeProduct} = useCart();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
-
-  const deleteClickHandler = () => {
-    console.log('DELETED');
-  };
 
   const styles = {
     wrapper: {
@@ -51,6 +63,7 @@ const Bag = () => {
       <Head>
         <title>Wellrun | Your Bag</title>
       </Head>
+
       <NavBarLayout>
         <Box sx={styles.wrapper}>
           <SideBar />
@@ -59,23 +72,27 @@ const Bag = () => {
               <Typography variant="h1" component="h1">
                 Cart
               </Typography>
-              {mockupProducts.map(product => {
-                return (
-                  <Box sx={styles.card} key={product.id}>
-                    <CartProductItem
-                      title={product.attributes.name}
-                      category={product.attributes.category}
-                      price={product.attributes.price}
-                      image={product.attributes.image}
-                      inStock={true}
-                      size={[36, 37, 38, 39, 40]}
-                      color={['green', 'black', 'white', 'blue', 'red']}
-                      // quantity={3}
-                      onDelete={deleteClickHandler}
-                    />
-                  </Box>
-                );
-              })}
+              {isLoading
+                ? SkeletonProducts()
+                : items &&
+                  items.map(product => {
+                    const {attributes} = product;
+                    const {categories, name, price, images} = attributes;
+                    const cat1 = categories?.data[0]?.attributes?.name;
+                    const cat2 = categories?.data[1]?.attributes?.name;
+                    return (
+                      <Box sx={styles.card} key={product.id}>
+                        <CartProductItem
+                          title={name}
+                          category={cat1 + ' ' + cat2 ? cat2 : ''}
+                          price={price}
+                          image={images?.data}
+                          quantity={cartItems[name]}
+                          onDelete={() => removeProduct(name)}
+                        />
+                      </Box>
+                    );
+                  })}
             </Box>
             <Box sx={styles.colSm}>
               <Typography
