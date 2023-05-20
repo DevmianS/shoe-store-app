@@ -58,6 +58,7 @@ const Bag = () => {
       ]);
     }
   }, [cartItems, products]);
+
   const {removeProduct} = useCart();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
@@ -67,6 +68,11 @@ const Bag = () => {
       fontSize: rwdValue(18, 28),
       marginTop: rwdValue(45, 65),
       textAlign: 'center',
+    },
+    summaryTitle: {
+      marginBottom: rwdValue(20, 55),
+      paddingBottom: isTablet ? rwdValue(20, 40) : 0,
+      borderBottom: isTablet ? '1px solid #EAECF0' : 'none',
     },
     btnBox: {
       textAlign: 'center',
@@ -103,6 +109,34 @@ const Bag = () => {
     },
     colBig: {flex: isTablet ? '0 0 100%' : '0 1 62%'},
     colSm: {flex: isTablet ? '0 0 100%' : '0 0 26%'},
+    promo: {
+      fontWeight: 400,
+      marginBottom: rwdValue(20, 40),
+      display: 'flex',
+      alignItems: 'center',
+      '& i': {fontSize: 20, marginLeft: '5px'},
+    },
+    summaryText: {fontSize: rwdValue(20, 30), fontWeight: 400},
+    total: {
+      display: 'flex',
+      flexDirection: 'row',
+      padding: '20px 0',
+      marginBottom: rwdValue(30, 55),
+      marginTop: rwdValue(30, 55),
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderTop: '1px solid #EAECF0',
+      borderBottom: '1px solid #EAECF0',
+      fontSize: rwdValue(20, 30),
+      fontWeight: 500,
+    },
+    summaryItem: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: rwdValue(20, 40),
+    },
   };
   return (
     <>
@@ -156,136 +190,75 @@ const Bag = () => {
               )}
             </Box>
             <Box sx={styles.colSm}>
-              <Typography
-                variant="h1"
-                component="h2"
-                sx={{
-                  marginBottom: rwdValue(20, 65),
-                  paddingBottom: isTablet ? rwdValue(20, 40) : 0,
-                  borderBottom: isTablet ? '1px solid #EAECF0' : 'none',
-                }}
-              >
+              <Typography variant="h1" component="h2" sx={styles.summaryTitle}>
                 Summary
               </Typography>
               <Box>
-                <Typography
-                  variant="body2"
-                  fontWeight={400}
-                  component="p"
-                  mb={4}
-                  display={'flex'}
-                  alignItems={'center'}
-                >
+                <Typography variant="body2" component="p" sx={styles.promo}>
                   Do you have a promocode?
-                  <Typography
-                    className="icon-chevron-down"
-                    component="i"
-                    fontSize={20}
-                    ml={'5px'}
-                  />
+                  <Typography className="icon-chevron-down" component="i" />
                 </Typography>
-                <Stack
-                  direction="row"
-                  mb={3}
-                  justifyContent={'space-between'}
-                  alignItems={'center'}
-                >
+                <Stack sx={styles.summaryItem}>
                   <Typography
                     variant="h3"
                     component="h3"
-                    fontWeight={400}
-                    fontSize={rwdValue(20, 30)}
+                    sx={styles.summaryText}
                   >
                     Subtotal
                   </Typography>
                   <Typography
                     variant="h3"
                     component="span"
-                    fontWeight={400}
-                    fontSize={rwdValue(20, 30)}
+                    sx={styles.summaryText}
                   >
                     ${cost.subtotal}
                   </Typography>
                 </Stack>
-                <Stack
-                  direction="row"
-                  mb={3}
-                  justifyContent={'space-between'}
-                  alignItems={'center'}
-                >
+                <Stack sx={styles.summaryItem}>
                   <Typography
                     variant="h3"
                     component="h3"
-                    fontWeight={400}
-                    fontSize={rwdValue(20, 30)}
+                    sx={styles.summaryText}
                   >
                     Shipping
                   </Typography>
                   <Typography
                     variant="h3"
                     component="span"
-                    fontWeight={400}
-                    fontSize={rwdValue(20, 30)}
+                    sx={styles.summaryText}
                   >
                     ${cost.shipping}
                   </Typography>
                 </Stack>
-                <Stack
-                  direction="row"
-                  justifyContent={'space-between'}
-                  alignItems={'center'}
-                >
+                <Stack sx={styles.summaryItem}>
                   <Typography
                     variant="h3"
                     component="h3"
-                    fontWeight={400}
-                    fontSize={rwdValue(20, 30)}
+                    sx={styles.summaryText}
                   >
                     Tax
                   </Typography>
                   <Typography
                     variant="h3"
                     component="span"
-                    fontWeight={400}
-                    fontSize={rwdValue(20, 30)}
+                    sx={styles.summaryText}
                   >
                     ${cost.tax}
                   </Typography>
                 </Stack>
-                <Stack
-                  direction="row"
-                  sx={{
-                    padding: '20px 0',
-                    marginBottom: rwdValue(30, 55),
-                    marginTop: rwdValue(30, 55),
-                  }}
-                  borderTop={'1px solid #EAECF0'}
-                  borderBottom={'1px solid #EAECF0'}
-                  justifyContent={'space-between'}
-                  alignItems={'center'}
-                >
-                  <Typography
-                    variant="h3"
-                    component="h3"
-                    fontWeight={600}
-                    fontSize={rwdValue(20, 30)}
-                  >
+                <Stack sx={styles.total}>
+                  <Typography variant="h3" component="h3">
                     Total
                   </Typography>
                   <Typography
                     variant="h3"
                     component="span"
-                    fontWeight={600}
-                    fontSize={rwdValue(20, 30)}
+                    sx={{...styles.summaryText, fontWeight: 500}}
                   >
                     ${cost.total}
                   </Typography>
                 </Stack>
-                <Stack spacing={2}>
-                  <Button outlined>PayPal</Button>
-
-                  <Button>Checkout</Button>
-                </Stack>
+                <Button size={isTablet ? 'small' : 'medium'}>Checkout</Button>
               </Box>
             </Box>
           </Box>
