@@ -53,6 +53,7 @@ export default function SideBar({children, isFilter}) {
       window.localStorage.removeItem('USER_EMAIL');
     }
     setLoading(false);
+    toggle();
   };
 
   return (
@@ -66,12 +67,18 @@ export default function SideBar({children, isFilter}) {
               <ListItem
                 name="My products"
                 icon="orders"
-                onClick={() => router.push('/my-products')}
+                onClick={() => {
+                  router.push('/my-products');
+                  toggle();
+                }}
               />
               <ListItem
                 name="Settings"
                 icon="setting"
-                onClick={() => router.push('/profile/update')}
+                onClick={() => {
+                  router.push('/profile/update');
+                  toggle();
+                }}
               />
               <ListItem name="Log-out" icon="logout" onClick={handleLogout} />
             </List>
