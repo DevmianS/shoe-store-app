@@ -29,7 +29,7 @@ import useProductData from '@/hooks/useProductData';
 import useUser from '@/hooks/useUser';
 
 import axios from 'axios';
-import {executeError, executeSucces, uploadImages} from '@/utils/utils';
+import {createProduct, uploadImages} from '@/utils/utils';
 
 const AddProduct = () => {
   const {
@@ -175,80 +175,55 @@ const AddProduct = () => {
   const {jwt, id} = useUser();
 
   const handleSubmit = async () => {
-    const idGender = String(
-      genders.find(gender => gender.name === select.gender)?.id,
-    );
-    const idBrand = String(
-      brands.find(brand => brand.name === select.brand)?.id,
-    );
-
-    console.log('handleSubmit');
     let arrImgId = await uploadImages(arrImages, jwt);
-    console.log('arrImgIdarrImgId: 1', arrImgId);
 
-    arrImgId = arrImgId.map(img => img.id);
+    const res = await createProduct(
+      genders,
+      select,
+      brands,
+      categories,
+      sizes,
+      name,
+      arrImgId,
+      description,
+      id,
+      jwt,
+    );
 
-    console.log('arrImgIdarrImgId: 2', arrImgId);
+    resetForm();
 
-    const categoriesArr = categories
-      .filter(category => category.needed)
-      .map(category => String(category.id));
-
-    const sizesArr = sizes
-      .filter(size => size.needed)
-      .map(size => String(size.id));
-
-    const obj = {
-      data: {
-        name: name,
-        images: arrImgId,
-        description: description,
-        brand: idBrand,
-        categories: categoriesArr,
-        gender: idGender,
-        size: sizesArr,
-        price: 100,
-        userID: id,
-        teamName: 'fb-team',
-        uniqueID: generateRandomNumber(10),
-        sitemap_exclude: true,
-      },
-    };
-    console.log('Final obj: ', obj);
-
-    try {
-      const res = await axios.post(
-        'https://shoes-shop-strapi.herokuapp.com/api/products',
-        obj,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + jwt,
-          },
-        },
-      );
-
-      if (res.status == '200') {
-        console.log('succesfully: ', res.data);
-        executeSucces('Product created succesfully.');
-      }
-      console.log('res: ', res);
-    } catch (error) {
-      console.log('ERROR API PRODUCT: ', error);
-      executeError('There was an error.');
-    }
+    console.log('RES: ', res);
   };
 
-  function generateRandomNumber(length) {
-    let randomNumber = '';
+  const resetForm = () => {
+    setSelect({gender: 'Men', brand: 'Nike'});
 
-    for (let i = 0; i < length; i++) {
-      const digit = Math.floor(Math.random() * 10); // Genera un dígito aleatorio entre 0 y 9
-      randomNumber += digit.toString(); // Agrega el dígito al número aleatorio
-    }
-
-    return randomNumber;
-  }
+    setName('');
+    setDescription('');
+    setPrice(0);
+    setArrImages([
+      {id: 1, file: null, image: null},
+      {id: 2, file: null, image: null},
+      {id: 3, file: null, image: null},
+      {id: 4, file: null, image: null},
+    ]);
+    setSizes(
+      sizes.map(obj => {
+        return {
+          ...obj,
+          needed: false,
+        };
+      }),
+    );
+    setCategories(
+      categories.map(obj => {
+        return {
+          ...obj,
+          needed: false,
+        };
+      }),
+    );
+  };
 
   return (
     <>

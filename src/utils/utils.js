@@ -163,10 +163,89 @@ export const uploadImages = async (arrImages, jwt) => {
 
     const {data: arrImgId} = response;
 
-    return arrImgId;
+    return arrImgId?.map(img => img.id);
   } catch (error) {
     // Aquí puedes manejar el error de la API si ocurre alguno
 
     console.error('Error al enviar los archivos:', error);
   }
 };
+
+export const createProduct = async (
+  genders,
+  select,
+  brands,
+  categories,
+  sizes,
+  name,
+  arrImgId,
+  description,
+  id,
+  jwt,
+) => {
+  const idGender = String(
+    genders.find(gender => gender.name === select.gender)?.id,
+  );
+  const idBrand = String(brands.find(brand => brand.name === select.brand)?.id);
+
+  const categoriesArr = categories
+    .filter(category => category.needed)
+    .map(category => String(category.id));
+
+  const sizesArr = sizes
+    .filter(size => size.needed)
+    .map(size => String(size.id));
+
+  const obj = {
+    data: {
+      name: name,
+      images: arrImgId,
+      description: description,
+      brand: idBrand,
+      categories: categoriesArr,
+      gender: idGender,
+      size: sizesArr,
+      price: 100,
+      userID: id,
+      teamName: 'fb-team',
+      uniqueID: generateRandomNumber(10),
+      sitemap_exclude: true,
+    },
+  };
+
+  try {
+    const res = await axios.post(
+      'https://shoes-shop-strapi.herokuapp.com/api/products',
+      obj,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + jwt,
+        },
+      },
+    );
+
+    if (res.status == '200') {
+      console.log('succesfully: ', res.data);
+      executeSucces('Product created succesfully.');
+      return res;
+    }
+    console.log('res: ', res);
+  } catch (error) {
+    console.log('ERROR API PRODUCT: ', error);
+    executeError('There was an error.');
+    executeError('There was an error.');
+
+  }
+};
+
+function generateRandomNumber(length) {
+  let randomNumber = '';
+
+  for (let i = 0; i < length; i++) {
+    const digit = Math.floor(Math.random() * 10); // Genera un dígito aleatorio entre 0 y 9
+    randomNumber += digit.toString(); // Agrega el dígito al número aleatorio
+  }
+
+  return randomNumber;
+}
