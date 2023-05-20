@@ -18,6 +18,8 @@ import {
   FormGroup,
 } from '@mui/material';
 
+import {v4} from 'uuid';
+
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
@@ -27,7 +29,7 @@ import useProductData from '@/hooks/useProductData';
 import useUser from '@/hooks/useUser';
 
 import axios from 'axios';
-import {uploadImages} from '@/utils/utils';
+import {executeError, executeSucces, uploadImages} from '@/utils/utils';
 
 const AddProduct = () => {
   const {
@@ -39,6 +41,8 @@ const AddProduct = () => {
     setSizes,
     setCategories,
   } = useProductData() || {};
+
+  console.log('genders ', genders);
 
   const [select, setSelect] = useState({gender: 'Men', brand: 'Nike'});
 
@@ -168,29 +172,83 @@ const AddProduct = () => {
     },
   });
 
-  const {jwt} = useUser();
+  const {jwt, id} = useUser();
 
   const handleSubmit = async () => {
+    const idGender = String(
+      genders.find(gender => gender.name === select.gender)?.id,
+    );
+    const idBrand = String(
+      brands.find(brand => brand.name === select.brand)?.id,
+    );
+
     console.log('handleSubmit');
-    const arrImgId = await uploadImages(arrImages, jwt);
+    let arrImgId = await uploadImages(arrImages, jwt);
+    console.log('arrImgIdarrImgId: 1', arrImgId);
+
+    arrImgId = arrImgId.map(img => img.id);
+
+    console.log('arrImgIdarrImgId: 2', arrImgId);
+
+    const categoriesArr = categories
+      .filter(category => category.needed)
+      .map(category => String(category.id));
+
+    const sizesArr = sizes
+      .filter(size => size.needed)
+      .map(size => String(size.id));
 
     const obj = {
       data: {
-        name: 'Jordan1',
-        images: ['423', '432'],
-        description: 'Testing description',
-        brand: '1',
-        categories: ['1'],
-        color: 'red',
-        gender: 'man',
-        size: '3',
+        name: name,
+        images: arrImgId,
+        description: description,
+        brand: idBrand,
+        categories: categoriesArr,
+        gender: idGender,
+        size: sizesArr,
         price: 100,
-        userID: '234',
+        userID: id,
         teamName: 'fb-team',
+        uniqueID: generateRandomNumber(10),
         sitemap_exclude: true,
       },
     };
+    console.log('Final obj: ', obj);
+
+    try {
+      const res = await axios.post(
+        'https://shoes-shop-strapi.herokuapp.com/api/products',
+        obj,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + jwt,
+          },
+        },
+      );
+
+      if (res.status == '200') {
+        console.log('succesfully: ', res.data);
+        executeSucces('Product created succesfully.');
+      }
+      console.log('res: ', res);
+    } catch (error) {
+      console.log('ERROR API PRODUCT: ', error);
+      executeError('There was an error.');
+    }
   };
+
+  function generateRandomNumber(length) {
+    let randomNumber = '';
+
+    for (let i = 0; i < length; i++) {
+      const digit = Math.floor(Math.random() * 10); // Genera un dígito aleatorio entre 0 y 9
+      randomNumber += digit.toString(); // Agrega el dígito al número aleatorio
+    }
+
+    return randomNumber;
+  }
 
   return (
     <>
