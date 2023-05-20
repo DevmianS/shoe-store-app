@@ -32,15 +32,6 @@ export default function Summary({items, cartItems}) {
     },
     summaryText: {fontSize: rwdValue(20, 30), fontWeight: 400},
     summaryTotal: {
-      display: 'flex',
-      flexDirection: 'row',
-      padding: '20px 0',
-      marginBottom: rwdValue(30, 55),
-      marginTop: rwdValue(30, 55),
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      borderTop: '1px solid #EAECF0',
-      borderBottom: '1px solid #EAECF0',
       fontSize: rwdValue(20, 30),
       fontWeight: 500,
     },
@@ -50,6 +41,17 @@ export default function Summary({items, cartItems}) {
       alignItems: 'center',
       justifyContent: 'space-between',
       marginBottom: rwdValue(20, 40),
+    },
+    summaryItemTotal: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: rwdValue(30, 55),
+      marginTop: rwdValue(30, 55),
+      borderTop: '1px solid #EAECF0',
+      borderBottom: '1px solid #EAECF0',
+      padding: '20px 0',
     },
   };
 
@@ -106,8 +108,8 @@ export default function Summary({items, cartItems}) {
             ${cost.tax}
           </Typography>
         </Stack>
-        <Stack sx={styles.summaryTotal}>
-          <Typography variant="h3" component="h3">
+        <Stack sx={styles.summaryItemTotal}>
+          <Typography variant="h3" component="h3" sx={styles.summaryTotal}>
             Total
           </Typography>
           <Typography
