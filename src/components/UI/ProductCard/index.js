@@ -7,6 +7,7 @@ import {rwdValue} from '@/utils/theme';
 
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import Button from '@/components/UI/Button';
 
 export default function ProductCard({title, price, category, imgPath}) {
   const theme = useTheme();
@@ -37,7 +38,9 @@ export default function ProductCard({title, price, category, imgPath}) {
       setCurrentImageIndex(prevState => prevState + 1);
     }
   };
-
+  const addToCartHandler = e => {
+    console.log(title, 'ADDED');
+  };
   const styles = {
     column: isMobile
       ? {
@@ -152,6 +155,21 @@ export default function ProductCard({title, price, category, imgPath}) {
           }
         : {},
     },
+    addBtn: {
+      position: 'absolute',
+      bottom: rwdValue(10, 20),
+      left: 'calc(50% - 20px)',
+      width: rwdValue(32, 40),
+      minWidth: rwdValue(32, 40),
+      height: rwdValue(32, 40),
+      zIndex: 3,
+      transition: '.3s',
+      '& span': {
+        fontSize: rwdValue(18, 24),
+        lineHeight: rwdValue(32, 40),
+        color: '#fff',
+      },
+    },
   };
   if (!imgPath) {
     return;
@@ -159,11 +177,14 @@ export default function ProductCard({title, price, category, imgPath}) {
   return (
     <Box sx={styles.column}>
       <Box sx={styles.card}>
-        <Box
-          sx={{
-            ...styles.image,
-          }}
-        >
+        <Box sx={styles.image}>
+          <Button
+            size={isDesktop ? 'medium' : 'small'}
+            sx={styles.addBtn}
+            onClick={addToCartHandler}
+          >
+            <Typography component="span" className="icon-add-to-cart" />
+          </Button>
           <Image
             layout="fill"
             src={`https://shoes-shop-strapi.herokuapp.com${imgPath[currentImageIndex]?.attributes?.url}`}
