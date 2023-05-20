@@ -64,7 +64,7 @@ const SignInForm = () => {
       });
       if (ok) {
         executeSucces('Successfully logged in.');
-        router.push('/');
+        router.push(router.query.callbackUrl || '/');
       } else {
         executeError(error);
       }
