@@ -4,6 +4,7 @@ import {Typography, Stack, Box, useMediaQuery, IconButton} from '@mui/material';
 import {useTheme} from '@mui/material/styles';
 
 import {rwdValue} from '@/utils/theme';
+import {useCart} from '@/context/CartContext';
 
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -14,7 +15,7 @@ export default function ProductCard({title, price, category, imgPath}) {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
+  const {addProduct} = useCart();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const goToPreviousImage = () => {
@@ -37,9 +38,6 @@ export default function ProductCard({title, price, category, imgPath}) {
       console.log('true');
       setCurrentImageIndex(prevState => prevState + 1);
     }
-  };
-  const addToCartHandler = e => {
-    console.log(title, 'ADDED');
   };
   const styles = {
     column: isMobile
@@ -181,7 +179,7 @@ export default function ProductCard({title, price, category, imgPath}) {
           <Button
             size={isDesktop ? 'medium' : 'small'}
             sx={styles.addBtn}
-            onClick={addToCartHandler}
+            onClick={() => addProduct(title)}
           >
             <Typography component="span" className="icon-add-to-cart" />
           </Button>
