@@ -65,7 +65,13 @@ const ResetPasswordForm = () => {
       },
     },
     loginLink: {
+      fontWeight: 500,
+      fontSize: rwdValue(10, 15),
+      color: theme.palette.primary.main,
       textDecoration: 'none',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
     },
   };
 

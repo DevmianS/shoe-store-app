@@ -82,7 +82,6 @@ const SignInForm = () => {
         fontWeight: 500,
       },
     },
-    forgotLink: {fontSize: rwdValue(10, 15)},
     signInBtn: {marginBottom: '16px'},
     signUpLinkWrapper: {
       textAlign: 'center',
@@ -95,6 +94,14 @@ const SignInForm = () => {
     signUpText: {
       fontWeight: 500,
       fontSize: rwdValue(10, 15),
+    },
+    link: {
+      fontWeight: 500,
+      fontSize: rwdValue(10, 15),
+      color: theme.palette.primary.main,
+      '&:hover': {
+        textDecoration: 'underline',
+      },
     },
   };
 
@@ -201,7 +208,7 @@ const SignInForm = () => {
               label="Remember me"
               sx={styles.rememberCheckbox}
             />
-            <Typography sx={styles.forgotLink}>
+            <Typography sx={styles.link}>
               <Link href="/forgot-password">Forgot password?</Link>
             </Typography>
           </Box>
@@ -216,7 +223,7 @@ const SignInForm = () => {
             <Typography component="span" sx={styles.signUpText}>
               Don{`'`}t have an account?
             </Typography>
-            <Typography component="span" sx={styles.signUpText}>
+            <Typography component="span" sx={styles.link}>
               <Link href="/sign-up">Sign up</Link>
             </Typography>
           </Box>

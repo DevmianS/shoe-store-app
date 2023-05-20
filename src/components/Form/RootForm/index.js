@@ -13,7 +13,7 @@ const RootForm = () => {
       width: '100%',
       maxWidth: isMobile ? '100%' : '480px',
     },
-    welcome: {marginBottom: '10px'},
+    welcomeTitle: {marginBottom: '10px'},
     welcomeText: {
       fontSize: rwdValue(10, 15),
       color: theme.palette.text.secondary,
@@ -33,7 +33,7 @@ const RootForm = () => {
   const router = useRouter();
   return (
     <Box sx={styles.wrapper}>
-      <Typography component="h1" variant="h1" sx={styles.welcome}>
+      <Typography component="h1" variant="h1" sx={styles.welcomeTitle}>
         Welcome to Wellrun
       </Typography>
       <Typography component="p" variant="body1" sx={styles.welcomeText}>
@@ -48,7 +48,7 @@ const RootForm = () => {
         >
           Sign in
         </Button>
-        <Button onClick={() => router.push('/sign-up')}>Sign up</Button>
+        <Button onClick={() => router.push('/sign-up')} sx={styles.signUpBtn}>Sign up</Button>
       </Box>
     </Box>
   );

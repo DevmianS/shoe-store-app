@@ -79,6 +79,15 @@ const SignUpForm = () => {
         fontWeight: 500,
       },
     },
+    signInLink: {
+      fontWeight: 500,
+      fontSize: rwdValue(10, 15),
+      color: theme.palette.primary.main,
+      textDecoration: 'none',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
   };
 
   const router = useRouter();
@@ -220,10 +229,8 @@ const SignUpForm = () => {
           </form>
           <Box sx={styles.signInLinkWrapper}>
             <Typography component="span">Already have an account?</Typography>
-            <Typography component="span">
-              <Link href="/sign-in">
-                Log in
-              </Link>
+            <Typography component="span" sx={styles.signInLink}>
+              <Link href="/sign-in">Log in</Link>
             </Typography>
           </Box>
         </Box>

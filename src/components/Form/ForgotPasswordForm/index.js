@@ -55,7 +55,12 @@ const ForgotPasswordForm = () => {
       },
     },
     loginLink: {
-      textDecoration: 'none',
+      fontWeight: 500,
+      fontSize: rwdValue(10, 15),
+      color: theme.palette.primary.main,
+      '&:hover': {
+        textDecoration: 'underline',
+      },
     },
   };
 
@@ -124,10 +129,8 @@ const ForgotPasswordForm = () => {
           </FormControl>
           <Box sx={styles.backToLogin}>
             <Typography component="span">Back to</Typography>
-            <Typography component="span">
-              <Link href="/sign-in" sx={styles.loginLink}>
-                Log in
-              </Link>
+            <Typography component="span" sx={styles.loginLink}>
+              <Link href="/sign-in">Log in</Link>
             </Typography>
           </Box>
         </Box>
