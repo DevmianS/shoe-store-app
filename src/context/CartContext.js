@@ -1,4 +1,5 @@
 import React, {createContext, useState, useContext, useEffect} from 'react';
+import {toast} from 'sonner';
 
 const CartContext = createContext();
 
@@ -42,6 +43,7 @@ export const CartProvider = ({children}) => {
       [title]: prev[title] ? prev[title] + 1 : 1,
     }));
     setCartCount(prev => prev + 1);
+    toast.success(title + ' added to your cart!');
   };
 
   const removeProduct = title => {
@@ -50,6 +52,7 @@ export const CartProvider = ({children}) => {
       [title]: prev[title] > 0 ? prev[title] - 1 : 0,
     }));
     setCartCount(prev => (prev > 0 ? prev - 1 : 0));
+    toast.success(title + ' was deleted from your cart!');
   };
 
   return (
