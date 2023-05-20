@@ -5,8 +5,11 @@ const CartContext = createContext();
 export const CartProvider = ({children}) => {
   const [cartItems, setCartItems] = useState(() => {
     if (typeof window !== 'undefined') {
-      const savedData = window.localStorage.getItem('cartItems');
-      return savedData ? JSON.parse(savedData) : {};
+      const USER_EMAIL = window.localStorage.getItem('USER_EMAIL');
+      if (USER_EMAIL) {
+        const savedData = window.localStorage.getItem('CART_' + USER_EMAIL);
+        return savedData ? JSON.parse(savedData) : {};
+      }
     }
     return {};
   });
@@ -15,7 +18,13 @@ export const CartProvider = ({children}) => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      window.localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      const USER_EMAIL = window.localStorage.getItem('USER_EMAIL');
+      if (USER_EMAIL) {
+        window.localStorage.setItem(
+          'CART_' + USER_EMAIL,
+          JSON.stringify(cartItems),
+        );
+      }
     }
   }, [cartItems]);
 
@@ -45,7 +54,14 @@ export const CartProvider = ({children}) => {
 
   return (
     <CartContext.Provider
-      value={{cartItems, cartCount, addProduct, removeProduct}}
+      value={{
+        setCartItems,
+        setCartCount,
+        cartItems,
+        cartCount,
+        addProduct,
+        removeProduct,
+      }}
     >
       {children}
     </CartContext.Provider>

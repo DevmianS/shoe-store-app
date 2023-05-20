@@ -29,8 +29,11 @@ import {rwdValue} from '@/utils/theme';
 import Button from '@/components/UI/Button';
 import Loading from '@/components/UI/Loading';
 import {signIn, useSession} from 'next-auth/react';
+import {useCart} from '@/context/CartContext';
 
 const SignInForm = () => {
+  const {setCartItems, setCartCount} = useCart();
+
   const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -64,6 +67,38 @@ const SignInForm = () => {
       });
       if (ok) {
         executeSucces('Successfully logged in.');
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem('USER_EMAIL', email);
+        }
+        setCartItems(() => {
+          if (typeof window !== 'undefined') {
+            const USER_EMAIL = window.localStorage.getItem('USER_EMAIL');
+            if (USER_EMAIL) {
+              const savedData = window.localStorage.getItem(
+                'CART_' + USER_EMAIL,
+              );
+              return savedData ? JSON.parse(savedData) : {};
+            }
+          }
+          return {};
+        });
+        setCartCount(() => {
+          if (typeof window !== 'undefined') {
+            const USER_EMAIL = window.localStorage.getItem('USER_EMAIL');
+            if (USER_EMAIL) {
+              const savedData = window.localStorage.getItem(
+                'CART_' + USER_EMAIL,
+              );
+              return (
+                Object.values(JSON.parse(savedData)).reduce(
+                  (acc, curr) => acc + curr,
+                  0,
+                ) || 0
+              );
+            }
+          }
+          return {};
+        });
         router.push('/');
       } else {
         executeError(error);
