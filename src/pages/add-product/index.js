@@ -6,7 +6,6 @@ import {
   styled,
   Box,
   Stack,
-  Button,
   TextField,
   Select,
   FormControl,
@@ -18,20 +17,19 @@ import {
   FormGroup,
 } from '@mui/material';
 
-
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import FileInput from '@/components/UI/FileInput';
 import Button from '@/components/UI/Button';
 import useProductData from '@/hooks/useProductData';
 import useUser from '@/hooks/useUser';
 
-import axios from 'axios';
 import {createProduct, uploadImages} from '@/utils/utils';
 
 const AddProduct = () => {
+  
   const {
     brands,
     categories,
