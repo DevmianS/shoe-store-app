@@ -208,9 +208,9 @@ const SignInForm = () => {
               label="Remember me"
               sx={styles.rememberCheckbox}
             />
-            <Typography sx={styles.link}>
-              <Link href="/forgot-password">Forgot password?</Link>
-            </Typography>
+            <Link href="/forgot-password" sx={{textDecoration: 'none'}}>
+              <Typography sx={styles.link}>Forgot password?</Typography>
+            </Link>
           </Box>
           <Button
             size={isMobile ? 'small' : 'medium'}
@@ -223,9 +223,11 @@ const SignInForm = () => {
             <Typography component="span" sx={styles.signUpText}>
               Don{`'`}t have an account?
             </Typography>
-            <Typography component="span" sx={styles.link}>
-              <Link href="/sign-up">Sign up</Link>
-            </Typography>
+            <Link href="/sign-up" sx={{textDecoration: 'none'}}>
+              <Typography component="span" sx={styles.link}>
+                Sign up
+              </Typography>
+            </Link>
           </Box>
         </form>
       </Box>

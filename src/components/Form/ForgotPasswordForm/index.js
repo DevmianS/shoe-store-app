@@ -129,9 +129,11 @@ const ForgotPasswordForm = () => {
           </FormControl>
           <Box sx={styles.backToLogin}>
             <Typography component="span">Back to</Typography>
-            <Typography component="span" sx={styles.loginLink}>
-              <Link href="/sign-in">Log in</Link>
-            </Typography>
+            <Link href="/sign-in">
+              <Typography component="span" sx={styles.loginLink}>
+                Log in
+              </Typography>
+            </Link>
           </Box>
         </Box>
       </Box>

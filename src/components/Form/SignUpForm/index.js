@@ -229,9 +229,11 @@ const SignUpForm = () => {
           </form>
           <Box sx={styles.signInLinkWrapper}>
             <Typography component="span">Already have an account?</Typography>
-            <Typography component="span" sx={styles.signInLink}>
-              <Link href="/sign-in">Log in</Link>
-            </Typography>
+            <Link href="/sign-in">
+              <Typography component="span" sx={styles.signInLink}>
+                Log in
+              </Typography>
+            </Link>
           </Box>
         </Box>
       </Box>

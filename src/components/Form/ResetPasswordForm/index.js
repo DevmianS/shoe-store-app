@@ -1,7 +1,7 @@
+import Link from 'next/link';
 import {
   Box,
   FormControl,
-  Link,
   TextField,
   Typography,
   useMediaQuery,
@@ -68,7 +68,6 @@ const ResetPasswordForm = () => {
       fontWeight: 500,
       fontSize: rwdValue(10, 15),
       color: theme.palette.primary.main,
-      textDecoration: 'none',
       '&:hover': {
         textDecoration: 'underline',
       },
@@ -169,11 +168,11 @@ const ResetPasswordForm = () => {
           </FormControl>
           <Box sx={styles.backToLogin}>
             <Typography component="span">Back to</Typography>
-            <Typography component="span">
-              <Link href="/sign-up" sx={styles.loginLink}>
+            <Link href="/sign-up">
+              <Typography component="span" sx={styles.loginLink}>
                 Log in
-              </Link>
-            </Typography>
+              </Typography>
+            </Link>
           </Box>
         </Box>
       </Box>
