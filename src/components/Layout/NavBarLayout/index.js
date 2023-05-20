@@ -1,8 +1,8 @@
 import React, {memo} from 'react';
 import NavBar from '@/components/UI/NavBar';
-import {Box, styled} from '@mui/material';
+import {Box} from '@mui/material';
 
-const Wrapper = styled(Box)({
+const navStyles = {
   position: 'relative',
   display: 'flex',
   flexDirection: 'column',
@@ -17,15 +17,16 @@ const Wrapper = styled(Box)({
       flex: '1 1 auto',
     },
   },
-});
+};
+
 const NavBarLayout = ({children}) => {
   return (
-    <Wrapper key="wrap">
+    <Box sx={navStyles} key="wrap">
       <NavBar key="nav" />
       <Box component="main" key="main">
         {children}
       </Box>
-    </Wrapper>
+    </Box>
   );
 };
 
