@@ -5,6 +5,9 @@ import {Typography, Box, Stack, useMediaQuery, useTheme} from '@mui/material';
 import {rwdValue} from '@/utils/theme';
 
 import Button from '@/components/UI/Button';
+import {toast} from 'sonner';
+import {useCart} from '@/context/CartContext';
+import {useRouter} from 'next/router';
 
 export default function Summary({items, cartItems}) {
   const [cost, setCost] = useState({
@@ -14,10 +17,54 @@ export default function Summary({items, cartItems}) {
     tax: 0,
   });
   const theme = useTheme();
+  const router = useRouter();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+  const [payment, setPayment] = useState(false);
+  const {setCartItems, setCartCount} = useCart();
+
+  const promise = () =>
+    new Promise((resolve, reject) => {
+      const randomNumber = Math.random();
+      setPayment(true);
+      if (randomNumber < 0.5) {
+        setTimeout(() => {
+          resolve('Payment was successful! Wait for order delivery. Thanks!');
+          setPayment(false);
+          setCost({
+            shipping: 0,
+            subtotal: 0,
+            total: 0,
+            tax: 0,
+          });
+          setCartItems({});
+          setCartCount(0);
+          router.push('/');
+        }, 3000);
+      } else {
+        setTimeout(() => {
+          reject(
+            'Something went wrong, please check your payment details and try again!',
+          );
+          setPayment(false);
+        }, 3000);
+      }
+    });
+
+  const checkoutHandler = data => {
+    toast.promise(promise, {
+      loading: 'Payment verification...',
+      success: response => {
+        return response;
+      },
+      error: errorMessage => {
+        return errorMessage;
+      },
+    });
+  };
 
   const styles = {
-    colSm: {flex: isTablet ? '0 0 100%' : '0 0 26%'},
+    colSm: {flex: isTablet ? '0 0 100%' : '0 0 26%', position: 'relative'},
+    summary: {position: isTablet ? 'static' : 'fixed', width: '22%'},
     promo: {
       fontWeight: 400,
       marginBottom: rwdValue(20, 40),
@@ -76,51 +123,59 @@ export default function Summary({items, cartItems}) {
 
   return (
     <Box sx={styles.colSm}>
-      <Typography variant="h1" component="h2" sx={styles.summaryTitle}>
-        Summary
-      </Typography>
-      <Box>
-        <Typography variant="body2" component="p" sx={styles.promo}>
-          Do you have a promocode?
-          <Typography className="icon-chevron-down" component="i" />
+      <Box sx={styles.summary}>
+        <Typography variant="h1" component="h2" sx={styles.summaryTitle}>
+          Summary
         </Typography>
-        <Stack sx={styles.summaryItem}>
-          <Typography variant="h3" component="h3" sx={styles.summaryText}>
-            Subtotal
+        <Box>
+          <Typography variant="body2" component="p" sx={styles.promo}>
+            Do you have a promocode?
+            <Typography className="icon-chevron-down" component="i" />
           </Typography>
-          <Typography variant="h3" component="span" sx={styles.summaryText}>
-            ${cost.subtotal}
-          </Typography>
-        </Stack>
-        <Stack sx={styles.summaryItem}>
-          <Typography variant="h3" component="h3" sx={styles.summaryText}>
-            Shipping
-          </Typography>
-          <Typography variant="h3" component="span" sx={styles.summaryText}>
-            ${cost.shipping}
-          </Typography>
-        </Stack>
-        <Stack sx={styles.summaryItem}>
-          <Typography variant="h3" component="h3" sx={styles.summaryText}>
-            Tax
-          </Typography>
-          <Typography variant="h3" component="span" sx={styles.summaryText}>
-            ${cost.tax}
-          </Typography>
-        </Stack>
-        <Stack sx={styles.summaryItemTotal}>
-          <Typography variant="h3" component="h3" sx={styles.summaryTotal}>
-            Total
-          </Typography>
-          <Typography
-            variant="h3"
-            component="span"
-            sx={{...styles.summaryText, fontWeight: 500}}
+          <Stack sx={styles.summaryItem}>
+            <Typography variant="h3" component="h3" sx={styles.summaryText}>
+              Subtotal
+            </Typography>
+            <Typography variant="h3" component="span" sx={styles.summaryText}>
+              ${cost.subtotal}
+            </Typography>
+          </Stack>
+          <Stack sx={styles.summaryItem}>
+            <Typography variant="h3" component="h3" sx={styles.summaryText}>
+              Shipping
+            </Typography>
+            <Typography variant="h3" component="span" sx={styles.summaryText}>
+              ${cost.shipping}
+            </Typography>
+          </Stack>
+          <Stack sx={styles.summaryItem}>
+            <Typography variant="h3" component="h3" sx={styles.summaryText}>
+              Tax
+            </Typography>
+            <Typography variant="h3" component="span" sx={styles.summaryText}>
+              ${cost.tax}
+            </Typography>
+          </Stack>
+          <Stack sx={styles.summaryItemTotal}>
+            <Typography variant="h3" component="h3" sx={styles.summaryTotal}>
+              Total
+            </Typography>
+            <Typography
+              variant="h3"
+              component="span"
+              sx={{...styles.summaryText, fontWeight: 500}}
+            >
+              ${cost.total}
+            </Typography>
+          </Stack>
+          <Button
+            size={isTablet ? 'small' : 'medium'}
+            onClick={checkoutHandler}
+            disabled={payment}
           >
-            ${cost.total}
-          </Typography>
-        </Stack>
-        <Button size={isTablet ? 'small' : 'medium'}>Checkout</Button>
+            Checkout
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
