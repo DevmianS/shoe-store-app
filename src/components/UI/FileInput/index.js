@@ -6,13 +6,15 @@ import {Box, Typography, useMediaQuery, useTheme} from '@mui/material';
 import Button from '@/components/UI/Button';
 import {rwdValue} from '@/utils/theme';
 
-function FileInput({setArrImages}) {
+function FileInput({id, setArrImages, arrImages}) {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
-  const [file, setFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [file, setFile] = useState(arrImages.find(obj => obj.id === id).file);
+  const [imagePreview, setImagePreview] = useState(
+    arrImages.find(obj => obj.id === id).image,
+  );
 
   const styles = {
     wrap: {
@@ -88,21 +90,39 @@ function FileInput({setArrImages}) {
 
   const fileInputChangeHandler = e => {
     const selectedFile = e.target.files[0];
-    setArrImages(prevArrImages => [...prevArrImages, selectedFile]);
     const reader = new FileReader();
     reader.onload = e => {
-      setImagePreview(e.target.result);
+      setArrImages(prevState => {
+        return prevState.map(obj => {
+          if (obj.id === id) {
+            return {...obj, file: selectedFile, image: e.target.result};
+          }
+          return obj;
+        });
+      });
     };
     if (selectedFile) {
       reader.readAsDataURL(selectedFile);
-      setFile(selectedFile);
     } else {
-      setFile(null);
+      setArrImages(prevState => {
+        return prevState.map(obj => {
+          if (obj.id === id) {
+            return {...obj, file: null};
+          }
+          return obj;
+        });
+      });
     }
   };
   const clearClickHandler = () => {
-    setImagePreview(null);
-    setFile(null);
+    setArrImages(prevState => {
+      return prevState.map(obj => {
+        if (obj.id === id) {
+          return {...obj, file: null, image: null};
+        }
+        return obj;
+      });
+    });
   };
   return (
     <Box sx={styles.wrap}>

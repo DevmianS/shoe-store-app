@@ -24,6 +24,10 @@ import NavBarLayout from '@/components/Layout/NavBarLayout';
 import {useEffect, useState} from 'react';
 import FileInput from '@/components/UI/FileInput';
 import useProductData from '@/hooks/useProductData';
+import useUser from '@/hooks/useUser';
+
+import axios from 'axios';
+import {uploadImages} from '@/utils/utils';
 
 const AddProduct = () => {
   const {
@@ -38,7 +42,16 @@ const AddProduct = () => {
 
   const [select, setSelect] = useState({gender: 'Men', brand: 'Nike'});
 
-  const [arrImages, setArrImages] = useState([]);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState(0);
+
+  const [arrImages, setArrImages] = useState([
+    {id: 1, file: null, image: null},
+    {id: 2, file: null, image: null},
+    {id: 3, file: null, image: null},
+    {id: 4, file: null, image: null},
+  ]);
 
   console.log('arrImages: ', arrImages);
 
@@ -155,6 +168,30 @@ const AddProduct = () => {
     },
   });
 
+  const {jwt} = useUser();
+
+  const handleSubmit = async () => {
+    console.log('handleSubmit');
+    const arrImgId = await uploadImages(arrImages, jwt);
+
+    const obj = {
+      data: {
+        name: 'Jordan1',
+        images: ['423', '432'],
+        description: 'Testing description',
+        brand: '1',
+        categories: ['1'],
+        color: 'red',
+        gender: 'man',
+        size: '3',
+        price: 100,
+        userID: '234',
+        teamName: 'fb-team',
+        sitemap_exclude: true,
+      },
+    };
+  };
+
   return (
     <>
       <Head>
@@ -169,8 +206,9 @@ const AddProduct = () => {
                 Add product
               </Typography>
               <ButtonsWrap>
-                <HeaderBtn variant="outlined">Schedule</HeaderBtn>
-                <HeaderBtn variant="contained">Save</HeaderBtn>
+                <HeaderBtn variant="contained" onClick={handleSubmit}>
+                  Save
+                </HeaderBtn>
               </ButtonsWrap>
             </HeaderRow>
             <Typography
@@ -189,245 +227,257 @@ const AddProduct = () => {
               prices. Stay organized and streamline your product management with
               the account page.
             </Typography>
-            <Stack
-              sx={{
-                justifyContent: 'space-between',
-                flexDirection: isTablet ? 'column' : 'row',
-              }}
-            >
-              <Box
-                maxWidth={isTablet ? '100%' : '440px'}
-                flex={isTablet ? '1 1 auto' : '0 0 440px'}
-                mr={isTablet ? 0 : rwdValue(30, 120)}
+            <form>
+              <Stack
                 sx={{
-                  '& .MuiInputBase-input': {
-                    fontSize: isDesktop ? '15px' : '10px',
-                  },
+                  justifyContent: 'space-between',
+                  flexDirection: isTablet ? 'column' : 'row',
                 }}
               >
-                <FormItem>
-                  <TextField
-                    fullWidth
-                    size="medium"
-                    placeholder="Nike Air Max 90"
-                    label="Product name"
-                    type="text"
-                    sx={{
-                      '& .MuiInputBase-fullWidth': {
-                        height: isDesktop ? '48px' : '33px',
-                        fontSize: isDesktop ? '15px' : '10px',
-                      },
-                      '& .MuiInputLabel-formControl': {
-                        fontSize: isDesktop ? '15px' : '12px',
-                      },
-                    }}
-                  />
-                </FormItem>
-                <FormItem>
-                  <TextField
-                    fullWidth
-                    size="medium"
-                    placeholder="Price"
-                    label="Price"
-                    type="number"
-                    sx={{
-                      '& .MuiInputBase-fullWidth': {
-                        height: isDesktop ? '48px' : '33px',
-                        fontSize: isDesktop ? '15px' : '10px',
-                      },
-                      '& .MuiInputLabel-formControl': {
-                        fontSize: isDesktop ? '15px' : '12px',
-                      },
-                    }}
-                  />
-                </FormItem>
-                <FormItem>
-                  <Box
-                    sx={{display: 'flex', gap: '20px', flexDirection: 'row'}}
-                  >
-                    <FormControl fullWidth>
-                      <InputLabel id="gender">Gender</InputLabel>
-                      <Select
-                        sx={{
-                          height: '48px',
-                          '& .MuiInputBase-input': {
-                            fontSize: isDesktop ? '15px' : '10px',
-                          },
-                        }}
-                        labelId="gender"
-                        variant="outlined"
-                        value={select.gender}
-                        onChange={genderChangeHandler}
-                        defaultValue="Men"
-                      >
-                        {!isLoading &&
-                          genders.map(gender => {
-                            return (
-                              <MenuItem key={gender.id} value={gender.name}>
-                                {gender.name}
-                              </MenuItem>
-                            );
-                          })}
-                      </Select>
-                    </FormControl>
-                    <FormControl fullWidth>
-                      <InputLabel id="brand">Brand</InputLabel>
-                      <Select
-                        sx={{
-                          height: '48px',
-                          '& .MuiInputBase-input': {
-                            fontSize: isDesktop ? '15px' : '10px',
-                          },
-                        }}
-                        labelId="brand"
-                        variant="outlined"
-                        value={select.brand}
-                        onChange={brandChangeHandler}
-                      >
-                        {!isLoading &&
-                          brands.map(brand => {
-                            return (
-                              <MenuItem key={brand.id} value={brand.name}>
-                                {brand.name}
-                              </MenuItem>
-                            );
-                          })}
-                      </Select>
-                    </FormControl>
-                  </Box>
-                </FormItem>
-                <FormItem>
-                  <TextField
-                    fullWidth
-                    size="medium"
-                    placeholder="Do not exceed 300 characters."
-                    label="Description"
-                    type="text"
-                    multiline
-                    rows={isDesktop ? 11 : 1}
-                    sx={{
-                      '& .MuiInputBase-root': {
-                        minHeight: isDesktop ? '270px' : 0,
-                        height: {xs: '34px'},
-                      },
-                      '& .MuiInputBase-input': {
-                        fontSize: isDesktop ? '15px' : '10px',
-                      },
-                      '& label': {
-                        fontSize: isDesktop ? '15px' : '12px',
-                      },
-                    }}
-                  />
-                </FormItem>
-                <CheckBoxWrap>
-                  <Typography
-                    sx={{
-                      fontSize: isDesktop ? '15px' : '12px',
-                      flex: '0 0 100%',
-                    }}
-                  >
-                    Add size
-                  </Typography>
-                  {sizes &&
-                    sizes.map(size => {
-                      return (
-                        <Box key={size.id} onClick={checkBoxChangeHandler}>
-                          <Checkbox
-                            name={size.value}
-                            checked={size.needed}
-                            onClick={checkBoxChangeHandler}
-                            id={size.id}
-                          />
-                          <InputLabel
-                            sx={{
-                              background: size.needed
-                                ? theme.palette.primary.main
-                                : 'white',
-                              color: size.needed
-                                ? 'white'
-                                : theme.palette.text.secondary,
-                              '&:hover': {
-                                borderColor: 'black',
-                                color: 'black',
-                              },
-                            }}
-                            htmlFor={size.value}
-                          >
-                            EU-{size.value}
-                          </InputLabel>
-                        </Box>
-                      );
-                    })}
-                </CheckBoxWrap>
-                <CheckBoxWrap>
-                  <Typography
-                    sx={{
-                      fontSize: isDesktop ? '15px' : '12px',
-                      flex: '0 0 100%',
-                    }}
-                  >
-                    Add categories
-                  </Typography>
-                  {categories &&
-                    categories.map(category => {
-                      return (
-                        <Box
-                          key={category.id}
-                          onClick={checkBoxChangeHandlerCategory}
-                        >
-                          <Checkbox
-                            name={category.name}
-                            checked={category.needed}
-                            onClick={checkBoxChangeHandlerCategory}
-                            id={category.id}
-                          />
-                          <InputLabel
-                            sx={{
-                              background: category.needed
-                                ? theme.palette.primary.main
-                                : 'white',
-                              color: category.needed
-                                ? 'white'
-                                : theme.palette.text.secondary,
-                              '&:hover': {
-                                borderColor: 'black',
-                                color: 'black',
-                              },
-                            }}
-                            htmlFor={category.name}
-                          >
-                            {category.name}
-                          </InputLabel>
-                        </Box>
-                      );
-                    })}
-                </CheckBoxWrap>
-              </Box>
-              <Box
-                sx={{
-                  flex: '1 1 auto',
-                  width: '100%',
-                  paddingLeft:
-                    'calc(0px + 110 * ((100vw - 1200px) / (1920 - 1200)))',
-                  paddingRight:
-                    'calc(0px + 110 * ((100vw - 1200px) / (1920 - 1200)))',
-                }}
-              >
-                <InputLabel>Product images</InputLabel>
                 <Box
+                  maxWidth={isTablet ? '100%' : '440px'}
+                  flex={isTablet ? '1 1 auto' : '0 0 440px'}
+                  mr={isTablet ? 0 : rwdValue(30, 120)}
                   sx={{
-                    display: 'flex',
-                    gap: isTablet ? '20px' : '52px',
-                    flexWrap: 'wrap',
+                    '& .MuiInputBase-input': {
+                      fontSize: isDesktop ? '15px' : '10px',
+                    },
                   }}
                 >
-                  <FileInput setArrImages={setArrImages} />
-                  <FileInput setArrImages={setArrImages} />
-                  <FileInput setArrImages={setArrImages} />
-                  <FileInput setArrImages={setArrImages} />
+                  <FormItem>
+                    <TextField
+                      fullWidth
+                      size="medium"
+                      placeholder="Nike Air Max 90"
+                      label="Product name"
+                      type="text"
+                      value={name}
+                      onChange={e => setName(e.target.value)}
+                      sx={{
+                        '& .MuiInputBase-fullWidth': {
+                          height: isDesktop ? '48px' : '33px',
+                          fontSize: isDesktop ? '15px' : '10px',
+                        },
+                        '& .MuiInputLabel-formControl': {
+                          fontSize: isDesktop ? '15px' : '12px',
+                        },
+                      }}
+                    />
+                  </FormItem>
+                  <FormItem>
+                    <TextField
+                      fullWidth
+                      size="medium"
+                      placeholder="Price"
+                      label="Price"
+                      type="number"
+                      value={price}
+                      onChange={e => setPrice(e.target.value)}
+                      sx={{
+                        '& .MuiInputBase-fullWidth': {
+                          height: isDesktop ? '48px' : '33px',
+                          fontSize: isDesktop ? '15px' : '10px',
+                        },
+                        '& .MuiInputLabel-formControl': {
+                          fontSize: isDesktop ? '15px' : '12px',
+                        },
+                      }}
+                    />
+                  </FormItem>
+                  <FormItem>
+                    <Box
+                      sx={{display: 'flex', gap: '20px', flexDirection: 'row'}}
+                    >
+                      <FormControl fullWidth>
+                        <InputLabel id="gender">Gender</InputLabel>
+                        <Select
+                          sx={{
+                            height: '48px',
+                            '& .MuiInputBase-input': {
+                              fontSize: isDesktop ? '15px' : '10px',
+                            },
+                          }}
+                          labelId="gender"
+                          variant="outlined"
+                          value={select.gender}
+                          onChange={genderChangeHandler}
+                          defaultValue="Men"
+                        >
+                          {!isLoading &&
+                            genders.map(gender => {
+                              return (
+                                <MenuItem key={gender.id} value={gender.name}>
+                                  {gender.name}
+                                </MenuItem>
+                              );
+                            })}
+                        </Select>
+                      </FormControl>
+                      <FormControl fullWidth>
+                        <InputLabel id="brand">Brand</InputLabel>
+                        <Select
+                          sx={{
+                            height: '48px',
+                            '& .MuiInputBase-input': {
+                              fontSize: isDesktop ? '15px' : '10px',
+                            },
+                          }}
+                          labelId="brand"
+                          variant="outlined"
+                          value={select.brand}
+                          onChange={brandChangeHandler}
+                        >
+                          {!isLoading &&
+                            brands.map(brand => {
+                              return (
+                                <MenuItem key={brand.id} value={brand.name}>
+                                  {brand.name}
+                                </MenuItem>
+                              );
+                            })}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </FormItem>
+                  <FormItem>
+                    <TextField
+                      fullWidth
+                      size="medium"
+                      placeholder="Do not exceed 300 characters."
+                      label="Description"
+                      type="text"
+                      multiline
+                      rows={isDesktop ? 11 : 1}
+                      value={description}
+                      onChange={e => setDescription(e.target.value)}
+                      sx={{
+                        '& .MuiInputBase-root': {
+                          minHeight: isDesktop ? '270px' : 0,
+                          height: {xs: '34px'},
+                        },
+                        '& .MuiInputBase-input': {
+                          fontSize: isDesktop ? '15px' : '10px',
+                        },
+                        '& label': {
+                          fontSize: isDesktop ? '15px' : '12px',
+                        },
+                      }}
+                    />
+                  </FormItem>
+                  <CheckBoxWrap>
+                    <Typography
+                      sx={{
+                        fontSize: isDesktop ? '15px' : '12px',
+                        flex: '0 0 100%',
+                      }}
+                    >
+                      Add size
+                    </Typography>
+                    {sizes &&
+                      sizes.map(size => {
+                        return (
+                          <Box key={size.id} onClick={checkBoxChangeHandler}>
+                            <Checkbox
+                              name={size.value}
+                              checked={size.needed}
+                              onClick={checkBoxChangeHandler}
+                              id={size.id}
+                            />
+                            <InputLabel
+                              sx={{
+                                background: size.needed
+                                  ? theme.palette.primary.main
+                                  : 'white',
+                                color: size.needed
+                                  ? 'white'
+                                  : theme.palette.text.secondary,
+                                '&:hover': {
+                                  borderColor: 'black',
+                                  color: 'black',
+                                },
+                              }}
+                              htmlFor={size.value}
+                            >
+                              EU-{size.value}
+                            </InputLabel>
+                          </Box>
+                        );
+                      })}
+                  </CheckBoxWrap>
+                  <CheckBoxWrap>
+                    <Typography
+                      sx={{
+                        fontSize: isDesktop ? '15px' : '12px',
+                        flex: '0 0 100%',
+                      }}
+                    >
+                      Add categories
+                    </Typography>
+                    {categories &&
+                      categories.map(category => {
+                        return (
+                          <Box
+                            key={category.id}
+                            onClick={checkBoxChangeHandlerCategory}
+                          >
+                            <Checkbox
+                              name={category.name}
+                              checked={category.needed}
+                              onClick={checkBoxChangeHandlerCategory}
+                              id={category.id}
+                            />
+                            <InputLabel
+                              sx={{
+                                background: category.needed
+                                  ? theme.palette.primary.main
+                                  : 'white',
+                                color: category.needed
+                                  ? 'white'
+                                  : theme.palette.text.secondary,
+                                '&:hover': {
+                                  borderColor: 'black',
+                                  color: 'black',
+                                },
+                              }}
+                              htmlFor={category.name}
+                            >
+                              {category.name}
+                            </InputLabel>
+                          </Box>
+                        );
+                      })}
+                  </CheckBoxWrap>
                 </Box>
-              </Box>
-            </Stack>
+                <Box
+                  sx={{
+                    flex: '1 1 auto',
+                    width: '100%',
+                    paddingLeft:
+                      'calc(0px + 110 * ((100vw - 1200px) / (1920 - 1200)))',
+                    paddingRight:
+                      'calc(0px + 110 * ((100vw - 1200px) / (1920 - 1200)))',
+                  }}
+                >
+                  <InputLabel>Product images</InputLabel>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      gap: isTablet ? '20px' : '52px',
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    {arrImages.map(img => (
+                      <FileInput
+                        key={img.id}
+                        id={img.id}
+                        setArrImages={setArrImages}
+                        arrImages={arrImages}
+                      />
+                    ))}
+                  </Box>
+                </Box>
+              </Stack>
+            </form>
           </Content>
         </Row>
       </NavBarLayout>

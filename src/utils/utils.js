@@ -142,6 +142,31 @@ export const executeInfo = (message, description) => {
   });
 };
 
-export const uploadPhoto = (jwt,) => {
-  
+export const uploadImages = async (arrImages, jwt) => {
+  const formData = new FormData();
+  arrImages.forEach(file => {
+    formData.append('files', file.file);
+  });
+
+  try {
+    const response = await axios.post(
+      'https://shoes-shop-strapi.herokuapp.com/api/upload',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: 'Bearer ' + jwt,
+        },
+      },
+    );
+    console.log('Respuesta de la API:', response);
+
+    const {data: arrImgId} = response;
+
+    return arrImgId;
+  } catch (error) {
+    // Aquí puedes manejar el error de la API si ocurre alguno
+
+    console.error('Error al enviar los archivos:', error);
+  }
 };
