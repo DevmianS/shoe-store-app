@@ -1,7 +1,7 @@
+import Link from 'next/link';
 import {
   Box,
   FormControl,
-  Link,
   TextField,
   Typography,
   useMediaQuery,
@@ -37,6 +37,42 @@ const ResetPasswordForm = () => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const styles = {
+    wrapper: {
+      width: '100%',
+      maxWidth: isMobile ? '100%' : '480px',
+      padding: isMobile ? 0 : '20px',
+    },
+    resetTitle: {marginBottom: '10px'},
+    resetText: {
+      fontSize: rwdValue(10, 15),
+      marginBottom: '5px',
+    },
+    formControl: {width: '100%'},
+    confirmField: {width: '100%', mb: '30px'},
+    backToLogin: {
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: '10px',
+      columnGap: '5px',
+
+      '& .MuiTypography-root': {
+        fontSize: rwdValue(10, 15),
+        fontWeight: 500,
+      },
+    },
+    loginLink: {
+      fontWeight: 500,
+      fontSize: rwdValue(10, 15),
+      color: theme.palette.primary.main,
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
+  };
 
   const handleSignIn = async () => {
     setLoading(true);
@@ -78,29 +114,15 @@ const ResetPasswordForm = () => {
   return (
     <>
       {loading && <Loading />}
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: isMobile ? '100%' : '480px',
-          padding: isMobile ? 0 : '20px',
-        }}
-      >
-        <Typography component="h1" variant="h1" sx={{marginBottom: '10px'}}>
+      <Box sx={styles.wrapper}>
+        <Typography component="h1" variant="h1" sx={styles.resetTitle}>
           Reset password
         </Typography>
-        <Typography
-          component="p"
-          variant="body1"
-          sx={{
-            fontSize: rwdValue(10, 15),
-            color: 'text.secondary',
-            marginBottom: '5px',
-          }}
-        >
+        <Typography component="p" variant="body1" sx={styles.resetText}>
           Please create new password here
         </Typography>
-        <Box sx={{width: '100%'}}>
-          <FormControl sx={{width: '100%'}}>
+        <Box>
+          <FormControl sx={styles.formControl}>
             <TextField
               size={isMobile ? 'small' : 'medium'}
               label="Password"
@@ -110,7 +132,6 @@ const ResetPasswordForm = () => {
               placeholder="at least 8 characters"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              sx={{width: '100%'}}
               error={passwordError}
               helperText={
                 passwordError &&
@@ -127,7 +148,7 @@ const ResetPasswordForm = () => {
               placeholder="at least 8 characters"
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
-              sx={{width: '100%', mb: '30px'}}
+              sx={styles.confirmField}
               error={confirmPasswordError}
               helperText={
                 confirmPasswordError && 'Both passwords should be equal.'
@@ -145,25 +166,13 @@ const ResetPasswordForm = () => {
               Reset password
             </Button>
           </FormControl>
-          <Box
-            sx={{
-              textAlign: 'center',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: '10px',
-              columnGap: '5px',
-
-              '& .MuiTypography-root': {
-                fontSize: rwdValue(10, 15),
-                fontWeight: 500,
-              },
-            }}
-          >
+          <Box sx={styles.backToLogin}>
             <Typography component="span">Back to</Typography>
-            <Typography component="span">
-              <Link href="/sign-up">Log in</Link>
-            </Typography>
+            <Link href="/sign-up">
+              <Typography component="span" sx={styles.loginLink}>
+                Log in
+              </Typography>
+            </Link>
           </Box>
         </Box>
       </Box>

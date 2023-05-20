@@ -6,15 +6,11 @@ import {useMutation} from '@tanstack/react-query';
 import {toast} from 'sonner';
 import {
   Box,
-  Checkbox,
-  FormControlLabel,
   TextField,
   Typography,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-
-import styles from '@/styles/link.module.css';
 
 import {
   checkErrorConfirm,
@@ -45,6 +41,54 @@ const SignUpForm = () => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const styles = {
+    spinnerWrapper: {
+      width: '100vw',
+      height: '100vh',
+      position: 'fixed',
+      top: '0',
+      left: '0',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: '#F3F3F3',
+      zIndex: '200',
+      opacity: 0.8,
+    },
+    wrapper: {
+      width: '100%',
+      maxWidth: isMobile ? '100%' : '480px',
+      padding: isMobile ? 0 : '20px',
+    },
+    welcomeText: {fontSize: '15px', color: '#5C5C5C', mt: 1.5, mb: 3},
+    nameField: {width: '100%'},
+    emailField: {width: '100%'},
+    passwordField: {width: '100%'},
+    confirmPasswordField: {width: '100%'},
+    signUpBtn: {mt: '80px'},
+    signInLinkWrapper: {
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: '10px',
+      columnGap: '5px',
+      '& .MuiTypography-root': {
+        fontSize: rwdValue(10, 15),
+        fontWeight: 500,
+      },
+    },
+    signInLink: {
+      fontWeight: 500,
+      fontSize: rwdValue(10, 15),
+      color: theme.palette.primary.main,
+      textDecoration: 'none',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
+  };
 
   const router = useRouter();
 
@@ -91,45 +135,19 @@ const SignUpForm = () => {
   return (
     <>
       {isLoading && (
-        <Box
-          sx={{
-            width: '100vw',
-            height: '100vh',
-            position: 'fixed',
-            top: '0',
-            left: '0',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            background: '#F3F3F3',
-            zIndex: '200',
-            opacity: 0.8,
-          }}
-        >
+        <Box sx={styles.spinnerWrapper}>
           <Spinner />
         </Box>
       )}
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: isMobile ? '100%' : '480px',
-          padding: isMobile ? 0 : '20px',
-        }}
-      >
+      <Box sx={styles.wrapper}>
         <Typography component="h1" variant="h3">
           Create an account
         </Typography>
-        <Typography
-          component="p"
-          variant="body1"
-          mt={1.5}
-          mb={3}
-          sx={{fontSize: '15px', color: '#5C5C5C'}}
-        >
+        <Typography component="p" variant="body1" sx={styles.welcomeText}>
           Create an account to get an easy access to your dream shopping
         </Typography>
-        <Box sx={{width: '100%'}}>
-          <form style={{width: '100%'}} onSubmit={handleSubmit}>
+        <Box>
+          <form onSubmit={handleSubmit}>
             <TextField
               size={isMobile ? 'small' : 'medium'}
               label="Name"
@@ -139,7 +157,7 @@ const SignUpForm = () => {
               required
               value={name}
               onChange={e => setName(e.target.value)}
-              sx={{width: '100%'}}
+              sx={styles.nameField}
               error={nameError}
               helperText={
                 nameError &&
@@ -156,7 +174,7 @@ const SignUpForm = () => {
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
-              sx={{width: '100%'}}
+              sx={styles.emailField}
               error={emailError}
               helperText={emailError && 'Email should be valid.'}
               onBlur={() => checkErrorEmail(email, setEmailError)}
@@ -170,7 +188,7 @@ const SignUpForm = () => {
               placeholder="at least 8 characters"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              sx={{width: '100%'}}
+              sx={styles.passwordField}
               error={passwordError}
               helperText={
                 passwordError &&
@@ -187,7 +205,7 @@ const SignUpForm = () => {
               placeholder="at least 8 characters"
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
-              sx={{width: '100%'}}
+              sx={styles.confirmPasswordField}
               error={confirmPasswordError}
               helperText={
                 confirmPasswordError && 'Both passwords should be equal.'
@@ -203,32 +221,19 @@ const SignUpForm = () => {
 
             <Button
               size={isMobile ? 'small' : 'medium'}
-              sx={{mt: '80px'}}
+              sx={styles.signUpBtn}
               type={'submit'}
             >
               Sign up
             </Button>
           </form>
-          <Box
-            sx={{
-              textAlign: 'center',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: '10px',
-              columnGap: '5px',
-              '& .MuiTypography-root': {
-                fontSize: rwdValue(10, 15),
-                fontWeight: 500,
-              },
-            }}
-          >
+          <Box sx={styles.signInLinkWrapper}>
             <Typography component="span">Already have an account?</Typography>
-            <Typography component="span">
-              <Link href="/sign-in" className={styles.link}>
+            <Link href="/sign-in">
+              <Typography component="span" sx={styles.signInLink}>
                 Log in
-              </Link>
-            </Typography>
+              </Typography>
+            </Link>
           </Box>
         </Box>
       </Box>

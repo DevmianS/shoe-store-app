@@ -4,8 +4,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 
-import styles from '@/styles/link.module.css';
-
 import {toast} from 'sonner';
 import {
   Box,
@@ -47,6 +45,68 @@ const SignInForm = () => {
   const [passwordError, setPasswordError] = useState(false);
 
   const [loading, setLoading] = useState(false);
+
+  const styles = {
+    wrapper: {
+      width: '100%',
+      maxWidth: '560px',
+      textAlign: 'start',
+      alignSelf: 'center',
+      '& form': {
+        width: '100%',
+        paddingRight: isMobile ? 0 : rwdValue(60, 120),
+      },
+    },
+    welcomeTitle: {marginBottom: rwdValue(5, 10)},
+    welcomeText: {
+      fontSize: rwdValue(12, 15),
+      marginBottom: rwdValue(15, 50),
+    },
+    emailField: {marginBottom: '25px', marginTop: 0},
+    passwordField: {marginBottom: '15px', marginTop: 0},
+    rememberText: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: rwdValue(20, 50),
+    },
+    rememberCheckbox: {
+      fontSize: rwdValue(10, 15),
+      paddingLeft: '16px',
+      '& .MuiCheckbox-root': {
+        width: '16px',
+        height: '16px',
+        padding: 0,
+        marginRight: '4px',
+      },
+      '& .MuiFormControlLabel-label': {
+        fontSize: rwdValue(10, 15),
+        fontWeight: 500,
+      },
+    },
+    signInBtn: {marginBottom: '16px'},
+    signUpLinkWrapper: {
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      columnGap: '5px',
+    },
+    signUpText: {
+      fontWeight: 500,
+      fontSize: rwdValue(10, 15),
+    },
+    link: {
+      fontWeight: 500,
+      fontSize: rwdValue(10, 15),
+      color: theme.palette.primary.main,
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
+  };
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -131,39 +191,16 @@ const SignInForm = () => {
   return (
     <>
       {loading && <Loading />}
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: '560px',
-          textAlign: 'start',
-          alignSelf: 'center',
-          '& form': {
-            width: '100%',
-            paddingRight: isMobile ? 0 : rwdValue(60, 120),
-          },
-        }}
-      >
-        <Typography
-          component="h1"
-          variant="h1"
-          textAlign="start"
-          sx={{marginBottom: rwdValue(5, 10)}}
-        >
+      <Box sx={styles.wrapper}>
+        <Typography component="h1" variant="h1" sx={styles.welcomeTitle}>
           Welcome back
         </Typography>
-        <Typography
-          component="p"
-          variant="body1"
-          sx={{
-            fontSize: rwdValue(12, 15),
-            marginBottom: rwdValue(15, 50),
-          }}
-        >
+        <Typography component="p" variant="body1" sx={styles.welcomeText}>
           Welcome back! Please enter your details to log into your account.
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
-            sx={{marginBottom: '25px', marginTop: 0}}
+            sx={styles.emailField}
             fullWidth
             size={isMobile ? 'small' : 'medium'}
             label="Email"
@@ -178,7 +215,7 @@ const SignInForm = () => {
             onBlur={() => checkErrorEmail(email, setEmailError)}
           />
           <TextField
-            sx={{marginBottom: '15px', marginTop: 0}}
+            sx={styles.passwordField}
             fullWidth
             size={isMobile ? 'small' : 'medium'}
             label="Password"
@@ -195,15 +232,7 @@ const SignInForm = () => {
             onFocus={() => setPasswordError(false)}
             onBlur={() => checkErrorPassword(password, setPasswordError)}
           />
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: rwdValue(20, 50),
-            }}
-          >
+          <Box sx={styles.rememberText}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -212,64 +241,28 @@ const SignInForm = () => {
                 />
               }
               label="Remember me"
-              sx={{
-                fontSize: rwdValue(10, 15),
-                paddingLeft: '16px',
-                '& .MuiCheckbox-root': {
-                  width: '16px',
-                  height: '16px',
-                  padding: 0,
-                  marginRight: '4px',
-                },
-                '& .MuiFormControlLabel-label': {
-                  fontSize: rwdValue(10, 15),
-                  fontWeight: 500,
-                },
-              }}
+              sx={styles.rememberCheckbox}
             />
-            <Typography sx={{fontSize: rwdValue(10, 15)}}>
-              <Link href="/forgot-password" className={styles.link}>
-                Forgot password?
-              </Link>
-            </Typography>
+            <Link href="/forgot-password" sx={{textDecoration: 'none'}}>
+              <Typography sx={styles.link}>Forgot password?</Typography>
+            </Link>
           </Box>
           <Button
             size={isMobile ? 'small' : 'medium'}
             type="submit"
-            sx={{marginBottom: '16px'}}
+            sx={styles.signInBtn}
           >
             Sign in
           </Button>
-          <Box
-            sx={{
-              textAlign: 'center',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-              columnGap: '5px',
-            }}
-          >
-            <Typography
-              component="span"
-              sx={{
-                fontWeight: 500,
-                fontSize: rwdValue(10, 15),
-              }}
-            >
-              Don’t have an account?
+          <Box sx={styles.signUpLinkWrapper}>
+            <Typography component="span" sx={styles.signUpText}>
+              Don{`'`}t have an account?
             </Typography>
-            <Typography
-              component="span"
-              sx={{
-                fontWeight: 500,
-                fontSize: rwdValue(10, 15),
-              }}
-            >
-              <Link href="/sign-up" className={styles.link}>
+            <Link href="/sign-up" sx={{textDecoration: 'none'}}>
+              <Typography component="span" sx={styles.link}>
                 Sign up
-              </Link>
-            </Typography>
+              </Typography>
+            </Link>
           </Box>
         </form>
       </Box>
