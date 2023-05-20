@@ -5,7 +5,6 @@ import {useState, useEffect} from 'react';
 import {Typography, Box, Stack, useMediaQuery, useTheme} from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
-import mockupProducts from '@/utils/data';
 import {SkeletonProducts} from '@/utils/utils';
 
 import {useCart} from '@/context/CartContext';
@@ -58,7 +57,7 @@ const Bag = () => {
         ),
       ]);
     }
-  }, [cartItems]);
+  }, [cartItems, products]);
   const {removeProduct} = useCart();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
@@ -144,7 +143,7 @@ const Bag = () => {
               {(!items || items.length == 0) && (
                 <>
                   <Typography component="h2" variant="h2" sx={styles.h2}>
-                    You don't have any products yet
+                    {"You don't have any products yet"}
                   </Typography>
                   <Box sx={styles.btnBox}>
                     <Link href="/">

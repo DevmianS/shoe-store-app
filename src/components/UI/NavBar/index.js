@@ -144,7 +144,7 @@ const NavBar = () => {
     if (router.asPath.includes('search')) {
       handleFocusInputResponsive();
     }
-  }, [router]);
+  });
 
   return (
     <>
