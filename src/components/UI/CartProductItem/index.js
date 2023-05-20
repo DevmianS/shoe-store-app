@@ -137,6 +137,7 @@ export default function CartProductItem({
                 defaultValue={quantity}
                 value={quantity}
                 disableUnderline
+                disabled
               >
                 <MenuItem value="quantity" disabled>
                   Quantity
