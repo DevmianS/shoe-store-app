@@ -8,7 +8,7 @@ const spinnerStyles = {
   backgroundColor: theme.palette.primary.main,
   borderRadius: '100%',
   animation: 'sk-scaleout 0.3s infinite ease-in-out',
-  '-webkit-animation': 'sk-scaleout 1s infinite ease-in-out',
+  WebkitAnimation: 'sk-scaleout 1s infinite ease-in-out',
 };
 
 const Spinner = () => {
