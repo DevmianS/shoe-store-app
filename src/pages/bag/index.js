@@ -21,7 +21,7 @@ const Bag = () => {
   const {products, isLoading} = useProducts();
   const [items, setItems] = useState([]);
 
-  const {removeProduct, cartItems} = useCart();
+  const {cartItems} = useCart();
 
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
@@ -112,7 +112,6 @@ const Bag = () => {
                           price={price}
                           image={images?.data}
                           quantity={cartItems[name]}
-                          onDelete={() => removeProduct(name)}
                         />
                       </Box>
                     );

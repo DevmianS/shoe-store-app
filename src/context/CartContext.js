@@ -37,22 +37,34 @@ export const CartProvider = ({children}) => {
     setCartCount(productCount);
   }, [cartItems]);
 
-  const addProduct = title => {
+  const addProduct = (title, isCart) => {
     setCartItems(prev => ({
       ...prev,
       [title]: prev[title] ? prev[title] + 1 : 1,
     }));
     setCartCount(prev => prev + 1);
-    toast.success(title + ' added to your cart!');
+    toast.success(
+      title +
+        (isCart ? ' increased by 1 in your cart!' : ' added to your cart!'),
+    );
   };
 
-  const removeProduct = title => {
+  const removeOneProduct = title => {
     setCartItems(prev => ({
       ...prev,
       [title]: prev[title] > 0 ? prev[title] - 1 : 0,
     }));
     setCartCount(prev => (prev > 0 ? prev - 1 : 0));
-    toast.success(title + ' was deleted from your cart!');
+    toast.success(title + ' decreased by 1 in your cart!');
+  };
+  const deleteProduct = title => {
+    const itemCount = cartItems[title];
+    setCartItems(prev => ({
+      ...prev,
+      [title]: 0,
+    }));
+    setCartCount(prev => prev - itemCount);
+    toast.success(title + ' was fully deleted from your cart!');
   };
 
   return (
@@ -63,7 +75,8 @@ export const CartProvider = ({children}) => {
         cartItems,
         cartCount,
         addProduct,
-        removeProduct,
+        removeOneProduct,
+        deleteProduct,
       }}
     >
       {children}

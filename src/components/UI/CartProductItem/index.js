@@ -4,24 +4,23 @@ import {
   Card,
   Typography,
   Stack,
-  MenuItem,
-  Select,
-  FormControl,
   Box,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
+import Button from '../Button';
+import {useCart} from '@/context/CartContext';
 
 export default function CartProductItem({
   title,
   price,
   category,
   quantity,
-  onDelete,
   image,
 }) {
+  const {removeOneProduct, addProduct, deleteProduct} = useCart();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -68,26 +67,6 @@ export default function CartProductItem({
       alignItems: 'end',
       justifyContent: 'space-between',
     },
-    select: {
-      minWidth: '70px',
-      '& .MuiSelect-select': {
-        lineHeight: 1,
-        maxWidth: !isDesktop ? '90px' : 'auto',
-        width: !isDesktop ? 'auto' : '100%',
-        paddingLeft: 0,
-        paddingRight: !isDesktop ? '0' : '24px',
-      },
-      '& .MuiSelect-icon': {
-        position: 'static',
-        transform: !isDesktop ? 'translateX(-20px)' : 'translateX(-12px)',
-        width: !isDesktop ? '8px' : '1rem',
-        height: !isDesktop ? '8px' : '1rem',
-      },
-      '& .MuiInputBase-input': {
-        paddingTop: 0,
-        paddingBottom: 0,
-      },
-    },
     delete: {
       display: 'flex',
       flexDirection: 'row',
@@ -104,6 +83,20 @@ export default function CartProductItem({
       '&:hover': {
         color: theme.palette.primary.main,
         cursor: 'pointer',
+      },
+    },
+    controls: {
+      display: 'flex',
+      gap: '10px',
+      alignItems: 'center',
+      '& > *': {
+        fontSize: rwdValue(18, 24),
+        width: rwdValue(24, 40),
+        height: rwdValue(24, 40),
+        maxWidth: rwdValue(24, 40),
+        minWidth: rwdValue(24, 40),
+        lineHeight: rwdValue(24, 40),
+        textAlign: 'center',
       },
     },
   };
@@ -130,26 +123,12 @@ export default function CartProductItem({
             {category}
           </Typography>
           <Stack sx={styles.footer}>
-            <FormControl sx={styles.select}>
-              <Select
-                labelId="quantity"
-                variant="standard"
-                defaultValue={quantity}
-                value={quantity}
-                disableUnderline
-                disabled
-              >
-                <MenuItem value="quantity" disabled>
-                  Quantity
-                </MenuItem>
-                {[...Array(10)].map((_, index) => (
-                  <MenuItem key={index} value={index + 1}>
-                    {index + 1}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <Box sx={styles.delete} onClick={onDelete}>
+            <Box sx={styles.controls}>
+              <Button onClick={() => removeOneProduct(title)}>-</Button>
+              <Typography component="b">{quantity}</Typography>
+              <Button onClick={() => addProduct(title, true)}>+</Button>
+            </Box>
+            <Box sx={styles.delete} onClick={() => deleteProduct(title)}>
               <Typography component="i" className="icon-trash"></Typography>
               <Typography component="span" variant="body4">
                 Delete
