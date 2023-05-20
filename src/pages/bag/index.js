@@ -1,5 +1,7 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import {useState, useEffect} from 'react';
+
 import {Typography, Box, Stack, useMediaQuery, useTheme} from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
@@ -19,18 +21,63 @@ const Bag = () => {
   const {products, isLoading} = useProducts();
   const [items, setItems] = useState([]);
   const {cartItems} = useCart();
+  const [cost, setCost] = useState({
+    shipping: 0,
+    subtotal: 0,
+    total: 0,
+    tax: 0,
+  });
+
+  useEffect(() => {
+    const subtotal = Number(
+      items.reduce(
+        (acc, prod) =>
+          prod.attributes.price * cartItems[prod.attributes.name] + acc,
+        0,
+      ),
+    ).toFixed(2);
+    const shipping = Number(subtotal / 10).toFixed(2);
+    const tax = Number((subtotal / 100) * 19).toFixed(2);
+    const total = Number(+shipping + +tax + +subtotal).toFixed(2);
+    setCost({
+      shipping,
+      tax,
+      total,
+      subtotal,
+    });
+  }, [cartItems, items]);
   useEffect(() => {
     const keys = Object.keys(cartItems);
-    if (products && products.length > 0)
+
+    if (products && products.length > 0) {
       setItems([
-        ...products.filter(item => keys.includes(item.attributes.name)),
+        ...products.filter(
+          item =>
+            keys.includes(item.attributes.name) &&
+            cartItems[item.attributes.name] > 0,
+        ),
       ]);
-  }, [isLoading]);
+    }
+  }, [cartItems]);
   const {removeProduct} = useCart();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const styles = {
+    h2: {
+      fontSize: rwdValue(18, 28),
+      marginTop: rwdValue(45, 65),
+      textAlign: 'center',
+    },
+    btnBox: {
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      '& button': {
+        maxWidth: '250px',
+        margin: `${rwdValue(25, 45)} 0`,
+      },
+    },
     wrapper: {
       marginTop: rwdValue(20, 80),
       marginLeft: 'auto',
@@ -75,6 +122,7 @@ const Bag = () => {
               {isLoading
                 ? SkeletonProducts()
                 : items &&
+                  items.length > 0 &&
                   items.map(product => {
                     const {attributes} = product;
                     const {categories, name, price, images} = attributes;
@@ -93,6 +141,20 @@ const Bag = () => {
                       </Box>
                     );
                   })}
+              {(!items || items.length == 0) && (
+                <>
+                  <Typography component="h2" variant="h2" sx={styles.h2}>
+                    You don't have any products yet
+                  </Typography>
+                  <Box sx={styles.btnBox}>
+                    <Link href="/">
+                      <Button size={isTablet ? 'small' : 'medium'}>
+                        Go to shopping
+                      </Button>
+                    </Link>
+                  </Box>
+                </>
+              )}
             </Box>
             <Box sx={styles.colSm}>
               <Typography
@@ -143,11 +205,7 @@ const Bag = () => {
                     fontWeight={400}
                     fontSize={rwdValue(20, 30)}
                   >
-                    $
-                    {mockupProducts.reduce(
-                      (acc, prod) => prod.attributes.price + acc,
-                      0,
-                    )}
+                    ${cost.subtotal}
                   </Typography>
                 </Stack>
                 <Stack
@@ -170,7 +228,7 @@ const Bag = () => {
                     fontWeight={400}
                     fontSize={rwdValue(20, 30)}
                   >
-                    $20
+                    ${cost.shipping}
                   </Typography>
                 </Stack>
                 <Stack
@@ -192,7 +250,7 @@ const Bag = () => {
                     fontWeight={400}
                     fontSize={rwdValue(20, 30)}
                   >
-                    $0
+                    ${cost.tax}
                   </Typography>
                 </Stack>
                 <Stack
@@ -221,11 +279,7 @@ const Bag = () => {
                     fontWeight={600}
                     fontSize={rwdValue(20, 30)}
                   >
-                    $
-                    {mockupProducts.reduce(
-                      (acc, prod) => prod.attributes.price + acc,
-                      20,
-                    )}
+                    ${cost.total}
                   </Typography>
                 </Stack>
                 <Stack spacing={2}>
