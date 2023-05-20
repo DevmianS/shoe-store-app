@@ -27,6 +27,38 @@ const ForgotPasswordForm = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
+  const styles = {
+    wrapper: {
+      width: '100%',
+      maxWidth: isMobile ? '100%' : '480px',
+      padding: isMobile ? 0 : '20px',
+    },
+    forgotText: {marginBottom: '10px'},
+    instructionsText: {
+      fontSize: rwdValue(10, 15),
+      color: 'text.secondary',
+      marginBottom: '5px',
+    },
+    formControl: {width: '100%'},
+    emailField: {marginBottom: '25px', marginTop: '60px'},
+    backToLogin: {
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: '10px',
+      columnGap: '5px',
+
+      '& .MuiTypography-root': {
+        fontSize: rwdValue(10, 15),
+        fontWeight: 500,
+      },
+    },
+    loginLink: {
+      textDecoration: 'none',
+    },
+  };
+
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
 
@@ -61,37 +93,22 @@ const ForgotPasswordForm = () => {
   return (
     <>
       {loading && <Loading />}
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: isMobile ? '100%' : '480px',
-          padding: isMobile ? 0 : '20px',
-        }}
-      >
-        <Typography component="h1" variant="h1" sx={{marginBottom: '10px'}}>
+      <Box sx={styles.wrapper}>
+        <Typography component="h1" variant="h1" sx={styles.forgotText}>
           Forgot password?
         </Typography>
-        <Typography
-          component="p"
-          variant="body1"
-          sx={{
-            fontSize: rwdValue(10, 15),
-            color: 'text.secondary',
-            marginBottom: '5px',
-          }}
-        >
-          Don’t worry, we’ll send you reset instructions.
+        <Typography component="p" variant="body1" sx={styles.instructionsText}>
+          Don{`'`}t worry, we{`'`}ll send you reset instructions.
         </Typography>
 
-        <Box sx={{width: '100%'}}>
-          <FormControl sx={{width: '100%'}}>
+        <Box>
+          <FormControl sx={styles.formControl}>
             <TextField
-              sx={{marginBottom: '25px', marginTop: '60px'}}
+              sx={styles.emailField}
               fullWidth
               size={isMobile ? 'small' : 'medium'}
               label="Email"
               type="text"
-              margin="normal"
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="Type your email here"
@@ -105,24 +122,12 @@ const ForgotPasswordForm = () => {
               Reset password
             </Button>
           </FormControl>
-          <Box
-            sx={{
-              textAlign: 'center',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: '10px',
-              columnGap: '5px',
-
-              '& .MuiTypography-root': {
-                fontSize: rwdValue(10, 15),
-                fontWeight: 500,
-              },
-            }}
-          >
+          <Box sx={styles.backToLogin}>
             <Typography component="span">Back to</Typography>
             <Typography component="span">
-              <Link href="/sign-in">Log in</Link>
+              <Link href="/sign-in" sx={styles.loginLink}>
+                Log in
+              </Link>
             </Typography>
           </Box>
         </Box>
