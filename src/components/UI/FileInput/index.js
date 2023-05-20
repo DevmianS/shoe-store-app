@@ -9,18 +9,24 @@ import {rwdValue} from '@/utils/theme';
 export default function FileInput() {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const lg = useMediaQuery(theme.breakpoints.between('md', 'xl'));
 
+  console.log(lg);
   const [file, setFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
   const styles = {
     wrap: {
-      flex: !isDesktop ? `0 0 calc(50% - 10px)` : `0 0 calc(50% - 26px)`,
+      flex: !isDesktop
+        ? `0 0 calc(50% - 10px)`
+        : lg
+        ? `0 0 100%`
+        : `0 0 calc(50% - 26px)`,
       width: !isDesktop ? `calc(50% - 10px)` : `calc(50% - 26px)`,
+      maxWidth: '330px',
       height: rwdValue(100, 380),
       minHeight: '100px',
-      border: '1px dashed #5C5C5C',
+      border: `1px dashed ${theme.palette.text.secondary}`,
       borderRadius: '8px',
       position: 'relative',
       display: 'flex',
@@ -55,7 +61,7 @@ export default function FileInput() {
         bottom: '10px',
         left: 'calc(50%-75px)',
         transform: `translateY(${!isDesktop ? 0 : -10}px)`,
-        opacity: isTablet ? 1 : 0,
+        opacity: !isDesktop ? 1 : 0,
         transition: '0.5s',
       },
       '&:hover': {
