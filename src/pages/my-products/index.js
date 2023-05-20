@@ -87,7 +87,7 @@ const MyProducts = ({productsList}) => {
             <TopBanner imgPath={bannerImg.src} />
             <AvatarStaticLayout />
             <Typography variant="h1" component="h1" mb="40px">
-              Last viewed products
+              My products
             </Typography>
             <Box sx={styles.productsRow}>
               {productsList &&
