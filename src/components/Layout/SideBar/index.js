@@ -7,9 +7,9 @@ import AvatarStaticLayout from '../AvatarStaticLayout';
 import {signOut} from 'next-auth/react';
 
 import Loading from '@/components/UI/Loading';
-import {useState} from 'react';
+import {memo, useState} from 'react';
 
-export default function SideBar({children, isFilter}) {
+function SideBar({children, isFilter}) {
   const router = useRouter();
 
   const [loading, setLoading] = useState();
@@ -52,3 +52,5 @@ export default function SideBar({children, isFilter}) {
     </>
   );
 }
+
+export default memo(SideBar);

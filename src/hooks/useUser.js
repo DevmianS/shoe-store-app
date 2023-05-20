@@ -5,6 +5,8 @@ const useUser = () => {
 
   const user = data?.user?.user;
 
+  const jwt = data?.user?.jwt;
+
   let username = null;
   if (user?.firstName && user?.lastName) {
     username = `${user.firstName} ${user.lastName}`;
@@ -25,6 +27,7 @@ const useUser = () => {
     status,
     data,
     initials: userInitials || '',
+    jwt: jwt,
   };
 };
 

@@ -3,6 +3,7 @@ import AvatarStatic from '@/components/UI/AvatarStatic';
 import useOwnStyles from '@/utils/styles';
 import {rwdValue} from '@/utils/theme';
 import useUser from '@/hooks/useUser';
+import {memo} from 'react';
 
 const AvatarStaticLayout = ({variant}) => {
   const {avatarLayout: styles, updateProfile} = useOwnStyles();
@@ -68,4 +69,4 @@ const AvatarStaticLayout = ({variant}) => {
   }
 };
 
-export default AvatarStaticLayout;
+export default memo(AvatarStaticLayout);

@@ -1,14 +1,12 @@
 import Image from 'next/image';
-import {useState} from 'react';
+import {memo, useState} from 'react';
 
 import {Box, Typography, useMediaQuery, useTheme} from '@mui/material';
-
-import useOwnStyles from '@/utils/styles';
 
 import Button from '@/components/UI/Button';
 import {rwdValue} from '@/utils/theme';
 
-export default function FileInput() {
+function FileInput({setArrImages}) {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -90,7 +88,7 @@ export default function FileInput() {
 
   const fileInputChangeHandler = e => {
     const selectedFile = e.target.files[0];
-
+    setArrImages(prevArrImages => [...prevArrImages, selectedFile]);
     const reader = new FileReader();
     reader.onload = e => {
       setImagePreview(e.target.result);
@@ -127,3 +125,5 @@ export default function FileInput() {
     </Box>
   );
 }
+
+export default memo(FileInput);

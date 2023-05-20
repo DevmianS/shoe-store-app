@@ -21,18 +21,27 @@ import {
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import FileInput from '@/components/UI/FileInput';
+import useProductData from '@/hooks/useProductData';
 
-const AddProduct = ({userName}) => {
-  const [select, setSelect] = useState({gender: 'male', brand: 'nike'});
-  const [size, setSize] = useState({
-    36: false,
-    37: false,
-    38: false,
-    39: false,
-    40: false,
-  });
+const AddProduct = () => {
+  const {
+    brands,
+    categories,
+    genders,
+    sizes,
+    isLoading,
+    setSizes,
+    setCategories,
+  } = useProductData() || {};
+
+  const [select, setSelect] = useState({gender: 'Men', brand: 'Nike'});
+
+  const [arrImages, setArrImages] = useState([]);
+
+  console.log('arrImages: ', arrImages);
+
   // EVENTS
   const genderChangeHandler = e => {
     setSelect({...select, gender: e.target.value});
@@ -40,16 +49,33 @@ const AddProduct = ({userName}) => {
   const brandChangeHandler = e => {
     setSelect({...select, brand: e.target.value});
   };
-  const checkBoxChangeHandler = e => {
-    if (e.target.checked) {
-      setSize(prev => ({...prev, [e.target.name]: true}));
-    } else {
-      setSize(prev => ({...prev, [e.target.name]: false}));
-    }
+  const checkBoxChangeHandler = event => {
+    setSizes(
+      sizes.map(obj => {
+        if (obj.value == event.target.htmlFor) {
+          return {
+            ...obj,
+            needed: !obj.needed,
+          };
+        }
+        return obj;
+      }),
+    );
   };
 
-  const user = userName || 'Jane Meldrum';
-
+  const checkBoxChangeHandlerCategory = event => {
+    setCategories(
+      categories.map(obj => {
+        if (obj.name == event.target.htmlFor) {
+          return {
+            ...obj,
+            needed: !obj.needed,
+          };
+        }
+        return obj;
+      }),
+    );
+  };
 
   // STYLED COMPONENTS
   const theme = useTheme();
@@ -201,9 +227,9 @@ const AddProduct = ({userName}) => {
                   <TextField
                     fullWidth
                     size="medium"
-                    placeholder="Sport"
-                    label="Category"
-                    type="text"
+                    placeholder="Price"
+                    label="Price"
+                    type="number"
                     sx={{
                       '& .MuiInputBase-fullWidth': {
                         height: isDesktop ? '48px' : '33px',
@@ -232,10 +258,16 @@ const AddProduct = ({userName}) => {
                         variant="outlined"
                         value={select.gender}
                         onChange={genderChangeHandler}
+                        defaultValue="Men"
                       >
-                        <MenuItem value="male">Male</MenuItem>
-                        <MenuItem value="female">Female</MenuItem>
-                        <MenuItem value="indeterminate">Indeterminate</MenuItem>
+                        {!isLoading &&
+                          genders.map(gender => {
+                            return (
+                              <MenuItem key={gender.id} value={gender.name}>
+                                {gender.name}
+                              </MenuItem>
+                            );
+                          })}
                       </Select>
                     </FormControl>
                     <FormControl fullWidth>
@@ -252,11 +284,14 @@ const AddProduct = ({userName}) => {
                         value={select.brand}
                         onChange={brandChangeHandler}
                       >
-                        <MenuItem value="adidas">Adidas</MenuItem>
-                        <MenuItem value="asics">Asics</MenuItem>
-                        <MenuItem value="newBalance">New Balance</MenuItem>
-                        <MenuItem value="nike">Nike</MenuItem>
-                        <MenuItem value="puma">Puma</MenuItem>
+                        {!isLoading &&
+                          brands.map(brand => {
+                            return (
+                              <MenuItem key={brand.id} value={brand.name}>
+                                {brand.name}
+                              </MenuItem>
+                            );
+                          })}
                       </Select>
                     </FormControl>
                   </Box>
@@ -293,35 +328,79 @@ const AddProduct = ({userName}) => {
                   >
                     Add size
                   </Typography>
-                  {[...Object.keys(size)].map(n => {
-                    return (
-                      <Box key={n}>
-                        <Checkbox
-                          name={n}
-                          checked={size[n]}
-                          onChange={checkBoxChangeHandler}
-                          id={'size' + n}
-                        />
-                        <InputLabel
-                          sx={{
-                            background: size[n]
-                              ? theme.palette.primary.main
-                              : 'white',
-                            color: size[n]
-                              ? 'white'
-                              : theme.palette.text.secondary,
-                            '&:hover': {
-                              borderColor: 'black',
-                              color: 'black',
-                            },
-                          }}
-                          htmlFor={'size' + n}
+                  {sizes &&
+                    sizes.map(size => {
+                      return (
+                        <Box key={size.id} onClick={checkBoxChangeHandler}>
+                          <Checkbox
+                            name={size.value}
+                            checked={size.needed}
+                            onClick={checkBoxChangeHandler}
+                            id={size.id}
+                          />
+                          <InputLabel
+                            sx={{
+                              background: size.needed
+                                ? theme.palette.primary.main
+                                : 'white',
+                              color: size.needed
+                                ? 'white'
+                                : theme.palette.text.secondary,
+                              '&:hover': {
+                                borderColor: 'black',
+                                color: 'black',
+                              },
+                            }}
+                            htmlFor={size.value}
+                          >
+                            EU-{size.value}
+                          </InputLabel>
+                        </Box>
+                      );
+                    })}
+                </CheckBoxWrap>
+                <CheckBoxWrap>
+                  <Typography
+                    sx={{
+                      fontSize: isDesktop ? '15px' : '12px',
+                      flex: '0 0 100%',
+                    }}
+                  >
+                    Add categories
+                  </Typography>
+                  {categories &&
+                    categories.map(category => {
+                      return (
+                        <Box
+                          key={category.id}
+                          onClick={checkBoxChangeHandlerCategory}
                         >
-                          EU-{n}
-                        </InputLabel>
-                      </Box>
-                    );
-                  })}
+                          <Checkbox
+                            name={category.name}
+                            checked={category.needed}
+                            onClick={checkBoxChangeHandlerCategory}
+                            id={category.id}
+                          />
+                          <InputLabel
+                            sx={{
+                              background: category.needed
+                                ? theme.palette.primary.main
+                                : 'white',
+                              color: category.needed
+                                ? 'white'
+                                : theme.palette.text.secondary,
+                              '&:hover': {
+                                borderColor: 'black',
+                                color: 'black',
+                              },
+                            }}
+                            htmlFor={category.name}
+                          >
+                            {category.name}
+                          </InputLabel>
+                        </Box>
+                      );
+                    })}
                 </CheckBoxWrap>
               </Box>
               <Box
@@ -342,10 +421,10 @@ const AddProduct = ({userName}) => {
                     flexWrap: 'wrap',
                   }}
                 >
-                  <FileInput />
-                  <FileInput />
-                  <FileInput />
-                  <FileInput />
+                  <FileInput setArrImages={setArrImages} />
+                  <FileInput setArrImages={setArrImages} />
+                  <FileInput setArrImages={setArrImages} />
+                  <FileInput setArrImages={setArrImages} />
                 </Box>
               </Box>
             </Stack>
