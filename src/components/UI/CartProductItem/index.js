@@ -89,7 +89,7 @@ export default function CartProductItem({
       display: 'flex',
       gap: '10px',
       alignItems: 'center',
-      '& > *': {
+      '& > button,& > span': {
         fontSize: rwdValue(18, 24),
         width: rwdValue(24, 40),
         height: rwdValue(24, 40),

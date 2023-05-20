@@ -65,7 +65,7 @@ const MyProducts = ({productsList}) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      margin: '0 auto 10px',
+      margin: '50px auto 10px',
     },
     msgTitle: {fontSize: rwdValue(16, 20), marginBottom: '10px'},
     msgText: {
@@ -120,7 +120,12 @@ const MyProducts = ({productsList}) => {
                     Post can contain video, images and text.
                   </Typography>
                   <Link href="/add-product">
-                    <Button sx={styles.msgBtn}>Add product</Button>
+                    <Button
+                      size={isMobile || isTablet ? 'small' : 'medium'}
+                      sx={styles.msgBtn}
+                    >
+                      Add product
+                    </Button>
                   </Link>
                 </Box>
               )}
