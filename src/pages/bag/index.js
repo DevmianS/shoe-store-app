@@ -20,23 +20,9 @@ import Summary from '@/components/UI/Summary';
 const Bag = () => {
   const {products, isLoading} = useProducts();
   const [items, setItems] = useState([]);
-  const {cartItems} = useCart();
 
-  useEffect(() => {
-    const keys = Object.keys(cartItems);
+  const {removeProduct, cartItems} = useCart();
 
-    if (products && products.length > 0) {
-      setItems([
-        ...products.filter(
-          item =>
-            keys.includes(item.attributes.name) &&
-            cartItems[item.attributes.name] > 0,
-        ),
-      ]);
-    }
-  }, [cartItems, products]);
-
-  const {removeProduct} = useCart();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -81,6 +67,20 @@ const Bag = () => {
     },
     colBig: {flex: isTablet ? '0 0 100%' : '0 1 62%'},
   };
+
+  useEffect(() => {
+    const keys = Object.keys(cartItems);
+
+    if (products && products.length > 0) {
+      setItems([
+        ...products.filter(
+          item =>
+            keys.includes(item.attributes.name) &&
+            cartItems[item.attributes.name] > 0,
+        ),
+      ]);
+    }
+  }, [cartItems, products]);
   return (
     <>
       <Head>

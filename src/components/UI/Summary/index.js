@@ -13,26 +13,6 @@ export default function Summary({items, cartItems}) {
     total: 0,
     tax: 0,
   });
-
-  useEffect(() => {
-    const subtotal = Number(
-      items.reduce(
-        (acc, prod) =>
-          prod.attributes.price * cartItems[prod.attributes.name] + acc,
-        0,
-      ),
-    ).toFixed(2);
-    const shipping = Number(subtotal / 10).toFixed(2);
-    const tax = Number((subtotal / 100) * 19).toFixed(2);
-    const total = Number(+shipping + +tax + +subtotal).toFixed(2);
-    setCost({
-      shipping,
-      tax,
-      total,
-      subtotal,
-    });
-  }, [items]);
-
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -72,6 +52,25 @@ export default function Summary({items, cartItems}) {
       marginBottom: rwdValue(20, 40),
     },
   };
+
+  useEffect(() => {
+    const subtotal = Number(
+      items.reduce(
+        (acc, prod) =>
+          prod.attributes.price * cartItems[prod.attributes.name] + acc,
+        0,
+      ),
+    ).toFixed(2);
+    const shipping = Number(subtotal / 10).toFixed(2);
+    const tax = Number((subtotal / 100) * 19).toFixed(2);
+    const total = Number(+shipping + +tax + +subtotal).toFixed(2);
+    setCost({
+      shipping,
+      tax,
+      total,
+      subtotal,
+    });
+  }, [items]);
 
   return (
     <Box sx={styles.colSm}>
