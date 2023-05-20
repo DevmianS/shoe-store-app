@@ -1,6 +1,5 @@
 import {useRouter} from 'next/router';
 import {signOut} from 'next-auth/react';
-import {useState} from 'react';
 
 import {toast} from 'sonner';
 import {Stack, Box, List, useMediaQuery, useTheme} from '@mui/material';
@@ -13,7 +12,7 @@ import {memo, useState} from 'react';
 import ListItem from '@/components/UI/ListItem';
 import Loading from '@/components/UI/Loading';
 
-export default function SideBar({children, isFilter}) {
+function SideBar({children, isFilter}) {
   const router = useRouter();
 
   const theme = useTheme();
