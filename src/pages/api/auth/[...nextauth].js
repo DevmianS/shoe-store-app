@@ -43,10 +43,18 @@ export default async function auth(req, res) {
     callbacks: {
       session,
       jwt,
+      async signIn({user, account, profile, email, credentials}) {
+        const isAllowedToSignIn = true;
+        if (isAllowedToSignIn) {
+          return true;
+        } else {
+          return false;
+        }
+      },
     },
     jwt: {
       secret: process.env.NEXTAUTH_SECRET,
     },
-    pages: {signIn: '/sign-in'},
+    pages: {signIn: '/sign-in', error: '/sign-in'},
   });
 }
