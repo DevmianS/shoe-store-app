@@ -4,25 +4,23 @@ import {
   Card,
   Typography,
   Stack,
-  MenuItem,
-  Select,
-  FormControl,
   Box,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
+import Button from '../Button';
+import {useCart} from '@/context/CartContext';
 
 export default function CartProductItem({
   title,
   price,
   category,
-  inStock,
   quantity,
-  onDelete,
   image,
 }) {
+  const {removeOneProduct, addProduct, deleteProduct} = useCart();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -62,38 +60,12 @@ export default function CartProductItem({
       marginBottom: '12px',
       fontSize: rwdValue(8, 20),
     },
-    stock: {
-      color: theme.palette.primary.main,
-      fontWeight: 600,
-      fontSize: rwdValue(8, 25),
-      display: !isDesktop ? 'none' : 'block',
-    },
     footer: {
       display: 'flex',
       flexGrow: '1',
       flexDirection: 'row',
       alignItems: 'end',
       justifyContent: 'space-between',
-    },
-    select: {
-      minWidth: '70px',
-      '& .MuiSelect-select': {
-        lineHeight: 1,
-        maxWidth: !isDesktop ? '90px' : 'auto',
-        width: !isDesktop ? 'auto' : '100%',
-        paddingLeft: 0,
-        paddingRight: !isDesktop ? '0' : '24px',
-      },
-      '& .MuiSelect-icon': {
-        position: 'static',
-        transform: !isDesktop ? 'translateX(-20px)' : 'translateX(-12px)',
-        width: !isDesktop ? '8px' : '1rem',
-        height: !isDesktop ? '8px' : '1rem',
-      },
-      '& .MuiInputBase-input': {
-        paddingTop: 0,
-        paddingBottom: 0,
-      },
     },
     delete: {
       display: 'flex',
@@ -113,12 +85,31 @@ export default function CartProductItem({
         cursor: 'pointer',
       },
     },
+    controls: {
+      display: 'flex',
+      gap: '10px',
+      alignItems: 'center',
+      '& > button,& > span': {
+        fontSize: rwdValue(18, 24),
+        width: rwdValue(24, 40),
+        height: rwdValue(24, 40),
+        maxWidth: rwdValue(24, 40),
+        minWidth: rwdValue(24, 40),
+        lineHeight: rwdValue(24, 40),
+        textAlign: 'center',
+      },
+    },
   };
 
   return (
     <Card sx={styles.card}>
       <Stack direction="row">
-        <Image width={220} height={220} alt={title} src={image} />
+        <Image
+          width={600}
+          height={600}
+          alt={title}
+          src={`https://shoes-shop-strapi.herokuapp.com${image[0]?.attributes?.url}`}
+        />
         <Stack sx={styles.content}>
           <Stack sx={styles.header}>
             <Typography variant="h3" component="h3">
@@ -131,28 +122,13 @@ export default function CartProductItem({
           <Typography variant="body2" component="span" sx={styles.category}>
             {category}
           </Typography>
-          <Typography variant="body4" sx={styles.stock}>
-            {inStock ? 'In Stock' : 'Not available'}
-          </Typography>
           <Stack sx={styles.footer}>
-            <FormControl sx={styles.select}>
-              <Select
-                labelId="quantity"
-                variant="standard"
-                defaultValue={'quantity'}
-                disableUnderline
-              >
-                <MenuItem value="quantity" disabled>
-                  Quantity
-                </MenuItem>
-                <MenuItem value={1}>1</MenuItem>
-                <MenuItem value={2}>2</MenuItem>
-                <MenuItem value={3}>3</MenuItem>
-                <MenuItem value={4}>4</MenuItem>
-                <MenuItem value={5}>5</MenuItem>
-              </Select>
-            </FormControl>
-            <Box sx={styles.delete} onClick={onDelete}>
+            <Box sx={styles.controls}>
+              <Button onClick={() => removeOneProduct(title)}>-</Button>
+              <Typography component="b">{quantity}</Typography>
+              <Button onClick={() => addProduct(title, true)}>+</Button>
+            </Box>
+            <Box sx={styles.delete} onClick={() => deleteProduct(title)}>
               <Typography component="i" className="icon-trash"></Typography>
               <Typography component="span" variant="body4">
                 Delete

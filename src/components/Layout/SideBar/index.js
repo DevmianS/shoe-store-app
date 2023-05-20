@@ -1,15 +1,19 @@
-import {Stack, Box, List, useMediaQuery, useTheme} from '@mui/material';
 import {useRouter} from 'next/router';
-import ListItem from '@/components/UI/ListItem';
-import {toast} from 'sonner';
-import AvatarStaticLayout from '../AvatarStaticLayout';
 import {signOut} from 'next-auth/react';
+import {useState} from 'react';
 
-import Loading from '@/components/UI/Loading';
+import {toast} from 'sonner';
+import {Stack, Box, List, useMediaQuery, useTheme} from '@mui/material';
+
+import AvatarStaticLayout from '../AvatarStaticLayout';
+
 import {useToggle} from '@/context/ToggleContext';
 import {memo, useState} from 'react';
 
-function SideBar({children, isFilter}) {
+import ListItem from '@/components/UI/ListItem';
+import Loading from '@/components/UI/Loading';
+
+export default function SideBar({children, isFilter}) {
   const router = useRouter();
 
   const theme = useTheme();
@@ -46,7 +50,11 @@ function SideBar({children, isFilter}) {
     await router.prefetch('/sign-in');
     toast.success('Logged out successfully.');
     router.push('/sign-in');
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('USER_EMAIL');
+    }
     setLoading(false);
+    toggle();
   };
 
   return (
@@ -60,12 +68,18 @@ function SideBar({children, isFilter}) {
               <ListItem
                 name="My products"
                 icon="orders"
-                onClick={() => router.push('/my-products')}
+                onClick={() => {
+                  router.push('/my-products');
+                  toggle();
+                }}
               />
               <ListItem
                 name="Settings"
                 icon="setting"
-                onClick={() => router.push('/profile/update')}
+                onClick={() => {
+                  router.push('/profile/update');
+                  toggle();
+                }}
               />
               <ListItem name="Log-out" icon="logout" onClick={handleLogout} />
             </List>
