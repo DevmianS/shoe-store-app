@@ -64,7 +64,10 @@ export default function Summary({items, cartItems}) {
 
   const styles = {
     colSm: {flex: isTablet ? '0 0 100%' : '0 0 26%', position: 'relative'},
-    summary: {position: isTablet ? 'static' : 'fixed', width: '22%'},
+    summary: {
+      position: isTablet ? 'static' : 'fixed',
+      width: isTablet ? '100%' : '22%',
+    },
     promo: {
       fontWeight: 400,
       marginBottom: rwdValue(20, 40),
