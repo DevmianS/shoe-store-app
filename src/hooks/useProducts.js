@@ -11,7 +11,8 @@ const useProducts = () => {
     queryKey: ['products'],
     queryFn: async () => {
       const {data} = await axios.get(
-        'https://shoes-shop-strapi.herokuapp.com/api/products?filters[teamName]=fb-team&populate=*',
+        process.env.NEXT_PUBLIC_API_URL +
+          '/products?filters[teamName]=fb-team&populate=*',
       );
       return data?.data;
     },
