@@ -1,9 +1,12 @@
-# team-2-final-project
+# Shoes shop
 
-- [Figma design](https://www.figma.com/file/2GY85OWH9Gn3oEp5S6vktP/SHOES_STORE_TEAM2?type=design&node-id=3302-3328&t=EH0EoOAacUTBUTCc-0)
-- [API documentation](https://shoes-shop-strapi.herokuapp.com/documentation)
+1. [Requirments](#requirments)
 
 ## Requirments
+### Info 
+- [Figma design](https://www.figma.com/file/2GY85OWH9Gn3oEp5S6vktP/SHOES_STORE_TEAM2?type=design&node-id=3302-3328&t=EH0EoOAacUTBUTCc-0)
+- [Figma design v2](https://www.figma.com/file/ny4CJBOFrocjV27M3ev76q/Shoes-shop?type=design&node-id=32-6042&t=KUiKdDdLsfgABFnL-0)
+- [API documentation](https://shoes-shop-strapi.herokuapp.com/documentation)
 
 ### Pages list:
 
@@ -14,8 +17,8 @@
 - Home page
 - Error 404
 - Error 500
-- Profile
-- Update profile
+- My products
+- Update profile(Settings)
 - Add product
 - Search page
 - Bag
