@@ -50,7 +50,6 @@ const AddProduct = () => {
     setCategories,
   } = useProductData() || {};
 
-
   const [loading, setLoading] = useState(false);
 
   const [select, setSelect] = useState({gender: 'Men', brand: 'Nike'});
@@ -65,7 +64,6 @@ const AddProduct = () => {
     {id: 3, file: null, image: null},
     {id: 4, file: null, image: null},
   ]);
-
 
   // EVENTS
   const genderChangeHandler = e => {
@@ -217,8 +215,7 @@ const AddProduct = () => {
 
       resetForm();
 
-
-      router.push('/');
+      router.push('/my-products');
     }
     setLoading(false);
   };
