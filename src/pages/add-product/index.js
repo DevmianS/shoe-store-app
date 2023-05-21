@@ -29,7 +29,6 @@ import useUser from '@/hooks/useUser';
 import {createProduct, uploadImages} from '@/utils/utils';
 
 const AddProduct = () => {
-  
   const {
     brands,
     categories,
@@ -174,11 +173,11 @@ const AddProduct = () => {
 
   const handleSubmit = async () => {
     let arrImgId = await uploadImages(arrImages, jwt);
-
-    const res = await createProduct(
+    const res = await createProduct({
       genders,
       select,
       brands,
+      price,
       categories,
       sizes,
       name,
@@ -186,10 +185,9 @@ const AddProduct = () => {
       description,
       id,
       jwt,
-    );
+    });
 
     resetForm();
-
     console.log('RES: ', res);
   };
 

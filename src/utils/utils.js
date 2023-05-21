@@ -171,10 +171,11 @@ export const uploadImages = async (arrImages, jwt) => {
   }
 };
 
-export const createProduct = async (
+export const createProduct = async ({
   genders,
   select,
   brands,
+  price,
   categories,
   sizes,
   name,
@@ -182,7 +183,7 @@ export const createProduct = async (
   description,
   id,
   jwt,
-) => {
+}) => {
   const idGender = String(
     genders.find(gender => gender.name === select.gender)?.id,
   );
@@ -205,13 +206,15 @@ export const createProduct = async (
       categories: categoriesArr,
       gender: idGender,
       size: sizesArr,
-      price: 100,
+      price: price,
       userID: id,
       teamName: 'fb-team',
       uniqueID: generateRandomNumber(10),
       sitemap_exclude: true,
     },
   };
+
+  console.log('obj : ', obj);
 
   try {
     const res = await axios.post(
@@ -235,7 +238,6 @@ export const createProduct = async (
     console.log('ERROR API PRODUCT: ', error);
     executeError('There was an error.');
     executeError('There was an error.');
-
   }
 };
 
