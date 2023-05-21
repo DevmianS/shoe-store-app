@@ -1,17 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
-const brandApi =
-  'https://shoes-shop-strapi.herokuapp.com/api/brands?fields=name';
+const brandApi = process.env.NEXT_PUBLIC_API_URL + '/brands?fields=name';
 
 const categoriesApi =
-  'https://shoes-shop-strapi.herokuapp.com/api/categories?fields=name';
+  process.env.NEXT_PUBLIC_API_URL + '/categories?fields=name';
 
-const genderApi =
-  'https://shoes-shop-strapi.herokuapp.com/api/genders?fields=name';
+const genderApi = process.env.NEXT_PUBLIC_API_URL + '/genders?fields=name';
 
-const sizeApi =
-  'https://shoes-shop-strapi.herokuapp.com/api/sizes?fields=value';
+const sizeApi = process.env.NEXT_PUBLIC_API_URL + '/sizes?fields=value';
 
 const useProductData = () => {
   const [brands, setBrands] = useState([]);

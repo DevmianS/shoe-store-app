@@ -4,9 +4,7 @@ import {toast} from 'sonner';
 
 export const getStuff = async type => {
   if (type) {
-    const {data} = await axios.get(
-      'https://shoes-shop-strapi.herokuapp.com/api/' + type,
-    );
+    const {data} = await axios.get(process.env.NEXT_PUBLIC_API_URL + +type);
     return data;
   }
   return null;
@@ -15,7 +13,7 @@ export const getStuff = async type => {
 export const registerNewUser = async userObj => {
   if (!userObj) return null;
   const {data} = await axios.post(
-    'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
+    process.env.NEXT_PUBLIC_API_URL + '/auth/local/register',
     userObj,
   );
   return data;
@@ -25,7 +23,7 @@ export const forgotPassword = async email => {
   try {
     if (!email) return null;
     const res = await axios.post(
-      'https://shoes-shop-strapi.herokuapp.com/api/auth/forgot-password',
+      process.env.NEXT_PUBLIC_API_URL + '/auth/forgot-password',
       {email: email},
     );
     return res;
@@ -44,7 +42,7 @@ export const resetPassword = async (
   try {
     if (!newPassword) return null;
     const res = await axios.post(
-      'https://shoes-shop-strapi.herokuapp.com/api/auth/reset-password',
+      process.env.NEXT_PUBLIC_API_URL + '/auth/reset-password',
       {
         password: newPassword,
         passwordConfirmation: passwordConfirmation,
@@ -146,7 +144,7 @@ export const uploadImages = async (arrImages, jwt) => {
 
   try {
     const response = await axios.post(
-      'https://shoes-shop-strapi.herokuapp.com/api/upload',
+      process.env.NEXT_PUBLIC_API_URL + '/upload',
       formData,
       {
         headers: {
@@ -312,7 +310,7 @@ export const createProduct = async ({
 
   try {
     const res = await axios.post(
-      'https://shoes-shop-strapi.herokuapp.com/api/products',
+      process.env.NEXT_PUBLIC_API_URL + '/products',
       obj,
       {
         headers: {
@@ -345,7 +343,8 @@ function generateRandomNumber(length) {
 
 export const fetchProductsByName = async name => {
   try {
-    const url = `https://shoes-shop-strapi.herokuapp.com/api/products?filters%5Bname%5D=${name}`;
+    const url =
+      process.env.NEXT_PUBLIC_API_URL + `/products?filters%5Bname%5D=${name}`;
     const response = await axios.get(url);
     const {data, status} = response;
 

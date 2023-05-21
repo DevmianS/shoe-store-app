@@ -12,7 +12,8 @@ const useMyProducts = () => {
   const queryMyProducts = useCallback(async id => {
     setIsLoading(true);
     const {data} = await axios.get(
-      `https://shoes-shop-strapi.herokuapp.com/api/products?filters[teamName]=fb-team&filters[userID]=${id}&populate=*`,
+      process.env.NEXT_PUBLIC_API_URL +
+        `/products?filters[teamName]=fb-team&filters[userID]=${id}&populate=*`,
     );
     setIsLoading(false);
     return data?.data;
