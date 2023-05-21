@@ -26,9 +26,20 @@ import Button from '@/components/UI/Button';
 import useProductData from '@/hooks/useProductData';
 import useUser from '@/hooks/useUser';
 
-import {createProduct, uploadImages} from '@/utils/utils';
+import {
+  createProduct,
+  executeInfo,
+  uploadImages,
+  validationCreateProduct,
+} from '@/utils/utils';
+
+import Loading from '@/components/UI/Loading';
+import {toast} from 'sonner';
+import {useRouter} from 'next/router';
 
 const AddProduct = () => {
+  const router = useRouter();
+
   const {
     brands,
     categories,
@@ -39,7 +50,8 @@ const AddProduct = () => {
     setCategories,
   } = useProductData() || {};
 
-  console.log('genders ', genders);
+
+  const [loading, setLoading] = useState(false);
 
   const [select, setSelect] = useState({gender: 'Men', brand: 'Nike'});
 
@@ -54,7 +66,6 @@ const AddProduct = () => {
     {id: 4, file: null, image: null},
   ]);
 
-  console.log('arrImages: ', arrImages);
 
   // EVENTS
   const genderChangeHandler = e => {
@@ -172,23 +183,44 @@ const AddProduct = () => {
   const {jwt, id} = useUser();
 
   const handleSubmit = async () => {
-    let arrImgId = await uploadImages(arrImages, jwt);
-    const res = await createProduct({
+    setLoading(true);
+
+    const errorInParameters = await validationCreateProduct({
       genders,
-      select,
-      brands,
       price,
       categories,
       sizes,
       name,
-      arrImgId,
+      arrImages,
       description,
       id,
       jwt,
     });
 
-    resetForm();
-    console.log('RES: ', res);
+    if (errorInParameters) {
+      toast.message('Please fill in the gaps again correctly.');
+    } else {
+      let arrImgId = await uploadImages(arrImages, jwt);
+      const res = await createProduct({
+        genders,
+        select,
+        brands,
+        price,
+        categories,
+        sizes,
+        name,
+        arrImgId,
+        description,
+        id,
+        jwt,
+      });
+
+      resetForm();
+
+
+      router.push('/');
+    }
+    setLoading(false);
   };
 
   const resetForm = () => {
@@ -226,6 +258,7 @@ const AddProduct = () => {
       <Head>
         <title>Wellrun | Add Product</title>
       </Head>
+      {loading && <Loading />}
       <NavBarLayout>
         <Row>
           <SideBar />

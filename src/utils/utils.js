@@ -3,7 +3,6 @@ import {Skeleton} from '@mui/material';
 import {toast} from 'sonner';
 
 export const getStuff = async type => {
-  console.log('getStuff:', type);
   if (type) {
     const {data} = await axios.get(
       'https://shoes-shop-strapi.herokuapp.com/api/' + type,
@@ -14,7 +13,6 @@ export const getStuff = async type => {
 };
 
 export const registerNewUser = async userObj => {
-  console.log('registerNewUser:', userObj);
   if (!userObj) return null;
   const {data} = await axios.post(
     'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
@@ -25,7 +23,6 @@ export const registerNewUser = async userObj => {
 
 export const forgotPassword = async email => {
   try {
-    console.log('forgotPassword:', email);
     if (!email) return null;
     const res = await axios.post(
       'https://shoes-shop-strapi.herokuapp.com/api/auth/forgot-password',
@@ -45,7 +42,6 @@ export const resetPassword = async (
   code,
 ) => {
   try {
-    console.log('resetPassword:', newPassword);
     if (!newPassword) return null;
     const res = await axios.post(
       'https://shoes-shop-strapi.herokuapp.com/api/auth/reset-password',
@@ -159,7 +155,6 @@ export const uploadImages = async (arrImages, jwt) => {
         },
       },
     );
-    console.log('Respuesta de la API:', response);
 
     const {data: arrImgId} = response;
 
@@ -169,6 +164,107 @@ export const uploadImages = async (arrImages, jwt) => {
 
     console.error('Error al enviar los archivos:', error);
   }
+};
+
+export const validationCreateProduct = async ({
+  genders,
+  price,
+  categories,
+  sizes,
+  name,
+  arrImages,
+  description,
+  id,
+  jwt,
+}) => {
+  if (
+    !name ||
+    typeof name !== 'string' ||
+    name.length < 1 ||
+    name.length > 20
+  ) {
+    executeError('Error: The name must be between 1 and 20 characters.');
+    return true;
+  } else {
+    const isNameUsed = await fetchProductsByName(name);
+    if (isNameUsed) {
+      executeError('Error: The name already exists. Choose a new one.');
+      return true;
+    }
+  }
+
+  if (
+    !description ||
+    typeof description !== 'string' ||
+    description.length < 1 ||
+    description.length > 200
+  ) {
+    executeError(
+      'Error: The description must be between 1 and 200 characters.',
+    );
+    return true;
+  }
+
+  // Price validation
+  if (
+    !price ||
+    typeof parseFloat(price) !== 'number' ||
+    price < 1 ||
+    price > 100000
+  ) {
+    executeError(
+      'Error: The price (' + price + ') must be a number between 1 and 100000.',
+    );
+    return true;
+  }
+
+  // Gender validation
+  if (!genders || !Array.isArray(genders) || genders.length < 1) {
+    executeError('Error: At least one gender is required.');
+    return true;
+  }
+
+  // Size validation
+  let sizeArrInvalid = true;
+  for (let i = 0; i < sizes.length; i++) {
+    if (sizes[i].needed === true) {
+      sizeArrInvalid = false;
+    }
+  }
+  if (sizeArrInvalid) {
+    executeError('Error: At least one size is required.');
+    return true;
+  }
+
+  // Category validation
+  let categoriesArrInvalid = true;
+  for (let i = 0; i < categories.length; i++) {
+    if (categories[i].needed === true) {
+      categoriesArrInvalid = false;
+    }
+  }
+  if (categoriesArrInvalid) {
+    executeError('Error: At least one category is required.');
+    return true;
+  }
+
+  // Image validation
+  let imgArrInvalid = true;
+  for (let i = 0; i < arrImages.length; i++) {
+    if (arrImages[i].file !== null) {
+      imgArrInvalid = false;
+    }
+  }
+  if (imgArrInvalid) {
+    executeError('Error: At least one image is required.');
+    return true;
+  }
+
+  if (String(id).length < 1 || String(jwt).length < 1) {
+    executeError('Error: Log in again to add a product.');
+    return true;
+  }
+  return false;
 };
 
 export const createProduct = async ({
@@ -185,9 +281,9 @@ export const createProduct = async ({
   jwt,
 }) => {
   const idGender = String(
-    genders.find(gender => gender.name === select.gender)?.id,
+    genders.find(gender => gender.name == select.gender)?.id,
   );
-  const idBrand = String(brands.find(brand => brand.name === select.brand)?.id);
+  const idBrand = String(brands.find(brand => brand.name == select.brand)?.id);
 
   const categoriesArr = categories
     .filter(category => category.needed)
@@ -214,8 +310,6 @@ export const createProduct = async ({
     },
   };
 
-  console.log('obj : ', obj);
-
   try {
     const res = await axios.post(
       'https://shoes-shop-strapi.herokuapp.com/api/products',
@@ -229,13 +323,10 @@ export const createProduct = async ({
     );
 
     if (res.status == '200') {
-      console.log('succesfully: ', res.data);
       executeSucces('Product created succesfully.');
       return res;
     }
-    console.log('res: ', res);
   } catch (error) {
-    console.log('ERROR API PRODUCT: ', error);
     executeError('There was an error.');
     executeError('There was an error.');
   }
@@ -251,3 +342,23 @@ function generateRandomNumber(length) {
 
   return randomNumber;
 }
+
+export const fetchProductsByName = async name => {
+  try {
+    const url = `https://shoes-shop-strapi.herokuapp.com/api/products?filters%5Bname%5D=${name}`;
+    const response = await axios.get(url);
+    const {data, status} = response;
+
+    // Utiliza la respuesta "data" como desees
+    // ...
+    if (status == '200') {
+      return data?.meta?.pagination?.total > 0;
+    } else {
+      throw error;
+    }
+  } catch (error) {
+    // Manejo de errores
+    console.error(error);
+    throw error;
+  }
+};
