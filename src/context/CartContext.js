@@ -1,40 +1,16 @@
+import {cartInit, cartUpdate, valuesSum} from '@/utils/cart';
+import {executeSucces} from '@/utils/utils';
 import React, {createContext, useState, useContext, useEffect} from 'react';
-import {toast} from 'sonner';
 
 const CartContext = createContext();
 
 export const CartProvider = ({children}) => {
-  const [cartItems, setCartItems] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const USER_EMAIL = window.localStorage.getItem('USER_EMAIL');
-      if (USER_EMAIL) {
-        const savedData = window.localStorage.getItem('CART_' + USER_EMAIL);
-        return savedData ? JSON.parse(savedData) : {};
-      }
-    }
-    return {};
-  });
-
+  const [cartItems, setCartItems] = useState(() => cartInit());
   const [cartCount, setCartCount] = useState(0);
 
+  useEffect(() => cartUpdate(cartItems), [cartItems]);
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const USER_EMAIL = window.localStorage.getItem('USER_EMAIL');
-      if (USER_EMAIL) {
-        window.localStorage.setItem(
-          'CART_' + USER_EMAIL,
-          JSON.stringify(cartItems),
-        );
-      }
-    }
-  }, [cartItems]);
-
-  useEffect(() => {
-    const productCount = Object.values(cartItems).reduce(
-      (acc, curr) => acc + curr,
-      0,
-    );
-    setCartCount(productCount);
+    setCartCount(valuesSum(cartItems));
   }, [cartItems]);
 
   const addProduct = (title, isCart) => {
@@ -43,7 +19,7 @@ export const CartProvider = ({children}) => {
       [title]: prev[title] ? prev[title] + 1 : 1,
     }));
     setCartCount(prev => prev + 1);
-    toast.success(
+    executeSucces(
       title +
         (isCart ? ' increased by 1 in your cart!' : ' added to your cart!'),
     );
@@ -55,8 +31,9 @@ export const CartProvider = ({children}) => {
       [title]: prev[title] > 0 ? prev[title] - 1 : 0,
     }));
     setCartCount(prev => (prev > 0 ? prev - 1 : 0));
-    toast.success(title + ' decreased by 1 in your cart!');
+    executeSucces(title + ' decreased by 1 in your cart!');
   };
+
   const deleteProduct = title => {
     const itemCount = cartItems[title];
     setCartItems(prev => ({
@@ -64,7 +41,7 @@ export const CartProvider = ({children}) => {
       [title]: 0,
     }));
     setCartCount(prev => prev - itemCount);
-    toast.success(title + ' was fully deleted from your cart!');
+    executeSucces(title + ' was fully deleted from your cart!');
   };
 
   return (
