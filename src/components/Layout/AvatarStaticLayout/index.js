@@ -2,6 +2,7 @@ import {Typography, Box, Stack, useTheme, useMediaQuery} from '@mui/material';
 import AvatarStatic from '@/components/UI/AvatarStatic';
 import {rwdValue} from '@/utils/theme';
 import useUser from '@/hooks/useUser';
+import {memo} from 'react';
 
 const AvatarStaticLayout = ({variant}) => {
   const theme = useTheme();
@@ -90,4 +91,4 @@ const AvatarStaticLayout = ({variant}) => {
   }
 };
 
-export default AvatarStaticLayout;
+export default memo(AvatarStaticLayout);
