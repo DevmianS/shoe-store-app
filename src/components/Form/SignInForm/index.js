@@ -1,10 +1,8 @@
+import {signIn} from 'next-auth/react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import React, {useCallback, useEffect, useState} from 'react';
-import {useMutation} from '@tanstack/react-query';
-import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 
-import {toast} from 'sonner';
 import {
   Box,
   Checkbox,
@@ -20,15 +18,13 @@ import {
   checkErrorPassword,
   executeError,
   executeSucces,
-  logIn,
 } from '@/utils/utils';
 import {rwdValue} from '@/utils/theme';
+import {cartInit, isBrowser, valuesSum, setStore} from '@/utils/cart';
+import {useCart} from '@/context/CartContext';
 
 import Button from '@/components/UI/Button';
 import Loading from '@/components/UI/Loading';
-import {signIn} from 'next-auth/react';
-import {useCart} from '@/context/CartContext';
-import {cartInit, isBrowser, valuesSum, setStore} from '@/utils/cart';
 
 const SignInForm = () => {
   const {setCartItems, setCartCount, cartItems} = useCart();
