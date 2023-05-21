@@ -10,7 +10,7 @@ export const ToggleProvider = ({children}) => {
   };
 
   return (
-    <ToggleContext.Provider value={{isToggled, toggle}}>
+    <ToggleContext.Provider value={{isToggled, toggle, setIsToggled}}>
       {children}
     </ToggleContext.Provider>
   );

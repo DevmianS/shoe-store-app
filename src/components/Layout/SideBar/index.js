@@ -18,7 +18,7 @@ export default function SideBar({children, isFilter}) {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  const {isToggled, toggle} = useToggle();
+  const {isToggled, setIsToggled} = useToggle();
 
   const styles = {
     position: !isDesktop ? 'fixed' : 'static',
@@ -53,7 +53,7 @@ export default function SideBar({children, isFilter}) {
       window.localStorage.removeItem('USER_EMAIL');
     }
     setLoading(false);
-    toggle();
+    setIsToggled(false);
   };
 
   return (
@@ -69,7 +69,7 @@ export default function SideBar({children, isFilter}) {
                 icon="orders"
                 onClick={() => {
                   router.push('/my-products');
-                  toggle();
+                  setIsToggled(false);
                 }}
               />
               <ListItem
@@ -77,7 +77,7 @@ export default function SideBar({children, isFilter}) {
                 icon="setting"
                 onClick={() => {
                   router.push('/profile/update');
-                  toggle();
+                  setIsToggled(false);
                 }}
               />
               <ListItem name="Log-out" icon="logout" onClick={handleLogout} />
