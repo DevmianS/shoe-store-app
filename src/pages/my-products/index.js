@@ -13,11 +13,18 @@ import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import ProductCard from '@/components/UI/ProductCard';
 import TopBanner from '@/components/UI/TopBanner';
 import Button from '@/components/UI/Button';
+import useMyProducts from '@/hooks/useMyProducts';
+
+import {SkeletonProducts} from '@/utils/utils';
 
 const MyProducts = ({productsList}) => {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const {products, isLoading} = useMyProducts();
+
+  console.log('products MYPRODUCTS: ', products, isLoading);
 
   const styles = {
     row: {
@@ -86,24 +93,38 @@ const MyProducts = ({productsList}) => {
           <Box sx={styles.header}>
             <TopBanner imgPath={bannerImg.src} />
             <AvatarStaticLayout />
-            <Typography variant="h1" component="h1" mb="40px">
-              My products
-            </Typography>
+            <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+              <Typography variant="h1" component="h1" mb="40px">
+                My products
+              </Typography>
+              {Array.isArray(products) && products.length > 0 && (
+                <Link href="/add-product">
+                  <Button
+                    size={isMobile || isTablet ? 'small' : 'medium'}
+                    sx={styles.msgBtn}
+                  >
+                    Add product
+                  </Button>
+                </Link>
+              )}
+            </Box>
             <Box sx={styles.productsRow}>
-              {productsList &&
-                productsList.length > 0 &&
-                productsList.map(product => {
+              {isLoading ? (
+                SkeletonProducts()
+              ) : Array.isArray(products) && products.length > 0 ? (
+                products.map(product => {
+                  const {id, attributes} = product;
                   return (
                     <ProductCard
-                      key={product.id}
-                      title={product.attributes.name}
-                      category={product.attributes.category}
-                      price={product.attributes.price}
-                      imgPath={product.attributes.image}
+                      key={id}
+                      title={attributes.name}
+                      price={attributes.price}
+                      imgPath={attributes.images.data}
+                      category={attributes.categories.data}
                     />
                   );
-                })}
-              {!productsList && (
+                })
+              ) : (
                 <Box sx={styles.msgBody}>
                   <Typography
                     className="icon-bag-o"
