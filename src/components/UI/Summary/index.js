@@ -1,57 +1,49 @@
+import {useRouter} from 'next/router';
 import {useState, useEffect} from 'react';
+import {toast} from 'sonner';
 
 import {Typography, Box, Stack, useMediaQuery, useTheme} from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
 
-import Button from '@/components/UI/Button';
-import {toast} from 'sonner';
 import {useCart} from '@/context/CartContext';
-import {useRouter} from 'next/router';
+import Button from '@/components/UI/Button';
+
+const initSummary = {
+  shipping: 0,
+  subtotal: 0,
+  total: 0,
+  tax: 0,
+};
 
 export default function Summary({items, cartItems}) {
-  const [cost, setCost] = useState({
-    shipping: 0,
-    subtotal: 0,
-    total: 0,
-    tax: 0,
-  });
-  const theme = useTheme();
-  const router = useRouter();
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
-  const [payment, setPayment] = useState(false);
+  const [cost, setCost] = useState(initSummary);
+  const [payment, setPayment] = useState(true);
+
   const {setCartItems, setCartCount} = useCart();
 
-  const promise = () =>
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+  const router = useRouter();
+
+  // mockup checkout
+  const checkoutPromise = () =>
     new Promise((resolve, reject) => {
-      const randomNumber = Math.random();
       setPayment(true);
-      if (randomNumber < 0.5) {
-        setTimeout(() => {
-          resolve('Payment was successful! Wait for order delivery. Thanks!');
-          setPayment(false);
-          setCost({
-            shipping: 0,
-            subtotal: 0,
-            total: 0,
-            tax: 0,
-          });
-          setCartItems({});
-          setCartCount(0);
-          router.push('/');
-        }, 3000);
-      } else {
-        setTimeout(() => {
-          reject(
-            'Something went wrong, please check your payment details and try again!',
-          );
-          setPayment(false);
-        }, 3000);
-      }
+      setTimeout(() => {
+        resolve(
+          'Payment was successful! Wait for your order to be delivered. Thank you!',
+        );
+        setPayment(false);
+        setCost(initSummary);
+        setCartItems({});
+        setCartCount(0);
+        router.push('/');
+      }, 3000);
     });
 
   const checkoutHandler = data => {
-    toast.promise(promise, {
+    toast.promise(checkoutPromise, {
       loading: 'Payment verification...',
       success: response => {
         return response;
@@ -105,6 +97,7 @@ export default function Summary({items, cartItems}) {
     },
   };
 
+  // calculate
   useEffect(() => {
     const subtotal = Number(
       items.reduce(
@@ -123,6 +116,14 @@ export default function Summary({items, cartItems}) {
       subtotal,
     });
   }, [items]);
+  // Checkout `disabled` state
+  useEffect(() => {
+    if (cost.total > 0) {
+      setPayment(false);
+    } else {
+      setPayment(true);
+    }
+  }, [cost.total]);
 
   return (
     <Box sx={styles.colSm}>
