@@ -28,7 +28,7 @@ const NavBar = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
-  const {isToggled, toggle} = useToggle();
+  const {isToggled, toggle, setIsToggled} = useToggle();
   const {searchExpanded, setSearchExpanded} = useSearch();
   const {cartCount} = useCart();
 
@@ -133,11 +133,17 @@ const NavBar = () => {
     },
   };
 
+  const handleMenuCLick = () => {
+    toggle();
+    searchExpanded && setSearchExpanded(false);
+  };
+
   const handleFocusInputResponsive = () => {
     setTimeout(() => {
       searchInputRef.current && searchInputRef.current.focus();
     }, 100);
     setSearchExpanded(true);
+    isToggled && setIsToggled(false);
   };
 
   useEffect(() => {
@@ -188,7 +194,7 @@ const NavBar = () => {
               <IconButton
                 size="large"
                 aria-label="Menu"
-                onClick={toggle}
+                onClick={handleMenuCLick}
                 sx={styles.menuIcon}
               >
                 <Typography
