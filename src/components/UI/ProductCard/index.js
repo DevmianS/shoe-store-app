@@ -11,6 +11,10 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import Button from '@/components/UI/Button';
 
 export default function ProductCard({title, price, category, imgPath}) {
+  if (imgPath == undefined) {
+    imgPath = [{attributes: {alternativeText: '', url: ''}}];
+  }
+
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -181,14 +185,10 @@ export default function ProductCard({title, price, category, imgPath}) {
             <Typography component="span" className="icon-add-to-cart" />
           </Button>
           <Image
+            src={imgPath[currentImageIndex]?.attributes?.url}
+            alt={`Shoes name: ${title} ${imgPath[currentImageIndex]?.attributes?.alternativeText}`}
             fill
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 15vw, 20vw"
-            src={
-              imgPath
-                ? `https://shoes-shop-strapi.herokuapp.com${imgPath?.[currentImageIndex]?.attributes?.url}`
-                : '/productImageComingSoon.png'
-            }
-            alt={`Shoes name: ${title} ${imgPath?.[currentImageIndex]?.attributes?.alternativeText}`}
           />
           {imgPath && (
             <>

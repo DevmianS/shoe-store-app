@@ -7,7 +7,11 @@ import {
   Skeleton,
 } from '@mui/material';
 
+import Link from 'next/link';
+
 import {rwdValue} from '@/utils/theme';
+
+import Button from '@/components/UI/Button';
 
 import SideBar from '@/components/Layout/SideBar';
 
@@ -18,6 +22,7 @@ import TopBanner from '@/components/UI/TopBanner';
 import useProducts from '@/hooks/useProducts';
 import AvatarStaticLayout from '../AvatarStaticLayout';
 import {SkeletonProducts} from '@/utils/utils';
+import NoContent from '@/components/UI/NoContent';
 
 const Home = () => {
   const {products, isLoading} = useProducts();
@@ -54,7 +59,7 @@ const Home = () => {
           margin={{sm: '0 -8px', md: '0 -24px'}}
         >
           {isLoading && SkeletonProducts()}
-          {products &&
+          {Array.isArray(products) && products.length > 0 ? (
             products.map(product => {
               const {id, attributes} = product;
               return (
@@ -66,7 +71,10 @@ const Home = () => {
                   category={attributes.categories.data}
                 />
               );
-            })}
+            })
+          ) : (
+            <NoContent />
+          )}
         </Box>
       </Box>
     </Box>

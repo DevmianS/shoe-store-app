@@ -8,6 +8,11 @@ const nextConfig = {
         hostname: 'shoes-shop-strapi.herokuapp.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+      },
     ],
   },
 };

@@ -94,7 +94,9 @@ const ResetPasswordForm = () => {
           executeInfo('Try to log in with your new password');
           router.push('/sign-in');
         } else {
-          executeError('There was an error. Please try again.');
+          executeError(
+            'There was an error. Please try again later or talk to support.',
+          );
         }
       } catch (error) {
         console.log('my error: ', error);
