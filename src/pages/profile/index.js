@@ -15,10 +15,12 @@ import TopBanner from '@/components/UI/TopBanner';
 
 import useProducts from '@/hooks/useProducts';
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
-import { SkeletonProducts } from '@/utils/utils';
+import {SkeletonProducts} from '@/utils/utils';
 
 const Profile = () => {
-  const {products, isLoading} = useProducts();
+  const {data, isLoading} = useProducts();
+  const products = data?.data;
+
   return (
     <>
       <Head>
