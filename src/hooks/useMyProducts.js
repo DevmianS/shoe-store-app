@@ -13,7 +13,7 @@ const useMyProducts = () => {
     setIsLoading(true);
     const {data} = await axios.get(
       process.env.NEXT_PUBLIC_API_URL +
-        `/products?filters[teamName]=fb-team&filters[userID]=${id}&populate=*`,
+        `products?filters[teamName]=fb-team&filters[userID]=${id}&populate=*`,
     );
     setIsLoading(false);
     return data?.data;

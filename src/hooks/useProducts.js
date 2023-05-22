@@ -12,7 +12,7 @@ const useProducts = () => {
     queryFn: async () => {
       const {data} = await axios.get(
         process.env.NEXT_PUBLIC_API_URL +
-          '/products?filters[teamName]=fb-team&populate=*',
+          'products?filters[teamName]=fb-team&populate=*',
       );
       return data?.data;
     },

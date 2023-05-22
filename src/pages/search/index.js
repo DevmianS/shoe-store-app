@@ -75,7 +75,7 @@ const SearchResults = () => {
               <Typography variant="h1" component="h1">
                 Search Results
               </Typography>
-              <Button>
+              <Button onClick={() => 'CLEAR FILTERS'}>
                 <Box sx={styles.filterText}>
                   <Typography variant="body1" component="p">
                     {isMobile ? 'Filters' : 'Hide Filters'}
