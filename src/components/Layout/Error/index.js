@@ -24,7 +24,11 @@ export default function ErrorLayout({image, title, text}) {
       alignItems: 'center',
       justifyContent: 'center',
     },
-    textContent: {padding: '30px', maxWidth: '480px'},
+    textContent: {
+      padding: '30px',
+      maxWidth: isTablet ? '500px' : '70%',
+      animation: 'errorPageFadeUp 1s 0.4s 1 both',
+    },
     title: {
       marginBottom: rwdValue(10, 20),
       textAlign: isTablet ? 'center' : 'start',
@@ -44,7 +48,13 @@ export default function ErrorLayout({image, title, text}) {
       display: 'flex',
       alignItems: 'start',
       padding: '0 30px',
-      '& img': {margin: '0 auto', maxWidth: '100%', height: 'auto'},
+      '& img': {
+        margin: '0 auto',
+        maxWidth: '100%',
+        height: 'auto',
+        animation:
+          'errorPageDrop cubic-bezier(0.39, 0.58, 0.57, 1) 1.5s 0.4s 1 both',
+      },
     },
     imgSize: isTablet ? 500 : 700,
   };
