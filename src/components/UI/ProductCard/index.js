@@ -173,7 +173,6 @@ export default function ProductCard({title, price, category, imgPath}) {
       },
     },
   };
-
   return (
     <Box sx={styles.column}>
       <Box sx={styles.card}>
@@ -186,24 +185,29 @@ export default function ProductCard({title, price, category, imgPath}) {
             <Typography component="span" className="icon-add-to-cart" />
           </Button>
           <Image
-            layout="fill"
             src={imgPath[currentImageIndex]?.attributes?.url}
             alt={`Shoes name: ${title} ${imgPath[currentImageIndex]?.attributes?.alternativeText}`}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 15vw, 20vw"
           />
-          <IconButton
-            sx={styles.iconBtn}
-            onClick={goToPreviousImage}
-            disabled={currentImageIndex === 0}
-          >
-            <KeyboardArrowLeft />
-          </IconButton>
-          <IconButton
-            sx={{...styles.iconBtn, right: 0}}
-            onClick={goToNextImage}
-            disabled={currentImageIndex === imgPath.length - 1}
-          >
-            <KeyboardArrowRight />
-          </IconButton>
+          {imgPath && (
+            <>
+              <IconButton
+                sx={styles.iconBtn}
+                onClick={goToPreviousImage}
+                disabled={currentImageIndex === 0}
+              >
+                <KeyboardArrowLeft />
+              </IconButton>
+              <IconButton
+                sx={{...styles.iconBtn, right: 0}}
+                onClick={goToNextImage}
+                disabled={currentImageIndex === imgPath?.length - 1}
+              >
+                <KeyboardArrowRight />
+              </IconButton>
+            </>
+          )}
         </Box>
         <Box sx={styles.body}>
           <Stack sx={styles.header}>
