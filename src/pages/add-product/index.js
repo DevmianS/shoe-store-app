@@ -183,39 +183,45 @@ const AddProduct = () => {
   const handleSubmit = async () => {
     setLoading(true);
 
-    const errorInParameters = await validationCreateProduct({
-      genders,
-      price,
-      categories,
-      sizes,
-      name,
-      arrImages,
-      description,
-      id,
-      jwt,
-    });
-
-    if (errorInParameters) {
-      toast.message('Please fill in the gaps again correctly.');
-    } else {
-      let arrImgId = await uploadImages(arrImages, jwt);
-      const res = await createProduct({
+    try {
+      const errorInParameters = await validationCreateProduct({
         genders,
-        select,
-        brands,
         price,
         categories,
         sizes,
         name,
-        arrImgId,
+        arrImages,
         description,
         id,
         jwt,
       });
 
-      resetForm();
+      if (errorInParameters) {
+        toast.message('Please fill in the gaps again correctly.');
+      } else {
+        let arrImgId = await uploadImages(arrImages, jwt);
+        const res = await createProduct({
+          genders,
+          select,
+          brands,
+          price,
+          categories,
+          sizes,
+          name,
+          arrImgId,
+          description,
+          id,
+          jwt,
+        });
 
-      router.push('/my-products');
+        if (res?.status == '200') {
+          resetForm();
+
+          router.push('/my-products');
+        }
+      }
+    } catch (error) {
+      setLoading(false);
     }
     setLoading(false);
   };

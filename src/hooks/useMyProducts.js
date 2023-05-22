@@ -2,6 +2,7 @@ import axios from 'axios';
 import {useQuery} from '@tanstack/react-query';
 import useUser from './useUser';
 import {useCallback, useEffect, useState} from 'react';
+import {executeError} from '@/utils/utils';
 
 const useMyProducts = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -11,12 +12,22 @@ const useMyProducts = () => {
 
   const queryMyProducts = useCallback(async id => {
     setIsLoading(true);
-    const {data} = await axios.get(
-      process.env.NEXT_PUBLIC_API_URL +
-        `products?filters[teamName]=fb-team&filters[userID]=${id}&populate=*`,
-    );
+    try {
+      const {data} = await axios.get(
+        process.env.NEXT_PUBLIC_API_URL +
+          `/products?filters[teamName]=fb-team&filters[userID]=${id}&populate=*`,
+      );
+      setIsLoading(false);
+      return data?.data;
+    } catch (error) {
+      console.log('error: ', error);
+      executeError(
+        'There was an error with the application. Please Try again later or talk to support. Error: ' +
+          error?.response?.data?.error?.name || '',
+      );
+    }
     setIsLoading(false);
-    return data?.data;
+    return [];
   }, []);
 
   console.log('userID: ', id, isLoading);

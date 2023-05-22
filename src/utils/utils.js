@@ -29,7 +29,7 @@ export const forgotPassword = async email => {
     return res;
   } catch (error) {
     // Extract the error message from the server response and throw it
-    const errorMessage = error?.response?.data?.error?.message;
+    const errorMessage = error?.response?.data?.error?.message || '';
     throw new Error(errorMessage);
   }
 };
@@ -52,7 +52,7 @@ export const resetPassword = async (
     return res;
   } catch (error) {
     // Extract the error message from the server response and throw it
-    const errorMessage = error?.response?.data?.error?.message;
+    const errorMessage = error?.response?.data?.error?.message || '';
     throw new Error(errorMessage);
   }
 };
@@ -310,7 +310,7 @@ export const createProduct = async ({
 
   try {
     const res = await axios.post(
-      process.env.NEXT_PUBLIC_API_URL + 'products',
+      process.env.NEXT_PUBLIC_API_URL + '/products',
       obj,
       {
         headers: {
@@ -325,7 +325,6 @@ export const createProduct = async ({
       return res;
     }
   } catch (error) {
-    executeError('There was an error.');
     executeError('There was an error.');
   }
 };
@@ -344,7 +343,7 @@ function generateRandomNumber(length) {
 export const fetchProductsByName = async name => {
   try {
     const url =
-      process.env.NEXT_PUBLIC_API_URL + `products?filters%5Bname%5D=${name}`;
+      process.env.NEXT_PUBLIC_API_URL + `/products?filters%5Bname%5D=${name}`;
     const response = await axios.get(url);
     const {data, status} = response;
 
@@ -353,11 +352,15 @@ export const fetchProductsByName = async name => {
     if (status == '200') {
       return data?.meta?.pagination?.total > 0;
     } else {
-      throw error;
+      throw new Error('');
     }
   } catch (error) {
     // Manejo de errores
-    console.error(error);
-    throw error;
+    console.error(' error: fetchProductsByName', error);
+    executeError(
+      'There was a problem with the application. Please try again later or talk to support. ' +
+        error?.response?.data?.error?.name || '',
+    );
+    return false;
   }
 };

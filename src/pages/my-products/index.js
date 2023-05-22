@@ -138,7 +138,7 @@ const MyProducts = ({productsList}) => {
                     You don{`'`}t have any products yet
                   </Typography>
                   <Typography component="p" variant="body1" sx={styles.msgText}>
-                    Post can contain video, images and text.
+                    Products can contain images, description, brands, etc...
                   </Typography>
                   <Link href="/add-product">
                     <Button

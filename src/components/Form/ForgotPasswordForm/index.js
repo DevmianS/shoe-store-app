@@ -81,7 +81,9 @@ const ForgotPasswordForm = () => {
             'Click the link received in your email to reset your password',
           );
         } else {
-          executeError('There was an error. Please try again.');
+          executeError(
+            'There was an error. Please try again later or talk to support.',
+          );
         }
       } catch (error) {
         console.log('my error: ', error);

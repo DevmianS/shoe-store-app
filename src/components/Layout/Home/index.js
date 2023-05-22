@@ -7,7 +7,11 @@ import {
   Skeleton,
 } from '@mui/material';
 
+import Link from 'next/link';
+
 import {rwdValue} from '@/utils/theme';
+
+import Button from '@/components/UI/Button';
 
 import SideBar from '@/components/Layout/SideBar';
 
@@ -23,6 +27,27 @@ const Home = () => {
   const {products, isLoading} = useProducts();
 
   console.log('products', products);
+
+  const styles = {
+    msgBody: {maxWidth: '320px', textAlign: 'center', margin: '0 auto'},
+    msgIcon: {
+      fontSize: 20,
+      width: 72,
+      height: 72,
+      borderRadius: '50%',
+      background: '#F9FAFB',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      margin: '50px auto 10px',
+    },
+    msgTitle: {fontSize: rwdValue(16, 20), marginBottom: '10px'},
+    msgText: {
+      fontSize: rwdValue(12, 15),
+      marginBottom: rwdValue(32, 40),
+    },
+    msgBtn: {maxWidth: '152px'},
+  };
 
   return (
     <Box
@@ -54,7 +79,7 @@ const Home = () => {
           margin={{sm: '0 -8px', md: '0 -24px'}}
         >
           {isLoading && SkeletonProducts()}
-          {products &&
+          {Array.isArray(products) && products.length > 0 ? (
             products.map(product => {
               const {id, attributes} = product;
               return (
@@ -66,7 +91,26 @@ const Home = () => {
                   category={attributes.categories.data}
                 />
               );
-            })}
+            })
+          ) : (
+            <Box sx={styles.msgBody}>
+              <Typography
+                className="icon-bag-o"
+                sx={styles.msgIcon}
+              ></Typography>
+              <Typography component="h2" variant="body2" sx={styles.msgTitle}>
+                There are no products yet
+              </Typography>
+              <Typography component="p" variant="body1" sx={styles.msgText}>
+                Product can contain images, text, brands, etc...
+              </Typography>
+              <Link href="/add-product">
+                <Button size={'medium'} sx={styles.msgBtn}>
+                  Add product
+                </Button>
+              </Link>
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>
