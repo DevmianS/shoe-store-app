@@ -11,7 +11,7 @@ import Filters from '@/components/UI/Filters';
 import useProducts from '@/hooks/useProducts';
 import {SkeletonProducts} from '@/utils/utils';
 
-const SearchResults = () => {
+const SearchResults = ({searchString}) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -74,8 +74,11 @@ const SearchResults = () => {
             <Box sx={styles.header}>
               <Typography variant="h1" component="h1">
                 Search Results
+                <Typography component="b">
+                  {searchString ? searchString : ''}
+                </Typography>
               </Typography>
-              <Button onClick={() => 'CLEAR FILTERS'}>
+              <Button onClick={() => console.log('CLEAR FILTERS')}>
                 <Box sx={styles.filterText}>
                   <Typography variant="body1" component="p">
                     {isMobile ? 'Filters' : 'Hide Filters'}
