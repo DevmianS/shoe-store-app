@@ -1,17 +1,34 @@
-import {Pagination} from '@mui/material';
+import {useTheme} from '@emotion/react';
+import {Box, Pagination, useMediaQuery} from '@mui/material';
 
-const PaginationUI = ({pageCount, setPage}) => {
+const PaginationUI = ({pageCount, setPage, isLoading}) => {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
+  const styles = {
+    wrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+      mt: 2,
+      mb: 4,
+    },
+  };
+
   const handleChangePage = (event, value) => {
     setPage(value);
   };
 
   return (
-    <Pagination
-      color="primary"
-      shape="rounded"
-      count={pageCount}
-      onChange={handleChangePage}
-    />
+    <Box sx={styles.wrapper}>
+      <Pagination
+        size={isDesktop ? 'medium' : 'small'}
+        color="primary"
+        shape="rounded"
+        count={isLoading ? 5 : pageCount}
+        onChange={handleChangePage}
+        disabled={isLoading ? true : false}
+      />
+    </Box>
   );
 };
 
