@@ -1,44 +1,79 @@
-import {useRouter} from 'next/router';
-import {useQuery} from '@tanstack/react-query';
 import axios from 'axios';
+import {Box, useMediaQuery, useTheme} from '@mui/material';
 
-async function getProduct(id) {
+import SideBar from '@/components/Layout/SideBar';
+import NavBarLayout from '@/components/Layout/NavBarLayout';
+import Head from 'next/head';
+import {rwdValue} from '@/utils/theme';
+import Spinner from '@/components/UI/Spinner';
+import {useRouter} from 'next/router';
+
+export async function getServerSideProps(context) {
+  const {id} = context.query;
+
   try {
     const response = await axios.get(
-      `https://shoes-shop-strapi.herokuapp.com/api/products/${id}`,
+      `https://shoes-shop-strapi.herokuapp.com/api/products/${id}?populate=*`,
     );
-    return response.data;
+    const product = response.data;
+
+    return {
+      props: {product},
+    };
   } catch (error) {
-    throw error;
+    console.error('Error:', error);
+
+    return {
+      props: {error: error.message},
+    };
   }
 }
 
-export default function ProductPage() {
+export default function ProductPage({product, error}) {
   const router = useRouter();
-  const {id} = router.query;
-  const {
-    data: product,
-    isLoading,
-    isError,
-    error,
-  } = useQuery(['product', id], () => getProduct(id));
+  if (typeof window !== 'undefined') {
+    if (error) {
+      router.push('/404');
+      return;
+    }
+  }
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (isError && error.response.status.toString()[0] == '4') {
-    router.push('/404');
-    return <div>Error occurred while fetching product data</div>;
-  }
-  if (isError && error.response.status.toString()[0] == '5') {
-    router.push('/500');
-    return <div>Error occurred while fetching product data</div>;
-  }
-  console.log(product);
+  const styles = {
+    row: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      paddingTop: rwdValue(0, 40),
+      paddingBottom: rwdValue(0, 40),
+    },
+  };
+  const item = product?.data?.attributes;
+  const categories = item?.categories?.data;
+  console.log(categories);
+  console.log(item);
   return (
-    <div>
-      <h1>{product.data.id}</h1>
-      <p>{product.data.attributes.name}</p>
-    </div>
+    <>
+      <Head>
+        <title>Wellrun | {!product ? 'Loading...' : 'Product'}</title>
+      </Head>
+      <NavBarLayout>
+        <Box sx={styles.row}>
+          <SideBar />
+          {!product && <Spinner />}
+          {product && item && (
+            <Box sx={{flex: '1 1 auto'}}>
+              <h1>{item.name}</h1>
+              <p>{item.description}</p>
+              <h2>{item.brand?.data?.attributes?.name}</h2>
+              <h3>{item.price}$</h3>
+              <ol style={{color: 'green'}}>
+                {categories.map(c => (
+                  <li key={c.attributes.name}>{c.attributes.name}</li>
+                ))}
+              </ol>
+            </Box>
+          )}
+        </Box>
+      </NavBarLayout>
+    </>
   );
 }
