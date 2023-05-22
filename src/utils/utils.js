@@ -310,7 +310,7 @@ export const createProduct = async ({
 
   try {
     const res = await axios.post(
-      process.env.NEXT_PUBLIC_API_URL + '/products',
+      process.env.NEXT_PUBLIC_API_URL + 'products',
       obj,
       {
         headers: {
@@ -344,7 +344,7 @@ function generateRandomNumber(length) {
 export const fetchProductsByName = async name => {
   try {
     const url =
-      process.env.NEXT_PUBLIC_API_URL + `/products?filters%5Bname%5D=${name}`;
+      process.env.NEXT_PUBLIC_API_URL + `products?filters%5Bname%5D=${name}`;
     const response = await axios.get(url);
     const {data, status} = response;
 
