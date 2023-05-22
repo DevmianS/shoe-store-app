@@ -22,32 +22,12 @@ import TopBanner from '@/components/UI/TopBanner';
 import useProducts from '@/hooks/useProducts';
 import AvatarStaticLayout from '../AvatarStaticLayout';
 import {SkeletonProducts} from '@/utils/utils';
+import NoContent from '@/components/UI/NoContent';
 
 const Home = () => {
   const {products, isLoading} = useProducts();
 
   console.log('products', products);
-
-  const styles = {
-    msgBody: {maxWidth: '320px', textAlign: 'center', margin: '0 auto'},
-    msgIcon: {
-      fontSize: 20,
-      width: 72,
-      height: 72,
-      borderRadius: '50%',
-      background: '#F9FAFB',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: '50px auto 10px',
-    },
-    msgTitle: {fontSize: rwdValue(16, 20), marginBottom: '10px'},
-    msgText: {
-      fontSize: rwdValue(12, 15),
-      marginBottom: rwdValue(32, 40),
-    },
-    msgBtn: {maxWidth: '152px'},
-  };
 
   return (
     <Box
@@ -93,23 +73,7 @@ const Home = () => {
               );
             })
           ) : (
-            <Box sx={styles.msgBody}>
-              <Typography
-                className="icon-bag-o"
-                sx={styles.msgIcon}
-              ></Typography>
-              <Typography component="h2" variant="body2" sx={styles.msgTitle}>
-                There are no products yet
-              </Typography>
-              <Typography component="p" variant="body1" sx={styles.msgText}>
-                Product can contain images, text, brands, etc...
-              </Typography>
-              <Link href="/add-product">
-                <Button size={'medium'} sx={styles.msgBtn}>
-                  Add product
-                </Button>
-              </Link>
-            </Box>
+            <NoContent />
           )}
         </Box>
       </Box>

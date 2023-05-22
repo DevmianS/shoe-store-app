@@ -16,6 +16,7 @@ import Button from '@/components/UI/Button';
 import useMyProducts from '@/hooks/useMyProducts';
 
 import {SkeletonProducts} from '@/utils/utils';
+import NoContent from '@/components/UI/NoContent';
 
 const MyProducts = ({productsList}) => {
   const theme = useTheme();
@@ -125,30 +126,7 @@ const MyProducts = ({productsList}) => {
                   );
                 })
               ) : (
-                <Box sx={styles.msgBody}>
-                  <Typography
-                    className="icon-bag-o"
-                    sx={styles.msgIcon}
-                  ></Typography>
-                  <Typography
-                    component="h2"
-                    variant="body2"
-                    sx={styles.msgTitle}
-                  >
-                    You don{`'`}t have any products yet
-                  </Typography>
-                  <Typography component="p" variant="body1" sx={styles.msgText}>
-                    Products can contain images, description, brands, etc...
-                  </Typography>
-                  <Link href="/add-product">
-                    <Button
-                      size={isMobile || isTablet ? 'small' : 'medium'}
-                      sx={styles.msgBtn}
-                    >
-                      Add product
-                    </Button>
-                  </Link>
-                </Box>
+                <NoContent />
               )}
             </Box>
           </Box>
