@@ -13,7 +13,7 @@ export async function getServerSideProps(context) {
 
   try {
     const response = await axios.get(
-      `https://shoes-shop-strapi.herokuapp.com/api/products/${id}?populate=*`,
+      `${process.env.NEXT_PUBLIC_API_URL}/products/${id}?populate=*`,
     );
     const product = response.data;
 
