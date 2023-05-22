@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
-const brandApi = process.env.NEXT_PUBLIC_API_URL + '/brands?fields=name';
+const brandApi = process.env.NEXT_PUBLIC_API_URL + 'brands?fields=name';
 
 const categoriesApi =
-  process.env.NEXT_PUBLIC_API_URL + '/categories?fields=name';
+  process.env.NEXT_PUBLIC_API_URL + 'categories?fields=name';
 
-const genderApi = process.env.NEXT_PUBLIC_API_URL + '/genders?fields=name';
+const genderApi = process.env.NEXT_PUBLIC_API_URL + 'genders?fields=name';
 
-const sizeApi = process.env.NEXT_PUBLIC_API_URL + '/sizes?fields=value';
+const sizeApi = process.env.NEXT_PUBLIC_API_URL + 'sizes?fields=value';
 
 const useProductData = () => {
   const [brands, setBrands] = useState([]);

@@ -28,7 +28,7 @@ const NavBar = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
-  const {isToggled, toggle} = useToggle();
+  const {isToggled, toggle, setIsToggled} = useToggle();
   const {searchExpanded, setSearchExpanded} = useSearch();
   const {cartCount} = useCart();
 
@@ -129,8 +129,13 @@ const NavBar = () => {
       width: '100vw',
       height: '100vh',
       backgroundColor: '#F3F3F3',
-      zIndex: 5,
+      zIndex: 10,
     },
+  };
+
+  const handleMenuCLick = () => {
+    toggle();
+    searchExpanded && setSearchExpanded(false);
   };
 
   const handleFocusInputResponsive = () => {
@@ -138,13 +143,14 @@ const NavBar = () => {
       searchInputRef.current && searchInputRef.current.focus();
     }, 100);
     setSearchExpanded(true);
+    isToggled && setIsToggled(false);
   };
 
   useEffect(() => {
     if (router.asPath.includes('search')) {
       handleFocusInputResponsive();
     }
-  });
+  }, []);
 
   return (
     <>
@@ -188,7 +194,7 @@ const NavBar = () => {
               <IconButton
                 size="large"
                 aria-label="Menu"
-                onClick={toggle}
+                onClick={handleMenuCLick}
                 sx={styles.menuIcon}
               >
                 <Typography
