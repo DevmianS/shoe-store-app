@@ -28,7 +28,9 @@ export default function Modal({state, setState, title, text, submitAction}) {
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle sx={modalStyles.title}>{title}</DialogTitle>
+        <DialogTitle component="h1" variant="h1" sx={modalStyles.title}>
+          {title}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText sx={modalStyles.text}>{text}</DialogContentText>
         </DialogContent>
