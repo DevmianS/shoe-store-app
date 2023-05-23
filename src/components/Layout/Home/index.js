@@ -23,9 +23,15 @@ import useProducts from '@/hooks/useProducts';
 import AvatarStaticLayout from '../AvatarStaticLayout';
 import {SkeletonProducts} from '@/utils/utils';
 import NoContent from '@/components/UI/NoContent';
+import {useState} from 'react';
+import PaginationUI from '@/components/UI/PaginationUI';
 
 const Home = () => {
-  const {products, isLoading} = useProducts();
+  const [page, setPage] = useState(1);
+
+  const {data, isLoading} = useProducts(page);
+  const products = data?.data;
+  const pagination = data?.meta?.pagination;
 
   console.log('products', products);
 
@@ -53,6 +59,11 @@ const Home = () => {
         >
           All products
         </Typography>
+        <PaginationUI
+          pageCount={pagination?.pageCount}
+          setPage={setPage}
+          isLoading={isLoading}
+        />
         <Box
           display="flex"
           flexWrap="wrap"
@@ -64,6 +75,7 @@ const Home = () => {
               const {id, attributes} = product;
               return (
                 <ProductCard
+                  productId={id}
                   key={id}
                   title={attributes.name}
                   price={attributes.price}

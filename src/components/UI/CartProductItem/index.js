@@ -14,6 +14,7 @@ import Button from '../Button';
 import {useCart} from '@/context/CartContext';
 
 export default function CartProductItem({
+  productId,
   title,
   price,
   category,
@@ -108,7 +109,9 @@ export default function CartProductItem({
           width={600}
           height={600}
           alt={title}
-          src={`https://shoes-shop-strapi.herokuapp.com${image[0]?.attributes?.url}`}
+          src={
+            image ? image[0]?.attributes?.url : '/productImageComingSoon.png'
+          }
         />
         <Stack sx={styles.content}>
           <Stack sx={styles.header}>
@@ -124,11 +127,18 @@ export default function CartProductItem({
           </Typography>
           <Stack sx={styles.footer}>
             <Box sx={styles.controls}>
-              <Button onClick={() => removeOneProduct(title)}>-</Button>
+              <Button onClick={() => removeOneProduct({productId, title})}>
+                -
+              </Button>
               <Typography component="b">{quantity}</Typography>
-              <Button onClick={() => addProduct(title, true)}>+</Button>
+              <Button onClick={() => addProduct({productId, title}, true)}>
+                +
+              </Button>
             </Box>
-            <Box sx={styles.delete} onClick={() => deleteProduct(title)}>
+            <Box
+              sx={styles.delete}
+              onClick={() => deleteProduct({productId, title})}
+            >
               <Typography component="i" className="icon-trash"></Typography>
               <Typography component="span" variant="body4">
                 Delete

@@ -97,6 +97,7 @@ const SearchResults = ({searchString}) => {
                   const {id, attributes} = product;
                   return (
                     <ProductCard
+                      productId={id}
                       key={id}
                       title={attributes.name}
                       price={attributes.price}

@@ -2,23 +2,18 @@ import axios from 'axios';
 import {useQuery} from '@tanstack/react-query';
 import {executeError} from '@/utils/utils';
 
-const useProducts = () => {
-  const {
-    data: products,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['products'],
+const useProducts = page => {
+  const {data, isLoading, isError, error} = useQuery({
+    queryKey: ['products', page],
     queryFn: async () => {
-      console.log('data: 1');
-
+      const paginated = page
+        ? `/products?filters[teamName]=fb-team&populate=*&pagination[page]=${page}`
+        : `/products?filters[teamName]=fb-team&populate=*&pagination[limit]=999`;
       try {
         const {data} = await axios.get(
-          process.env.NEXT_PUBLIC_API_URL +
-            '/products?filters[teamName]=fb-team&populate=*',
+          process.env.NEXT_PUBLIC_API_URL + paginated,
         );
-        return data?.data;
+        return data;
       } catch (error) {
         console.log('error: ', error);
         executeError(
@@ -28,9 +23,10 @@ const useProducts = () => {
       }
       return [];
     },
+    keepPreviousData: true,
   });
 
-  return {products, isLoading, isError, error};
+  return {data, isLoading, isError, error};
 };
 
 export default useProducts;
