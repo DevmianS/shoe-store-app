@@ -10,13 +10,15 @@ export const CartProvider = ({children}) => {
 
   useEffect(() => cartUpdate(cartItems), [cartItems]);
   useEffect(() => {
+    console.log(cartItems);
     setCartCount(valuesSum(cartItems));
   }, [cartItems]);
 
-  const addProduct = (title, isCart) => {
+  const addProduct = ({productId, title}, isCart) => {
+    console.log('ID!', productId);
     setCartItems(prev => ({
       ...prev,
-      [title]: prev[title] ? prev[title] + 1 : 1,
+      [productId]: prev[productId] ? prev[productId] + 1 : 1,
     }));
     setCartCount(prev => prev + 1);
     executeSucces(
@@ -25,23 +27,23 @@ export const CartProvider = ({children}) => {
     );
   };
 
-  const removeOneProduct = title => {
+  const removeOneProduct = ({productId, title}) => {
     setCartItems(prev => ({
       ...prev,
-      [title]: prev[title] > 0 ? prev[title] - 1 : 0,
+      [productId]: prev[productId] > 0 ? prev[productId] - 1 : 0,
     }));
     setCartCount(prev => (prev > 0 ? prev - 1 : 0));
     executeSucces(title + ' decreased by 1 in your cart!');
   };
 
-  const deleteProduct = title => {
-    const itemCount = cartItems[title];
+  const deleteProduct = ({productId, title}) => {
+    const itemCount = cartItems[productId];
     setCartItems(prev => ({
       ...prev,
-      [title]: 0,
+      [productId]: 0,
     }));
     setCartCount(prev => prev - itemCount);
-    executeSucces(title + ' was fully deleted from your cart!');
+    executeSucces(productId + ' was fully deleted from your cart!');
   };
 
   return (

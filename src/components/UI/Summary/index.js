@@ -101,8 +101,7 @@ export default function Summary({items, cartItems}) {
   useEffect(() => {
     const subtotal = Number(
       items.reduce(
-        (acc, prod) =>
-          prod.attributes.price * cartItems[prod.attributes.name] + acc,
+        (acc, prod) => prod.attributes.price * cartItems[prod.id] + acc,
         0,
       ),
     ).toFixed(2);
@@ -115,7 +114,7 @@ export default function Summary({items, cartItems}) {
       total,
       subtotal,
     });
-  }, [items]);
+  }, [cartItems, items]);
   // Checkout `disabled` state
   useEffect(() => {
     if (cost.total > 0) {
