@@ -10,6 +10,7 @@ import {
   useTheme,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import useProductData from '@/hooks/useProductData';
 
 export default function Filters({filterResult, filterCategory}) {
   const theme = useTheme();
@@ -51,6 +52,64 @@ export default function Filters({filterResult, filterCategory}) {
     accordionSubTitle: {fontSize: 25},
   };
 
+  const {
+    genders,
+    brands,
+    categories,
+    colors,
+    setColors,
+    setGenders,
+    setBrands,
+  } = useProductData({
+    filter: true,
+  });
+
+
+  const checkBoxChangeGenderHandler = event => {
+    console.log('event: ', event, event.target.value);
+    setGenders(
+      genders.map(gender => {
+        if (gender.id == event.target.value) {
+          return {
+            ...gender,
+            needed: !gender.needed,
+          };
+        }
+        return gender;
+      }),
+    );
+  };
+
+  const checkBoxChangeBrandHandler = event => {
+    console.log('event: ', event, event.target.value);
+    setBrands(
+      brands.map(brands => {
+        if (brands.id == event.target.value) {
+          return {
+            ...brands,
+            needed: !brands.needed,
+          };
+        }
+        return brands;
+      }),
+    );
+  };
+
+  const checkBoxChangeColorHandler = event => {
+    console.log('event: ', event, event.target.value);
+    setColors(
+      colors.map(color => {
+        if (color.id == event.target.value) {
+          return {
+            ...color,
+            needed: !color.needed,
+          };
+        }
+        return color;
+      }),
+    );
+  };
+
   return (
     <>
       <Stack sx={styles.wrapper}>
@@ -60,7 +119,7 @@ export default function Filters({filterResult, filterCategory}) {
         <Typography variant="h2" sx={styles.accordionSubTitle} component="h2">
           {filterResult || 'Nike (7)'}
         </Typography>
-        <Accordion sx={styles.accordion} elevation={0}>
+        <Accordion sx={styles.accordion} elevation={0} defaultExpanded>
           <AccordionSummary
             sx={styles.accordionSummary}
             expandIcon={<ExpandMoreIcon />}
@@ -70,19 +129,28 @@ export default function Filters({filterResult, filterCategory}) {
             </Typography>
           </AccordionSummary>
           <AccordionDetails sx={styles.accordionDetails}>
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Men"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Women"
-            />
+            {genders &&
+              genders.map(gender => {
+                return (
+                  <FormControlLabel
+                    key={gender.name}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={gender.id}
+                        checked={gender.needed}
+                        onChange={checkBoxChangeGenderHandler}
+                      />
+                    }
+                    label={gender.name}
+                  />
+                );
+              })}
           </AccordionDetails>
         </Accordion>
       </Stack>
-      <Stack sx={styles.wrapper}>
-        <Accordion sx={styles.accordion} elevation={0}>
+      {/* <Stack sx={styles.wrapper}>
+        <Accordion sx={styles.accordion} elevation={0} defaultExpanded>
           <AccordionSummary
             sx={styles.accordionSummary}
             expandIcon={<ExpandMoreIcon />}
@@ -102,9 +170,9 @@ export default function Filters({filterResult, filterCategory}) {
             />
           </AccordionDetails>
         </Accordion>
-      </Stack>
+      </Stack> */}
       <Stack sx={styles.wrapper}>
-        <Accordion sx={styles.accordion} elevation={0}>
+        <Accordion sx={styles.accordion} elevation={0} defaultExpanded>
           <AccordionSummary
             sx={styles.accordionSummary}
             expandIcon={<ExpandMoreIcon />}
@@ -114,36 +182,28 @@ export default function Filters({filterResult, filterCategory}) {
             </Typography>
           </AccordionSummary>
           <AccordionDetails sx={styles.accordionDetails}>
-            <TextField size="small" placeholder="Search" />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Adidas (+350)"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Asics (+840)"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="New Balance (+840)"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Nike"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Puma (+350)"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Reebok (+97)"
-            />
+            {brands &&
+              brands.map(brand => {
+                return (
+                  <FormControlLabel
+                    key={brand.id}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={brand.id}
+                        checked={brand.needed}
+                        onChange={checkBoxChangeBrandHandler}
+                      />
+                    }
+                    label={brand.name}
+                  />
+                );
+              })}
           </AccordionDetails>
         </Accordion>
       </Stack>
       <Stack sx={styles.wrapper}>
-        <Accordion sx={styles.accordion} elevation={0}>
+        <Accordion sx={styles.accordion} elevation={0} defaultExpanded>
           <AccordionSummary
             sx={styles.accordionSummary}
             expandIcon={<ExpandMoreIcon />}
@@ -160,7 +220,7 @@ export default function Filters({filterResult, filterCategory}) {
         </Accordion>
       </Stack>
       <Stack sx={styles.wrapper}>
-        <Accordion sx={styles.accordion} elevation={0}>
+        <Accordion sx={styles.accordion} elevation={0} defaultExpanded>
           <AccordionSummary
             sx={styles.accordionSummary}
             expandIcon={<ExpandMoreIcon />}
@@ -170,22 +230,21 @@ export default function Filters({filterResult, filterCategory}) {
             </Typography>
           </AccordionSummary>
           <AccordionDetails sx={styles.accordionDetails}>
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="White"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Black"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Red"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Blue"
-            />
+            {colors &&
+              colors.map(color => (
+                <FormControlLabel
+                  key={color.id}
+                  control={
+                    <Checkbox
+                      size="small"
+                      value={color.id}
+                      checked={color.needed}
+                      onChange={checkBoxChangeColorHandler}
+                    />
+                  }
+                  label={color.name}
+                />
+              ))}
           </AccordionDetails>
         </Accordion>
       </Stack>

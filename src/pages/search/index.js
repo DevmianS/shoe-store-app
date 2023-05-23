@@ -8,15 +8,24 @@ import ProductCard from '@/components/UI/ProductCard';
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Filters from '@/components/UI/Filters';
-import useProducts from '@/hooks/useProducts';
 import {SkeletonProducts} from '@/utils/utils';
+import {useRouter} from 'next/router';
+
+import useSearchFilter from '@/hooks/useSearch';
+
+import NoContent from '@/components/UI/NoContent';
 
 const SearchResults = ({searchString}) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const {products, isLoading} = useProducts();
+  const router = useRouter();
+  console.log('router', router.asPath);
+
+  const {products, isLoading} = useSearchFilter({urlNavigator: router.asPath});
+
+  console.log('products: ', products);
 
   const styles = {
     row: {
@@ -60,6 +69,7 @@ const SearchResults = ({searchString}) => {
       margin: isDesktop ? '0 -24px' : '0 -8px',
     },
   };
+
   return (
     <>
       <Head>
@@ -92,7 +102,7 @@ const SearchResults = ({searchString}) => {
             </Box>
             <Box sx={styles.products}>
               {isLoading && SkeletonProducts()}
-              {products &&
+              {Array.isArray(products) && products.length > 0 ? (
                 products.map(product => {
                   const {id, attributes} = product;
                   return (
@@ -104,7 +114,15 @@ const SearchResults = ({searchString}) => {
                       category={attributes.categories.data}
                     />
                   );
-                })}
+                })
+              ) : (
+                <NoContent
+                  title="We don't have that product :/"
+                  description="Maybe you write it wrong, Try it again!"
+                  href="/search"
+                  buttonText='Search'
+                />
+              )}
             </Box>
           </Box>
         </Box>
