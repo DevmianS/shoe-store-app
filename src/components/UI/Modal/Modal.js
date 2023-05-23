@@ -28,11 +28,17 @@ export default function Modal({state, setState, title, text, submitAction}) {
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle component="h1" variant="h1" sx={modalStyles.title}>
+        <DialogTitle component="h3" variant="h1" sx={modalStyles.title}>
           {title}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText sx={modalStyles.text}>{text}</DialogContentText>
+          <DialogContentText
+            variant="body1"
+            component="p"
+            sx={modalStyles.text}
+          >
+            {text}
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setState(false)} outlined>
