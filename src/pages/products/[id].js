@@ -1,13 +1,17 @@
+import Head from 'next/head';
+import Image from 'next/image';
+import {useRouter} from 'next/router';
+
 import axios from 'axios';
+
 import {Box, useMediaQuery, useTheme} from '@mui/material';
+
+import {rwdValue} from '@/utils/theme';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
-import Head from 'next/head';
-import {rwdValue} from '@/utils/theme';
-import Spinner from '@/components/UI/Spinner';
-import {useRouter} from 'next/router';
-import Image from 'next/image';
+
+import Loading from '@/components/UI/Loading';
 
 export async function getServerSideProps(context) {
   const {id} = context.query;
@@ -23,18 +27,21 @@ export async function getServerSideProps(context) {
     };
   } catch (error) {
     console.error('Error:', error);
-
     return {
-      props: {error: error.message},
+      props: {error: {message: error.message, status: error.response?.status}},
     };
   }
 }
 
 export default function ProductPage({product, error}) {
   const router = useRouter();
+
+  let errorMessage = null;
   if (typeof window !== 'undefined' && error) {
-    router.push('/404');
-    return;
+    const {message, status} = error;
+    if (!product) {
+      router.push(status === 404 ? '/404' : '/500');
+    }
   }
 
   const styles = {
@@ -47,7 +54,7 @@ export default function ProductPage({product, error}) {
   };
   const item = product?.data?.attributes;
   const categories = item?.categories?.data;
-  const brand = item.brand?.data?.attributes?.name;
+  const brand = item?.brand?.data?.attributes?.name;
   const images = item?.images?.data;
   const size = item?.size?.data?.attributes?.value;
   return (
@@ -58,7 +65,7 @@ export default function ProductPage({product, error}) {
       <NavBarLayout>
         <Box sx={styles.row}>
           <SideBar />
-          {!product && <Spinner />}
+          {!product && !errorMessage && <Loading />}
           {product && item && (
             <Box sx={{flex: '1 1 auto'}}>
               <h1>{item.name}</h1>

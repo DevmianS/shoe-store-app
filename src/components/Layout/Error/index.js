@@ -77,6 +77,7 @@ export default function ErrorLayout({image, title, text}) {
       </Box>
       <Box sx={styles.imageCol}>
         <Image
+          alt="man stands and looks at status error code"
           src={image}
           width={styles.imgSize}
           height={styles.imgSize}
