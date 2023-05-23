@@ -7,6 +7,7 @@ import Head from 'next/head';
 import {rwdValue} from '@/utils/theme';
 import Spinner from '@/components/UI/Spinner';
 import {useRouter} from 'next/router';
+import Image from 'next/image';
 
 export async function getServerSideProps(context) {
   const {id} = context.query;
@@ -46,8 +47,9 @@ export default function ProductPage({product, error}) {
   };
   const item = product?.data?.attributes;
   const categories = item?.categories?.data;
-  console.log(categories);
-  console.log(item);
+  const brand = item.brand?.data?.attributes?.name;
+  const images = item?.images?.data;
+  const size = item?.size?.data?.attributes?.value;
   return (
     <>
       <Head>
@@ -60,14 +62,38 @@ export default function ProductPage({product, error}) {
           {product && item && (
             <Box sx={{flex: '1 1 auto'}}>
               <h1>{item.name}</h1>
-              <p>{item.description}</p>
-              <h2>{item.brand?.data?.attributes?.name}</h2>
+              <p>
+                {item.description ||
+                  'There is no description about this product yet'}
+              </p>
+              <h2>{brand}</h2>
               <h3>{item.price}$</h3>
               <ol style={{color: 'green'}}>
                 {categories.map(c => (
                   <li key={c.attributes.name}>{c.attributes.name}</li>
                 ))}
               </ol>
+              <ol style={{display: 'flex'}}>
+                {images &&
+                  images.map(img => (
+                    <li
+                      key={img.attributes.hash}
+                      style={{
+                        width: '300px',
+                        height: '300px',
+                        position: 'relative',
+                      }}
+                    >
+                      <Image
+                        alt={img.attributes.hash}
+                        style={{position: 'absolute', objectFit: 'contain'}}
+                        src={img.attributes.url}
+                        fill
+                      />
+                    </li>
+                  ))}
+              </ol>
+              <h3>SIZE {size}</h3>
             </Box>
           )}
         </Box>
