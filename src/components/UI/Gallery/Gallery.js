@@ -106,11 +106,13 @@ export default function Gallery({images, setImages}) {
         })}
       </Stack>
       <Box sx={styles.image}>
-        <Image
-          src={images.array[images.active]?.attributes.url}
-          fill
-          alt={images.array[images.active]?.attributes.hash}
-        />
+        {images.array.length > 0 && (
+          <Image
+            src={images?.array[images?.active]?.attributes.url}
+            fill
+            alt={images?.array[images?.active]?.attributes.hash}
+          />
+        )}
         <Box sx={styles.controls}>
           <IconButton
             sx={styles.iconBtn}

@@ -75,7 +75,7 @@ export default function ProductPage({product, error}) {
       justifyContent: 'space-between',
       alignItems: 'center',
     },
-    size: {
+    props: {
       border: '1px solid #494949',
       color: '#494949',
       fontSize: '15px',
@@ -90,6 +90,7 @@ export default function ProductPage({product, error}) {
     price: {fontSize: '22px', fontWeight: 500, color: '#000'},
     gender: {color: theme.palette.text.secondary, marginBottom: '35px'},
     label: {color: theme.palette.text.secondary, marginBottom: '20px'},
+    btn: {marginBottom: '65px'},
   };
 
   useEffect(() => {
@@ -136,14 +137,22 @@ export default function ProductPage({product, error}) {
             <Typography component="p" variant="body2" sx={styles.label}>
               Available sizes
             </Typography>
-            <Box sx={styles.size}>EU-{data.size}</Box>
+            <Box sx={styles.props}>EU-{data.size}</Box>
+            {data.color && (
+              <>
+                <Typography component="p" variant="body2" sx={styles.label}>
+                  Available colors
+                </Typography>
+                <Box sx={styles.props}>{data.color}</Box>
+              </>
+            )}
             <Button
               onClick={() => {
                 const title = data.name;
                 const id = product?.id;
                 addProduct({id, title});
               }}
-              sx={{marginBottom: '65px'}}
+              sx={styles.btn}
             >
               Add to Bag
             </Button>
