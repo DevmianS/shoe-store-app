@@ -10,10 +10,16 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import Button from '@/components/UI/Button';
 
-export default function ProductCard({title, price, category, imgPath}) {
-  if (imgPath == undefined) {
-    imgPath = [{attributes: {alternativeText: '', url: ''}}];
-  }
+export default function ProductCard({
+  productId,
+  title,
+  price,
+  category,
+  imgPath,
+}) {
+  // if (imgPath == undefined) {
+  //   imgPath = [{attributes: {alternativeText: '', url: ''}}];
+  // }
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -180,13 +186,19 @@ export default function ProductCard({title, price, category, imgPath}) {
           <Button
             size={isDesktop ? 'medium' : 'small'}
             sx={styles.addBtn}
-            onClick={() => addProduct(title)}
+            onClick={() => addProduct({productId, title})}
           >
             <Typography component="span" className="icon-add-to-cart" />
           </Button>
           <Image
-            src={imgPath[currentImageIndex]?.attributes?.url}
-            alt={`Shoes name: ${title} ${imgPath[currentImageIndex]?.attributes?.alternativeText}`}
+            src={
+              imgPath
+                ? imgPath[currentImageIndex]?.attributes?.url
+                : '/productImageComingSoon.png'
+            }
+            alt={`Shoes name: ${title} ${
+              imgPath && imgPath[currentImageIndex]?.attributes?.alternativeText
+            }`}
             fill
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 15vw, 20vw"
           />
