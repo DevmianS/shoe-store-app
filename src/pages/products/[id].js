@@ -6,13 +6,13 @@ import axios from 'axios';
 
 import {Box, Typography, useTheme} from '@mui/material';
 
+import {useCart} from '@/context/CartContext';
 import {rwdValue} from '@/utils/theme';
 
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Loading from '@/components/UI/Loading';
 import Gallery from '@/components/UI/Gallery/';
 import Button from '@/components/UI/Button/Button';
-import {useCart} from '@/context/CartContext';
 
 export async function getServerSideProps(context) {
   const {id} = context.query;

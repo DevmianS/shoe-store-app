@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import {Box, Stack, IconButton} from '@mui/material';
 import {KeyboardArrowLeft, KeyboardArrowRight} from '@mui/icons-material';
-import React, {useState} from 'react';
 
 export default function Gallery({images, setImages}) {
   const galleryClickHandler = index => {
