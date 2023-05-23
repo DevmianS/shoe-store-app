@@ -10,12 +10,8 @@ function FileInput({id, setArrImages, arrImages}) {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const lg = useMediaQuery(theme.breakpoints.between('md', 'xl'));
-
-  const [file, setFile] = useState(arrImages.find(obj => obj.id === id).file);
-  const [imagePreview, setImagePreview] = useState(
-    arrImages.find(obj => obj.id === id).image,
-  );
-
+  console.log(id, setArrImages, arrImages);
+  const preview = arrImages.find(obj => obj.id === id).image;
   const styles = {
     wrap: {
       flex: !isDesktop
@@ -132,9 +128,9 @@ function FileInput({id, setArrImages, arrImages}) {
   return (
     <Box sx={styles.wrap}>
       <input type="file" onChange={fileInputChangeHandler} />
-      {imagePreview ? (
+      {preview ? (
         <>
-          <Image src={imagePreview} alt="Preview" width={320} height={380} />
+          <Image src={preview} alt="Preview" width={320} height={380} />
           <Button onClick={clearClickHandler}>
             <Typography className="icon-trash" sx={styles.clear} />
           </Button>

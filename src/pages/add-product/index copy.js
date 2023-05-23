@@ -7,7 +7,6 @@ import {
   Box,
   Stack,
   TextField,
-  TextareaAutosize,
   Select,
   FormControl,
   InputLabel,
@@ -391,16 +390,31 @@ const AddProduct = () => {
                     </Box>
                   </Box>
                   <Box sx={styles.formItem}>
-                    <TextareaAutosize
+                    <TextField
+                      fullWidth
+                      size="medium"
                       placeholder="Do not exceed 300 characters."
                       label="Description"
                       type="text"
+                      multiline
+                      rows={isDesktop ? 11 : 1}
                       value={description}
                       onChange={e => setDescription(e.target.value)}
-                      sx={{height: '300px'}}
+                      sx={{
+                        '& .MuiInputBase-root': {
+                          minHeight: isDesktop ? '270px' : 0,
+                          height: {xs: '34px'},
+                        },
+                        '& .MuiInputBase-input': {
+                          fontSize: isDesktop ? '15px' : '10px',
+                        },
+                        '& label': {
+                          fontSize: isDesktop ? '15px' : '12px',
+                        },
+                      }}
                     />
                   </Box>
-                  <FormGroup sx={styles.formGroup}>
+                  <CheckBoxWrap>
                     <Typography
                       sx={{
                         fontSize: isDesktop ? '15px' : '12px',
@@ -439,8 +453,8 @@ const AddProduct = () => {
                           </Box>
                         );
                       })}
-                  </FormGroup>
-                  <FormGroup sx={styles.formGroup}>
+                  </CheckBoxWrap>
+                  <CheckBoxWrap>
                     <Typography
                       sx={{
                         fontSize: isDesktop ? '15px' : '12px',
@@ -482,7 +496,7 @@ const AddProduct = () => {
                           </Box>
                         );
                       })}
-                  </FormGroup>
+                  </CheckBoxWrap>
                 </Box>
                 <Box
                   sx={{
