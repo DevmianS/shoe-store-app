@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import {memo, useState} from 'react';
+import {memo} from 'react';
 
 import {Box, Typography, useMediaQuery, useTheme} from '@mui/material';
 
@@ -10,7 +10,6 @@ function FileInput({id, setArrImages, arrImages}) {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const lg = useMediaQuery(theme.breakpoints.between('md', 'xl'));
-  console.log(id, setArrImages, arrImages);
   const preview = arrImages.find(obj => obj.id === id).image;
   const styles = {
     wrap: {
