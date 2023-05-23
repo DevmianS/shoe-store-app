@@ -1,17 +1,18 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import {useRouter} from 'next/router';
+import {useEffect, useState} from 'react';
 
 import axios from 'axios';
 
-import {Box, useMediaQuery, useTheme} from '@mui/material';
+import {Box, useTheme} from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
 
-import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import Loading from '@/components/UI/Loading';
+
+import Gallery from '@/components/UI/Gallery/';
 
 export async function getServerSideProps(context) {
   const {id} = context.query;
@@ -35,8 +36,19 @@ export async function getServerSideProps(context) {
 
 export default function ProductPage({product, error}) {
   const router = useRouter();
+  const theme = useTheme();
 
-  let errorMessage = null;
+  const [images, setImages] = useState({array: [], active: 0});
+  const [data, setData] = useState({
+    name: '',
+    categories: [],
+    gender: '',
+    size: '',
+    description: '',
+    color: '',
+    brand: '',
+  });
+
   if (typeof window !== 'undefined' && error) {
     const {message, status} = error;
     if (!product) {
@@ -52,57 +64,49 @@ export default function ProductPage({product, error}) {
       paddingBottom: rwdValue(0, 40),
     },
   };
-  const item = product?.data?.attributes;
-  const categories = item?.categories?.data;
-  const brand = item?.brand?.data?.attributes?.name;
-  const images = item?.images?.data;
-  const size = item?.size?.data?.attributes?.value;
+
+  useEffect(() => {
+    setImages({array: [...product?.data?.attributes?.images?.data], active: 0});
+    setData({
+      name: product?.data?.attributes?.name,
+      categories: [...product?.data?.attributes?.categories?.data],
+      gender: product?.data?.attributes?.gender?.data?.attributes?.name,
+      size: product?.data?.attributes?.size?.data?.attributes?.value,
+      description:
+        product?.data?.attributes?.description ||
+        'There is no description about this product yet',
+      color: product?.data?.attributes?.color?.data?.attributes?.value,
+      brand: product?.data?.attributes?.brand?.data?.attributes?.name,
+    });
+    console.log(images, data);
+    console.log(product);
+  }, [product]);
+
   return (
     <>
       <Head>
-        <title>Wellrun | {!product ? 'Loading...' : 'Product'}</title>
+        <title>
+          Wellrun | {!product ? <Loading /> : data.name && data.name}
+        </title>
       </Head>
       <NavBarLayout>
-        <Box sx={styles.row}>
-          <SideBar />
-          {!product && !errorMessage && <Loading />}
-          {product && item && (
-            <Box sx={{flex: '1 1 auto'}}>
-              <h1>{item.name}</h1>
-              <p>
-                {item.description ||
-                  'There is no description about this product yet'}
-              </p>
-              <h2>{brand}</h2>
-              <h3>{item.price}$</h3>
-              <ol style={{color: 'green'}}>
-                {categories.map(c => (
-                  <li key={c.attributes.name}>{c.attributes.name}</li>
-                ))}
-              </ol>
-              <ol style={{display: 'flex'}}>
-                {images &&
-                  images.map(img => (
-                    <li
-                      key={img.attributes.hash}
-                      style={{
-                        width: '300px',
-                        height: '300px',
-                        position: 'relative',
-                      }}
-                    >
-                      <Image
-                        alt={img.attributes.hash}
-                        style={{position: 'absolute', objectFit: 'contain'}}
-                        src={img.attributes.url}
-                        fill
-                      />
-                    </li>
-                  ))}
-              </ol>
-              <h3>SIZE {size}</h3>
-            </Box>
-          )}
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '100px',
+            width: '100%',
+            flex: '1 1 auto',
+            paddingLeft: '10px',
+            paddingRight: '10px',
+            paddingTop: rwdValue(0, 100),
+            paddingBottom: rwdValue(0, 100),
+            maxWidth: '1320px',
+            margin: '0 auto',
+          }}
+        >
+          {/* ROW*/}
+          <Gallery images={images} setImages={setImages} />
+          <Box sx={{flex: '0 0 calc(50% - 50px)'}}></Box>
         </Box>
       </NavBarLayout>
     </>
