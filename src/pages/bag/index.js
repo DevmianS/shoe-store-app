@@ -18,7 +18,7 @@ import CartProductItem from '@/components/UI/CartProductItem';
 import Summary from '@/components/UI/Summary';
 
 const Bag = () => {
-  const {products, isLoading} = useProducts();
+  const {data, isLoading} = useProducts();
   const [items, setItems] = useState([]);
 
   const {cartItems} = useCart();
@@ -70,17 +70,15 @@ const Bag = () => {
 
   useEffect(() => {
     const keys = Object.keys(cartItems);
-
-    if (products && products.length > 0) {
+    const productsData = data?.data;
+    if (data?.data && data?.data?.length > 0) {
       setItems([
-        ...products.filter(
-          item =>
-            keys.includes(item.attributes.name) &&
-            cartItems[item.attributes.name] > 0,
+        ...productsData.filter(
+          item => keys.includes(`${item.id}`) && cartItems[item.id] > 0,
         ),
       ]);
     }
-  }, [cartItems, products]);
+  }, [cartItems, data]);
   return (
     <>
       <Head>
@@ -100,13 +98,14 @@ const Bag = () => {
                 : items &&
                   items.length > 0 &&
                   items.map(product => {
-                    const {attributes} = product;
+                    const {attributes, id} = product;
                     const {categories, name, price, images} = attributes;
                     const cat1 = categories?.data[0]?.attributes?.name;
                     const cat2 = categories?.data[1]?.attributes?.name;
                     return (
-                      <Box sx={styles.card} key={product.id}>
+                      <Box sx={styles.card} key={id}>
                         <CartProductItem
+                          productId={id}
                           title={name}
                           category={cat1 + ' ' + cat2 ? cat2 : ''}
                           price={price}
