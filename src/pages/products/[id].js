@@ -31,11 +31,9 @@ export async function getServerSideProps(context) {
 
 export default function ProductPage({product, error}) {
   const router = useRouter();
-  if (typeof window !== 'undefined') {
-    if (error) {
-      router.push('/404');
-      return;
-    }
+  if (typeof window !== 'undefined' && error) {
+    router.push('/404');
+    return;
   }
 
   const styles = {

@@ -1,14 +1,18 @@
+import Link from 'next/link';
 import Image from 'next/image';
 import {useState} from 'react';
+
 import {Typography, Stack, Box, useMediaQuery, IconButton} from '@mui/material';
 import {useTheme} from '@mui/material/styles';
+
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 import {rwdValue} from '@/utils/theme';
 import {useCart} from '@/context/CartContext';
 
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import Button from '@/components/UI/Button';
+import {useRouter} from 'next/router';
 
 export default function ProductCard({
   productId,
@@ -20,7 +24,7 @@ export default function ProductCard({
   // if (imgPath == undefined) {
   //   imgPath = [{attributes: {alternativeText: '', url: ''}}];
   // }
-
+  const router = useRouter();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -97,13 +101,17 @@ export default function ProductCard({
               transition: '1s',
               transform: 'scale(1.25)',
             },
-            '& > button': {
+            '& button': {
               opacity: 1,
+            },
+            '& .actions': {
+              transform: 'translate(-50%,0)',
+              transition: '0.5s',
             },
           }
         : {},
-      '& > button': {
-        opacity: isDesktop ? 0 : 1,
+      '& button': {
+        opacity: {xs: 1, md: 0},
       },
     },
 
@@ -163,19 +171,24 @@ export default function ProductCard({
           }
         : {},
     },
-    addBtn: {
+    actions: {
+      display: 'flex',
+      gap: '10px',
       position: 'absolute',
       bottom: rwdValue(10, 20),
-      left: 'calc(50% - 20px)',
-      width: rwdValue(32, 40),
-      minWidth: rwdValue(32, 40),
-      height: rwdValue(32, 40),
+      left: '50%',
+      transform: {xs: 'translate(-50%,0)', md: 'translate(-50%,20px)'},
       zIndex: 3,
-      transition: '.3s',
+      transition: '0.5s',
       '& span': {
         fontSize: rwdValue(18, 24),
         lineHeight: rwdValue(32, 40),
         color: '#fff',
+      },
+      '& button': {
+        width: rwdValue(32, 40),
+        minWidth: rwdValue(32, 40),
+        height: rwdValue(32, 40),
       },
     },
   };
@@ -183,13 +196,28 @@ export default function ProductCard({
     <Box sx={styles.column}>
       <Box sx={styles.card}>
         <Box sx={styles.image}>
-          <Button
-            size={isDesktop ? 'medium' : 'small'}
-            sx={styles.addBtn}
-            onClick={() => addProduct({productId, title})}
-          >
-            <Typography component="span" className="icon-add-to-cart" />
-          </Button>
+          <Box sx={styles.actions} className="actions">
+            <Button
+              size={isDesktop ? 'medium' : 'small'}
+              onClick={() => addProduct({productId, title})}
+            >
+              <Typography
+                component="span"
+                className="icon-add-to-cart"
+                title={`Add ${title} to the cart`}
+              />
+            </Button>
+            <Button
+              size={isDesktop ? 'medium' : 'small'}
+              onClick={() => router.push(`/products/${productId}`)}
+            >
+              <Typography
+                component="span"
+                className="icon-search"
+                title={`Open ${title} page`}
+              />
+            </Button>
+          </Box>
           <Image
             src={
               imgPath
