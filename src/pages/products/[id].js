@@ -93,24 +93,25 @@ export default function ProductPage({product, error}) {
   }
 
   useEffect(() => {
-    if (product) {
-      setImages({
-        array: [...product?.data?.attributes?.images?.data],
-        active: 0,
-      });
-      setData({
-        name: product?.data?.attributes?.name,
-        price: product?.data?.attributes?.price,
-        categories: [...product?.data?.attributes?.categories?.data],
-        gender: product?.data?.attributes?.gender?.data?.attributes?.name,
-        size: product?.data?.attributes?.size?.data?.attributes?.value,
-        description:
-          product?.data?.attributes?.description ||
-          'There is no description about this product yet',
-        color: product?.data?.attributes?.color?.data?.attributes?.value,
-        brand: product?.data?.attributes?.brand?.data?.attributes?.name,
-      });
+    if (!product) {
+      return;
     }
+    setImages({
+      array: [...product?.data?.attributes?.images?.data],
+      active: 0,
+    });
+    setData({
+      name: product?.data?.attributes?.name,
+      price: product?.data?.attributes?.price,
+      categories: [...product?.data?.attributes?.categories?.data],
+      gender: product?.data?.attributes?.gender?.data?.attributes?.name,
+      size: product?.data?.attributes?.size?.data?.attributes?.value,
+      description:
+        product?.data?.attributes?.description ||
+        'There is no description about this product yet',
+      color: product?.data?.attributes?.color?.data?.attributes?.value,
+      brand: product?.data?.attributes?.brand?.data?.attributes?.name,
+    });
   }, [product]);
 
   return (
