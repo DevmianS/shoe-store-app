@@ -109,6 +109,9 @@ export default function CartProductItem({
           width={600}
           height={600}
           alt={title}
+          style={{
+            objectFit: 'contain',
+          }}
           src={
             image ? image[0]?.attributes?.url : '/productImageComingSoon.png'
           }
