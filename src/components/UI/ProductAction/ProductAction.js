@@ -292,12 +292,12 @@ const ProductAction = ({isEditing}) => {
   return (
     <>
       {loading && <Loading />}
-      <Button onClick={handleOpen}>Add Product</Button>
+      <Button onClick={handleOpen}>{isEditing ? 'Edit' : 'Add'} product</Button>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xl">
         <Box sx={styles.content}>
           <Box sx={styles.headerRow}>
             <DialogTitle variant="h1" component="h1">
-              {isEditing ? 'Edit product' : 'Add product'}
+              {isEditing ? 'Edit' : 'Add'} product
             </DialogTitle>
             <DialogActions>
               <Button
