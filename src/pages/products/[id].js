@@ -63,6 +63,7 @@ const singleStyles = {
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: '8px',
+      background: '#B9B8B4',
     },
     '& .Running': {background: '#E16200'},
     '& .Athletic': {background: '#D18D47'},
@@ -134,7 +135,7 @@ export default function ProductPage({product, error}) {
       brand: product?.data?.attributes?.brand?.data?.attributes?.name,
     });
   }, [product]);
-  console.log(data.categories);
+  console.log(data);
   return (
     <>
       <Head>
@@ -178,11 +179,12 @@ export default function ProductPage({product, error}) {
                 Categories
               </Typography>
               <Box sx={singleStyles.categories}>
-                {data?.categories.map(cat => (
-                  <Box key={cat.id} className={cat.attributes.name}>
-                    {cat.attributes.name}
-                  </Box>
-                ))}
+                {data?.categories.length > 0 &&
+                  data?.categories.map(cat => (
+                    <Box key={cat.id} className={cat.attributes.name}>
+                      {cat.attributes.name}
+                    </Box>
+                  ))}
               </Box>
               <Button
                 onClick={() => {
