@@ -110,7 +110,7 @@ const Bag = () => {
                           category={cat1 + ' ' + cat2 ? cat2 : ''}
                           price={price}
                           image={images?.data}
-                          quantity={cartItems[name]}
+                          quantity={cartItems[id]}
                         />
                       </Box>
                     );
