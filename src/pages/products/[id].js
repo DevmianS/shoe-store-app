@@ -113,57 +113,61 @@ export default function ProductPage({product, error}) {
     <>
       <Head>
         <title>
-          Wellrun | {!product ? <Loading /> : data.name && data.name}
+          Wellrun | {!product ? 'Loading...' : data?.name && data?.name}
         </title>
       </Head>
       <NavBarLayout>
-        <Box sx={styles.row}>
-          <Gallery images={images} setImages={setImages} />
-          <Box sx={styles.column}>
-            <Box sx={styles.header}>
-              <Typography component="h1" variant="h1">
-                {data.name}
+        {!product ? (
+          <Loading />
+        ) : (
+          <Box sx={styles.row}>
+            <Gallery images={images} setImages={setImages} />
+            <Box sx={styles.column}>
+              <Box sx={styles.header}>
+                <Typography component="h1" variant="h1">
+                  {data.name}
+                </Typography>
+                <Typography component="span" sx={styles.price}>
+                  ${data.price}
+                </Typography>
+              </Box>
+              <Typography
+                component="p"
+                variant="body2"
+                sx={styles.gender}
+              >{`${data.gender}'s Shoes`}</Typography>
+
+              <Typography component="p" variant="body2" sx={styles.label}>
+                Available sizes
               </Typography>
-              <Typography component="span" sx={styles.price}>
-                ${data.price}
+              <Box sx={styles.props}>EU-{data.size}</Box>
+              {data.color && (
+                <>
+                  <Typography component="p" variant="body2" sx={styles.label}>
+                    Available colors
+                  </Typography>
+                  <Box sx={styles.props}>{data.color}</Box>
+                </>
+              )}
+              <Button
+                onClick={() => {
+                  const title = data.name;
+                  const productId = product?.data?.id;
+                  addProduct({productId, title});
+                }}
+                sx={styles.btn}
+              >
+                Add to Bag
+              </Button>
+              <Typography component="p" variant="body2" sx={styles.label}>
+                Description
+              </Typography>
+              <Typography component="p" variant="body1">
+                {data.description}
               </Typography>
             </Box>
-            <Typography
-              component="p"
-              variant="body2"
-              sx={styles.gender}
-            >{`${data.gender}'s Shoes`}</Typography>
-
-            <Typography component="p" variant="body2" sx={styles.label}>
-              Available sizes
-            </Typography>
-            <Box sx={styles.props}>EU-{data.size}</Box>
-            {data.color && (
-              <>
-                <Typography component="p" variant="body2" sx={styles.label}>
-                  Available colors
-                </Typography>
-                <Box sx={styles.props}>{data.color}</Box>
-              </>
-            )}
-            <Button
-              onClick={() => {
-                const title = data.name;
-                const productId = product?.data?.id;
-                addProduct({productId, title});
-              }}
-              sx={styles.btn}
-            >
-              Add to Bag
-            </Button>
-            <Typography component="p" variant="body2" sx={styles.label}>
-              Description
-            </Typography>
-            <Typography component="p" variant="body1">
-              {data.description}
-            </Typography>
           </Box>
-        </Box>
+        )}
       </NavBarLayout>
     </>
   );
