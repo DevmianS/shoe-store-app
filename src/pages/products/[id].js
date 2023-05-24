@@ -4,10 +4,10 @@ import {useEffect, useState} from 'react';
 
 import axios from 'axios';
 
-import {Box, Typography, useTheme} from '@mui/material';
+import {Box, Typography} from '@mui/material';
 
 import {useCart} from '@/context/CartContext';
-import {rwdValue} from '@/utils/theme';
+import {rwdValue, theme} from '@/utils/theme';
 
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Loading from '@/components/UI/Loading';
@@ -46,8 +46,8 @@ const singleStyles = {
     borderRadius: '8px',
   },
   price: {fontSize: '22px', fontWeight: 500, color: '#000'},
-  gender: {color: 'theme.palette.text.secondary', marginBottom: '35px'},
-  label: {color: 'theme.palette.text.secondary', marginBottom: '20px'},
+  gender: {color: theme.palette.text.secondary, marginBottom: '35px'},
+  label: {color: theme.palette.text.secondary, marginBottom: '20px'},
   btn: {marginBottom: '65px'},
   categories: {
     display: 'flex',
