@@ -179,7 +179,15 @@ export default function ProductPage({product, error}) {
                   >
                     Available colors
                   </Typography>
-                  <Box sx={singleStyles.props}>{data.color}</Box>
+                  <Box
+                    sx={{
+                      ...singleStyles.props,
+                      background: data.color.toLowerCase(),
+                      color: '#fff',
+                    }}
+                  >
+                    {data.color}
+                  </Box>
                 </>
               )}
               <Typography component="p" variant="body2" sx={singleStyles.label}>
