@@ -35,6 +35,7 @@ export default function CartProductItem({
       '& img': {
         width: rwdValue(100, 220),
         height: rwdValue(100, 220),
+        objectFit: 'contain',
       },
       transition: 'transform 0.5s',
       '&:hover': !isDesktop
@@ -109,9 +110,6 @@ export default function CartProductItem({
           width={600}
           height={600}
           alt={title}
-          style={{
-            objectFit: 'contain',
-          }}
           src={
             image ? image[0]?.attributes?.url : '/productImageComingSoon.png'
           }
