@@ -1,6 +1,5 @@
 import Image from 'next/image';
-import {Box, Stack, IconButton} from '@mui/material';
-import {KeyboardArrowLeft, KeyboardArrowRight} from '@mui/icons-material';
+import {Box, Stack, IconButton, Typography} from '@mui/material';
 
 export default function Gallery({images, setImages}) {
   const galleryClickHandler = index => {
@@ -120,7 +119,7 @@ export default function Gallery({images, setImages}) {
             }}
             disabled={images.active === 0}
           >
-            <KeyboardArrowLeft />
+            <Typography component="i" className="icon-chevron-left" />
           </IconButton>
           <IconButton
             sx={styles.iconBtn}
@@ -129,7 +128,7 @@ export default function Gallery({images, setImages}) {
             }}
             disabled={images.active === images.array.length - 1}
           >
-            <KeyboardArrowRight />
+            <Typography component="i" className="icon-chevron-right" />
           </IconButton>
         </Box>
       </Box>
