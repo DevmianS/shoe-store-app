@@ -38,7 +38,7 @@ const singleStyles = {
     color: '#494949',
     fontSize: '15px',
     width: '85px',
-    height: '55px',
+    height: '35px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -49,6 +49,27 @@ const singleStyles = {
   gender: {color: 'theme.palette.text.secondary', marginBottom: '35px'},
   label: {color: 'theme.palette.text.secondary', marginBottom: '20px'},
   btn: {marginBottom: '65px'},
+  categories: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '5px',
+    marginBottom: '35px',
+    '& > *': {
+      color: '#fff',
+      fontSize: '15px',
+      width: '85px',
+      height: '35px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: '8px',
+    },
+    '& .Running': {background: '#E16200'},
+    '& .Athletic': {background: '#D18D47'},
+    '& .Tennis': {background: '#31C1B0'},
+    '& .Casual': {background: '#92BB41'},
+    '& .Tracking': {background: '#19976A'},
+  },
 };
 
 export async function getServerSideProps(context) {
@@ -113,7 +134,7 @@ export default function ProductPage({product, error}) {
       brand: product?.data?.attributes?.brand?.data?.attributes?.name,
     });
   }, [product]);
-
+  console.log(data.categories);
   return (
     <>
       <Head>
@@ -137,7 +158,6 @@ export default function ProductPage({product, error}) {
                 variant="body2"
                 sx={singleStyles.gender}
               >{`${data.gender}'s Shoes`}</Typography>
-
               <Typography component="p" variant="body2" sx={singleStyles.label}>
                 Available sizes
               </Typography>
@@ -154,6 +174,16 @@ export default function ProductPage({product, error}) {
                   <Box sx={singleStyles.props}>{data.color}</Box>
                 </>
               )}
+              <Typography component="p" variant="body2" sx={singleStyles.label}>
+                Categories
+              </Typography>
+              <Box sx={singleStyles.categories}>
+                {data?.categories.map(cat => (
+                  <Box key={cat.id} className={cat.attributes.name}>
+                    {cat.attributes.name}
+                  </Box>
+                ))}
+              </Box>
               <Button
                 onClick={() => {
                   const title = data.name;
