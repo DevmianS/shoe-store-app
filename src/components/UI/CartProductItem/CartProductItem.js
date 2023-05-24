@@ -10,8 +10,8 @@ import {
 } from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
-import Button from '../Button';
 import {useCart} from '@/context/CartContext';
+import QuantityButton from './QuantityButton/QuantityButton';
 
 export default function CartProductItem({
   productId,
@@ -88,15 +88,15 @@ export default function CartProductItem({
     },
     controls: {
       display: 'flex',
-      gap: '10px',
+      gap: '4px',
       alignItems: 'center',
-      '& > button,& > span': {
+      justifyContent: 'center',
+      '& > button, & > span': {
         fontSize: rwdValue(18, 24),
-        width: rwdValue(24, 40),
-        height: rwdValue(24, 40),
-        maxWidth: rwdValue(24, 40),
-        minWidth: rwdValue(24, 40),
-        lineHeight: rwdValue(24, 40),
+        width: rwdValue(24, 32),
+        height: rwdValue(24, 32),
+        maxWidth: rwdValue(24, 32),
+        minWidth: rwdValue(24, 23),
         textAlign: 'center',
       },
     },
@@ -127,13 +127,23 @@ export default function CartProductItem({
           </Typography>
           <Stack sx={styles.footer}>
             <Box sx={styles.controls}>
-              <Button onClick={() => removeOneProduct({productId, title})}>
+              <QuantityButton
+                onClick={() => removeOneProduct({productId, title})}
+              >
                 -
-              </Button>
-              <Typography component="b">{quantity}</Typography>
-              <Button onClick={() => addProduct({productId, title}, true)}>
+              </QuantityButton>
+              <Typography component="span">{quantity}</Typography>
+              <QuantityButton
+                onClick={() => addProduct({productId, title}, true)}
+              >
                 +
-              </Button>
+              </QuantityButton>
+              <Typography
+                sx={{marginLeft: 1, display: {xs: 'none', sm: 'block'}}}
+                component="span"
+              >
+                Quantity
+              </Typography>
             </Box>
             <Box
               sx={styles.delete}
