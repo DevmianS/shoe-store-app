@@ -149,8 +149,8 @@ export default function ProductPage({product, error}) {
             <Button
               onClick={() => {
                 const title = data.name;
-                const id = product?.id;
-                addProduct({id, title});
+                const productId = product?.data?.id;
+                addProduct({productId, title});
               }}
               sx={styles.btn}
             >
