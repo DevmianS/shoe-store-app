@@ -47,7 +47,11 @@ const singleStyles = {
   },
   price: {fontSize: '22px', fontWeight: 500, color: '#000'},
   gender: {color: theme.palette.text.secondary, marginBottom: '35px'},
-  label: {color: theme.palette.text.secondary, marginBottom: '20px'},
+  label: {
+    color: theme.palette.text.secondary,
+    marginBottom: '20px',
+    '& b': {color: theme.palette.primary.main},
+  },
   btn: {marginBottom: '65px'},
   categories: {
     display: 'flex',
@@ -135,7 +139,7 @@ export default function ProductPage({product, error}) {
       brand: product?.data?.attributes?.brand?.data?.attributes?.name,
     });
   }, [product]);
-  console.log(data);
+
   return (
     <>
       <Head>
@@ -159,6 +163,9 @@ export default function ProductPage({product, error}) {
                 variant="body2"
                 sx={singleStyles.gender}
               >{`${data.gender}'s Shoes`}</Typography>
+              <Typography component="p" variant="body2" sx={singleStyles.label}>
+                Brand - <b>{data.brand}</b>
+              </Typography>
               <Typography component="p" variant="body2" sx={singleStyles.label}>
                 Available sizes
               </Typography>
