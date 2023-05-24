@@ -40,7 +40,6 @@ const RootForm = () => {
       <Typography component="p" variant="body1" sx={rootFormStyles.welcomeText}>
         The biggest shoes business in the whole world.
       </Typography>
-
       <Box>
         <Button
           onClick={() => router.push('/sign-in')}
