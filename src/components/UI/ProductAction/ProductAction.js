@@ -1,10 +1,8 @@
-import Head from 'next/head';
 import {rwdValue} from '@/utils/theme';
 
 import {
   Typography,
   Box,
-  Stack,
   TextField,
   TextareaAutosize,
   Select,
@@ -15,11 +13,12 @@ import {
   useMediaQuery,
   Checkbox,
   FormGroup,
-  Modal,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContentText,
+  DialogContent,
 } from '@mui/material';
-
-import SideBar from '@/components/Layout/SideBar';
-import NavBarLayout from '@/components/Layout/NavBarLayout';
 
 import {useState} from 'react';
 import FileInput from '@/components/UI/FileInput';
@@ -37,7 +36,7 @@ import Loading from '@/components/UI/Loading';
 import {toast} from 'sonner';
 import {useRouter} from 'next/router';
 
-const ProductAction = () => {
+const ProductAction = ({isEditing}) => {
   const router = useRouter();
 
   const {
@@ -203,8 +202,7 @@ const ProductAction = () => {
     filesWrap: {
       flex: '1 1 auto',
       width: '100%',
-      paddingLeft: rwdValue(0, 110),
-      paddingRight: rwdValue(0, 110),
+      paddingBottom: 10,
     },
   };
 
@@ -293,206 +291,205 @@ const ProductAction = () => {
 
   return (
     <>
+      {loading && <Loading />}
       <Button onClick={handleOpen}>Add Product</Button>
-      <Modal open={open} onClose={handleClose}>
-        <Box sx={styles.row}>
-          <Box sx={styles.content}>
-            <Box sx={styles.headerRow}>
-              <Typography variant="h1" component="h1">
-                Add product
-              </Typography>
-              <Stack direction="row">
-                <Button
-                  size={isDesktop ? 'medium' : 'small'}
-                  variant="contained"
-                  onClick={handleClose}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  size={isDesktop ? 'medium' : 'small'}
-                  variant="contained"
-                  onClick={handleSubmit}
-                >
-                  Save
-                </Button>
-              </Stack>
-            </Box>
-            <Typography
-              variant="body5"
-              component="p"
-              color="text.secondary"
-              mb={rwdValue(25, 40)}
-              fontSize={rwdValue(12, 15)}
-              maxWidth="900px"
-            >
-              The account page allows you to manage your products easily. You
-              can add new products to your inventory, update existing ones, and
-              keep track of all your product listings in one convenient
-              location. With simple and intuitive tools, you can quickly create
-              new product pages, upload images, add descriptions, and set
-              prices. Stay organized and streamline your product management with
-              the account page.
-            </Typography>
-            <form style={styles.formRow}>
-              <Box sx={styles.form}>
-                <Box sx={styles.formItem}>
-                  <TextField
-                    fullWidth
-                    size={isDesktop ? 'medium' : 'small'}
-                    placeholder="Nike Air Max 90"
-                    label="Product name"
-                    type="text"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                  />
-                </Box>
-                <Box sx={styles.formItem}>
-                  <TextField
-                    fullWidth
-                    size={isDesktop ? 'medium' : 'small'}
-                    placeholder="Price"
-                    label="Price"
-                    type="number"
-                    value={price}
-                    onChange={e => setPrice(e.target.value)}
-                  />
-                </Box>
-                <Box sx={styles.formItem}>
-                  <Box sx={styles.checkboxRow}>
-                    <FormControl fullWidth>
-                      <InputLabel id="gender">Gender</InputLabel>
-                      <Select
-                        labelId="gender"
-                        variant="outlined"
-                        value={select.gender}
-                        onChange={genderChangeHandler}
-                        defaultValue="Men"
-                        size={isDesktop ? 'medium' : 'small'}
-                      >
-                        {!isLoading &&
-                          genders.map(gender => {
-                            return (
-                              <MenuItem key={gender.id} value={gender.name}>
-                                {gender.name}
-                              </MenuItem>
-                            );
-                          })}
-                      </Select>
-                    </FormControl>
-                    <FormControl fullWidth>
-                      <InputLabel id="brand">Brand</InputLabel>
-                      <Select
-                        size={isDesktop ? 'medium' : 'small'}
-                        labelId="brand"
-                        variant="outlined"
-                        value={select.brand}
-                        onChange={brandChangeHandler}
-                      >
-                        {!isLoading &&
-                          brands.map(brand => {
-                            return (
-                              <MenuItem key={brand.id} value={brand.name}>
-                                {brand.name}
-                              </MenuItem>
-                            );
-                          })}
-                      </Select>
-                    </FormControl>
-                  </Box>
-                </Box>
-                <Box sx={styles.formItem}>
-                  <TextareaAutosize
-                    placeholder="Do not exceed 300 characters."
-                    label="Description"
-                    type="text"
-                    value={description}
-                    onChange={e => setDescription(e.target.value)}
-                  />
-                </Box>
-                <FormGroup sx={styles.formGroup}>
-                  <Typography sx={styles.label}>Add size</Typography>
-                  {sizes &&
-                    sizes.map(size => {
-                      const sizeStyle = {
-                        background: size.needed
-                          ? theme.palette.primary.main
-                          : 'white',
-                        color: size.needed
-                          ? 'white'
-                          : theme.palette.text.secondary,
-                        '&:hover': {
-                          borderColor: 'black',
-                          color: 'black',
-                        },
-                      };
-                      return (
-                        <Box key={size.id} onClick={checkBoxChangeHandler}>
-                          <Checkbox
-                            name={size.value}
-                            checked={size.needed}
-                            onClick={checkBoxChangeHandler}
-                            id={size.id}
-                          />
-                          <InputLabel sx={sizeStyle} htmlFor={size.value}>
-                            EU-{size.value}
-                          </InputLabel>
-                        </Box>
-                      );
-                    })}
-                </FormGroup>
-                <FormGroup sx={styles.formGroup}>
-                  <Typography sx={styles.label}>Add categories</Typography>
-                  {categories &&
-                    categories.map(category => {
-                      const itemStyle = {
-                        background: category.needed
-                          ? theme.palette.primary.main
-                          : 'white',
-                        color: category.needed
-                          ? 'white'
-                          : theme.palette.text.secondary,
-                        '&:hover': {
-                          borderColor: 'black',
-                          color: 'black',
-                        },
-                      };
-                      return (
-                        <Box
-                          key={category.id}
-                          onClick={checkBoxChangeHandlerCategory}
-                        >
-                          <Checkbox
-                            name={category.name}
-                            checked={category.needed}
-                            onClick={checkBoxChangeHandlerCategory}
-                            id={category.id}
-                          />
-                          <InputLabel sx={itemStyle} htmlFor={category.name}>
-                            {category.name}
-                          </InputLabel>
-                        </Box>
-                      );
-                    })}
-                </FormGroup>
-              </Box>
-              <Box sx={styles.filesWrap}>
-                <InputLabel>Product images</InputLabel>
-                <Box sx={styles.filesRow}>
-                  {arrImages.map(img => (
-                    <FileInput
-                      key={img.id}
-                      id={img.id}
-                      setArrImages={setArrImages}
-                      arrImages={arrImages}
-                    />
-                  ))}
-                </Box>
-              </Box>
-            </form>
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xl">
+        <Box sx={styles.content}>
+          <Box sx={styles.headerRow}>
+            <DialogTitle variant="h1" component="h1">
+              {isEditing ? 'Edit product' : 'Add product'}
+            </DialogTitle>
+            <DialogActions>
+              <Button
+                size={isDesktop ? 'medium' : 'small'}
+                variant="contained"
+                onClick={handleClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                size={isDesktop ? 'medium' : 'small'}
+                variant="contained"
+                onClick={handleSubmit}
+              >
+                Save
+              </Button>
+            </DialogActions>
           </Box>
+          <DialogContentText
+            variant="body5"
+            component="p"
+            color="text.secondary"
+            mb={rwdValue(25, 40)}
+            fontSize={rwdValue(12, 15)}
+            maxWidth="900px"
+          >
+            The account page allows you to manage your products easily. You can
+            add new products to your inventory, update existing ones, and keep
+            track of all your product listings in one convenient location. With
+            simple and intuitive tools, you can quickly create new product
+            pages, upload images, add descriptions, and set prices. Stay
+            organized and streamline your product management with the account
+            page.
+          </DialogContentText>
+          <form style={styles.formRow}>
+            <DialogContent sx={styles.form}>
+              <Box sx={styles.formItem}>
+                <TextField
+                  fullWidth
+                  size={isDesktop ? 'medium' : 'small'}
+                  placeholder="Nike Air Max 90"
+                  label="Product name"
+                  type="text"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
+              </Box>
+              <Box sx={styles.formItem}>
+                <TextField
+                  fullWidth
+                  size={isDesktop ? 'medium' : 'small'}
+                  placeholder="Price"
+                  label="Price"
+                  type="number"
+                  value={price}
+                  onChange={e => setPrice(e.target.value)}
+                />
+              </Box>
+              <Box sx={styles.formItem}>
+                <Box sx={styles.checkboxRow}>
+                  <FormControl fullWidth>
+                    <InputLabel id="gender">Gender</InputLabel>
+                    <Select
+                      labelId="gender"
+                      variant="outlined"
+                      value={select.gender}
+                      onChange={genderChangeHandler}
+                      defaultValue="Men"
+                      size={isDesktop ? 'medium' : 'small'}
+                    >
+                      {!isLoading &&
+                        genders.map(gender => {
+                          return (
+                            <MenuItem key={gender.id} value={gender.name}>
+                              {gender.name}
+                            </MenuItem>
+                          );
+                        })}
+                    </Select>
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <InputLabel id="brand">Brand</InputLabel>
+                    <Select
+                      size={isDesktop ? 'medium' : 'small'}
+                      labelId="brand"
+                      variant="outlined"
+                      value={select.brand}
+                      onChange={brandChangeHandler}
+                    >
+                      {!isLoading &&
+                        brands.map(brand => {
+                          return (
+                            <MenuItem key={brand.id} value={brand.name}>
+                              {brand.name}
+                            </MenuItem>
+                          );
+                        })}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Box>
+              <Box sx={styles.formItem}>
+                <TextareaAutosize
+                  placeholder="Do not exceed 300 characters."
+                  label="Description"
+                  type="text"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
+                />
+              </Box>
+              <FormGroup sx={styles.formGroup}>
+                <Typography sx={styles.label}>Add size</Typography>
+                {sizes &&
+                  sizes.map(size => {
+                    const sizeStyle = {
+                      background: size.needed
+                        ? theme.palette.primary.main
+                        : 'white',
+                      color: size.needed
+                        ? 'white'
+                        : theme.palette.text.secondary,
+                      '&:hover': {
+                        borderColor: 'black',
+                        color: 'black',
+                      },
+                    };
+                    return (
+                      <Box key={size.id} onClick={checkBoxChangeHandler}>
+                        <Checkbox
+                          name={size.value}
+                          checked={size.needed}
+                          onClick={checkBoxChangeHandler}
+                          id={size.id}
+                        />
+                        <InputLabel sx={sizeStyle} htmlFor={size.value}>
+                          EU-{size.value}
+                        </InputLabel>
+                      </Box>
+                    );
+                  })}
+              </FormGroup>
+              <FormGroup sx={styles.formGroup}>
+                <Typography sx={styles.label}>Add categories</Typography>
+                {categories &&
+                  categories.map(category => {
+                    const itemStyle = {
+                      background: category.needed
+                        ? theme.palette.primary.main
+                        : 'white',
+                      color: category.needed
+                        ? 'white'
+                        : theme.palette.text.secondary,
+                      '&:hover': {
+                        borderColor: 'black',
+                        color: 'black',
+                      },
+                    };
+                    return (
+                      <Box
+                        key={category.id}
+                        onClick={checkBoxChangeHandlerCategory}
+                      >
+                        <Checkbox
+                          name={category.name}
+                          checked={category.needed}
+                          onClick={checkBoxChangeHandlerCategory}
+                          id={category.id}
+                        />
+                        <InputLabel sx={itemStyle} htmlFor={category.name}>
+                          {category.name}
+                        </InputLabel>
+                      </Box>
+                    );
+                  })}
+              </FormGroup>
+            </DialogContent>
+            <DialogContent sx={styles.filesWrap}>
+              <InputLabel>Product images</InputLabel>
+              <Box sx={styles.filesRow}>
+                {arrImages.map(img => (
+                  <FileInput
+                    key={img.id}
+                    id={img.id}
+                    setArrImages={setArrImages}
+                    arrImages={arrImages}
+                  />
+                ))}
+              </Box>
+            </DialogContent>
+          </form>
         </Box>
-      </Modal>
+      </Dialog>
     </>
   );
 };
