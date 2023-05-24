@@ -14,6 +14,43 @@ import Loading from '@/components/UI/Loading';
 import Gallery from '@/components/UI/Gallery/';
 import Button from '@/components/UI/Button/Button';
 
+const singleStyles = {
+  row: {
+    display: 'flex',
+    gap: '100px',
+    width: '100%',
+    flex: '1 1 auto',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    paddingTop: rwdValue(0, 100),
+    paddingBottom: rwdValue(0, 100),
+    maxWidth: '1320px',
+    margin: '0 auto',
+  },
+  column: {flex: '0 0 calc(50% - 50px)'},
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  props: {
+    border: '1px solid #494949',
+    color: '#494949',
+    fontSize: '15px',
+    width: '85px',
+    height: '55px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: '35px',
+    borderRadius: '8px',
+  },
+  price: {fontSize: '22px', fontWeight: 500, color: '#000'},
+  gender: {color: 'theme.palette.text.secondary', marginBottom: '35px'},
+  label: {color: 'theme.palette.text.secondary', marginBottom: '20px'},
+  btn: {marginBottom: '65px'},
+};
+
 export async function getServerSideProps(context) {
   const {id} = context.query;
 
@@ -36,7 +73,6 @@ export async function getServerSideProps(context) {
 
 export default function ProductPage({product, error}) {
   const router = useRouter();
-  const theme = useTheme();
   const {addProduct} = useCart();
   const [images, setImages] = useState({array: [], active: 0});
   const [data, setData] = useState({
@@ -55,43 +91,6 @@ export default function ProductPage({product, error}) {
       router.push(status === 404 ? '/404' : '/500');
     }
   }
-
-  const styles = {
-    row: {
-      display: 'flex',
-      gap: '100px',
-      width: '100%',
-      flex: '1 1 auto',
-      paddingLeft: '10px',
-      paddingRight: '10px',
-      paddingTop: rwdValue(0, 100),
-      paddingBottom: rwdValue(0, 100),
-      maxWidth: '1320px',
-      margin: '0 auto',
-    },
-    column: {flex: '0 0 calc(50% - 50px)'},
-    header: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    props: {
-      border: '1px solid #494949',
-      color: '#494949',
-      fontSize: '15px',
-      width: '85px',
-      height: '55px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: '35px',
-      borderRadius: '8px',
-    },
-    price: {fontSize: '22px', fontWeight: 500, color: '#000'},
-    gender: {color: theme.palette.text.secondary, marginBottom: '35px'},
-    label: {color: theme.palette.text.secondary, marginBottom: '20px'},
-    btn: {marginBottom: '65px'},
-  };
 
   useEffect(() => {
     setImages({array: [...product?.data?.attributes?.images?.data], active: 0});
@@ -112,41 +111,43 @@ export default function ProductPage({product, error}) {
   return (
     <>
       <Head>
-        <title>
-          Wellrun | {!product ? 'Loading...' : data?.name && data?.name}
-        </title>
+        <title>Wellrun | {data?.name ? data?.name : 'Loading...'}</title>
       </Head>
       <NavBarLayout>
         {!product ? (
           <Loading />
         ) : (
-          <Box sx={styles.row}>
+          <Box sx={singleStyles.row}>
             <Gallery images={images} setImages={setImages} />
-            <Box sx={styles.column}>
-              <Box sx={styles.header}>
+            <Box sx={singleStyles.column}>
+              <Box sx={singleStyles.header}>
                 <Typography component="h1" variant="h1">
                   {data.name}
                 </Typography>
-                <Typography component="span" sx={styles.price}>
+                <Typography component="span" sx={singleStyles.price}>
                   ${data.price}
                 </Typography>
               </Box>
               <Typography
                 component="p"
                 variant="body2"
-                sx={styles.gender}
+                sx={singleStyles.gender}
               >{`${data.gender}'s Shoes`}</Typography>
 
-              <Typography component="p" variant="body2" sx={styles.label}>
+              <Typography component="p" variant="body2" sx={singleStyles.label}>
                 Available sizes
               </Typography>
-              <Box sx={styles.props}>EU-{data.size}</Box>
+              <Box sx={singleStyles.props}>EU-{data.size}</Box>
               {data.color && (
                 <>
-                  <Typography component="p" variant="body2" sx={styles.label}>
+                  <Typography
+                    component="p"
+                    variant="body2"
+                    sx={singleStyles.label}
+                  >
                     Available colors
                   </Typography>
-                  <Box sx={styles.props}>{data.color}</Box>
+                  <Box sx={singleStyles.props}>{data.color}</Box>
                 </>
               )}
               <Button
@@ -155,11 +156,11 @@ export default function ProductPage({product, error}) {
                   const productId = product?.data?.id;
                   addProduct({productId, title});
                 }}
-                sx={styles.btn}
+                sx={singleStyles.btn}
               >
                 Add to Bag
               </Button>
-              <Typography component="p" variant="body2" sx={styles.label}>
+              <Typography component="p" variant="body2" sx={singleStyles.label}>
                 Description
               </Typography>
               <Typography component="p" variant="body1">
