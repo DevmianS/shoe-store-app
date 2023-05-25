@@ -19,7 +19,17 @@ const useProductData = () => {
   const [sizes, setSizes] = useState([]);
   const [colors, setColors] = useState([]);
 
+  const [canRenderFilter, setCanRenderFilter] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (brands && categories && genders && sizes && colors) {
+      setCanRenderFilter(true);
+    } else {
+      setCanRenderFilter(false);
+    }
+  }, [brands, categories, genders, sizes, colors]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,6 +119,7 @@ const useProductData = () => {
 
   // Devolver los datos cuando estén disponibles
   return {
+    canRenderFilter,
     brands,
     categories,
     genders,

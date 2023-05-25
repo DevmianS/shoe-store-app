@@ -364,3 +364,21 @@ export const fetchProductsByName = async name => {
     return false;
   }
 };
+
+export function searchKeyInObject(obj, key) {
+  if (obj.hasOwnProperty(key)) {
+    return obj[key];
+  }
+
+  for (let prop in obj) {
+    if (typeof obj[prop] === 'object') {
+      // Si la propiedad es un objeto, realizar una búsqueda recursiva en él
+      const result = searchKeyInObject(obj[prop], key);
+      if (result) {
+        return result;
+      }
+    }
+  }
+
+  return null;
+}

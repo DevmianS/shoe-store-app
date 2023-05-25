@@ -4,32 +4,24 @@ import useUser from './useUser';
 import {useCallback, useEffect, useState} from 'react';
 import {executeError} from '@/utils/utils';
 
-const useSearchFilter = ({
-  name,
-  populate = '*',
-  brand,
-  color,
-  gender,
-  category,
-  urlNavigator,
-}) => {
+const useSearchFilter = ({populate = '*', urlNavigator}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState(null);
 
   const queryMyProducts = useCallback(async ({populate, urlNavigator}) => {
-    console.log('populate, urlNavigator');
     setIsLoading(true);
     let url;
     try {
       if (urlNavigator.includes('search?')) {
         //All search complex logic
-        let usableUrl = urlNavigator?.split('search?')[1].split('&');
-        console.log('usableUrl :', usableUrl);
+        let usableUrl = urlNavigator?.split('search?')[1];
 
-        url = `/products?populate=${populate}&` + usableUrl;
+        url =
+          `/products?filters[teamName]=fb-team&populate=${populate}&` +
+          usableUrl;
       } else {
         // Normal product logic
-        url = `/products?populate=${populate}`;
+        url = `/products?filters[teamName]=fb-team&populate=${populate}`;
       }
       console.log('url is: ', url);
       const {data, ...res} = await axios.get(
@@ -44,6 +36,7 @@ const useSearchFilter = ({
         'There was an error with the application. Please Try again later or talk to support. Error: ' +
           error?.response?.data?.error?.name || '',
       );
+      setIsLoading(false);
     }
     setIsLoading(false);
     return [];

@@ -1,7 +1,8 @@
 import {useRouter} from 'next/router';
-import {forwardRef, useState} from 'react';
+import {forwardRef, useEffect, useState} from 'react';
 
 import {Box, InputBase, Typography, alpha, useTheme} from '@mui/material';
+import {useFilter} from '@/context/FilterContext';
 
 const Searchbar = forwardRef(({searchExpanded, setSearchExpanded}, ref) => {
   const [input, setInput] = useState('');
@@ -59,6 +60,12 @@ const Searchbar = forwardRef(({searchExpanded, setSearchExpanded}, ref) => {
     },
   };
 
+  const {arrIdFilters, setArrIdFilters} = useFilter();
+
+  useEffect(() => {
+    setInput(arrIdFilters.name[0]);
+  }, [arrIdFilters.name]);
+
   const handleClickInput = e => {
     setSearchExpanded(true);
   };
@@ -66,24 +73,19 @@ const Searchbar = forwardRef(({searchExpanded, setSearchExpanded}, ref) => {
     setSearchExpanded(false);
   };
 
-  const handleEnterSearch = e =>
-    e.key === 'Enter' && router.push(`/search?${e.target.value}`);
-
   const handleSubmitSearch = e => {
     e.preventDefault();
     console.log('handle submit search');
+    console.log('input is: ', input);
     let name = input.replace(' ', '%20');
-    router.push('/search?filters[name][$contains]=' + name);
     setSearchExpanded(false);
+    setArrIdFilters(prevState => {
+      return {...prevState, name: [name]};
+    });
   };
 
   return (
-    <Box
-      onClick={handleClickInput}
-      onBlur={handleBlurInput}
-      onKeyDown={handleEnterSearch}
-      sx={styles.wrap}
-    >
+    <Box onClick={handleClickInput} onBlur={handleBlurInput} sx={styles.wrap}>
       <Typography className="icon-search" sx={styles.icon} />
       <form
         onSubmit={handleSubmitSearch}
