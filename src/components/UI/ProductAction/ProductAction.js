@@ -98,6 +98,9 @@ const ProductAction = ({isEditing}) => {
   const lg = useMediaQuery(theme.breakpoints.down('lg'));
 
   const styles = {
+    openButton: {
+      maxWidth: '152px',
+    },
     headerRow: {
       display: 'flex',
       flexDirection: isDesktop ? 'row' : 'column',
@@ -284,7 +287,9 @@ const ProductAction = ({isEditing}) => {
   return (
     <>
       {loading && <Loading />}
-      <Button onClick={handleOpen}>{isEditing ? 'Edit' : 'Add'} product</Button>
+      <Button onClick={handleOpen} sx={styles.openButton}>
+        {isEditing ? 'Edit' : 'Add'} product
+      </Button>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xl">
         <Box sx={styles.content}>
           <Box sx={styles.headerRow}>
