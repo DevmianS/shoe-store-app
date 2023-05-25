@@ -7,7 +7,7 @@ import useProducts from '@/hooks/useProducts';
 import {SkeletonProducts} from '@/utils/utils';
 import {rwdValue} from '@/utils/theme';
 
-import AvatarStaticLayout from '@components/Layout/AvatarStaticLayout';
+import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import SideBar from '@/components/Layout/SideBar';
 
 import NoContent from '@/components/UI/NoContent';
