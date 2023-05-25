@@ -44,6 +44,7 @@ const ProductAction = ({isEditing}) => {
     categories,
     genders,
     sizes,
+    colors,
     isLoading,
     setSizes,
     setCategories,
@@ -51,7 +52,11 @@ const ProductAction = ({isEditing}) => {
 
   const [loading, setLoading] = useState(false);
 
-  const [select, setSelect] = useState({gender: 'Men', brand: 'Nike'});
+  const [select, setSelect] = useState({
+    gender: 'Men',
+    brand: 'Nike',
+    color: 'Black',
+  });
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -70,6 +75,9 @@ const ProductAction = ({isEditing}) => {
   };
   const brandChangeHandler = e => {
     setSelect({...select, brand: e.target.value});
+  };
+  const colorChangeHandler = e => {
+    setSelect({...select, color: e.target.value});
   };
   const checkBoxChangeHandler = event => {
     setSizes(
@@ -217,6 +225,7 @@ const ProductAction = ({isEditing}) => {
         price,
         categories,
         sizes,
+        colors,
         name,
         arrImages,
         description,
@@ -235,13 +244,14 @@ const ProductAction = ({isEditing}) => {
           price,
           categories,
           sizes,
+          colors,
           name,
           arrImgId,
           description,
           id,
           jwt,
         });
-
+        
         if (res?.status == '200') {
           resetForm();
 
@@ -255,7 +265,7 @@ const ProductAction = ({isEditing}) => {
   };
 
   const resetForm = () => {
-    setSelect({gender: 'Men', brand: 'Nike'});
+    setSelect({gender: 'Men', brand: 'Nike', color: 'Black'});
 
     setName('');
     setDescription('');
@@ -324,13 +334,11 @@ const ProductAction = ({isEditing}) => {
             fontSize={rwdValue(12, 15)}
             maxWidth="900px"
           >
-            The account page allows you to manage your products easily. You can
-            add new products to your inventory, update existing ones, and keep
-            track of all your product listings in one convenient location. With
-            simple and intuitive tools, you can quickly create new product
-            pages, upload images, add descriptions, and set prices. Stay
-            organized and streamline your product management with the account
-            page.
+            Lorem ipsum, or lipsum as it is sometimes known, is dummy text used
+            in laying out print, graphic or web designs. The passage is
+            attributed to an unknown typesetter in the 15th century who is
+            thought to have scrambled parts of Cicero{`'`}s De Finibus Bonorum
+            et Malorum for use in a type specimen book. It usually begins with:
           </DialogContentText>
           <form style={styles.formRow}>
             <DialogContent sx={styles.form}>
@@ -392,6 +400,26 @@ const ProductAction = ({isEditing}) => {
                           return (
                             <MenuItem key={brand.id} value={brand.name}>
                               {brand.name}
+                            </MenuItem>
+                          );
+                        })}
+                    </Select>
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <InputLabel id="color">Color</InputLabel>
+                    <Select
+                      labelId="color"
+                      variant="outlined"
+                      value={select.color}
+                      onChange={colorChangeHandler}
+                      defaultValue="Black"
+                      size={isDesktop ? 'medium' : 'small'}
+                    >
+                      {!isLoading &&
+                        colors.map(color => {
+                          return (
+                            <MenuItem key={color.id} value={color.name}>
+                              {color.name}
                             </MenuItem>
                           );
                         })}

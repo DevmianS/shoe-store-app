@@ -10,11 +10,14 @@ const genderApi = process.env.NEXT_PUBLIC_API_URL + '/genders?fields=name';
 
 const sizeApi = process.env.NEXT_PUBLIC_API_URL + '/sizes?fields=value';
 
+const colorApi = process.env.NEXT_PUBLIC_API_URL + '/colors?fields=name';
+
 const useProductData = () => {
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
   const [genders, setGenders] = useState([]);
   const [sizes, setSizes] = useState([]);
+  const [colors, setColors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +28,7 @@ const useProductData = () => {
           requestCategories(),
           requestGender(),
           requestSizes(),
+          requestColors(),
         ]);
         setIsLoading(false);
       } catch (error) {
@@ -80,6 +84,17 @@ const useProductData = () => {
     setSizes(sizes);
   };
 
+  const requestColors = async () => {
+    const {data: res} = await axios.get(colorApi);
+    const colors = res.data.map(color => {
+      return {
+        id: String(color.id),
+        name: String(color.attributes.name),
+      };
+    });
+    setColors(colors);
+  };
+
   if (isLoading) {
     // Devolver un estado de carga mientras se cargan los datos
     return {isLoading};
@@ -91,6 +106,7 @@ const useProductData = () => {
     categories,
     genders,
     sizes,
+    colors,
     isLoading,
     setSizes,
     setCategories,

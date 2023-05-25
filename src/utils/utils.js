@@ -272,6 +272,7 @@ export const createProduct = async ({
   price,
   categories,
   sizes,
+  colors,
   name,
   arrImgId,
   description,
@@ -282,6 +283,7 @@ export const createProduct = async ({
     genders.find(gender => gender.name == select.gender)?.id,
   );
   const idBrand = String(brands.find(brand => brand.name == select.brand)?.id);
+  const idColor = String(colors.find(color => color.name == select.color)?.id);
 
   const categoriesArr = categories
     .filter(category => category.needed)
@@ -299,6 +301,7 @@ export const createProduct = async ({
       brand: idBrand,
       categories: categoriesArr,
       gender: idGender,
+      color: idColor,
       size: sizesArr,
       price: price,
       userID: id,
