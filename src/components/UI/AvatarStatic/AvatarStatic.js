@@ -1,32 +1,11 @@
-import {useRouter} from 'next/router';
-
-import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 
 import useUser from '@/hooks/useUser';
 import {rwdValue} from '@/utils/theme';
+import Image from 'next/image';
 
-const avatarStaticStyles = {
-  avatar: {
-    width: '100%',
-    height: '100%',
-  },
-  avatarLink: {
-    width: '100%',
-    height: '100%',
-    transition: '.3s',
-    '&:hover': {
-      boxShadow: `0 0 3px 1px grey`,
-      transform: 'scale(1.03)',
-      filter: 'brightness(1.1)',
-    },
-    cursor: 'pointer',
-  },
-};
-
-const AvatarStatic = ({variant = 'medium', sx}) => {
+const AvatarStatic = ({variant = 'medium', sx, photo}) => {
   const {initials} = useUser();
-  const router = useRouter();
 
   const sizes = {
     small: {range: rwdValue(61, 64), max: 64},
@@ -41,21 +20,19 @@ const AvatarStatic = ({variant = 'medium', sx}) => {
     maxHeight: sizes[variant].max,
     borderRadius: '50%',
   };
-
-  const avatarClickHandler = () => {
-    if (variant !== 'small') {
-      return;
-    }
-    router.push('/profile');
-  };
-
   return (
-    <Box onClick={avatarClickHandler} sx={{...variantsSize, ...sx}}>
-      <Avatar src={'/'} sx={avatarStaticStyles.avatarLink}>
-        {initials}
-      </Avatar>
-    </Box>
+    <Avatar
+      sx={{
+        ...variantsSize,
+        ...sx,
+      }}
+    >
+      {photo ? (
+        <Image src={photo} fill alt={initials + ' user avatar'} />
+      ) : (
+        initials
+      )}
+    </Avatar>
   );
 };
-
 export default AvatarStatic;
