@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import Image from 'next/image';
 import {useState} from 'react';
 import {
@@ -29,6 +28,7 @@ export default function ProductCard({
   imgPath,
   showOptions,
 }) {
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const router = useRouter();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -303,14 +303,14 @@ export default function ProductCard({
               size={isDesktop ? 'medium' : 'small'}
               sx={styles.threeDots}
               onClick={() => {
-                console.log('add menu toggle here!', productId);
+                setIsMenuVisible(prev => !prev);
               }}
             >
               <Typography component="span" className="three-dots">
                 ...
               </Typography>
             </MUIButton>
-            <OptionsMenu productId={productId} />
+            {isMenuVisible && <OptionsMenu productId={productId} />}
           </>
         )}
       </Box>
