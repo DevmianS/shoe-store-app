@@ -18,6 +18,8 @@ import {
   DialogActions,
   DialogContentText,
   DialogContent,
+  ToggleButtonGroup,
+  ToggleButton,
 } from '@mui/material';
 
 import {useState} from 'react';
@@ -56,6 +58,7 @@ const ProductAction = ({isEditing}) => {
     gender: 'Men',
     brand: 'Nike',
     color: 'Black',
+    size: '',
   });
 
   const [name, setName] = useState('');
@@ -78,6 +81,9 @@ const ProductAction = ({isEditing}) => {
   };
   const colorChangeHandler = e => {
     setSelect({...select, color: e.target.value});
+  };
+  const sizeChangeHandler = e => {
+    setSelect({...select, size: e.target.value});
   };
   const checkBoxChangeHandler = event => {
     setSizes(
@@ -251,7 +257,7 @@ const ProductAction = ({isEditing}) => {
           id,
           jwt,
         });
-        
+
         if (res?.status == '200') {
           resetForm();
 
@@ -438,34 +444,24 @@ const ProductAction = ({isEditing}) => {
               </Box>
               <FormGroup sx={styles.formGroup}>
                 <Typography sx={styles.label}>Add size</Typography>
-                {sizes &&
-                  sizes.map(size => {
-                    const sizeStyle = {
-                      background: size.needed
-                        ? theme.palette.primary.main
-                        : 'white',
-                      color: size.needed
-                        ? 'white'
-                        : theme.palette.text.secondary,
-                      '&:hover': {
-                        borderColor: 'black',
-                        color: 'black',
-                      },
-                    };
-                    return (
-                      <Box key={size.id} onClick={checkBoxChangeHandler}>
-                        <Checkbox
-                          name={size.value}
-                          checked={size.needed}
-                          onClick={checkBoxChangeHandler}
-                          id={size.id}
-                        />
-                        <InputLabel sx={sizeStyle} htmlFor={size.value}>
-                          EU-{size.value}
-                        </InputLabel>
-                      </Box>
-                    );
-                  })}
+                <ToggleButtonGroup
+                  exclusive
+                  sx={{display: 'flex', flexWrap: 'wrap', gap: '10px'}}
+                >
+                  {sizes &&
+                    sizes.map(size => {
+                      return (
+                        <>
+                          <ToggleButton
+                            key={size.id}
+                            value={size.value}
+                            selected={sizes.some(x => x.id === size.id)}
+                            onClick={sizeChangeHandler}
+                          >{`EU-${size.value}`}</ToggleButton>
+                        </>
+                      );
+                    })}
+                </ToggleButtonGroup>
               </FormGroup>
               <FormGroup sx={styles.formGroup}>
                 <Typography sx={styles.label}>Add categories</Typography>
