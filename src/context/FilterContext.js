@@ -58,7 +58,10 @@ export const FilterProvider = ({children}) => {
     );
     console.log('Query: ', query);
 
-    router.push('search?' + query);
+    if (query) {
+      console.log("Passed")
+      router.push('search?' + query);
+    }
   }
 
   useEffect(() => {
