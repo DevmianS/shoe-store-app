@@ -26,11 +26,11 @@ const productsStyles = {
   content: {
     flex: '1 1 auto',
     padding: {lg: '0 60px', md: '0 40px', sm: '0 30px', xs: '0 10px'},
-    card: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      margin: {sm: '0 -8px', md: '0 -24px'},
-    },
+  },
+  card: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    margin: {sm: '0 -8px', md: '0 -24px'},
   },
   title: {marginBottom: rwdValue(20, 35)},
 };
