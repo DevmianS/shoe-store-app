@@ -17,7 +17,7 @@ const galleryStyles = {
     flex: {xs: '0 0 100%', md: '0 0 85px'},
     flexDirection: {xs: 'row', md: 'column'},
     overflowX: 'auto',
-    direction: 'rtl',
+    direction: {xs: 'ltr', md: 'rtl'},
     order: {xs: 2, md: 1},
     gap: '8px',
   },
@@ -84,16 +84,13 @@ export default function Gallery({images, setImages}) {
     if (action === 'next') {
       setImages(prev => ({
         ...prev,
-        active:
-          prev.active === images.array.length - 1
-            ? prev.active
-            : prev.active + 1,
+        active: prev.active === images.array.length - 1 ? 0 : prev.active + 1,
       }));
     }
     if (action === 'prev') {
       setImages(prev => ({
         ...prev,
-        active: prev.active === 0 ? 0 : prev.active - 1,
+        active: prev.active === 0 ? images.array.length - 1 : prev.active - 1,
       }));
     }
   };
@@ -138,7 +135,6 @@ export default function Gallery({images, setImages}) {
             onClick={() => {
               galleryControlsHandler('prev');
             }}
-            disabled={images.active === 0}
           >
             <Typography component="i" className="icon-chevron-left" />
           </IconButton>
@@ -147,7 +143,6 @@ export default function Gallery({images, setImages}) {
             onClick={() => {
               galleryControlsHandler('next');
             }}
-            disabled={images.active === images.array.length - 1}
           >
             <Typography component="i" className="icon-chevron-right" />
           </IconButton>
