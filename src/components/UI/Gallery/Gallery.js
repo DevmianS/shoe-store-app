@@ -6,8 +6,8 @@ const galleryStyles = {
     flex: '0 0 calc(50% - 50px)',
     display: 'flex',
     maxHeight: '500px',
-    overflow: 'auto',
     userSelect: 'none',
+    overflow: 'hidden',
   },
   iconBtn: {
     width: '24px',
@@ -25,10 +25,11 @@ const galleryStyles = {
   thumbnail: {
     width: '74px',
     height: '74px',
+    flex: '0 0 74px',
     padding: '1px',
     border: `1px solid rgba(100,100,100,0.2)`,
     position: 'relative',
-    marginBottom: '16px',
+    marginBottom: '8px',
     cursor: 'pointer',
     '&:hover': {opacity: 0.75},
     '& img': {
@@ -57,6 +58,16 @@ const galleryStyles = {
     display: 'flex',
     gap: '16px',
   },
+  elems: {
+    height: '500px',
+    overflowX: 'auto',
+    direction: 'rtl',
+    width: '100px',
+    '&::webkitScrollbar': {
+      width: '8px',
+      backgroundColor: '#e8e8e8',
+    },
+  },
 };
 
 export default function Gallery({images, setImages}) {
@@ -83,7 +94,7 @@ export default function Gallery({images, setImages}) {
 
   return (
     <Box sx={galleryStyles.column}>
-      <Stack>
+      <Stack sx={galleryStyles.elems}>
         {images.array.map((img, i) => {
           const {attributes} = img;
           const {formats} = attributes;
