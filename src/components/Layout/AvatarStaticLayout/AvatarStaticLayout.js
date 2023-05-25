@@ -1,94 +1,104 @@
-import {Typography, Box, Stack, useTheme, useMediaQuery} from '@mui/material';
-import AvatarStatic from '@/components/UI/AvatarStatic';
-import {rwdValue} from '@/utils/theme';
-import useUser from '@/hooks/useUser';
 import {memo} from 'react';
 
-const AvatarStaticLayout = ({variant}) => {
-  const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 
-  const {name} = useUser();
+import {rwdValue, theme} from '@/utils/theme';
+import useUser from '@/hooks/useUser';
 
-  const styles = {
-    wrapper: {
-      display: 'flex',
-      minHeight: '105px',
-      flexDirection: 'row',
-      paddingLeft: '40px',
-      alignItems: 'center',
-      marginBottom: '7px',
-      paddingBottom: '32px',
-      borderBottom: '1px solid',
-      borderColor: theme.palette.divider,
-    },
-    name: {
-      color: theme.palette.text.primary,
-      fontSize: 16,
-      fontWeight: 500,
-    },
-    avatar: {
-      marginRight: rwdValue(28, 75),
-      border: '4px solid white',
-      flex: `0 0 ${rwdValue(100, 150)}`,
-    },
-  };
+import AvatarStatic from '@/components/UI/AvatarStatic';
 
-  if (variant === 'card') {
-    return (
-      <Stack sx={styles.wrapper}>
-        <AvatarStatic
-          variant="small"
-          userName={name}
-          sx={{textDecoration: 'none'}}
-        />
-        <Box sx={{ml: 2}}>
-          <Typography fontSize={12}>Welcome</Typography>
-          <Typography sx={styles.name}>{name}</Typography>
-        </Box>
-      </Stack>
-    );
-  } else if (variant === 'avatar') {
-    return <AvatarStatic variant="large" sx={styles.avatar} />;
-  } else {
-    return (
-      <Stack
-        direction="row"
-        alignItems="end"
-        sx={{
-          marginLeft: rwdValue(20, 50),
-          marginBottom: rwdValue(20, 30),
-          marginTop: isTablet ? '-15px' : '-30px',
-        }}
-      >
-        <AvatarStatic
-          variant="medium"
-          userName={name}
-          sx={{
-            marginRight: rwdValue(5, 15),
-            border: '4px solid white',
-            zIndex: 2,
-          }}
-        />
-        <Box>
-          <Typography
-            variant="body2"
-            component="h3"
-            fontSize={rwdValue(14, 20)}
-          >
-            {name}
-          </Typography>
-          <Typography
-            color="text.tetriary"
-            fontSize={rwdValue(12, 15)}
-            mb={isTablet ? 0 : '12px'}
-          >
-            1 374 bonus points
-          </Typography>
-        </Box>
-      </Stack>
-    );
-  }
+const AvatarStaticLayoutStyles = {
+  wrapper: {
+    display: 'flex',
+    minHeight: '105px',
+    flexDirection: 'row',
+    paddingLeft: '40px',
+    alignItems: 'center',
+    marginBottom: '7px',
+    paddingBottom: '32px',
+    borderBottom: '1px solid',
+    borderColor: theme.palette.divider,
+  },
+  avatar: {
+    marginRight: rwdValue(28, 75),
+    border: '4px solid white',
+    flex: `0 0 ${rwdValue(100, 150)}`,
+  },
+  avatarName: {
+    color: theme.palette.text.primary,
+    fontSize: 16,
+    fontWeight: 500,
+  },
+  avatarGap: {ml: 2},
+  avatarText: {fontSize: '12px'},
+  points: {
+    color: theme.palette.text.tetriary,
+    fontSize: rwdValue(12, 15),
+    marginBottom: {xs: 0, md: '12px'},
+  },
+  largeName: {fontSize: rwdValue(14, 20)},
+  noBorder: {textDecoration: 'none'},
+  largeWrap: {
+    marginLeft: rwdValue(20, 50),
+    marginBottom: rwdValue(20, 30),
+    alignItems: 'end',
+    flexDirection: 'row',
+    marginTop: {xs: '-15px', md: '-30px'},
+  },
+  largeName: {
+    marginRight: rwdValue(5, 15),
+    border: '4px solid white',
+    zIndex: 2,
+  },
 };
 
-export default memo(AvatarStaticLayout);
+const AvatarStaticLayout = ({variant}) => {
+  const {name} = useUser();
+  return (
+    <>
+      {variant === 'card' ? (
+        <Stack sx={AvatarStaticLayoutStyles.wrapper}>
+          <AvatarStatic
+            variant="small"
+            userName={name}
+            sx={AvatarStaticLayoutStyles.noBorder}
+          />
+          <Box sx={AvatarStaticLayoutStyles.avatarGap}>
+            <Typography sx={AvatarStaticLayoutStyles.avatarText}>
+              Welcome
+            </Typography>
+            <Typography sx={AvatarStaticLayoutStyles.avatarName}>
+              {name}
+            </Typography>
+          </Box>
+        </Stack>
+      ) : variant === 'avatar' ? (
+        <AvatarStatic variant="large" sx={AvatarStaticLayoutStyles.avatar} />
+      ) : (
+        <Stack sx={AvatarStaticLayoutStyles.largeWrap}>
+          <AvatarStatic
+            variant="medium"
+            userName={name}
+            sx={AvatarStaticLayoutStyles.largeName}
+          />
+          <Box>
+            <Typography
+              variant="body2"
+              component="h3"
+              sx={AvatarStaticLayoutStyles.largeName}
+            >
+              {name}
+            </Typography>
+            <Typography sx={AvatarStaticLayoutStyles.points}>
+              1234 bonus points
+            </Typography>
+          </Box>
+        </Stack>
+      )}
+    </>
+  );
+};
+
+export default AvatarStaticLayout;

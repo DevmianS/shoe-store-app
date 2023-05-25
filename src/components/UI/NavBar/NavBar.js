@@ -1,33 +1,24 @@
 import Link from 'next/link';
 import {useRouter} from 'next/router';
+
 import {memo, useRef, useEffect} from 'react';
 
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Stack,
-  Toolbar,
-  Box,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-
-import Cart from '@/components/UI/Cart';
-import Searchbar from '@/components/UI/Searchbar';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import {useSearch} from '@/context/SearchContext';
 import {useToggle} from '@/context/ToggleContext';
 import {useCart} from '@/context/CartContext';
 
-// TEMP
-import NestedList from './allPages';
+import Cart from '@/components/UI/Cart';
+import Searchbar from '@/components/UI/Searchbar';
 
 const NavBar = () => {
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-
   const {isToggled, toggle, setIsToggled} = useToggle();
   const {searchExpanded, setSearchExpanded} = useSearch();
   const {cartCount} = useCart();
@@ -35,7 +26,26 @@ const NavBar = () => {
   const searchInputRef = useRef();
   const router = useRouter();
 
-  const styles = {
+  const handleMenuCLick = () => {
+    toggle();
+    searchExpanded && setSearchExpanded(false);
+  };
+
+  const handleFocusInputResponsive = () => {
+    setTimeout(() => {
+      searchInputRef.current && searchInputRef.current.focus();
+    }, 100);
+    setSearchExpanded(true);
+    isToggled && setIsToggled(false);
+  };
+
+  useEffect(() => {
+    if (router.asPath.includes('search')) {
+      handleFocusInputResponsive();
+    }
+  }, []);
+
+  const navStyles = {
     box: {
       width: '100%',
       minHeight: {
@@ -104,12 +114,18 @@ const NavBar = () => {
     bagIcon: {display: searchExpanded ? 'none' : ''},
     searchIcon: {
       color: 'inherit',
-      display: isDesktop ? 'none' : searchExpanded ? 'none' : 'flex',
+      display: {
+        xs: searchExpanded ? 'none' : 'flex',
+        md: 'none',
+      },
       flex: '0 0 56px',
     },
     menuIcon: {
       color: 'inherit',
-      display: isDesktop ? 'none' : 'flex',
+      display: {
+        xs: 'flex',
+        md: 'none',
+      },
       flex: '0 0 56px',
     },
     icons: {
@@ -133,61 +149,41 @@ const NavBar = () => {
     },
   };
 
-  const handleMenuCLick = () => {
-    toggle();
-    searchExpanded && setSearchExpanded(false);
-  };
-
-  const handleFocusInputResponsive = () => {
-    setTimeout(() => {
-      searchInputRef.current && searchInputRef.current.focus();
-    }, 100);
-    setSearchExpanded(true);
-    isToggled && setIsToggled(false);
-  };
-
-  useEffect(() => {
-    if (router.asPath.includes('search')) {
-      handleFocusInputResponsive();
-    }
-  }, []);
-
   return (
     <>
-      <Box sx={styles.box} />
-      <AppBar sx={styles.appBar}>
-        <Toolbar sx={styles.toolBar}>
+      <Box sx={navStyles.box} />
+      <AppBar sx={navStyles.appBar}>
+        <Toolbar sx={navStyles.toolBar}>
           <Link href="/">
             <IconButton
               size="large"
               edge="start"
               aria-label="logo"
-              sx={styles.logo}
+              sx={navStyles.logo}
             >
               <Typography component="i" className="icon-logo"></Typography>
             </IconButton>
           </Link>
-          <Stack component="nav" sx={styles.nav}>
+          <Stack component="nav" sx={navStyles.nav}>
             <Link href="/">
               <Button>Products</Button>
             </Link>
-            <NestedList />
           </Stack>
-          <Box sx={styles.search}>
+          <Box sx={navStyles.search}>
             <Searchbar
               searchExpanded={searchExpanded}
               setSearchExpanded={setSearchExpanded}
               ref={searchInputRef}
             />
-            <Box sx={styles.icons}>
-              <IconButton size="large" aria-label="Bag" sx={styles.bagIcon}>
+            <Box sx={navStyles.icons}>
+              <IconButton size="large" aria-label="Bag" sx={navStyles.bagIcon}>
                 <Cart count={cartCount} />
               </IconButton>
               <IconButton
                 size="large"
                 onClick={handleFocusInputResponsive}
                 aria-label="Search"
-                sx={styles.searchIcon}
+                sx={navStyles.searchIcon}
               >
                 <i className="icon-search"></i>
               </IconButton>
@@ -195,7 +191,7 @@ const NavBar = () => {
                 size="large"
                 aria-label="Menu"
                 onClick={handleMenuCLick}
-                sx={styles.menuIcon}
+                sx={navStyles.menuIcon}
               >
                 <Typography
                   component="i"
@@ -206,7 +202,10 @@ const NavBar = () => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box sx={styles.overlay} onClick={() => setSearchExpanded(false)}></Box>
+      <Box
+        sx={navStyles.overlay}
+        onClick={() => setSearchExpanded(false)}
+      ></Box>
     </>
   );
 };

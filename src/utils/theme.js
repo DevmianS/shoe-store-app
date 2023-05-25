@@ -186,3 +186,14 @@ theme = createTheme(theme, {
     },
   },
 });
+
+export const isMobile =
+  typeof window !== 'undefined' &&
+  window?.innerWidth < theme.breakpoints.values.sm;
+export const isDesktop =
+  typeof window !== 'undefined' &&
+  window?.innerWidth > theme.breakpoints.values.md;
+export const isTablet =
+  typeof window !== 'undefined' &&
+  window?.innerWidth < theme.breakpoints.values.md &&
+  window?.innerWidth > theme.breakpoints.values.sm;

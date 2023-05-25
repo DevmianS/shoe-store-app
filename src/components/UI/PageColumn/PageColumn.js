@@ -1,11 +1,13 @@
-import {Box, useTheme} from '@mui/material';
+import Box from '@mui/material/Box';
 
 const PageColumn = ({children, sx}) => {
-  const theme = useTheme();
-  const isDesktop = theme.breakpoints.up('md');
-
   const pageColStyles = {
-    flex: `0 0 ${isDesktop ? '100%' : '50%'}`,
+    flexShring: 0,
+    flexGrow: 0,
+    flexBasis: {
+      xs: '50%',
+      md: '100%',
+    },
     position: 'relative',
     minHeight: '100%',
     padding: '0 30px',
@@ -14,7 +16,10 @@ const PageColumn = ({children, sx}) => {
       height: '100%',
       maxHeight: '60vh',
       width: '100%',
-      objectFit: isDesktop ? 'cover' : 'contain',
+      objectFit: {
+        xs: 'contain',
+        md: 'cover',
+      },
       objectPosition: 'top center',
     },
   };
