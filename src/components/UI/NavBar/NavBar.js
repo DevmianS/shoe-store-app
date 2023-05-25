@@ -25,7 +25,6 @@ const NavBar = () => {
   const searchInputRef = useRef();
   const router = useRouter();
 
-  
   const navStyles = {
     box: {
       width: '100%',
@@ -99,11 +98,6 @@ const NavBar = () => {
         xs: searchExpanded ? 'none' : 'flex',
         md: 'none',
       },
-      flex: '0 0 56px',
-    },
-    closeIcon: {
-      color: 'inherit',
-      display: searchExpanded ? 'flex' : 'none',
       flex: '0 0 56px',
     },
     closeIcon: {
@@ -222,7 +216,7 @@ const NavBar = () => {
                 size="large"
                 aria-label="Menu"
                 onClick={handleClose}
-                sx={styles.closeIcon}
+                sx={navStyles.closeIcon}
               >
                 <Typography component="i" className={'icon-close'}></Typography>
               </IconButton>
