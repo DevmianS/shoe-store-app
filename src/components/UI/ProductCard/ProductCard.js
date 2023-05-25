@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import {useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {
   Typography,
   Stack,
@@ -212,6 +212,18 @@ export default function ProductCard({
       },
     },
   };
+
+  const handleOutsideClick = useCallback(({target}) => {
+    const openedMenu = document.getElementsByClassName('three-dots-menu')[0];
+    if (!openedMenu.contains(target)) setIsMenuVisible(false);
+  }, []);
+
+  useEffect(() => {
+    if (isMenuVisible)
+      window.addEventListener('click', handleOutsideClick, true);
+    else window.removeEventListener('click', handleOutsideClick, true);
+  }, [isMenuVisible, handleOutsideClick]);
+
   return (
     <Box sx={styles.column}>
       <Box sx={styles.card}>

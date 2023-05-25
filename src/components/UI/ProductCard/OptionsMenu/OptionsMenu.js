@@ -56,7 +56,7 @@ function OptionsMenu({productId, onClick}) {
   const router = useRouter();
 
   return (
-    <Paper elevation={3}>
+    <Paper elevation={3} className="three-dots-menu">
       <List
         elevation={3}
         component="nav"
