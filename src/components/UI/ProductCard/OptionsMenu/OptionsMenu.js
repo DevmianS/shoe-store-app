@@ -20,6 +20,7 @@ const styles = {
     width: '40%',
     minWidth: '60px',
     bgcolor: '#f9f9f9',
+    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.15)',
     span: {
       fontWeight: '300',
       fontSize: rwdValue(10, 15),
