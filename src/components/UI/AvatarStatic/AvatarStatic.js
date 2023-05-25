@@ -1,75 +1,38 @@
-import {rwdValue} from '@/utils/theme';
-import {Avatar, Box, Link} from '@mui/material';
-import useUser from '@/hooks/useUser';
-import {useRouter} from 'next/router';
+import Avatar from '@mui/material/Avatar';
 
-const AvatarStatic = ({variant = 'medium', sx}) => {
-  const styles = {
-    avatar: {
-      width: '100%',
-      height: '100%',
-    },
-    avatarLink: {
-      width: '100%',
-      height: '100%',
-      transition: '.3s',
-      '&:hover': {
-        boxShadow: `0 0 3px 1px grey`,
-        transform: 'scale(1.03)',
-        filter: 'brightness(1.1)',
-      },
-      cursor: 'pointer',
-    },
+import useUser from '@/hooks/useUser';
+import {rwdValue} from '@/utils/theme';
+import Image from 'next/image';
+
+const AvatarStatic = ({variant = 'medium', sx, photo}) => {
+  const {initials} = useUser();
+
+  const sizes = {
+    small: {range: rwdValue(61, 64), max: 64},
+    medium: {range: rwdValue(61, 120), max: 120},
+    large: {range: rwdValue(100, 150), max: 150},
   };
 
-  const size =
-    variant === 'small'
-      ? rwdValue(61, 64)
-      : variant === 'medium'
-      ? rwdValue(61, 120)
-      : variant === 'large'
-      ? rwdValue(100, 150)
-      : 'unset';
-  const maxSize =
-    variant === 'small'
-      ? 64
-      : variant === 'medium'
-      ? 120
-      : variant === 'large'
-      ? 150
-      : 'unset';
-
-  const avatarVariant = {
-    width: size,
-    height: size,
-    maxWidth: maxSize,
-    maxHeight: maxSize,
+  const variantsSize = {
+    width: sizes[variant].range,
+    height: sizes[variant].range,
+    maxWidth: sizes[variant].max,
+    maxHeight: sizes[variant].max,
     borderRadius: '50%',
   };
-
-  const {initials} = useUser();
-  const router = useRouter();
-
-  if (variant === 'small') {
-    return (
-      <Box
-        onClick={() => router.push('/profile')}
-        sx={{...avatarVariant, ...sx}}
-      >
-        <Avatar src={'/'} sx={styles.avatarLink}>
-          {initials}
-        </Avatar>
-      </Box>
-    );
-  } else {
-    return (
-      <Box sx={{...avatarVariant, ...sx}}>
-        <Avatar src={'/'} sx={styles.avatar}>
-          {initials}
-        </Avatar>
-      </Box>
-    );
-  }
+  return (
+    <Avatar
+      sx={{
+        ...variantsSize,
+        ...sx,
+      }}
+    >
+      {photo ? (
+        <Image src={photo} fill alt={initials + ' user avatar'} />
+      ) : (
+        initials
+      )}
+    </Avatar>
+  );
 };
-
 export default AvatarStatic;
