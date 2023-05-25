@@ -1,6 +1,13 @@
 import Image from 'next/image';
 import {useState} from 'react';
-import {Typography, Stack, Box, useMediaQuery, IconButton} from '@mui/material';
+import {
+  Typography,
+  Stack,
+  Box,
+  useMediaQuery,
+  IconButton,
+  Button as MUIButton,
+} from '@mui/material';
 import {useTheme} from '@mui/material/styles';
 
 import {rwdValue} from '@/utils/theme';
@@ -9,6 +16,7 @@ import {useCart} from '@/context/CartContext';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import Button from '@/components/UI/Button';
+import OptionsMenu from './OptionsMenu';
 
 export default function ProductCard({
   productId,
@@ -17,10 +25,6 @@ export default function ProductCard({
   category,
   imgPath,
 }) {
-  // if (imgPath == undefined) {
-  //   imgPath = [{attributes: {alternativeText: '', url: ''}}];
-  // }
-
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -81,6 +85,21 @@ export default function ProductCard({
         height: '100%',
         objectFit: 'cover',
         transition: '1s',
+      },
+    },
+    threeDots: {
+      position: 'absolute',
+      right: 10,
+      top: 0,
+      opacity: 1,
+      minWidth: '16px',
+      height: '32px',
+      '&.MuiButtonBase-root:hover': {
+        bgcolor: 'transparent',
+      },
+      span: {
+        fontWeight: 700,
+        fontSize: rwdValue(14, 32),
       },
     },
     image: {
@@ -247,6 +266,20 @@ export default function ProductCard({
                 })}
           </Stack>
         </Box>
+        <MUIButton
+          variant="text"
+          disableRipple
+          size={isDesktop ? 'medium' : 'small'}
+          sx={styles.threeDots}
+          onClick={() => {
+            console.log('add menu toggle here!', productId);
+          }}
+        >
+          <Typography component="span" className="three-dots">
+            ...
+          </Typography>
+        </MUIButton>
+        <OptionsMenu productId={productId} />
       </Box>
     </Box>
   );
