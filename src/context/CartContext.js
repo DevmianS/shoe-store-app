@@ -43,7 +43,7 @@ export const CartProvider = ({children}) => {
       [productId]: 0,
     }));
     setCartCount(prev => prev - itemCount);
-    executeSucces(productId + ' was fully deleted from your cart!');
+    executeSucces(title + ' was fully deleted from your cart!');
   };
 
   return (

@@ -61,6 +61,7 @@ const Home = () => {
         </Typography>
         <PaginationUI
           pageCount={pagination?.pageCount}
+          page={page}
           setPage={setPage}
           isLoading={isLoading}
         />
@@ -88,6 +89,12 @@ const Home = () => {
             <NoContent />
           )}
         </Box>
+        <PaginationUI
+          pageCount={pagination?.pageCount}
+          page={page}
+          setPage={setPage}
+          isLoading={isLoading}
+        />
       </Box>
     </Box>
   );
