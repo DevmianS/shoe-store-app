@@ -1,30 +1,39 @@
-import {
-  Typography,
-  Box,
-  Stack,
-  useTheme,
-  useMediaQuery,
-  Skeleton,
-} from '@mui/material';
+import {useState} from 'react';
 
-import Link from 'next/link';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
+import useProducts from '@/hooks/useProducts';
+import {SkeletonProducts} from '@/utils/utils';
 import {rwdValue} from '@/utils/theme';
 
-import Button from '@/components/UI/Button';
-
+import AvatarStaticLayout from '@components/Layout/AvatarStaticLayout';
 import SideBar from '@/components/Layout/SideBar';
 
+import NoContent from '@/components/UI/NoContent';
+import PaginationUI from '@/components/UI/PaginationUI';
 import ProductCard from '@/components/UI/ProductCard';
+import TopBanner from '@/components/UI/TopBanner';
 
 import bannerImg from '@/assets/banner2.jpg';
-import TopBanner from '@/components/UI/TopBanner';
-import useProducts from '@/hooks/useProducts';
-import AvatarStaticLayout from '../AvatarStaticLayout';
-import {SkeletonProducts} from '@/utils/utils';
-import NoContent from '@/components/UI/NoContent';
-import {useState} from 'react';
-import PaginationUI from '@/components/UI/PaginationUI';
+
+const productsStyles = {
+  row: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: `${rwdValue(0, 40)} 0`,
+  },
+  content: {
+    flex: '1 1 auto',
+    padding: {lg: '0 60px', md: '0 40px', sm: '0 30px', xs: '0 10px'},
+    card: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      margin: {sm: '0 -8px', md: '0 -24px'},
+    },
+  },
+  title: {marginBottom: rwdValue(20, 35)},
+};
 
 const Home = () => {
   const [page, setPage] = useState(1);
@@ -36,27 +45,12 @@ const Home = () => {
   console.log('products', products);
 
   return (
-    <Box
-      justifyContent={'space-between'}
-      display="flex"
-      sx={{
-        padding: `${rwdValue(0, 40)} 0`,
-      }}
-    >
+    <Box sx={productsStyles.row}>
       <SideBar />
-      <Box
-        sx={{
-          flex: '1 1 auto',
-          padding: {lg: '0 60px', md: '0 40px', sm: '0 30px', xs: '0 10px'},
-        }}
-      >
+      <Box sx={productsStyles.content}>
         <TopBanner imgPath={bannerImg.src} />
         <AvatarStaticLayout />
-        <Typography
-          variant="h1"
-          component="h1"
-          sx={{marginBottom: rwdValue(20, 35)}}
-        >
+        <Typography variant="h1" component="h1" sx={productsStyles.title}>
           All products
         </Typography>
         <PaginationUI
@@ -65,11 +59,7 @@ const Home = () => {
           setPage={setPage}
           isLoading={isLoading}
         />
-        <Box
-          display="flex"
-          flexWrap="wrap"
-          margin={{sm: '0 -8px', md: '0 -24px'}}
-        >
+        <Box sx={productsStyles.card}>
           {isLoading && SkeletonProducts()}
           {Array.isArray(products) && products.length > 0 ? (
             products.map(product => {
