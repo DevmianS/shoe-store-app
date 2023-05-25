@@ -1,15 +1,17 @@
-import {Box, useMediaQuery, useTheme} from '@mui/material';
+import Box from '@mui/material/Box';
+
+const topBannerStyles = {
+  minHeight: {xs: '130px', md: '260px'},
+  width: {xs: 'calc(100% + 20px)', md: '100%'},
+  transform: {xs: `translateX(-10px)`, md: `translateX(0)`},
+};
 
 export default function TopBanner({imgPath}) {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <Box
       sx={{
+        ...topBannerStyles,
         background: `url(${imgPath}) center/cover no-repeat`,
-        minHeight: isMobile ? '130px' : '260px',
-        width: isMobile ? 'calc(100% + 20px)' : '100%',
-        transform: `translateX(${isMobile ? '-10px' : '0px'})`,
       }}
     ></Box>
   );

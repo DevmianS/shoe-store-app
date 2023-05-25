@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
-import {Box, Typography} from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import Button from '@/components/UI/Button';
 
@@ -61,6 +62,14 @@ const stylesRootMobile = {
   },
   btn: {width: '100%'},
   link: {width: '47%'},
+  links: {
+    width: '100%',
+    height: '20vh',
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    padding: '20px 10px',
+  },
 };
 
 const RootMobile = () => {
@@ -114,16 +123,7 @@ const RootMobile = () => {
           style={stylesRootMobile.image}
         />
       </Box>
-      <Box
-        sx={{
-          width: '100%',
-          height: '20vh',
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          padding: '20px 10px',
-        }}
-      >
+      <Box sx={stylesRootMobile.links}>
         <Link href="/sign-in" style={stylesRootMobile.link}>
           <Button outlined={true} sx={stylesRootMobile.btn} size="small">
             Sign in
