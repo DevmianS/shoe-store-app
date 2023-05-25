@@ -34,7 +34,7 @@ const galleryStyles = {
     '& img': {
       width: '100%',
       height: '100%',
-      objectFit: 'cover',
+      objectFit: {xs: 'contain', md: 'cover'},
     },
   },
   image: {
@@ -57,8 +57,9 @@ const galleryStyles = {
   iconBtn: {
     width: '24px',
     height: '24px',
-    border: '1px solid #fff',
-    backgroundColor: '#fff',
+    border: '1px solid',
+    borderColor: {xs: '#dbdbdb', md: '#fff'},
+    backgroundColor: {xs: '#dbdbdb', md: '#fff'},
     transition: '0.3s all',
     '&:disabled': {backgroundColor: 'lightgrey', borderColor: 'lightgrey'},
     '&:hover': {
@@ -69,8 +70,8 @@ const galleryStyles = {
   },
   controls: {
     position: 'absolute',
-    bottom: '32px',
-    right: '32px',
+    bottom: {xs: '16px', md: '32px'},
+    right: {xs: '16px', md: '32px'},
     display: 'flex',
     gap: '16px',
   },
@@ -99,23 +100,27 @@ export default function Gallery({images, setImages}) {
     <Box sx={galleryStyles.column}>
       <Stack sx={galleryStyles.elems}>
         {images.array.map((img, i) => {
-          const {attributes} = img;
-          const {formats} = attributes;
-          const {thumbnail} = formats;
+          const thumbnailStyles = {
+            ...galleryStyles.thumbnail,
+            opacity: i === images.active ? 1 : 0.3,
+          };
           return (
             <Box
               key={img?.id}
               onClick={() => galleryClickHandler(i)}
-              sx={{
-                ...galleryStyles.thumbnail,
-                opacity: i === images.active ? 1 : 0.3,
-              }}
+              sx={thumbnailStyles}
             >
               <Image
                 fill
                 id={img?.id}
-                alt={thumbnail?.hash}
-                src={thumbnail?.url}
+                alt={
+                  img?.attributes?.formats?.thumbnail?.hash ||
+                  images?.array[i]?.attributes?.hash
+                }
+                src={
+                  img?.attributes?.formats?.thumbnail?.url ||
+                  images?.array[i]?.attributes?.url
+                }
               />
             </Box>
           );
