@@ -41,16 +41,8 @@ import {useRouter} from 'next/router';
 const ProductAction = ({isEditing}) => {
   const router = useRouter();
 
-  const {
-    brands,
-    categories,
-    genders,
-    sizes,
-    colors,
-    isLoading,
-    setSizes,
-    setCategories,
-  } = useProductData() || {};
+  const {brands, categories, genders, sizes, colors, isLoading, setCategories} =
+    useProductData() || {};
 
   const [loading, setLoading] = useState(false);
 
@@ -58,7 +50,7 @@ const ProductAction = ({isEditing}) => {
     gender: 'Men',
     brand: 'Nike',
     color: 'Black',
-    size: '',
+    size: '36',
   });
 
   const [name, setName] = useState('');
@@ -84,19 +76,6 @@ const ProductAction = ({isEditing}) => {
   };
   const sizeChangeHandler = e => {
     setSelect({...select, size: e.target.value});
-  };
-  const checkBoxChangeHandler = event => {
-    setSizes(
-      sizes.map(obj => {
-        if (obj.value == event.target.htmlFor) {
-          return {
-            ...obj,
-            needed: !obj.needed,
-          };
-        }
-        return obj;
-      }),
-    );
   };
 
   const checkBoxChangeHandlerCategory = event => {
@@ -218,6 +197,11 @@ const ProductAction = ({isEditing}) => {
       width: '100%',
       paddingBottom: 10,
     },
+    toggleButtonGroup: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '10px',
+    },
   };
 
   const {jwt, id} = useUser();
@@ -271,7 +255,7 @@ const ProductAction = ({isEditing}) => {
   };
 
   const resetForm = () => {
-    setSelect({gender: 'Men', brand: 'Nike', color: 'Black'});
+    setSelect({gender: 'Men', brand: 'Nike', color: 'Black', size: '36'});
 
     setName('');
     setDescription('');
@@ -282,14 +266,6 @@ const ProductAction = ({isEditing}) => {
       {id: 3, file: null, image: null},
       {id: 4, file: null, image: null},
     ]);
-    setSizes(
-      sizes.map(obj => {
-        return {
-          ...obj,
-          needed: false,
-        };
-      }),
-    );
     setCategories(
       categories.map(obj => {
         return {
@@ -446,17 +422,38 @@ const ProductAction = ({isEditing}) => {
                 <Typography sx={styles.label}>Add size</Typography>
                 <ToggleButtonGroup
                   exclusive
-                  sx={{display: 'flex', flexWrap: 'wrap', gap: '10px'}}
+                  sx={styles.toggleButtonGroup}
+                  onChange={sizeChangeHandler}
                 >
                   {sizes &&
                     sizes.map(size => {
+                      const itemStyle = {
+                        border: '1px solid #C4C4C4',
+                        background:
+                          size.value === select.size
+                            ? theme.palette.primary.main
+                            : 'white',
+                        color:
+                          size.value === select.size
+                            ? 'white'
+                            : theme.palette.text.secondary,
+                        '&:hover': {
+                          background:
+                            size.value === select.size
+                              ? theme.palette.primary.main
+                              : 'white',
+                          borderColor: 'black',
+                          color: 'black',
+                        },
+                      };
                       return (
                         <>
                           <ToggleButton
+                            size={isDesktop ? 'medium' : 'small'}
                             key={size.id}
                             value={size.value}
-                            selected={sizes.some(x => x.id === size.id)}
                             onClick={sizeChangeHandler}
+                            sx={itemStyle}
                           >{`EU-${size.value}`}</ToggleButton>
                         </>
                       );
