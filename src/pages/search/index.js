@@ -228,7 +228,7 @@ export async function getServerSideProps(context) {
       return {
         id: String(categorie.id),
         name: String(categorie.attributes.name),
-        needed: (searchKeyInObject(qsObj, 'categorie') || []).includes(
+        needed: (searchKeyInObject(qsObj, 'categories') || []).includes(
           String(categorie.id),
         ),
       };
