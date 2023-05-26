@@ -15,7 +15,7 @@ import {useFilter} from '@/context/FilterContext';
 import PriceRangeSlider from '@/components/UI/PriceRangeSlider';
 import {useState} from 'react';
 
-export default function Filters({total}) {
+export default function Filters({total, maxPriceCalculated}) {
   const theme = useTheme();
   const styles = {
     wrapper: {
@@ -57,9 +57,48 @@ export default function Filters({total}) {
 
   const [expandBrand, setExpandBrand] = useState(false);
   const [expandColor, setExpandColor] = useState(false);
+  const [expandSize, setExpandSize] = useState(false);
+  const [expandCategory, setExpandCategory] = useState(false);
 
   const {arrIdFilters, setArrIdFilters, navigateToSearch} = useFilter();
 
+  const checkBoxChangeCategoryHandler = event => {
+    console.log('event: ', event, event.target.value);
+    let newArr = arrIdFilters.categories.map(category => {
+      if (category.id == event.target.value) {
+        return {
+          ...category,
+          needed: !category.needed,
+        };
+      }
+      return category;
+    });
+    setArrIdFilters(prevState => {
+      return {
+        ...prevState,
+        categories: newArr,
+      };
+    });
+  };
+
+  const checkBoxChangeSizeHandler = event => {
+    console.log('event: ', event, event.target.value);
+    let newArr = arrIdFilters.sizes.map(size => {
+      if (size.id == event.target.value) {
+        return {
+          ...size,
+          needed: !size.needed,
+        };
+      }
+      return size;
+    });
+    setArrIdFilters(prevState => {
+      return {
+        ...prevState,
+        sizes: newArr,
+      };
+    });
+  };
   const checkBoxChangeGenderHandler = event => {
     console.log('event: ', event, event.target.value);
     let newArr = arrIdFilters.genders.map(gender => {
@@ -232,12 +271,142 @@ export default function Filters({total}) {
             </Typography>
           </AccordionSummary>
           <AccordionDetails sx={styles.accordionDetailsAlt}>
-            <PriceRangeSlider />
+            <PriceRangeSlider maxPriceCalculated={maxPriceCalculated} />
           </AccordionDetails>
         </Accordion>
       </Stack>
       <Stack sx={styles.wrapper}>
-        <Accordion sx={styles.accordion} elevation={0} defaultExpanded>
+        <Accordion sx={styles.accordion} elevation={0}>
+          <AccordionSummary
+            sx={styles.accordionSummary}
+            expandIcon={<ExpandMoreIcon />}
+          >
+            <Typography variant="body1" sx={styles.accordionTitle}>
+              Size
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={styles.accordionDetails}>
+            {arrIdFilters.sizes &&
+              arrIdFilters.sizes
+                .slice(0, 3)
+                .map(size => (
+                  <FormControlLabel
+                    key={size.id}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={size.id}
+                        checked={size.needed}
+                        onChange={checkBoxChangeSizeHandler}
+                      />
+                    }
+                    label={size.value}
+                  />
+                ))}
+            {expandSize &&
+              arrIdFilters.sizes &&
+              arrIdFilters.sizes
+                .slice(3)
+                .map(size => (
+                  <FormControlLabel
+                    key={size.id}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={size.id}
+                        checked={size.needed}
+                        onChange={checkBoxChangeSizeHandler}
+                      />
+                    }
+                    label={size.value}
+                  />
+                ))}
+            <Accordion
+              sx={styles.accordion}
+              elevation={0}
+              onClick={() => setExpandSize(!expandSize)}
+            >
+              <AccordionSummary
+                sx={styles.accordionSummary}
+                expandIcon={<ExpandMoreIcon />}
+              >
+                <Typography variant="body1" sx={styles.accordionTitle}>
+                  {expandSize ? 'Show Less Sizes' : 'Show More Sizes'}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={styles.accordionDetails}></AccordionDetails>
+            </Accordion>
+          </AccordionDetails>
+        </Accordion>
+      </Stack>
+      <Stack sx={styles.wrapper}>
+        <Accordion sx={styles.accordion} elevation={0}>
+          <AccordionSummary
+            sx={styles.accordionSummary}
+            expandIcon={<ExpandMoreIcon />}
+          >
+            <Typography variant="body1" sx={styles.accordionTitle}>
+              Categories
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={styles.accordionDetails}>
+            {arrIdFilters.categories &&
+              arrIdFilters.categories
+                .slice(0, 3)
+                .map(category => (
+                  <FormControlLabel
+                    key={category.id}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={category.id}
+                        checked={category.needed}
+                        onChange={checkBoxChangeCategoryHandler}
+                      />
+                    }
+                    label={category.name}
+                  />
+                ))}
+            {expandCategory &&
+              arrIdFilters.categories &&
+              arrIdFilters.categories
+                .slice(3)
+                .map(category => (
+                  <FormControlLabel
+                    key={category.id}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={category.id}
+                        checked={category.needed}
+                        onChange={checkBoxChangeCategoryHandler}
+                      />
+                    }
+                    label={category.name}
+                  />
+                ))}
+            <Accordion
+              sx={styles.accordion}
+              elevation={0}
+              onClick={() => setExpandCategory(!expandCategory)}
+            >
+              <AccordionSummary
+                sx={styles.accordionSummary}
+                expandIcon={<ExpandMoreIcon />}
+              >
+                <Typography variant="body1" sx={styles.accordionTitle}>
+                  {expandCategory
+                    ? 'Show Less Categories'
+                    : 'Show More Categories'}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={styles.accordionDetails}></AccordionDetails>
+            </Accordion>
+          </AccordionDetails>
+        </Accordion>
+      </Stack>
+      <Stack sx={styles.wrapper}>
+        <Accordion sx={styles.accordion} elevation={0}>
           <AccordionSummary
             sx={styles.accordionSummary}
             expandIcon={<ExpandMoreIcon />}

@@ -36,15 +36,11 @@ export const FilterProvider = ({children}) => {
           name: {
             $containsi: arrIdFilters.name || [],
           },
-          size: {
-            $eq: arrIdFilters.sizes
-              .filter(obj => obj.needed)
-              .map(obj => obj.id),
-          },
+          size: arrIdFilters.sizes.filter(obj => obj.needed).map(obj => obj.id),
           brand: arrIdFilters.brands
             .filter(obj => obj.needed)
             .map(obj => obj.id),
-          category: arrIdFilters.categories
+          categories: arrIdFilters.categories
             .filter(obj => obj.needed)
             .map(obj => obj.id),
           gender: arrIdFilters.genders

@@ -21,12 +21,27 @@ const SearchResults = ({searchString, productsServer, total, filters}) => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
+  const [maxPriceCalculated, setMaxPriceCalculated] = useState(null);
+
   const {setArrIdFilters} = useFilter();
 
   useEffect(() => {
     console.log('filters back: ', filters);
     setArrIdFilters(filters);
   }, []);
+
+  useEffect(() => {
+    let maxPrice = 0;
+    productsServer &&
+      productsServer.forEach(product => {
+        console.log('product: ', product);
+        if (parseFloat(product.attributes.price) > maxPrice) {
+          maxPrice = parseFloat(product.attributes.price);
+        }
+      });
+    setMaxPriceCalculated(maxPrice);
+    console.log('Max price is: ', maxPrice);
+  }, [productsServer]);
 
   const styles = {
     row: {
@@ -84,6 +99,7 @@ const SearchResults = ({searchString, productsServer, total, filters}) => {
                 productsLength={productsServer && productsServer.length}
                 filters={filters}
                 total={total}
+                maxPriceCalculated={maxPriceCalculated}
               />
             </SideBar>
           )}
