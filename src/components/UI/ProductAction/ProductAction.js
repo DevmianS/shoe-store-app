@@ -62,6 +62,10 @@ const ProductAction = ({isEditing}) => {
     {id: 2, file: null, image: null},
     {id: 3, file: null, image: null},
     {id: 4, file: null, image: null},
+    {id: 5, file: null, image: null},
+    {id: 6, file: null, image: null},
+    {id: 7, file: null, image: null},
+    {id: 8, file: null, image: null},
   ]);
 
   // EVENTS
@@ -97,7 +101,7 @@ const ProductAction = ({isEditing}) => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const lg = useMediaQuery(theme.breakpoints.down('lg'));
 
-  const styles = {
+  const actionStyles = {
     openButton: {
       maxWidth: '152px',
     },
@@ -114,15 +118,15 @@ const ProductAction = ({isEditing}) => {
     row: {
       display: 'flex',
       justifyContent: 'space-between',
-      padding: !isDesktop ? '25px 0' : '40px 0',
+      padding: {xs: '25px 0', md: '40px 0'},
     },
     content: {
       '& .MuiInputBase-root': {
-        height: isDesktop ? '48px' : '33px',
-        fontSize: isDesktop ? '15px' : '10px',
+        height: {xs: '33px', md: '48px'},
+        fontSize: {xs: '10px', md: '15px'},
       },
       '& label': {
-        fontSize: isDesktop ? '15px' : '12px',
+        fontSize: {xs: '12px', md: '15px'},
       },
       flex: '1 1 auto',
       padding: `0 ${rwdValue(20, 60)}`,
@@ -130,7 +134,7 @@ const ProductAction = ({isEditing}) => {
     formItem: {
       marginBottom: '25px',
       '& textarea': {
-        height: isDesktop ? '270px!important' : '34px!important',
+        height: {md: '270px!important', xs: '34px!important'},
         width: '100%',
         color: '#5C5C5C',
         padding: '10px',
@@ -157,9 +161,9 @@ const ProductAction = ({isEditing}) => {
         cursor: 'pointer',
         border: `1px solid #C4C4C4`,
         borderRadius: '5.58px',
-        width: isDesktop ? '75px' : '52px',
-        height: isDesktop ? '48px' : '34px',
-        fontSize: isDesktop ? '15px' : '10px',
+        width: {md: '75px', xs: '52px'},
+        height: {md: '48px', xs: '34px'},
+        fontSize: {md: '15px', xs: '10px'},
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -173,13 +177,13 @@ const ProductAction = ({isEditing}) => {
     formRow: {
       display: 'flex',
       justifyContent: 'space-between',
-      flexDirection: !isDesktop ? 'column' : 'row',
+      flexDirection: isDesktop ? 'row' : 'column',
       flexWrap: lg ? 'wrap' : 'nowrap',
     },
     form: {
-      maxWidth: !isDesktop ? '100%' : '440px',
-      flex: !isDesktop ? '1 1 auto' : '0 0 440px',
-      marginRight: !isDesktop ? 0 : rwdValue(30, 120),
+      maxWidth: {xs: '100%', md: '440px'},
+      flex: isDesktop ? '0 0 440px' : '1 1 auto',
+      marginRight: isDesktop ? rwdValue(30, 120) : 0,
       '& .MuiInputBase-input': {
         fontSize: isDesktop ? '15px' : '10px',
       },
@@ -187,12 +191,12 @@ const ProductAction = ({isEditing}) => {
     },
     checkboxRow: {display: 'flex', gap: '20px', flexDirection: 'row'},
     label: {
-      fontSize: isDesktop ? '15px' : '12px',
+      fontSize: rwdValue(12, 15),
       flex: '0 0 100%',
     },
     filesRow: {
       display: 'flex',
-      gap: !isDesktop ? '20px' : '52px',
+      gap: isDesktop ? '52px' : '20px',
       flexWrap: 'wrap',
     },
     filesWrap: {
@@ -205,6 +209,7 @@ const ProductAction = ({isEditing}) => {
       flexWrap: 'wrap',
       gap: '10px',
     },
+    rwdSize: isDesktop ? 'medium' : 'small',
   };
 
   const {jwt, id} = useUser();
@@ -289,26 +294,26 @@ const ProductAction = ({isEditing}) => {
 
   return (
     <>
-      <Button onClick={handleOpen} sx={styles.openButton}>
+      <Button onClick={handleOpen} sx={actionStyles.openButton}>
         {isEditing ? 'Edit' : 'Add'} product
       </Button>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xl">
         {loading && <Loading />}
-        <Box sx={styles.content}>
-          <Box sx={styles.headerRow}>
+        <Box sx={actionStyles.content}>
+          <Box sx={actionStyles.headerRow}>
             <DialogTitle variant="h1" component="h1">
               {isEditing ? 'Edit' : 'Add'} product
             </DialogTitle>
             <DialogActions>
               <Button
-                size={isDesktop ? 'medium' : 'small'}
+                size={actionStyles.rwdSize}
                 variant="contained"
                 onClick={handleClose}
               >
                 Cancel
               </Button>
               <Button
-                size={isDesktop ? 'medium' : 'small'}
+                size={actionStyles.rwdSize}
                 variant="contained"
                 onClick={handleSubmit}
               >
@@ -330,12 +335,12 @@ const ProductAction = ({isEditing}) => {
             thought to have scrambled parts of Cicero{`'`}s De Finibus Bonorum
             et Malorum for use in a type specimen book. It usually begins with:
           </DialogContentText>
-          <form style={styles.formRow}>
-            <DialogContent sx={styles.form}>
-              <Box sx={styles.formItem}>
+          <form style={actionStyles.formRow}>
+            <DialogContent sx={actionStyles.form}>
+              <Box sx={actionStyles.formItem}>
                 <TextField
                   fullWidth
-                  size={isDesktop ? 'medium' : 'small'}
+                  size={actionStyles.rwdSize}
                   placeholder="Nike Air Max 90"
                   label="Product name"
                   type="text"
@@ -343,10 +348,10 @@ const ProductAction = ({isEditing}) => {
                   onChange={e => setName(e.target.value)}
                 />
               </Box>
-              <Box sx={styles.formItem}>
+              <Box sx={actionStyles.formItem}>
                 <TextField
                   fullWidth
-                  size={isDesktop ? 'medium' : 'small'}
+                  size={actionStyles.rwdSize}
                   placeholder="Price"
                   label="Price"
                   type="number"
@@ -354,8 +359,8 @@ const ProductAction = ({isEditing}) => {
                   onChange={e => setPrice(e.target.value)}
                 />
               </Box>
-              <Box sx={styles.formItem}>
-                <Box sx={styles.checkboxRow}>
+              <Box sx={actionStyles.formItem}>
+                <Box sx={actionStyles.checkboxRow}>
                   <FormControl fullWidth>
                     <InputLabel id="gender">Gender</InputLabel>
                     <Select
@@ -364,7 +369,7 @@ const ProductAction = ({isEditing}) => {
                       value={select.gender}
                       onChange={genderChangeHandler}
                       defaultValue="Men"
-                      size={isDesktop ? 'medium' : 'small'}
+                      size={actionStyles.rwdSize}
                     >
                       {!isLoading &&
                         genders.map(gender => {
@@ -379,7 +384,7 @@ const ProductAction = ({isEditing}) => {
                   <FormControl fullWidth>
                     <InputLabel id="brand">Brand</InputLabel>
                     <Select
-                      size={isDesktop ? 'medium' : 'small'}
+                      size={actionStyles.rwdSize}
                       labelId="brand"
                       variant="outlined"
                       value={select.brand}
@@ -400,10 +405,11 @@ const ProductAction = ({isEditing}) => {
                     <Select
                       labelId="color"
                       variant="outlined"
+                      aria-label="color"
                       value={select.color}
                       onChange={colorChangeHandler}
                       defaultValue="Black"
-                      size={isDesktop ? 'medium' : 'small'}
+                      size={actionStyles.rwdSize}
                     >
                       {!isLoading &&
                         colors.map(color => {
@@ -417,7 +423,7 @@ const ProductAction = ({isEditing}) => {
                   </FormControl>
                 </Box>
               </Box>
-              <Box sx={styles.formItem}>
+              <Box sx={actionStyles.formItem}>
                 <TextareaAutosize
                   placeholder="Do not exceed 1000 characters."
                   label="Description"
@@ -426,11 +432,11 @@ const ProductAction = ({isEditing}) => {
                   onChange={e => setDescription(e.target.value)}
                 />
               </Box>
-              <FormGroup sx={styles.formGroup}>
-                <Typography sx={styles.label}>Add size</Typography>
+              <FormGroup sx={actionStyles.formGroup}>
+                <Typography sx={actionStyles.label}>Add size</Typography>
                 <ToggleButtonGroup
                   exclusive
-                  sx={styles.toggleButtonGroup}
+                  sx={actionStyles.toggleButtonGroup}
                   onChange={sizeChangeHandler}
                 >
                   {sizes &&
@@ -455,21 +461,19 @@ const ProductAction = ({isEditing}) => {
                         },
                       };
                       return (
-                        <>
-                          <ToggleButton
-                            size={isDesktop ? 'medium' : 'small'}
-                            key={size.id}
-                            value={size.value}
-                            onClick={sizeChangeHandler}
-                            sx={itemStyle}
-                          >{`EU-${size.value}`}</ToggleButton>
-                        </>
+                        <ToggleButton
+                          size={actionStyles.rwdSize}
+                          key={size.id}
+                          value={size.value}
+                          onClick={sizeChangeHandler}
+                          sx={itemStyle}
+                        >{`EU-${size.value}`}</ToggleButton>
                       );
                     })}
                 </ToggleButtonGroup>
               </FormGroup>
-              <FormGroup sx={styles.formGroup}>
-                <Typography sx={styles.label}>Add categories</Typography>
+              <FormGroup sx={actionStyles.formGroup}>
+                <Typography sx={actionStyles.label}>Add categories</Typography>
                 {categories &&
                   categories.map(category => {
                     const itemStyle = {
@@ -503,9 +507,9 @@ const ProductAction = ({isEditing}) => {
                   })}
               </FormGroup>
             </DialogContent>
-            <DialogContent sx={styles.filesWrap}>
+            <DialogContent sx={actionStyles.filesWrap}>
               <InputLabel>Product images</InputLabel>
-              <Box sx={styles.filesRow}>
+              <Box sx={actionStyles.filesRow}>
                 {arrImages.map(img => (
                   <FileInput
                     key={img.id}
