@@ -10,12 +10,26 @@ const genderApi = process.env.NEXT_PUBLIC_API_URL + '/genders?fields=name';
 
 const sizeApi = process.env.NEXT_PUBLIC_API_URL + '/sizes?fields=value';
 
+const colorApi = process.env.NEXT_PUBLIC_API_URL + '/colors?fields=name';
+
 const useProductData = () => {
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
   const [genders, setGenders] = useState([]);
   const [sizes, setSizes] = useState([]);
+  const [colors, setColors] = useState([]);
+
+  const [canRenderFilter, setCanRenderFilter] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (brands && categories && genders && sizes && colors) {
+      setCanRenderFilter(true);
+    } else {
+      setCanRenderFilter(false);
+    }
+  }, [brands, categories, genders, sizes, colors]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +39,7 @@ const useProductData = () => {
           requestCategories(),
           requestGender(),
           requestSizes(),
+          requestColors(),
         ]);
         setIsLoading(false);
       } catch (error) {
@@ -40,9 +55,25 @@ const useProductData = () => {
   const requestBrands = async () => {
     const {data: res} = await axios.get(brandApi);
     const brands = res.data.map(brand => {
-      return {id: brand.id, name: brand.attributes.name};
+      return {
+        id: brand.id,
+        name: brand.attributes.name,
+        needed: false,
+      };
     });
     setBrands(brands);
+  };
+
+  const requestColors = async () => {
+    const {data: res} = await axios.get(colorApi);
+    const colors = res.data.map(color => {
+      return {
+        id: color.id,
+        name: color.attributes.name,
+        needed: false,
+      };
+    });
+    setColors(colors);
   };
 
   const requestCategories = async () => {
@@ -63,6 +94,7 @@ const useProductData = () => {
       return {
         id: String(gender.id),
         name: String(gender.attributes.name),
+        needed: false,
       };
     });
     setGenders(genders);
@@ -87,13 +119,18 @@ const useProductData = () => {
 
   // Devolver los datos cuando estén disponibles
   return {
+    canRenderFilter,
     brands,
     categories,
     genders,
     sizes,
+    colors,
     isLoading,
     setSizes,
     setCategories,
+    setGenders,
+    setBrands,
+    setColors,
   };
 };
 

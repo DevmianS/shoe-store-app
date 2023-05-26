@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-
-import {memo, useRef, useEffect} from 'react';
+import {memo, useRef, useEffect, useCallback} from 'react';
 
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
@@ -25,25 +24,6 @@ const NavBar = () => {
 
   const searchInputRef = useRef();
   const router = useRouter();
-
-  const handleMenuCLick = () => {
-    toggle();
-    searchExpanded && setSearchExpanded(false);
-  };
-
-  const handleFocusInputResponsive = () => {
-    setTimeout(() => {
-      searchInputRef.current && searchInputRef.current.focus();
-    }, 100);
-    setSearchExpanded(true);
-    isToggled && setIsToggled(false);
-  };
-
-  useEffect(() => {
-    if (router.asPath.includes('search')) {
-      handleFocusInputResponsive();
-    }
-  }, []);
 
   const navStyles = {
     box: {
@@ -120,6 +100,11 @@ const NavBar = () => {
       },
       flex: '0 0 56px',
     },
+    closeIcon: {
+      color: 'inherit',
+      display: searchExpanded ? 'flex' : 'none',
+      flex: '0 0 56px',
+    },
     menuIcon: {
       color: 'inherit',
       display: {
@@ -145,9 +130,49 @@ const NavBar = () => {
       width: '100vw',
       height: '100vh',
       backgroundColor: '#F3F3F3',
-      zIndex: 10,
+      zIndex: 60,
     },
   };
+
+  const handleMenuCLick = () => {
+    toggle();
+    searchExpanded && setSearchExpanded(false);
+  };
+
+  const handleClose = () => {
+    setSearchExpanded(false);
+  };
+
+  const handleFocusInputResponsive = useCallback(
+    ({isToggled, setIsToggled, setSearchExpanded, searchInputRef}) => {
+      setTimeout(() => {
+        searchInputRef.current && searchInputRef.current.focus();
+      }, 1000);
+      setSearchExpanded(true);
+      isToggled && setIsToggled(false);
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (
+      !router.asPath.includes('search?') &&
+      router.asPath.includes('search')
+    ) {
+      handleFocusInputResponsive({
+        isToggled,
+        setIsToggled,
+        setSearchExpanded,
+        searchInputRef,
+      });
+    }
+  }, [
+    router.asPath,
+    handleFocusInputResponsive,
+    isToggled,
+    setIsToggled,
+    setSearchExpanded,
+  ]);
 
   return (
     <>
@@ -190,13 +215,19 @@ const NavBar = () => {
               <IconButton
                 size="large"
                 aria-label="Menu"
+                onClick={handleClose}
+                sx={navStyles.closeIcon}
+              >
+                <Typography component="i" className={'icon-close'}></Typography>
+              </IconButton>
+
+              <IconButton
+                size="large"
+                aria-label="Menu"
                 onClick={handleMenuCLick}
                 sx={navStyles.menuIcon}
               >
-                <Typography
-                  component="i"
-                  className={isToggled ? 'icon-close' : 'icon-menu'}
-                ></Typography>
+                <Typography component="i" className={'icon-menu'}></Typography>
               </IconButton>
             </Box>
           </Box>
