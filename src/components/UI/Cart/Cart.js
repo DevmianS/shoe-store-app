@@ -1,42 +1,34 @@
 import Link from 'next/link';
 
-import {Typography, Box, useMediaQuery} from '@mui/material';
+import Badge from '@mui/material/Badge';
+import Box from '@mui/material/Box';
+
 import {theme} from '@/utils/theme';
 
-export default function Cart({count}) {
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-
-  const styles = {
+const cartStyles = {
+  icon: {
     position: 'relative',
     display: 'inline-block',
-    minWidth: !isDesktop ? '32px' : '40px',
+    minWidth: {xs: '32px', md: '40px'},
     fontSize: '24px',
     transition: '.3s',
     color: theme.palette.text.secondary,
-    '& p': {
-      position: 'absolute',
-      top: 8,
-      left: !isDesktop ? 9 : 13,
-      width: 14,
-      textAlign: 'center',
-      fontSize: 10,
-      color: 'inherit',
-    },
     '&:hover': {
       color: theme.palette.primary.main,
     },
-  };
+  },
+  badge: {
+    '& .MuiBadge-badge': {
+      background: theme.palette.primary.main,
+    },
+  },
+};
+export default function Cart({count}) {
   return (
     <Link href="/bag">
-      <Box
-        sx={styles}
-        className={`icon-bag${count > 0 ? '-o' : ''}`}
-        variant="button"
-      >
-        {count > 0 && (
-          <Typography component="p">{count > 99 ? 99 : count}</Typography>
-        )}
-      </Box>
+      <Badge badgeContent={count} color="success" sx={cartStyles.badge}>
+        <Box sx={cartStyles.icon} className="icon-bag" variant="button" />
+      </Badge>
     </Link>
   );
 }
