@@ -14,7 +14,7 @@ import {useFilter} from '@/context/FilterContext';
 
 import PriceRangeSlider from '@/components/UI/PriceRangeSlider';
 
-export default function Filters() {
+export default function Filters({total}) {
   const theme = useTheme();
   const styles = {
     wrapper: {
@@ -54,7 +54,7 @@ export default function Filters() {
     accordionSubTitle: {fontSize: 25},
   };
 
-  const {arrIdFilters, setArrIdFilters} = useFilter();
+  const {arrIdFilters, setArrIdFilters, navigateToSearch} = useFilter();
 
   const checkBoxChangeGenderHandler = event => {
     console.log('event: ', event, event.target.value);
@@ -113,7 +113,7 @@ export default function Filters() {
     });
   };
 
-  console.log('arrIdFilters.name: ', arrIdFilters.name, arrIdFilters.total);
+  console.log('arrIdFilters.name: ', arrIdFilters.name, total);
 
   return (
     <>
@@ -121,7 +121,7 @@ export default function Filters() {
         <Typography variant="body5" component="p"></Typography>
         <Typography variant="h2" sx={styles.accordionSubTitle} component="h2">
           {arrIdFilters.name[0] || 'All products'}
-          {' (' + arrIdFilters.total + ') '}
+          {' (' + total + ') '}
         </Typography>
         <Accordion sx={styles.accordion} elevation={0} defaultExpanded>
           <AccordionSummary

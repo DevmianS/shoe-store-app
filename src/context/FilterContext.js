@@ -1,11 +1,19 @@
 import {useRouter} from 'next/router';
-import React, {createContext, useState, useContext, useEffect} from 'react';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useRef,
+} from 'react';
 
 import qs from 'qs';
 
 const FilterContext = createContext();
 
 export const FilterProvider = ({children}) => {
+  const prevQuery = useRef('');
+
   const [arrIdFilters, setArrIdFilters] = useState({
     name: [],
     brands: [],
@@ -15,7 +23,6 @@ export const FilterProvider = ({children}) => {
     genders: [],
     minPrice: [],
     maxPrice: [],
-    total: 0,
   });
 
   const router = useRouter();
@@ -56,17 +63,27 @@ export const FilterProvider = ({children}) => {
         encodeValuesOnly: true, // prettify URL
       },
     );
-    console.log('Query: ', query);
+    console.log('Query: ', JSON.stringify(query));
 
-    if (query) {
-      console.log("Passed")
+    if (JSON.stringify(query) !== JSON.stringify(prevQuery.current)) {
+      console.log('Passed');
       router.push('search?' + query);
     }
+
+    console.log('prevQuery.current: ', JSON.stringify(prevQuery.current));
+
+    prevQuery.current = query;
   }
 
   useEffect(() => {
     navigateToSearch();
   }, [arrIdFilters]);
+
+  useEffect(() => {
+    if (!router.asPath.includes('search')) {
+      prevQuery.current = '';
+    }
+  }, [router]);
 
   return (
     <FilterContext.Provider

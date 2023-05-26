@@ -7,7 +7,6 @@ import {useFilter} from '@/context/FilterContext';
 const Searchbar = forwardRef(({searchExpanded, setSearchExpanded}, ref) => {
   const [input, setInput] = useState('');
   const theme = useTheme();
-  const router = useRouter();
 
   const styles = {
     wrap: {
@@ -77,10 +76,9 @@ const Searchbar = forwardRef(({searchExpanded, setSearchExpanded}, ref) => {
     e.preventDefault();
     console.log('handle submit search');
     console.log('input is: ', input);
-    let name = input.replace(' ', '%20');
     setSearchExpanded(false);
     setArrIdFilters(prevState => {
-      return {...prevState, name: [name]};
+      return {...prevState, name: input ? [input] : []};
     });
   };
 

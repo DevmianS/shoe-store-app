@@ -70,6 +70,7 @@ const PriceRangeSlider = () => {
             type: 'number',
           }}
           sx={{width: '45%'}}
+          onBlur={transmitPrice}
         />
         <Input
           sx={{width: '45%'}}
@@ -81,6 +82,7 @@ const PriceRangeSlider = () => {
             max: 100,
             type: 'number',
           }}
+          onBlur={transmitPrice}
         />
       </Box>
     </Box>

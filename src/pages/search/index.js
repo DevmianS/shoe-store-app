@@ -14,17 +14,17 @@ import {searchKeyInObject} from '@/utils/utils';
 
 import NoContent from '@/components/UI/NoContent';
 
-const SearchResults = ({searchString, productsServer, filters}) => {
+const SearchResults = ({searchString, productsServer, total, filters}) => {
+  const [hideFilter, setHideFilter] = useState(false);
+
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const {setArrIdFilters} = useFilter();
 
-  console.log('Filters Backend: ', filters);
-
   useEffect(() => {
-    console.log('UseEffect init filters from server');
+    console.log('filters back: ', filters);
     setArrIdFilters(filters);
   }, []);
 
@@ -78,12 +78,15 @@ const SearchResults = ({searchString, productsServer, filters}) => {
       </Head>
       <NavBarLayout>
         <Box sx={styles.row}>
-          <SideBar areaName="search filters" isFilter>
-            <Filters
-              productsLength={productsServer && productsServer.length}
-              filters={filters}
-            />
-          </SideBar>
+          {!hideFilter && (
+            <SideBar areaName="search filters" isFilter>
+              <Filters
+                productsLength={productsServer && productsServer.length}
+                filters={filters}
+                total={total}
+              />
+            </SideBar>
+          )}
           <Box sx={styles.content}>
             <Box sx={styles.header}>
               <Typography variant="h1" component="h1">
@@ -93,9 +96,16 @@ const SearchResults = ({searchString, productsServer, filters}) => {
                 </Typography>
               </Typography>
               <Button onClick={() => console.log('CLEAR FILTERS')}>
-                <Box sx={styles.filterText}>
+                <Box
+                  sx={styles.filterText}
+                  onClick={() => setHideFilter(!hideFilter)}
+                >
                   <Typography variant="body1" component="p">
-                    {isMobile ? 'Filters' : 'Hide Filters'}
+                    {isMobile
+                      ? 'Filters'
+                      : hideFilter
+                      ? 'Show Filters'
+                      : 'Hide Filters'}
                   </Typography>{' '}
                   <Typography
                     className="icon-filter"
@@ -136,7 +146,7 @@ const SearchResults = ({searchString, productsServer, filters}) => {
 };
 import axios from 'axios';
 import {useFilter} from '@/context/FilterContext';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 
 export default SearchResults;
 
@@ -289,14 +299,6 @@ export async function getServerSideProps(context) {
     searchKeyInObject(qsObj, '$lte'),
   );
 
-  let finalName;
-
-  let nameFromObjValue = searchKeyInObject(qsObj, '$containsi');
-  if (nameFromObjValue) {
-    console.log("nameFromObjValue: ",nameFromObjValue)
-    finalName = [nameFromObjValue[0].replace('%20', ' ')];
-  }
-
   return {
     props: {
       productsServer: newData || [],
@@ -306,11 +308,11 @@ export async function getServerSideProps(context) {
         colors: newColors,
         genders: newGenders,
         sizes: newSizes,
-        name: finalName || [],
+        name: searchKeyInObject(qsObj, '$containsi') || [],
         minPrice: searchKeyInObject(qsObj, '$gte') || [],
         maxPrice: searchKeyInObject(qsObj, '$lte') || [],
-        total,
       },
+      total: total,
     },
   };
 }
