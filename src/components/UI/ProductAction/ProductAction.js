@@ -286,11 +286,11 @@ const ProductAction = ({isEditing}) => {
 
   return (
     <>
-      {loading && <Loading />}
       <Button onClick={handleOpen} sx={styles.openButton}>
         {isEditing ? 'Edit' : 'Add'} product
       </Button>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xl">
+        {loading && <Loading />}
         <Box sx={styles.content}>
           <Box sx={styles.headerRow}>
             <DialogTitle variant="h1" component="h1">
@@ -416,7 +416,7 @@ const ProductAction = ({isEditing}) => {
               </Box>
               <Box sx={styles.formItem}>
                 <TextareaAutosize
-                  placeholder="Do not exceed 300 characters."
+                  placeholder="Do not exceed 1000 characters."
                   label="Description"
                   type="text"
                   value={description}
