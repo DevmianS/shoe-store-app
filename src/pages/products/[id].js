@@ -4,7 +4,8 @@ import {useEffect, useState} from 'react';
 
 import axios from 'axios';
 
-import {Box, Typography} from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import {useCart} from '@/context/CartContext';
 import {rwdValue, theme} from '@/utils/theme';
@@ -15,19 +16,23 @@ import Gallery from '@/components/UI/Gallery/';
 import Button from '@/components/UI/Button/Button';
 
 const singleStyles = {
+  title: {
+    marginTop: {xs: '15px', md: 0},
+  },
   row: {
     display: 'flex',
-    gap: '100px',
-    width: '100%',
+    flexDirection: {xs: 'column', md: 'row'},
+    gap: {xs: 0, md: rwdValue(0, 100)},
+    width: {xs: '100%', sm: '90%', md: '100%'},
     flex: '1 1 auto',
-    paddingLeft: '10px',
-    paddingRight: '10px',
-    paddingTop: rwdValue(0, 100),
-    paddingBottom: rwdValue(0, 100),
+    paddingLeft: {xs: '15px', md: '10px'},
+    paddingRight: {xs: '15px', md: '10px'},
+    paddingTop: rwdValue(30, 100),
+    paddingBottom: rwdValue(30, 100),
     maxWidth: '1320px',
     margin: '0 auto',
   },
-  column: {flex: '0 0 calc(50% - 50px)'},
+  column: {flex: {xs: '0 0 100%', md: `0 0 calc(50% - ${rwdValue(0, 100)})`}},
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -42,22 +47,26 @@ const singleStyles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '35px',
+    marginBottom: rwdValue(15, 35),
     borderRadius: '8px',
   },
   price: {fontSize: '22px', fontWeight: 500, color: '#000'},
-  gender: {color: theme.palette.text.secondary, marginBottom: '35px'},
-  label: {
+  gender: {
     color: theme.palette.text.secondary,
-    marginBottom: '20px',
+    marginBottom: rwdValue(15, 35),
     '& b': {color: theme.palette.primary.main},
   },
-  btn: {marginBottom: '65px'},
+
+  label: {
+    color: theme.palette.text.secondary,
+    marginBottom: rwdValue(10, 20),
+  },
+  btn: {marginBottom: rwdValue(30, 65), marginTop: rwdValue(30, 65)},
   categories: {
     display: 'flex',
     flexWrap: 'wrap',
     gap: '5px',
-    marginBottom: '35px',
+    marginBottom: rwdValue(15, 35),
     '& > *': {
       color: '#fff',
       fontSize: '15px',
@@ -151,7 +160,7 @@ export default function ProductPage({product, error}) {
             <Gallery images={images} setImages={setImages} />
             <Box sx={singleStyles.column}>
               <Box sx={singleStyles.header}>
-                <Typography component="h1" variant="h1">
+                <Typography component="h1" variant="h1" sx={singleStyles.title}>
                   {data.name}
                 </Typography>
                 <Typography component="span" sx={singleStyles.price}>
@@ -162,9 +171,8 @@ export default function ProductPage({product, error}) {
                 component="p"
                 variant="body2"
                 sx={singleStyles.gender}
-              >{`${data.gender}'s Shoes`}</Typography>
-              <Typography component="p" variant="body2" sx={singleStyles.label}>
-                Brand - <b>{data.brand}</b>
+              >
+                <b>{data.brand} </b> {`${data.gender}'s Shoes`}
               </Typography>
               <Typography component="p" variant="body2" sx={singleStyles.label}>
                 Available sizes
