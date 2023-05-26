@@ -152,7 +152,7 @@ const SignUpForm = () => {
               label="Name"
               type="text"
               margin="normal"
-              placeholder="Hayman Andrews"
+              placeholder="YourName"
               required
               value={name}
               onChange={e => setName(e.target.value)}
