@@ -31,7 +31,10 @@ const Index = () => {
       <Head>
         <title>Wellrun | Home</title>
       </Head>
-      {render()}
+      {/* {render()} */}
+      <NavBarLayout>
+        <Home />
+      </NavBarLayout>
     </>
   );
 };

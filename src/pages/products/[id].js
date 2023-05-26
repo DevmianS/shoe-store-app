@@ -13,6 +13,7 @@ import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Loading from '@/components/UI/Loading';
 import Gallery from '@/components/UI/Gallery/';
 import Button from '@/components/UI/Button/Button';
+import useUser from '@/hooks/useUser';
 
 const singleStyles = {
   row: {
@@ -99,6 +100,7 @@ export async function getServerSideProps(context) {
 
 export default function ProductPage({product, error}) {
   const router = useRouter();
+  const {status} = useUser();
   const {addProduct} = useCart();
   const [images, setImages] = useState({array: [], active: 0});
   const [data, setData] = useState({
@@ -201,16 +203,28 @@ export default function ProductPage({product, error}) {
                     </Box>
                   ))}
               </Box>
-              <Button
-                onClick={() => {
-                  const title = data.name;
-                  const productId = product?.data?.id;
-                  addProduct({productId, title});
-                }}
-                sx={singleStyles.btn}
-              >
-                Add to Bag
-              </Button>
+              {status === 'authenticated' ? (
+                <Button
+                  onClick={() => {
+                    const title = data.name;
+                    const productId = product?.data?.id;
+                    addProduct({productId, title});
+                  }}
+                  sx={singleStyles.btn}
+                >
+                  Add to Bag
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    console.log(router);
+                    router.push(`/sign-in?callbackUrl=%${router.asPath}`);
+                  }}
+                  sx={singleStyles.btn}
+                >
+                  Sign In to Add to Bag
+                </Button>
+              )}
               <Typography component="p" variant="body2" sx={singleStyles.label}>
                 Description
               </Typography>
