@@ -1,17 +1,16 @@
 import {signIn} from 'next-auth/react';
-import Link from 'next/link';
 import {useRouter} from 'next/router';
+import Link from 'next/link';
+
 import React, {useEffect, useState} from 'react';
 
-import {
-  Box,
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import {useTheme} from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 import {
   checkErrorEmail,
@@ -19,8 +18,10 @@ import {
   executeError,
   executeSucces,
 } from '@/utils/utils';
+
 import {rwdValue} from '@/utils/theme';
 import {cartInit, isBrowser, valuesSum, setStore} from '@/utils/cart';
+
 import {useCart} from '@/context/CartContext';
 
 import Button from '@/components/UI/Button';
@@ -43,7 +44,7 @@ const SignInForm = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const styles = {
+  const signInStyles = {
     wrapper: {
       width: '100%',
       maxWidth: '560px',
@@ -124,7 +125,7 @@ const SignInForm = () => {
       });
       if (ok) {
         executeSucces('Successfully logged in.');
-        router.push('/');
+        router.push(router.query.callbackUrl || '/');
         isBrowser && setStore('USER_EMAIL', email);
         setCartItems(() => cartInit());
         setCartCount(() => valuesSum(cartItems));
@@ -159,16 +160,16 @@ const SignInForm = () => {
   return (
     <>
       {loading && <Loading />}
-      <Box sx={styles.wrapper}>
-        <Typography component="h1" variant="h1" sx={styles.welcomeTitle}>
+      <Box sx={signInStyles.wrapper}>
+        <Typography component="h1" variant="h1" sx={signInStyles.welcomeTitle}>
           Welcome back
         </Typography>
-        <Typography component="p" variant="body1" sx={styles.welcomeText}>
+        <Typography component="p" variant="body1" sx={signInStyles.welcomeText}>
           Welcome back! Please enter your details to log into your account.
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
-            sx={styles.emailField}
+            sx={signInStyles.emailField}
             fullWidth
             size={isMobile ? 'small' : 'medium'}
             label="Email"
@@ -183,7 +184,7 @@ const SignInForm = () => {
             onBlur={() => checkErrorEmail(email, setEmailError)}
           />
           <TextField
-            sx={styles.passwordField}
+            sx={signInStyles.passwordField}
             fullWidth
             size={isMobile ? 'small' : 'medium'}
             label="Password"
@@ -200,7 +201,7 @@ const SignInForm = () => {
             onFocus={() => setPasswordError(false)}
             onBlur={() => checkErrorPassword(password, setPasswordError)}
           />
-          <Box sx={styles.rememberText}>
+          <Box sx={signInStyles.rememberText}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -209,25 +210,25 @@ const SignInForm = () => {
                 />
               }
               label="Remember me"
-              sx={styles.rememberCheckbox}
+              sx={signInStyles.rememberCheckbox}
             />
-            <Link href="/forgot-password" sx={{textDecoration: 'none'}}>
-              <Typography sx={styles.link}>Forgot password?</Typography>
+            <Link href="/forgot-password">
+              <Typography sx={signInStyles.link}>Forgot password?</Typography>
             </Link>
           </Box>
           <Button
             size={isMobile ? 'small' : 'medium'}
             type="submit"
-            sx={styles.signInBtn}
+            sx={signInStyles.signInBtn}
           >
             Sign in
           </Button>
-          <Box sx={styles.signUpLinkWrapper}>
-            <Typography component="span" sx={styles.signUpText}>
+          <Box sx={signInStyles.signUpLinkWrapper}>
+            <Typography component="span" sx={signInStyles.signUpText}>
               Don{`'`}t have an account?
             </Typography>
-            <Link href="/sign-up" sx={{textDecoration: 'none'}}>
-              <Typography component="span" sx={styles.link}>
+            <Link href="/sign-up">
+              <Typography component="span" sx={signInStyles.link}>
                 Sign up
               </Typography>
             </Link>

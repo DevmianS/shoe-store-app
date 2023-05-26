@@ -1,14 +1,28 @@
 import Image from 'next/image';
-import {useState} from 'react';
-import {Typography, Stack, Box, useMediaQuery, IconButton} from '@mui/material';
+import {useCallback, useEffect, useState} from 'react';
+import {
+  Typography,
+  Stack,
+  Box,
+  useMediaQuery,
+  IconButton,
+  Button as MUIButton,
+} from '@mui/material';
 import {useTheme} from '@mui/material/styles';
+
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 import {rwdValue} from '@/utils/theme';
 import {useCart} from '@/context/CartContext';
 
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import Button from '@/components/UI/Button';
+import {useRouter} from 'next/router';
+import OptionsMenu from './OptionsMenu';
+import Modal from '../Modal/Modal';
+import Loading from '../Loading/Loading';
+import useUser from '@/hooks/useUser';
+import {deleteProduct} from '@/utils/utils';
 
 export default function ProductCard({
   productId,
@@ -16,17 +30,19 @@ export default function ProductCard({
   price,
   category,
   imgPath,
+  showOptions,
 }) {
-  // if (imgPath == undefined) {
-  //   imgPath = [{attributes: {alternativeText: '', url: ''}}];
-  // }
-
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const router = useRouter();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const {addProduct} = useCart();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [deleteConfVisible, setDeleteConfVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const {jwt} = useUser();
 
   const goToPreviousImage = () => {
     console.log('prev', currentImageIndex);
@@ -83,6 +99,21 @@ export default function ProductCard({
         transition: '1s',
       },
     },
+    threeDots: {
+      position: 'absolute',
+      right: 10,
+      top: 0,
+      opacity: 1,
+      minWidth: '16px',
+      height: '32px',
+      '&.MuiButtonBase-root:hover': {
+        bgcolor: 'transparent',
+      },
+      span: {
+        fontWeight: 700,
+        fontSize: rwdValue(14, 32),
+      },
+    },
     image: {
       position: 'relative',
       width: '100%',
@@ -97,13 +128,17 @@ export default function ProductCard({
               transition: '1s',
               transform: 'scale(1.25)',
             },
-            '& > button': {
+            '& button': {
               opacity: 1,
+            },
+            '& .actions': {
+              transform: 'translate(-50%,0)',
+              transition: '0.5s',
             },
           }
         : {},
-      '& > button': {
-        opacity: isDesktop ? 0 : 1,
+      '& button': {
+        opacity: {xs: 1, md: 0},
       },
     },
 
@@ -163,33 +198,81 @@ export default function ProductCard({
           }
         : {},
     },
-    addBtn: {
+    actions: {
+      display: 'flex',
+      gap: '10px',
       position: 'absolute',
       bottom: rwdValue(10, 20),
-      left: 'calc(50% - 20px)',
-      width: rwdValue(32, 40),
-      minWidth: rwdValue(32, 40),
-      height: rwdValue(32, 40),
+      left: '50%',
+      transform: {xs: 'translate(-50%,0)', md: 'translate(-50%,20px)'},
       zIndex: 3,
-      transition: '.3s',
+      transition: '0.5s',
       '& span': {
         fontSize: rwdValue(18, 24),
         lineHeight: rwdValue(32, 40),
         color: '#fff',
       },
+      '& button': {
+        width: rwdValue(32, 40),
+        minWidth: rwdValue(32, 40),
+        height: rwdValue(32, 40),
+      },
     },
   };
+
+  const handleOutsideClick = useCallback(({target}) => {
+    const openedMenu = document.getElementsByClassName('three-dots-menu')[0];
+    if (!openedMenu.contains(target)) setIsMenuVisible(false);
+  }, []);
+
+  const deleteProductHandler = async () => {
+    try {
+      setLoading(true);
+      await deleteProduct({id: productId, jwt});
+      router.reload();
+    } catch {
+      setLoading(false);
+      setDeleteConfVisible(false);
+      error => {
+        throw new Error(error);
+      };
+    }
+    setDeleteConfVisible(false);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (isMenuVisible)
+      window.addEventListener('click', handleOutsideClick, true);
+    else window.removeEventListener('click', handleOutsideClick, true);
+  }, [isMenuVisible, handleOutsideClick]);
+
   return (
     <Box sx={styles.column}>
       <Box sx={styles.card}>
         <Box sx={styles.image}>
-          <Button
-            size={isDesktop ? 'medium' : 'small'}
-            sx={styles.addBtn}
-            onClick={() => addProduct({productId, title})}
-          >
-            <Typography component="span" className="icon-add-to-cart" />
-          </Button>
+          <Box sx={styles.actions} className="actions">
+            <Button
+              size={isDesktop ? 'medium' : 'small'}
+              onClick={() => addProduct({productId, title})}
+            >
+              <Typography
+                component="span"
+                className="icon-add-to-cart"
+                title={`Add ${title} to the cart`}
+              />
+            </Button>
+            <Button
+              size={isDesktop ? 'medium' : 'small'}
+              onClick={() => router.push(`/products/${productId}`)}
+            >
+              <Typography
+                component="span"
+                className="icon-search"
+                title={`Open ${title} page`}
+              />
+            </Button>
+          </Box>
           <Image
             src={
               imgPath
@@ -247,6 +330,43 @@ export default function ProductCard({
                 })}
           </Stack>
         </Box>
+        {showOptions && (
+          <>
+            <MUIButton
+              variant="text"
+              disableRipple
+              size={isDesktop ? 'medium' : 'small'}
+              sx={styles.threeDots}
+              onClick={() => {
+                setIsMenuVisible(prev => !prev);
+              }}
+            >
+              <Typography component="span" className="three-dots">
+                ...
+              </Typography>
+            </MUIButton>
+            {isMenuVisible && (
+              <OptionsMenu
+                confirmationHandler={setDeleteConfVisible}
+                productId={productId}
+              />
+            )}
+          </>
+        )}
+
+        {deleteConfVisible && (
+          <Modal
+            state={true}
+            setState={setDeleteConfVisible}
+            title={'Are you sure to delete selected item '}
+            text={
+              'Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur. '
+            }
+            submitAction={deleteProductHandler}
+          >
+            {loading && <Loading />}
+          </Modal>
+        )}
       </Box>
     </Box>
   );

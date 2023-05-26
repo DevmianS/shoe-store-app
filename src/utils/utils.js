@@ -324,6 +324,27 @@ export const createProduct = async ({
   }
 };
 
+export const deleteProduct = async ({id, jwt}) => {
+  try {
+    const res = await axios.delete(
+      process.env.NEXT_PUBLIC_API_URL + '/products/' + id,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + jwt,
+        },
+      },
+    );
+
+    if (res.status == '200') {
+      executeSucces('Product deleted succesfully.');
+      return res;
+    }
+  } catch (error) {
+    executeError('There was an error.');
+  }
+};
+
 function generateRandomNumber(length) {
   let randomNumber = '';
 
@@ -359,3 +380,21 @@ export const fetchProductsByName = async name => {
     return false;
   }
 };
+
+export function searchKeyInObject(obj, key) {
+  if (obj.hasOwnProperty(key)) {
+    return obj[key];
+  }
+
+  for (let prop in obj) {
+    if (typeof obj[prop] === 'object') {
+      // Si la propiedad es un objeto, realizar una búsqueda recursiva en él
+      const result = searchKeyInObject(obj[prop], key);
+      if (result) {
+        return result;
+      }
+    }
+  }
+
+  return null;
+}

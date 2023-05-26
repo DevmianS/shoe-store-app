@@ -3,7 +3,14 @@ import {useRouter} from 'next/router';
 import {useMutation} from '@tanstack/react-query';
 import {toast} from 'sonner';
 
-import {Typography, Box, Stack, TextField, useTheme, useMediaQuery} from '@mui/material';
+import {
+  Typography,
+  Box,
+  Stack,
+  TextField,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
@@ -77,7 +84,7 @@ const ProfileUpdate = () => {
   const udpateUserMutation = useMutation({
     mutationFn: () => {
       return axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}users/${session.user.user.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/${session.user.user.id}`,
         newUserData,
         {
           headers: {Authorization: `Bearer ${session.user.jwt}`},

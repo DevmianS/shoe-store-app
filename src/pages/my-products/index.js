@@ -117,6 +117,7 @@ const MyProducts = ({productsList}) => {
                   const {id, attributes} = product;
                   return (
                     <ProductCard
+                      showOptions
                       productId={id}
                       key={id}
                       title={attributes.name}

@@ -1,16 +1,15 @@
 import {useRouter} from 'next/router';
 import Link from 'next/link';
 
-import React, {useEffect, useState, useCallback} from 'react';
+import {useEffect, useState} from 'react';
+
 import {useMutation} from '@tanstack/react-query';
-import {toast} from 'sonner';
-import {
-  Box,
-  TextField,
-  Typography,
-  useTheme,
-  useMediaQuery,
-} from '@mui/material';
+
+import {useTheme} from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 import {
   checkErrorConfirm,
@@ -42,7 +41,7 @@ const SignUpForm = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const styles = {
+  const signUpStyles = {
     spinnerWrapper: {
       width: '100vw',
       height: '100vh',
@@ -135,15 +134,15 @@ const SignUpForm = () => {
   return (
     <>
       {isLoading && (
-        <Box sx={styles.spinnerWrapper}>
+        <Box sx={signUpStyles.spinnerWrapper}>
           <Spinner />
         </Box>
       )}
-      <Box sx={styles.wrapper}>
+      <Box sx={signUpStyles.wrapper}>
         <Typography component="h1" variant="h3">
           Create an account
         </Typography>
-        <Typography component="p" variant="body1" sx={styles.welcomeText}>
+        <Typography component="p" variant="body1" sx={signUpStyles.welcomeText}>
           Create an account to get an easy access to your dream shopping
         </Typography>
         <Box>
@@ -153,11 +152,11 @@ const SignUpForm = () => {
               label="Name"
               type="text"
               margin="normal"
-              placeholder="Hayman Andrews"
+              placeholder="YourName"
               required
               value={name}
               onChange={e => setName(e.target.value)}
-              sx={styles.nameField}
+              sx={signUpStyles.nameField}
               error={nameError}
               helperText={
                 nameError &&
@@ -174,7 +173,7 @@ const SignUpForm = () => {
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
-              sx={styles.emailField}
+              sx={signUpStyles.emailField}
               error={emailError}
               helperText={emailError && 'Email should be valid.'}
               onBlur={() => checkErrorEmail(email, setEmailError)}
@@ -188,7 +187,7 @@ const SignUpForm = () => {
               placeholder="at least 8 characters"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              sx={styles.passwordField}
+              sx={signUpStyles.passwordField}
               error={passwordError}
               helperText={
                 passwordError &&
@@ -205,7 +204,7 @@ const SignUpForm = () => {
               placeholder="at least 8 characters"
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
-              sx={styles.confirmPasswordField}
+              sx={signUpStyles.confirmPasswordField}
               error={confirmPasswordError}
               helperText={
                 confirmPasswordError && 'Both passwords should be equal.'
@@ -221,16 +220,16 @@ const SignUpForm = () => {
 
             <Button
               size={isMobile ? 'small' : 'medium'}
-              sx={styles.signUpBtn}
+              sx={signUpStyles.signUpBtn}
               type={'submit'}
             >
               Sign up
             </Button>
           </form>
-          <Box sx={styles.signInLinkWrapper}>
+          <Box sx={signUpStyles.signInLinkWrapper}>
             <Typography component="span">Already have an account?</Typography>
             <Link href="/sign-in">
-              <Typography component="span" sx={styles.signInLink}>
+              <Typography component="span" sx={signUpStyles.signInLink}>
                 Log in
               </Typography>
             </Link>

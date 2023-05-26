@@ -32,7 +32,7 @@ function SideBar({children, isFilter}) {
     width: '100%',
     height: '100%',
     background: '#fff',
-    zIndex: 12,
+    zIndex: 61,
     transition: '0.5s',
     transform: !isDesktop
       ? isToggled

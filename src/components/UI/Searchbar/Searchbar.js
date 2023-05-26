@@ -1,12 +1,12 @@
 import {useRouter} from 'next/router';
-import {forwardRef, useState} from 'react';
+import {forwardRef, useEffect, useState} from 'react';
 
 import {Box, InputBase, Typography, alpha, useTheme} from '@mui/material';
+import {useFilter} from '@/context/FilterContext';
 
 const Searchbar = forwardRef(({searchExpanded, setSearchExpanded}, ref) => {
   const [input, setInput] = useState('');
   const theme = useTheme();
-  const router = useRouter();
 
   const styles = {
     wrap: {
@@ -59,6 +59,12 @@ const Searchbar = forwardRef(({searchExpanded, setSearchExpanded}, ref) => {
     },
   };
 
+  const {arrIdFilters, setArrIdFilters} = useFilter();
+
+  useEffect(() => {
+    setInput(arrIdFilters.name[0]);
+  }, [arrIdFilters.name]);
+
   const handleClickInput = e => {
     setSearchExpanded(true);
   };
@@ -66,27 +72,32 @@ const Searchbar = forwardRef(({searchExpanded, setSearchExpanded}, ref) => {
     setSearchExpanded(false);
   };
 
-  const handleChangeInput = e => {
-    setInput(e.target.value);
+  const handleSubmitSearch = e => {
+    e.preventDefault();
+    console.log('handle submit search');
+    console.log('input is: ', input);
+    setSearchExpanded(false);
+    setArrIdFilters(prevState => {
+      return {...prevState, name: input ? [input] : []};
+    });
   };
-  const handleEnterSearch = e =>
-    e.key === 'Enter' && router.push(`/search?${e.target.value}`);
 
   return (
-    <Box
-      onClick={handleClickInput}
-      onBlur={handleBlurInput}
-      onChange={handleChangeInput}
-      onKeyDown={handleEnterSearch}
-      sx={styles.wrap}
-    >
+    <Box onClick={handleClickInput} onBlur={handleBlurInput} sx={styles.wrap}>
       <Typography className="icon-search" sx={styles.icon} />
-      <InputBase
-        placeholder="Search…"
-        inputProps={{'aria-label': 'search'}}
-        ref={ref}
-        sx={styles.input}
-      />
+      <form
+        onSubmit={handleSubmitSearch}
+        style={{width: '100%', height: '100%'}}
+      >
+        <InputBase
+          placeholder="Search…"
+          inputProps={{'aria-label': 'search'}}
+          ref={ref}
+          sx={styles.input}
+          onChange={e => setInput(e.target.value)}
+          value={input}
+        />
+      </form>
     </Box>
   );
 });

@@ -18,7 +18,18 @@ const useProductData = () => {
   const [genders, setGenders] = useState([]);
   const [sizes, setSizes] = useState([]);
   const [colors, setColors] = useState([]);
+
+  const [canRenderFilter, setCanRenderFilter] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (brands && categories && genders && sizes && colors) {
+      setCanRenderFilter(true);
+    } else {
+      setCanRenderFilter(false);
+    }
+  }, [brands, categories, genders, sizes, colors]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,9 +55,25 @@ const useProductData = () => {
   const requestBrands = async () => {
     const {data: res} = await axios.get(brandApi);
     const brands = res.data.map(brand => {
-      return {id: brand.id, name: brand.attributes.name};
+      return {
+        id: brand.id,
+        name: brand.attributes.name,
+        needed: false,
+      };
     });
     setBrands(brands);
+  };
+
+  const requestColors = async () => {
+    const {data: res} = await axios.get(colorApi);
+    const colors = res.data.map(color => {
+      return {
+        id: color.id,
+        name: color.attributes.name,
+        needed: false,
+      };
+    });
+    setColors(colors);
   };
 
   const requestCategories = async () => {
@@ -67,6 +94,7 @@ const useProductData = () => {
       return {
         id: String(gender.id),
         name: String(gender.attributes.name),
+        needed: false,
       };
     });
     setGenders(genders);
@@ -102,6 +130,7 @@ const useProductData = () => {
 
   // Devolver los datos cuando estén disponibles
   return {
+    canRenderFilter,
     brands,
     categories,
     genders,
@@ -110,6 +139,9 @@ const useProductData = () => {
     isLoading,
     setSizes,
     setCategories,
+    setGenders,
+    setBrands,
+    setColors,
   };
 };
 

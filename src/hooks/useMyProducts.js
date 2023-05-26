@@ -4,6 +4,8 @@ import useUser from './useUser';
 import {useCallback, useEffect, useState} from 'react';
 import {executeError} from '@/utils/utils';
 
+import NoContent from '@/components/UI/NoContent';
+
 const useMyProducts = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState(null);
