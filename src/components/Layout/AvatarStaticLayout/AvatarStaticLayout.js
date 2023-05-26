@@ -91,7 +91,7 @@ const AvatarStaticLayout = ({variant}) => {
               {name}
             </Typography>
             <Typography sx={AvatarStaticLayoutStyles.email}>
-              {data.user.user.email}
+              {data?.user?.user?.email}
             </Typography>
           </Box>
         </Stack>
