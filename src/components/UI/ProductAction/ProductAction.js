@@ -1,103 +1,42 @@
-import {rwdValue} from '@/utils/theme';
-
-import {
-  Typography,
-  Box,
-  TextField,
-  TextareaAutosize,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  useTheme,
-  useMediaQuery,
-  Checkbox,
-  FormGroup,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  DialogContentText,
-  DialogContent,
-  ToggleButtonGroup,
-  ToggleButton,
-} from '@mui/material';
-
+import {useRouter} from 'next/router';
 import {useState} from 'react';
-import FileInput from '@/components/UI/FileInput';
-import Button from '@/components/UI/Button';
+
+import {toast} from 'sonner';
+
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogContent from '@mui/material/DialogContent';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
+
 import useProductData from '@/hooks/useProductData';
 import useUser from '@/hooks/useUser';
 
+import {rwdValue, theme} from '@/utils/theme';
 import {
   createProduct,
   uploadImages,
   validationCreateProduct,
 } from '@/utils/utils';
 
+import FileInput from '@/components/UI/FileInput';
+import Button from '@/components/UI/Button';
 import Loading from '@/components/UI/Loading';
-import {toast} from 'sonner';
-import {useRouter} from 'next/router';
 
 const ProductAction = ({isEditing}) => {
-  const router = useRouter();
-
-  const {brands, categories, genders, sizes, colors, isLoading, setCategories} =
-    useProductData() || {};
-
-  const [loading, setLoading] = useState(false);
-
-  const [select, setSelect] = useState({
-    gender: 'Men',
-    brand: 'Nike',
-    color: 'Black',
-    size: '36',
-  });
-
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState(0);
-
-  const [arrImages, setArrImages] = useState([
-    {id: 1, file: null, image: null},
-    {id: 2, file: null, image: null},
-    {id: 3, file: null, image: null},
-    {id: 4, file: null, image: null},
-    {id: 5, file: null, image: null},
-    {id: 6, file: null, image: null},
-    {id: 7, file: null, image: null},
-    {id: 8, file: null, image: null},
-  ]);
-
-  // EVENTS
-  const genderChangeHandler = e => {
-    setSelect({...select, gender: e.target.value});
-  };
-  const brandChangeHandler = e => {
-    setSelect({...select, brand: e.target.value});
-  };
-  const colorChangeHandler = e => {
-    setSelect({...select, color: e.target.value});
-  };
-  const sizeChangeHandler = e => {
-    setSelect({...select, size: e.target.value});
-  };
-
-  const checkBoxChangeHandlerCategory = event => {
-    setCategories(
-      categories.map(obj => {
-        if (obj.name == event.target.htmlFor) {
-          return {
-            ...obj,
-            needed: !obj.needed,
-          };
-        }
-        return obj;
-      }),
-    );
-  };
-
-  // STYLED COMPONENTS
-  const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const lg = useMediaQuery(theme.breakpoints.down('lg'));
 
@@ -105,6 +44,13 @@ const ProductAction = ({isEditing}) => {
     openButton: {
       maxWidth: '152px',
     },
+    description: {
+      color: 'text.secondary',
+      mb: rwdValue(25, 40),
+      fontSize: rwdValue(12, 15),
+      lineHeight: 1.25,
+    },
+    title: {padding: 0},
     headerRow: {
       display: 'flex',
       flexDirection: isDesktop ? 'row' : 'column',
@@ -210,6 +156,63 @@ const ProductAction = ({isEditing}) => {
       gap: '10px',
     },
     rwdSize: isDesktop ? 'medium' : 'small',
+    btns: {padding: 0},
+  };
+  const router = useRouter();
+
+  const {brands, categories, genders, sizes, colors, isLoading, setCategories} =
+    useProductData() || {};
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState(0);
+
+  const [arrImages, setArrImages] = useState([
+    {id: 1, file: null, image: null},
+    {id: 2, file: null, image: null},
+    {id: 3, file: null, image: null},
+    {id: 4, file: null, image: null},
+    {id: 5, file: null, image: null},
+    {id: 6, file: null, image: null},
+    {id: 7, file: null, image: null},
+    {id: 8, file: null, image: null},
+  ]);
+
+  const [loading, setLoading] = useState(false);
+
+  const [select, setSelect] = useState({
+    gender: 'Men',
+    brand: 'Nike',
+    color: 'Black',
+    size: '36',
+  });
+
+  // EVENTS
+  const genderChangeHandler = e => {
+    setSelect({...select, gender: e.target.value});
+  };
+  const brandChangeHandler = e => {
+    setSelect({...select, brand: e.target.value});
+  };
+  const colorChangeHandler = e => {
+    setSelect({...select, color: e.target.value});
+  };
+  const sizeChangeHandler = e => {
+    setSelect({...select, size: e.target.value});
+  };
+
+  const checkBoxChangeHandlerCategory = event => {
+    setCategories(
+      categories.map(obj => {
+        if (obj.name == event.target.htmlFor) {
+          return {
+            ...obj,
+            needed: !obj.needed,
+          };
+        }
+        return obj;
+      }),
+    );
   };
 
   const {jwt, id} = useUser();
@@ -252,14 +255,14 @@ const ProductAction = ({isEditing}) => {
 
         if (res?.status == '200') {
           resetForm();
-
           router.push('/my-products');
         }
       }
     } catch (error) {
+      console.error(error);
+    } finally {
       setLoading(false);
     }
-    setLoading(false);
   };
 
   const resetForm = () => {
@@ -301,10 +304,10 @@ const ProductAction = ({isEditing}) => {
         {loading && <Loading />}
         <Box sx={actionStyles.content}>
           <Box sx={actionStyles.headerRow}>
-            <DialogTitle variant="h1" component="h1">
+            <DialogTitle variant="h1" component="h1" sx={actionStyles.title}>
               {isEditing ? 'Edit' : 'Add'} product
             </DialogTitle>
-            <DialogActions>
+            <DialogActions sx={actionStyles.btns}>
               <Button
                 size={actionStyles.rwdSize}
                 variant="contained"
@@ -324,16 +327,17 @@ const ProductAction = ({isEditing}) => {
           <DialogContentText
             variant="body5"
             component="p"
-            color="text.secondary"
-            mb={rwdValue(25, 40)}
-            fontSize={rwdValue(12, 15)}
-            maxWidth="900px"
+            sx={actionStyles.description}
           >
-            Lorem ipsum, or lipsum as it is sometimes known, is dummy text used
-            in laying out print, graphic or web designs. The passage is
-            attributed to an unknown typesetter in the 15th century who is
-            thought to have scrambled parts of Cicero{`'`}s De Finibus Bonorum
-            et Malorum for use in a type specimen book. It usually begins with:
+            Effortlessly manage your shop's product inventory with our intuitive
+            form for adding and editing products. Streamline your workflow and
+            stay organized as you easily input and update product details such
+            as name, description, price, and availability. With a user-friendly
+            interface and comprehensive fields, you can swiftly add new products
+            or make changes to existing ones. Enhance your online store's
+            efficiency and maintain accurate product information with our
+            convenient form, designed to simplify the process of managing your
+            shop's offerings. Start optimizing your product management today!
           </DialogContentText>
           <form style={actionStyles.formRow}>
             <DialogContent sx={actionStyles.form}>
@@ -510,7 +514,7 @@ const ProductAction = ({isEditing}) => {
             <DialogContent sx={actionStyles.filesWrap}>
               <InputLabel>Product images</InputLabel>
               <Box sx={actionStyles.filesRow}>
-                {arrImages.map(img => (
+                {arrImages?.map(img => (
                   <FileInput
                     key={img.id}
                     id={img.id}
