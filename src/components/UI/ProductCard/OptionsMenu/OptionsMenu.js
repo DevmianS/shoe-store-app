@@ -32,7 +32,7 @@ const styles = {
   },
 };
 
-function OptionsMenu({productId, onClick}) {
+function OptionsMenu({productId}) {
   const {data} = useSession();
   const [deleteConfVisible, setDeleteConfVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -57,12 +57,7 @@ function OptionsMenu({productId, onClick}) {
 
   return (
     <Paper elevation={3} className="three-dots-menu">
-      <List
-        elevation={3}
-        component="nav"
-        sx={styles.optionsMenu}
-        onClick={onClick}
-      >
+      <List elevation={3} component="nav" sx={styles.optionsMenu}>
         <ListItemButton>
           <ListItemText
             primary="View"

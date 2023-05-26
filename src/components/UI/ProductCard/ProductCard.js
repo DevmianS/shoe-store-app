@@ -322,14 +322,7 @@ export default function ProductCard({
                 ...
               </Typography>
             </MUIButton>
-            {isMenuVisible && (
-              <OptionsMenu
-                onClick={() => {
-                  setIsMenuVisible(false);
-                }}
-                productId={productId}
-              />
-            )}
+            {isMenuVisible && <OptionsMenu productId={productId} />}
           </>
         )}
       </Box>
