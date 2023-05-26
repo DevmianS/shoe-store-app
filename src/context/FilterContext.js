@@ -63,7 +63,7 @@ export const FilterProvider = ({children}) => {
 
     if (JSON.stringify(query) !== JSON.stringify(prevQuery.current)) {
       console.log('Passed');
-      router.push('search?' + query);
+      router.push('/search?' + query);
     }
 
     console.log('prevQuery.current: ', JSON.stringify(prevQuery.current));
