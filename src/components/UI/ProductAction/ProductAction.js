@@ -282,7 +282,10 @@ const ProductAction = ({isEditing}) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    resetForm();
+  };
 
   return (
     <>
