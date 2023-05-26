@@ -112,17 +112,6 @@ const useProductData = () => {
     setSizes(sizes);
   };
 
-  const requestColors = async () => {
-    const {data: res} = await axios.get(colorApi);
-    const colors = res.data.map(color => {
-      return {
-        id: String(color.id),
-        name: String(color.attributes.name),
-      };
-    });
-    setColors(colors);
-  };
-
   if (isLoading) {
     // Devolver un estado de carga mientras se cargan los datos
     return {isLoading};
