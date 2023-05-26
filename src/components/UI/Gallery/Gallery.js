@@ -1,9 +1,15 @@
 import Image from 'next/image';
-import {Box, Stack, IconButton, Typography} from '@mui/material';
+
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+
+import {rwdValue} from '@/utils/theme';
 
 const galleryStyles = {
   column: {
-    flex: '0 0 calc(50% - 50px)',
+    flex: {xs: '0 0 100%', md: `0 0 calc(50% - ${rwdValue(0, 100)})`},
     display: 'flex',
     flexDirection: {xs: 'column', md: 'row'},
     maxHeight: '500px',
@@ -34,11 +40,11 @@ const galleryStyles = {
     '& img': {
       width: '100%',
       height: '100%',
-      objectFit: {xs: 'contain', md: 'cover'},
+      objectFit: 'cover',
     },
   },
   image: {
-    maxWidth: '500px',
+    maxWidth: {xs: '100%', md: '500px'},
     width: '100%',
     flex: '1 1 auto',
     height: '500px',
@@ -51,7 +57,7 @@ const galleryStyles = {
     '& img': {
       width: '100%',
       height: '100%',
-      objectFit: 'cover',
+      objectFit: {xs: 'contain', sm: 'cover', md: 'cover'},
     },
   },
   iconBtn: {

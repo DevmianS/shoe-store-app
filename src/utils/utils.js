@@ -179,9 +179,9 @@ export const validationCreateProduct = async ({
     !name ||
     typeof name !== 'string' ||
     name.length < 1 ||
-    name.length > 20
+    name.length > 50
   ) {
-    executeError('Error: The name must be between 1 and 20 characters.');
+    executeError('Error: The name must be between 1 and 50 characters.');
     return true;
   } else {
     const isNameUsed = await fetchProductsByName(name);
@@ -195,10 +195,10 @@ export const validationCreateProduct = async ({
     !description ||
     typeof description !== 'string' ||
     description.length < 1 ||
-    description.length > 200
+    description.length > 1000
   ) {
     executeError(
-      'Error: The description must be between 1 and 200 characters.',
+      'Error: The description must be between 1 and 1000 characters.',
     );
     return true;
   }
@@ -223,13 +223,7 @@ export const validationCreateProduct = async ({
   }
 
   // Size validation
-  let sizeArrInvalid = true;
-  for (let i = 0; i < sizes.length; i++) {
-    if (sizes[i].needed === true) {
-      sizeArrInvalid = false;
-    }
-  }
-  if (sizeArrInvalid) {
+  if (!sizes || !Array.isArray(sizes) || sizes.length < 1) {
     executeError('Error: At least one size is required.');
     return true;
   }
@@ -272,6 +266,7 @@ export const createProduct = async ({
   price,
   categories,
   sizes,
+  colors,
   name,
   arrImgId,
   description,
@@ -282,14 +277,13 @@ export const createProduct = async ({
     genders.find(gender => gender.name == select.gender)?.id,
   );
   const idBrand = String(brands.find(brand => brand.name == select.brand)?.id);
+  const idColor = String(colors.find(color => color.name == select.color)?.id);
 
   const categoriesArr = categories
     .filter(category => category.needed)
     .map(category => String(category.id));
 
-  const sizesArr = sizes
-    .filter(size => size.needed)
-    .map(size => String(size.id));
+  const idSize = String(sizes.find(size => size.value == select.size)?.id);
 
   const obj = {
     data: {
@@ -299,7 +293,8 @@ export const createProduct = async ({
       brand: idBrand,
       categories: categoriesArr,
       gender: idGender,
-      size: sizesArr,
+      color: idColor,
+      size: idSize,
       price: price,
       userID: id,
       teamName: 'fb-team',
