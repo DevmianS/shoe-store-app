@@ -1,5 +1,5 @@
 import {useRouter} from 'next/router';
-import {useState} from 'react';
+import React, {useState} from 'react';
 
 import {toast} from 'sonner';
 
@@ -21,6 +21,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogContent from '@mui/material/DialogContent';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ToggleButton from '@mui/material/ToggleButton';
+import Slide from '@mui/material/Slide';
 
 import useProductData from '@/hooks/useProductData';
 import useUser from '@/hooks/useUser';
@@ -35,6 +36,23 @@ import {
 import FileInput from '@/components/UI/FileInput';
 import Button from '@/components/UI/Button';
 import Loading from '@/components/UI/Loading';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const imagesInit = [
+  {id: 1, file: null, image: null},
+  {id: 2, file: null, image: null},
+  {id: 3, file: null, image: null},
+  {id: 4, file: null, image: null},
+  {id: 5, file: null, image: null},
+  {id: 6, file: null, image: null},
+  {id: 7, file: null, image: null},
+  {id: 8, file: null, image: null},
+];
+
+const selectsInit = {gender: 'Men', brand: 'Nike', color: 'Black', size: '36'};
 
 const ProductAction = ({isEditing}) => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -58,7 +76,7 @@ const ProductAction = ({isEditing}) => {
       alignItems: isDesktop ? 'center' : 'start',
       justifyContent: 'space-between',
       marginBottom: rwdValue(20, 35),
-      marginTop: 10,
+      marginTop: rwdValue(30, 60),
       '& button': {maxWidth: '152px'},
     },
     row: {
@@ -75,7 +93,7 @@ const ProductAction = ({isEditing}) => {
         fontSize: {xs: '12px', md: '15px'},
       },
       flex: '1 1 auto',
-      padding: `0 ${rwdValue(20, 60)}`,
+      padding: `0 ${rwdValue(15, 60)}`,
     },
     formItem: {
       marginBottom: '25px',
@@ -130,15 +148,26 @@ const ProductAction = ({isEditing}) => {
       maxWidth: {xs: '100%', md: '440px'},
       flex: isDesktop ? '0 0 440px' : '1 1 auto',
       marginRight: isDesktop ? rwdValue(30, 120) : 0,
+      padding: rwdValue(0, 20),
       '& .MuiInputBase-input': {
         fontSize: isDesktop ? '15px' : '10px',
       },
       '& form': {display: 'flex', flexWrap: 'wrap'},
     },
-    checkboxRow: {display: 'flex', gap: '20px', flexDirection: 'row'},
+    selectsRow: {
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      '& .MuiFormControl-root': {
+        flex: {xs: '0 0 100%', md: '0 0 30%'},
+        marginBottom: {xs: '25px', md: 0},
+      },
+    },
     label: {
       fontSize: rwdValue(12, 15),
       flex: '0 0 100%',
+      fontWeight: 500,
     },
     filesRow: {
       display: 'flex',
@@ -148,7 +177,7 @@ const ProductAction = ({isEditing}) => {
     filesWrap: {
       flex: '1 1 auto',
       width: '100%',
-      paddingBottom: 10,
+      padding: rwdValue(0, 20),
     },
     toggleButtonGroup: {
       display: 'flex',
@@ -167,35 +196,14 @@ const ProductAction = ({isEditing}) => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
 
-  const [arrImages, setArrImages] = useState([
-    {id: 1, file: null, image: null},
-    {id: 2, file: null, image: null},
-    {id: 3, file: null, image: null},
-    {id: 4, file: null, image: null},
-    {id: 5, file: null, image: null},
-    {id: 6, file: null, image: null},
-    {id: 7, file: null, image: null},
-    {id: 8, file: null, image: null},
-  ]);
-
+  const [arrImages, setArrImages] = useState(imagesInit);
+  const [select, setSelect] = useState(selectsInit);
   const [loading, setLoading] = useState(false);
 
-  const [select, setSelect] = useState({
-    gender: 'Men',
-    brand: 'Nike',
-    color: 'Black',
-    size: '36',
-  });
-
   // EVENTS
-  const genderChangeHandler = e => {
-    setSelect({...select, gender: e.target.value});
-  };
-  const brandChangeHandler = e => {
-    setSelect({...select, brand: e.target.value});
-  };
-  const colorChangeHandler = e => {
-    setSelect({...select, color: e.target.value});
+  const selectChangeHandler = property => e => {
+    console.log(property);
+    setSelect({...select, [property]: e.target.value});
   };
   const sizeChangeHandler = e => {
     setSelect({...select, size: e.target.value});
@@ -266,17 +274,12 @@ const ProductAction = ({isEditing}) => {
   };
 
   const resetForm = () => {
-    setSelect({gender: 'Men', brand: 'Nike', color: 'Black', size: '36'});
+    setSelect(selectsInit);
 
     setName('');
     setDescription('');
     setPrice(0);
-    setArrImages([
-      {id: 1, file: null, image: null},
-      {id: 2, file: null, image: null},
-      {id: 3, file: null, image: null},
-      {id: 4, file: null, image: null},
-    ]);
+    setArrImages(imagesInit);
     setCategories(
       categories.map(obj => {
         return {
@@ -300,7 +303,13 @@ const ProductAction = ({isEditing}) => {
       <Button onClick={handleOpen} sx={actionStyles.openButton}>
         {isEditing ? 'Edit' : 'Add'} product
       </Button>
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xl">
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="xl"
+        TransitionComponent={Transition}
+      >
         {loading && <Loading />}
         <Box sx={actionStyles.content}>
           <Box sx={actionStyles.headerRow}>
@@ -364,14 +373,14 @@ const ProductAction = ({isEditing}) => {
                 />
               </Box>
               <Box sx={actionStyles.formItem}>
-                <Box sx={actionStyles.checkboxRow}>
+                <Box sx={actionStyles.selectsRow}>
                   <FormControl fullWidth>
                     <InputLabel id="gender">Gender</InputLabel>
                     <Select
                       labelId="gender"
                       variant="outlined"
                       value={select.gender}
-                      onChange={genderChangeHandler}
+                      onChange={selectChangeHandler('gender')}
                       defaultValue="Men"
                       size={actionStyles.rwdSize}
                     >
@@ -392,7 +401,7 @@ const ProductAction = ({isEditing}) => {
                       labelId="brand"
                       variant="outlined"
                       value={select.brand}
-                      onChange={brandChangeHandler}
+                      onChange={selectChangeHandler('brand')}
                     >
                       {!isLoading &&
                         brands.map(brand => {
@@ -411,7 +420,7 @@ const ProductAction = ({isEditing}) => {
                       variant="outlined"
                       aria-label="color"
                       value={select.color}
-                      onChange={colorChangeHandler}
+                      onChange={selectChangeHandler('color')}
                       defaultValue="Black"
                       size={actionStyles.rwdSize}
                     >
@@ -428,6 +437,7 @@ const ProductAction = ({isEditing}) => {
                 </Box>
               </Box>
               <Box sx={actionStyles.formItem}>
+                <InputLabel id="description">Description</InputLabel>
                 <TextareaAutosize
                   placeholder="Do not exceed 1000 characters."
                   label="Description"
@@ -441,12 +451,22 @@ const ProductAction = ({isEditing}) => {
                 <ToggleButtonGroup
                   exclusive
                   sx={actionStyles.toggleButtonGroup}
-                  onChange={sizeChangeHandler}
+                  onChange={selectChangeHandler('size')}
                 >
                   {sizes &&
                     sizes.map(size => {
                       const itemStyle = {
-                        border: '1px solid #C4C4C4',
+                        width: {md: '75px', xs: '52px'},
+                        height: {md: '48px', xs: '34px'},
+                        fontSize: {md: '15px', xs: '10px'},
+                        border: '1px solid #C4C4C4!important',
+                        borderRadius: '5.58px!important',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: 0,
+                        margin: 0,
+                        cursor: 'pointer',
                         background:
                           size.value === select.size
                             ? theme.palette.primary.main
@@ -469,7 +489,6 @@ const ProductAction = ({isEditing}) => {
                           size={actionStyles.rwdSize}
                           key={size.id}
                           value={size.value}
-                          onClick={sizeChangeHandler}
                           sx={itemStyle}
                         >{`EU-${size.value}`}</ToggleButton>
                       );
