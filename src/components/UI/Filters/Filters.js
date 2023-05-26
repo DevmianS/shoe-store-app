@@ -13,6 +13,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {useFilter} from '@/context/FilterContext';
 
 import PriceRangeSlider from '@/components/UI/PriceRangeSlider';
+import {useState} from 'react';
 
 export default function Filters({total}) {
   const theme = useTheme();
@@ -53,6 +54,9 @@ export default function Filters({total}) {
     accordionTitle: {fontWeight: 500},
     accordionSubTitle: {fontSize: 25},
   };
+
+  const [expandBrand, setExpandBrand] = useState(false);
+  const [expandColor, setExpandColor] = useState(false);
 
   const {arrIdFilters, setArrIdFilters, navigateToSearch} = useFilter();
 
@@ -181,34 +185,38 @@ export default function Filters({total}) {
                   />
                 );
               })}
-            <Accordion sx={styles.accordion} elevation={0}>
+            {expandBrand &&
+              arrIdFilters.brands &&
+              arrIdFilters.brands.slice(3).map(brand => {
+                return (
+                  <FormControlLabel
+                    key={brand.id}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={brand.id}
+                        checked={brand.needed}
+                        onChange={checkBoxChangeBrandHandler}
+                      />
+                    }
+                    label={brand.name}
+                  />
+                );
+              })}
+            <Accordion
+              sx={styles.accordion}
+              elevation={0}
+              onClick={() => setExpandBrand(!expandBrand)}
+            >
               <AccordionSummary
                 sx={styles.accordionSummary}
                 expandIcon={<ExpandMoreIcon />}
               >
                 <Typography variant="body1" sx={styles.accordionTitle}>
-                  Show More Brands
+                  {expandBrand ? 'Show Less brands' : 'Show More Brands'}
                 </Typography>
               </AccordionSummary>
-              <AccordionDetails sx={styles.accordionDetails}>
-                {arrIdFilters.brands &&
-                  arrIdFilters.brands.slice(3).map(brand => {
-                    return (
-                      <FormControlLabel
-                        key={brand.id}
-                        control={
-                          <Checkbox
-                            size="small"
-                            value={brand.id}
-                            checked={brand.needed}
-                            onChange={checkBoxChangeBrandHandler}
-                          />
-                        }
-                        label={brand.name}
-                      />
-                    );
-                  })}
-              </AccordionDetails>
+              <AccordionDetails sx={styles.accordionDetails}></AccordionDetails>
             </Accordion>
           </AccordionDetails>
         </Accordion>
@@ -256,34 +264,38 @@ export default function Filters({total}) {
                     label={color.name}
                   />
                 ))}
-            <Accordion sx={styles.accordion} elevation={0}>
+            {expandColor &&
+              arrIdFilters.colors &&
+              arrIdFilters.colors
+                .slice(3)
+                .map(color => (
+                  <FormControlLabel
+                    key={color.id}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={color.id}
+                        checked={color.needed}
+                        onChange={checkBoxChangeColorHandler}
+                      />
+                    }
+                    label={color.name}
+                  />
+                ))}
+            <Accordion
+              sx={styles.accordion}
+              elevation={0}
+              onClick={() => setExpandColor(!expandColor)}
+            >
               <AccordionSummary
                 sx={styles.accordionSummary}
                 expandIcon={<ExpandMoreIcon />}
               >
                 <Typography variant="body1" sx={styles.accordionTitle}>
-                  Show More Colors
+                  {expandColor ? 'Show Less Colors' : 'Show More Colors'}
                 </Typography>
               </AccordionSummary>
-              <AccordionDetails sx={styles.accordionDetails}>
-                {arrIdFilters.colors &&
-                  arrIdFilters.colors
-                    .slice(3)
-                    .map(color => (
-                      <FormControlLabel
-                        key={color.id}
-                        control={
-                          <Checkbox
-                            size="small"
-                            value={color.id}
-                            checked={color.needed}
-                            onChange={checkBoxChangeColorHandler}
-                          />
-                        }
-                        label={color.name}
-                      />
-                    ))}
-              </AccordionDetails>
+              <AccordionDetails sx={styles.accordionDetails}></AccordionDetails>
             </Accordion>
           </AccordionDetails>
         </Accordion>
