@@ -17,7 +17,14 @@ const modalStyles = {
   },
 };
 
-export default function Modal({state, setState, title, text, submitAction}) {
+export default function Modal({
+  state,
+  setState,
+  title,
+  text,
+  submitAction,
+  children,
+}) {
   return (
     <Dialog
       open={state}
@@ -43,6 +50,7 @@ export default function Modal({state, setState, title, text, submitAction}) {
           Delete
         </Button>
       </DialogActions>
+      {children}
     </Dialog>
   );
 }

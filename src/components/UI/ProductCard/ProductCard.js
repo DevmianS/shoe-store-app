@@ -19,6 +19,10 @@ import {useCart} from '@/context/CartContext';
 import Button from '@/components/UI/Button';
 import {useRouter} from 'next/router';
 import OptionsMenu from './OptionsMenu';
+import Modal from '../Modal/Modal';
+import Loading from '../Loading/Loading';
+import useUser from '@/hooks/useUser';
+import {deleteProduct} from '@/utils/utils';
 
 export default function ProductCard({
   productId,
@@ -36,6 +40,9 @@ export default function ProductCard({
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const {addProduct} = useCart();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [deleteConfVisible, setDeleteConfVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const {jwt} = useUser();
 
   const goToPreviousImage = () => {
     console.log('prev', currentImageIndex);
@@ -218,6 +225,22 @@ export default function ProductCard({
     if (!openedMenu.contains(target)) setIsMenuVisible(false);
   }, []);
 
+  const deleteProductHandler = async () => {
+    try {
+      setLoading(true);
+      await deleteProduct({id: productId, jwt});
+      router.reload();
+    } catch {
+      setLoading(false);
+      setDeleteConfVisible(false);
+      error => {
+        throw new Error(error);
+      };
+    }
+    setDeleteConfVisible(false);
+    setLoading(false);
+  };
+
   useEffect(() => {
     if (isMenuVisible)
       window.addEventListener('click', handleOutsideClick, true);
@@ -322,8 +345,27 @@ export default function ProductCard({
                 ...
               </Typography>
             </MUIButton>
-            {isMenuVisible && <OptionsMenu productId={productId} />}
+            {isMenuVisible && (
+              <OptionsMenu
+                confirmationHandler={setDeleteConfVisible}
+                productId={productId}
+              />
+            )}
           </>
+        )}
+
+        {deleteConfVisible && (
+          <Modal
+            state={true}
+            setState={setDeleteConfVisible}
+            title={'Are you sure to delete selected item '}
+            text={
+              'Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur. '
+            }
+            submitAction={deleteProductHandler}
+          >
+            {loading && <Loading />}
+          </Modal>
         )}
       </Box>
     </Box>

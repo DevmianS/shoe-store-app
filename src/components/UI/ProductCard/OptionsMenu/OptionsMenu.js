@@ -1,15 +1,10 @@
-import {useState} from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import {deleteProduct} from '@/utils/utils';
-import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
 import {Paper} from '@mui/material';
 import {rwdValue} from '@/utils/theme';
-import Modal from '../../Modal/Modal';
-import Loading from '../../Loading/Loading';
 
 const styles = {
   optionsMenu: {
@@ -32,27 +27,7 @@ const styles = {
   },
 };
 
-function OptionsMenu({productId}) {
-  const {data} = useSession();
-  const [deleteConfVisible, setDeleteConfVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const deleteProductHandler = async () => {
-    try {
-      setLoading(true);
-      await deleteProduct({id: productId, jwt: data.user.jwt});
-      router.reload();
-    } catch {
-      setLoading(false);
-      setDeleteConfVisible(false);
-      error => {
-        throw new Error(error);
-      };
-    }
-    setDeleteConfVisible(false);
-    setLoading(false);
-  };
-
+function OptionsMenu({productId, confirmationHandler}) {
   const router = useRouter();
 
   return (
@@ -77,24 +52,12 @@ function OptionsMenu({productId}) {
         <ListItemButton
           onClick={() => {
             console.log('confirm deletion');
-            setDeleteConfVisible(true);
+            confirmationHandler(true);
           }}
         >
           <ListItemText primary="Delete" />
         </ListItemButton>
       </List>
-      {loading && <Loading />}
-      {deleteConfVisible && (
-        <Modal
-          state={true}
-          setState={setDeleteConfVisible}
-          title={'Are you sure to delete selected item '}
-          text={
-            'Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur. '
-          }
-          submitAction={deleteProductHandler}
-        />
-      )}
     </Paper>
   );
 }
