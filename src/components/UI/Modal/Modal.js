@@ -17,38 +17,40 @@ const modalStyles = {
   },
 };
 
-export default function Modal({state, setState, title, text, submitAction}) {
+export default function Modal({
+  state,
+  setState,
+  title,
+  text,
+  submitAction,
+  children,
+}) {
   return (
-    <div>
-      <Dialog
-        open={state}
-        onClose={() => setState(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        fullWidth
-        maxWidth="sm"
-      >
-        <DialogTitle component="h3" variant="h1" sx={modalStyles.title}>
-          {title}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            variant="body1"
-            component="p"
-            sx={modalStyles.text}
-          >
-            {text}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setState(false)} outlined>
-            Cancel
-          </Button>
-          <Button onClick={submitAction} autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      open={state}
+      onClose={() => setState(false)}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+      fullWidth
+      maxWidth="sm"
+    >
+      <DialogTitle component="h3" variant="h1" sx={modalStyles.title}>
+        {title}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText variant="body1" component="p" sx={modalStyles.text}>
+          {text}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setState(false)} outlined>
+          Cancel
+        </Button>
+        <Button onClick={submitAction} autoFocus>
+          Delete
+        </Button>
+      </DialogActions>
+      {children}
+    </Dialog>
   );
 }
