@@ -108,7 +108,7 @@ const NavBar = () => {
     menuIcon: {
       color: 'inherit',
       display: {
-        xs: 'flex',
+        xs: searchExpanded ? 'none' : 'flex',
         md: 'none',
       },
       flex: '0 0 56px',
@@ -206,7 +206,7 @@ const NavBar = () => {
               </IconButton>
               <IconButton
                 size="large"
-                onClick={handleFocusInputResponsive}
+                onClick={() => setSearchExpanded(true)}
                 aria-label="Search"
                 sx={navStyles.searchIcon}
               >
