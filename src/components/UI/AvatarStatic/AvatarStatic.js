@@ -22,6 +22,8 @@ const AvatarStatic = ({variant = 'medium', sx, photo}) => {
   };
   return (
     <Avatar
+      component={variant === 'small' ? 'a' : 'span'}
+      href={variant === 'small' ? '/profile' : null}
       sx={{
         ...variantsSize,
         ...sx,

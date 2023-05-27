@@ -38,7 +38,14 @@ const AvatarStaticLayoutStyles = {
     marginBottom: {xs: 0, sm: '12px'},
   },
   largeName: {fontSize: rwdValue(14, 20)},
-  noBorder: {textDecoration: 'none'},
+  small: {
+    color: 'white!important',
+    transition: '0.3s',
+    '&:hover': {
+      transform: 'scale(1.05)',
+      filter: 'brightness(1.1)',
+    },
+  },
   largeWrap: {
     marginLeft: rwdValue(20, 50),
     marginBottom: rwdValue(20, 30),
@@ -60,9 +67,11 @@ const AvatarStaticLayout = ({variant}) => {
       {variant === 'card' ? (
         <Stack sx={AvatarStaticLayoutStyles.wrapper}>
           <AvatarStatic
+            component="a"
+            href="/profile"
             variant="small"
             userName={name}
-            sx={AvatarStaticLayoutStyles.noBorder}
+            sx={AvatarStaticLayoutStyles.small}
           />
           <Box sx={AvatarStaticLayoutStyles.avatarGap}>
             <Typography sx={AvatarStaticLayoutStyles.avatarText}>
