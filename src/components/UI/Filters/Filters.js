@@ -164,7 +164,7 @@ export default function Filters({total, maxPriceCalculated}) {
         <Typography variant="body5" component="p"></Typography>
         <Typography variant="h2" sx={styles.accordionSubTitle} component="h2">
           {arrIdFilters.name[0] || 'All products'}
-          {' (' + total + ') '}
+          {' (' + (total || 0) + ') '}
         </Typography>
         <Accordion sx={styles.accordion} elevation={0} defaultExpanded>
           <AccordionSummary

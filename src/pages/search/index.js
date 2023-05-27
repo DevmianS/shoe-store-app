@@ -156,12 +156,14 @@ const SearchResults = ({
                 </Box>
               </Button>
             </Box>
-            <PaginationUI
-              pageCount={pagination?.pageCount}
-              page={page}
-              setPage={setPage}
-              isLoading={false}
-            />
+            {total > 25 && (
+              <PaginationUI
+                pageCount={pagination?.pageCount}
+                page={page}
+                setPage={setPage}
+                isLoading={false}
+              />
+            )}
             <Box sx={styles.products}>
               {productsServer.length > 0 ? (
                 productsServer.map(product => {
@@ -186,12 +188,14 @@ const SearchResults = ({
                 />
               )}
             </Box>
-            <PaginationUI
-              pageCount={pagination?.pageCount}
-              page={page}
-              setPage={setPage}
-              isLoading={false}
-            />
+            {total > 25 && (
+              <PaginationUI
+                pageCount={pagination?.pageCount}
+                page={page}
+                setPage={setPage}
+                isLoading={false}
+              />
+            )}
           </Box>
         </Box>
       </NavBarLayout>
