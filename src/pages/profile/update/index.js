@@ -53,6 +53,7 @@ const updateProfileStyles = {
   },
   h1: {
     marginBottom: rwdValue(12, 50),
+    color: theme.palette.text.primary,
   },
   btn: {
     marginBottom: rwdValue(16, 25),
@@ -133,7 +134,7 @@ const ProfileUpdate = () => {
           {/* Page content column */}
           <Box sx={updateProfileStyles.content}>
             <Typography variant="h1" component="h1" sx={updateProfileStyles.h1}>
-              My Profile
+              Update Profile
             </Typography>
             <Stack sx={updateProfileStyles.avatarRow}>
               <AvatarStaticLayout variant="avatar" />
