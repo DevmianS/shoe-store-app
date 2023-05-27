@@ -19,8 +19,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogContent from '@mui/material/DialogContent';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import ToggleButton from '@mui/material/ToggleButton';
 import Slide from '@mui/material/Slide';
 
 import useProductData from '@/hooks/useProductData';
@@ -43,151 +41,151 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const selectsInit = {gender: 'Men', brand: 'Nike', color: 'Black', size: '36'};
 
-const ProductAction = ({isEditing}) => {
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const lg = useMediaQuery(theme.breakpoints.down('lg'));
-
-  const actionStyles = {
-    openButton: {
-      maxWidth: '152px',
+const actionStyles = {
+  openButton: {
+    maxWidth: '152px',
+  },
+  description: {
+    color: 'text.secondary',
+    mb: rwdValue(25, 40),
+    fontSize: rwdValue(12, 15),
+    lineHeight: 1.25,
+  },
+  title: {padding: 0},
+  headerRow: {
+    display: 'flex',
+    rowGap: '10px',
+    justifyContent: 'space-between',
+    marginBottom: rwdValue(20, 35),
+    marginTop: rwdValue(30, 60),
+    '& button': {maxWidth: '152px'},
+  },
+  row: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: {xs: '25px 0', md: '40px 0'},
+  },
+  content: {
+    '& .MuiInputBase-root': {
+      height: {xs: '33px', md: '48px'},
+      fontSize: {xs: '10px', md: '15px'},
     },
-    description: {
-      color: 'text.secondary',
-      mb: rwdValue(25, 40),
-      fontSize: rwdValue(12, 15),
-      lineHeight: 1.25,
+    '& label': {
+      fontSize: {xs: '12px', md: '15px'},
     },
-    title: {padding: 0},
-    headerRow: {
-      display: 'flex',
-      flexDirection: isDesktop ? 'row' : 'column',
-      rowGap: '10px',
-      alignItems: isDesktop ? 'center' : 'start',
-      justifyContent: 'space-between',
-      marginBottom: rwdValue(20, 35),
-      marginTop: rwdValue(30, 60),
-      '& button': {maxWidth: '152px'},
-    },
-    row: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      padding: {xs: '25px 0', md: '40px 0'},
-    },
-    content: {
-      '& .MuiInputBase-root': {
-        height: {xs: '33px', md: '48px'},
-        fontSize: {xs: '10px', md: '15px'},
-      },
-      '& label': {
-        fontSize: {xs: '12px', md: '15px'},
-      },
-      flex: '1 1 auto',
-      padding: `0 ${rwdValue(15, 60)}`,
-    },
-    formItem: {
-      marginBottom: '25px',
-      '& textarea': {
-        height: {md: '270px!important', xs: '34px!important'},
-        width: '100%',
-        color: '#5C5C5C',
-        padding: '10px',
-        borderRadius: '8px',
-        resize: 'none',
-        borderColor: 'rgba(0, 0, 0, 0.23)',
-        fontSize: rwdValue(10, 15),
-        fontFamily: 'inherit',
-        '&::placeholder': {opacity: 0.3},
-        '&:focus': {
-          '&::placeholder': {opacity: 0},
-          outline: 'none',
-          borderColor: theme.palette.primary.main,
-        },
-      },
-    },
-    formGroup: {
-      display: 'flex',
-      flexDirection: 'row',
+    flex: '1 1 auto',
+    padding: `0 ${rwdValue(15, 60)}`,
+  },
+  formItem: {
+    marginBottom: '25px',
+    '& textarea': {
+      height: {md: '270px!important', xs: '34px!important'},
       width: '100%',
-      gap: '10px',
-      marginBottom: '20px',
-      '& .MuiFormLabel-root': {
-        cursor: 'pointer',
-        border: `1px solid #C4C4C4`,
-        borderRadius: '5.58px',
-        width: {md: '75px', xs: '52px'},
-        height: {md: '48px', xs: '34px'},
-        fontSize: {md: '15px', xs: '10px'},
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 0,
-        margin: 0,
-      },
-      '& .MuiCheckbox-root': {
-        display: 'none',
+      color: '#5C5C5C',
+      padding: '10px',
+      borderRadius: '8px',
+      resize: 'none',
+      borderColor: 'rgba(0, 0, 0, 0.23)',
+      fontSize: rwdValue(10, 15),
+      fontFamily: 'inherit',
+      '&::placeholder': {opacity: 0.3},
+      '&:focus': {
+        '&::placeholder': {opacity: 0},
+        outline: 'none',
+        borderColor: theme.palette.primary.main,
       },
     },
-    formRow: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexDirection: isDesktop ? 'row' : 'column',
-      flexWrap: lg ? 'wrap' : 'nowrap',
-    },
-    form: {
-      maxWidth: {xs: '100%', md: '440px'},
-      flexBasis: {xs: '440px', md: '100%'},
-      marginRight: isDesktop ? rwdValue(30, 120) : 0,
-      padding: rwdValue(0, 20),
-      '& .MuiInputBase-input': {
-        fontSize: {xs: '10px', md: '15px'},
-      },
-      '& form': {display: 'flex', flexWrap: 'wrap'},
-    },
-    selectsRow: {
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'space-between',
-      '& .MuiFormControl-root': {
-        flex: {xs: '0 0 100%', md: '0 0 30%'},
-        marginBottom: {xs: '25px', md: 0},
-      },
-    },
-    label: {
-      fontSize: rwdValue(12, 15),
-      flex: '0 0 100%',
-      fontWeight: 500,
-    },
-    filesRow: {
-      display: 'flex',
-      gap: isDesktop ? '52px' : '20px',
-      flexWrap: 'wrap',
-    },
-    filesWrap: {
-      flex: '1 1 auto',
-      width: '100%',
-      padding: rwdValue(0, 20),
-    },
-    toggleButtonGroup: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      gap: '10px',
-    },
-    rwdSize: isDesktop ? 'medium' : 'small',
-    btns: {padding: 0},
-    itemSize: {
+  },
+  formGroup: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    gap: '10px',
+    marginBottom: '20px',
+    '& .MuiFormLabel-root': {
+      cursor: 'pointer',
+      border: `1px solid #C4C4C4`,
+      borderRadius: '5.58px',
       width: {md: '75px', xs: '52px'},
       height: {md: '48px', xs: '34px'},
       fontSize: {md: '15px', xs: '10px'},
-      border: '1px solid #C4C4C4!important',
-      borderRadius: '5.58px!important',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: 0,
       margin: 0,
-      cursor: 'pointer',
     },
+    '& .MuiCheckbox-root': {
+      display: 'none',
+    },
+  },
+  formRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  form: {
+    maxWidth: {xs: '100%', md: '440px'},
+    flexBasis: {xs: '440px', md: '100%'},
+    marginRight: {xs: 0, md: rwdValue(30, 120)},
+    padding: rwdValue(0, 20),
+    '& .MuiInputBase-input': {
+      fontSize: {xs: '10px', md: '15px'},
+    },
+    '& form': {display: 'flex', flexWrap: 'wrap'},
+  },
+  selectsRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    '& .MuiFormControl-root': {
+      flex: {xs: '0 0 100%', md: '0 0 30%'},
+      marginBottom: {xs: '25px', md: 0},
+    },
+  },
+  label: {
+    fontSize: rwdValue(12, 15),
+    flex: '0 0 100%',
+    fontWeight: 500,
+  },
+  filesRow: {
+    display: 'flex',
+    gap: {xs: '20px', md: '52px'},
+    flexWrap: 'wrap',
+  },
+  filesWrap: {
+    flex: '1 1 auto',
+    width: '100%',
+    padding: rwdValue(0, 20),
+  },
+  btns: {padding: 0},
+  itemSize: {
+    width: {md: '75px', xs: '52px'},
+    height: {md: '48px', xs: '34px'},
+    fontSize: {md: '15px', xs: '10px'},
+    border: '1px solid #C4C4C4!important',
+    borderRadius: '5.58px!important',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 0,
+    margin: 0,
+    cursor: 'pointer',
+  },
+};
+
+const ProductAction = ({isEditing}) => {
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
+  const flexStyles = {
+    headerRow: {
+      alignItems: isDesktop ? 'center' : 'start',
+      flexDirection: isDesktop ? 'row' : 'column',
+    },
+    formRow: {
+      flexDirection: isDesktop ? 'row' : 'column',
+    },
+    rwdSize: isDesktop ? 'medium' : 'small',
   };
   const router = useRouter();
 
@@ -200,11 +198,13 @@ const ProductAction = ({isEditing}) => {
 
   const [arrImages, setArrImages] = useState([]);
   const [select, setSelect] = useState(selectsInit);
+
   const [loading, setLoading] = useState(false);
-  console.log(arrImages);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   // EVENTS
   const selectChangeHandler = property => e => {
-    console.log(property);
+    console.log(property, e.target.value);
     setSelect({...select, [property]: e.target.value});
   };
 
@@ -288,12 +288,9 @@ const ProductAction = ({isEditing}) => {
       }),
     );
   };
-
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => setModalIsOpen(true);
   const handleClose = () => {
-    setOpen(false);
+    setModalIsOpen(false);
     resetForm();
   };
 
@@ -303,7 +300,7 @@ const ProductAction = ({isEditing}) => {
         {isEditing ? 'Edit' : 'Add'} product
       </Button>
       <Dialog
-        open={open}
+        open={modalIsOpen}
         onClose={handleClose}
         fullWidth
         maxWidth="xl"
@@ -311,7 +308,7 @@ const ProductAction = ({isEditing}) => {
       >
         {loading && <Loading />}
         <Box sx={actionStyles.content}>
-          <Box sx={actionStyles.headerRow}>
+          <Box sx={{...actionStyles.headerRow, ...flexStyles.headerRow}}>
             <DialogTitle variant="h1" component="h1" sx={actionStyles.title}>
               {isEditing ? 'Edit' : 'Add'} product
             </DialogTitle>
@@ -347,7 +344,7 @@ const ProductAction = ({isEditing}) => {
             convenient form, designed to simplify the process of managing your
             shop's offerings. Start optimizing your product management today!
           </DialogContentText>
-          <form style={actionStyles.formRow}>
+          <form style={{...actionStyles.formRow, ...flexStyles.formRow}}>
             <DialogContent sx={actionStyles.form}>
               <Box sx={actionStyles.formItem}>
                 <TextField
@@ -433,6 +430,27 @@ const ProductAction = ({isEditing}) => {
                         })}
                     </Select>
                   </FormControl>
+                  <FormControl fullWidth>
+                    <InputLabel id="size">Size</InputLabel>
+                    <Select
+                      labelId="size"
+                      variant="outlined"
+                      aria-label="size"
+                      value={select.size}
+                      onChange={selectChangeHandler('size')}
+                      size={actionStyles.rwdSize}
+                      defaultValue="36"
+                    >
+                      {!isLoading &&
+                        sizes.map(size => {
+                          return (
+                            <MenuItem key={size.id} value={size.value}>
+                              {`EU-${size.value}`}
+                            </MenuItem>
+                          );
+                        })}
+                    </Select>
+                  </FormControl>
                 </Box>
               </Box>
               <Box sx={actionStyles.formItem}>
@@ -445,45 +463,6 @@ const ProductAction = ({isEditing}) => {
                   onChange={e => setDescription(e.target.value)}
                 />
               </Box>
-              <FormGroup sx={actionStyles.formGroup}>
-                <Typography sx={actionStyles.label}>Add size</Typography>
-                <ToggleButtonGroup
-                  exclusive
-                  sx={actionStyles.toggleButtonGroup}
-                  onChange={selectChangeHandler('size')}
-                >
-                  {sizes &&
-                    sizes.map(size => {
-                      const itemStyle = {
-                        ...actionStyles.itemSize,
-                        background:
-                          size.value === select.size
-                            ? theme.palette.primary.main
-                            : 'white',
-                        color:
-                          size.value === select.size
-                            ? 'white'
-                            : theme.palette.text.secondary,
-                        '&:hover': {
-                          background:
-                            size.value === select.size
-                              ? theme.palette.primary.main
-                              : 'white',
-                          borderColor: 'black',
-                          color: 'black',
-                        },
-                      };
-                      return (
-                        <ToggleButton
-                          size={actionStyles.rwdSize}
-                          key={size.id}
-                          value={size.value}
-                          sx={itemStyle}
-                        >{`EU-${size.value}`}</ToggleButton>
-                      );
-                    })}
-                </ToggleButtonGroup>
-              </FormGroup>
               <FormGroup sx={actionStyles.formGroup}>
                 <Typography sx={actionStyles.label}>Add categories</Typography>
                 {categories &&
