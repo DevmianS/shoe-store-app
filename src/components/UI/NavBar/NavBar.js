@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import {useSearch} from '@/context/SearchContext';
 import {useToggle} from '@/context/ToggleContext';
 import {useCart} from '@/context/CartContext';
+import useUser from '@/hooks/useUser';
 
 import Cart from '@/components/UI/Cart';
 import Searchbar from '@/components/UI/Searchbar';
@@ -21,6 +22,7 @@ const NavBar = () => {
   const {isToggled, toggle, setIsToggled} = useToggle();
   const {searchExpanded, setSearchExpanded} = useSearch();
   const {cartCount} = useCart();
+  const {status} = useUser();
 
   const searchInputRef = useRef();
   const router = useRouter();
@@ -194,6 +196,13 @@ const NavBar = () => {
               <Button>Products</Button>
             </Link>
           </Stack>
+          {status !== 'authenticated' && (
+            <Stack component="nav" sx={navStyles.nav}>
+              <Link href="/sign-in">
+                <Button>Sign-in</Button>
+              </Link>
+            </Stack>
+          )}
           <Box sx={navStyles.search}>
             <Searchbar
               searchExpanded={searchExpanded}
