@@ -14,7 +14,14 @@ import {searchKeyInObject} from '@/utils/utils';
 
 import NoContent from '@/components/UI/NoContent';
 
-const SearchResults = ({searchString, productsServer, total, filters}) => {
+const SearchResults = ({
+  searchString,
+  productsServer,
+  total,
+  filters,
+  meta,
+}) => {
+  const router = useRouter();
   const [hideFilter, setHideFilter] = useState(false);
 
   const theme = useTheme();
@@ -86,6 +93,25 @@ const SearchResults = ({searchString, productsServer, total, filters}) => {
     },
   };
 
+  console.log('meta is: ', meta);
+
+  const pagination = meta?.pagination;
+
+  const [page, setPage] = useState(pagination?.page || 1);
+  useEffect(() => {
+    if (router.asPath.includes('pagination')) {
+      console.log('router.asPath.includes');
+      const originalString = router.asPath;
+      const newString = originalString.replace(
+        /pagination\[page\]=\d+/g,
+        'pagination[page]=' + page,
+      );
+      router.push(newString);
+    } else if (page != 1) {
+      router.push(router.asPath + '&pagination[page]=' + page);
+    }
+  }, [page]);
+
   return (
     <>
       <Head>
@@ -130,6 +156,12 @@ const SearchResults = ({searchString, productsServer, total, filters}) => {
                 </Box>
               </Button>
             </Box>
+            <PaginationUI
+              pageCount={pagination?.pageCount}
+              page={page}
+              setPage={setPage}
+              isLoading={false}
+            />
             <Box sx={styles.products}>
               {productsServer.length > 0 ? (
                 productsServer.map(product => {
@@ -154,6 +186,12 @@ const SearchResults = ({searchString, productsServer, total, filters}) => {
                 />
               )}
             </Box>
+            <PaginationUI
+              pageCount={pagination?.pageCount}
+              page={page}
+              setPage={setPage}
+              isLoading={false}
+            />
           </Box>
         </Box>
       </NavBarLayout>
@@ -163,6 +201,8 @@ const SearchResults = ({searchString, productsServer, total, filters}) => {
 import axios from 'axios';
 import {useFilter} from '@/context/FilterContext';
 import {useEffect, useState} from 'react';
+import PaginationUI from '@/components/UI/PaginationUI/PaginationUI';
+import {useRouter} from 'next/router';
 
 export default SearchResults;
 
@@ -177,6 +217,7 @@ export async function getServerSideProps(context) {
   let newSizes = null;
   let newData = [];
   let total = null;
+  let meta = null;
 
   const brandApi = process.env.NEXT_PUBLIC_API_URL + '/brands?fields=name';
 
@@ -297,6 +338,7 @@ export async function getServerSideProps(context) {
       newData = data?.data;
       console.log('Data is: ', data);
       total = data?.meta?.pagination?.total;
+      meta = data?.meta;
     } catch (error) {
       console.log('the error is: ', error);
     }
@@ -329,6 +371,7 @@ export async function getServerSideProps(context) {
         maxPrice: searchKeyInObject(qsObj, '$lte') || [],
       },
       total: total,
+      meta: meta,
     },
   };
 }
