@@ -1,22 +1,23 @@
 import Head from 'next/head';
-import Link from 'next/link';
+import {useState} from 'react';
 
-import {Typography, Box, useMediaQuery, useTheme} from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import {rwdValue, theme} from '@/utils/theme';
-import bannerImg from '@/assets/banner.jpg';
+import {SkeletonProducts} from '@/utils/utils';
+import useMyProducts from '@/hooks/useMyProducts';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 
+import NoContent from '@/components/UI/NoContent';
 import ProductCard from '@/components/UI/ProductCard';
 import TopBanner from '@/components/UI/TopBanner';
 import Button from '@/components/UI/Button';
-import useMyProducts from '@/hooks/useMyProducts';
 
-import {SkeletonProducts} from '@/utils/utils';
-import NoContent from '@/components/UI/NoContent';
+import bannerImg from '@/assets/banner.jpg';
 
 const myProductsStyles = {
   row: {
@@ -76,6 +77,7 @@ const myProductsStyles = {
 
 const MyProducts = ({productsList}) => {
   const {products, isLoading} = useMyProducts();
+  const [openModal, setOpenModal] = useState();
 
   return (
     <>
