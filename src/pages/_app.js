@@ -15,6 +15,21 @@ import {SearchProvider} from '@/context/SearchContext';
 import {CartProvider} from '@/context/CartContext';
 import {FilterProvider} from '@/context/FilterContext';
 
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+import Router from 'next/router';
+
+NProgress.configure({
+  minimum: 0.3,
+  easing: 'ease',
+  speed: 800,
+  showSpinner: false,
+});
+
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
+
 const queryClient = new QueryClient();
 const icons_font = localFont({src: '../font/SHOES_STORE.woff'});
 
