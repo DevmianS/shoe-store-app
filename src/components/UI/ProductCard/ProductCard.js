@@ -175,6 +175,7 @@ export default function ProductCard({
         '&.Tennis': {background: '#31C1B0'},
         '&.Casual': {background: '#92BB41'},
         '&.Tracking': {background: '#19976A'},
+        '&.Volleyball': {background: '#B34EE9'},
       },
     },
     iconBtn: {
