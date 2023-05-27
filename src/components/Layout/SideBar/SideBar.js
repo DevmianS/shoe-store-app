@@ -46,9 +46,9 @@ function SideBar({children, isFilter}) {
   const handleLogout = async () => {
     setLoading(true);
     await signOut({redirect: false});
-    await router.prefetch('/sign-in');
+    await router.prefetch('/');
     toast.success('Logged out successfully.');
-    router.push('/sign-in');
+    router.push('/');
     if (typeof window !== 'undefined') {
       window.localStorage.removeItem('USER_EMAIL');
     }

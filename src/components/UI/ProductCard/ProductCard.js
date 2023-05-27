@@ -35,6 +35,7 @@ export default function ProductCard({
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const router = useRouter();
   const theme = useTheme();
+  const {status} = useUser();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -252,16 +253,18 @@ export default function ProductCard({
       <Box sx={styles.card}>
         <Box sx={styles.image}>
           <Box sx={styles.actions} className="actions">
-            <Button
-              size={isDesktop ? 'medium' : 'small'}
-              onClick={() => addProduct({productId, title})}
-            >
-              <Typography
-                component="span"
-                className="icon-add-to-cart"
-                title={`Add ${title} to the cart`}
-              />
-            </Button>
+            {status === 'authenticated' && (
+              <Button
+                size={isDesktop ? 'medium' : 'small'}
+                onClick={() => addProduct({productId, title})}
+              >
+                <Typography
+                  component="span"
+                  className="icon-add-to-cart"
+                  title={`Add ${title} to the cart`}
+                />
+              </Button>
+            )}
             <Button
               size={isDesktop ? 'medium' : 'small'}
               onClick={() => router.push(`/products/${productId}`)}

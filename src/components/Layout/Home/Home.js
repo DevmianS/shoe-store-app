@@ -16,6 +16,7 @@ import ProductCard from '@/components/UI/ProductCard';
 import TopBanner from '@/components/UI/TopBanner';
 
 import bannerImg from '@/assets/banner2.jpg';
+import useUser from '@/hooks/useUser';
 
 const productsStyles = {
   row: {
@@ -37,6 +38,7 @@ const productsStyles = {
 
 const Home = () => {
   const [page, setPage] = useState(1);
+  const {status} = useUser();
 
   const {data, isLoading} = useProducts(page);
   const products = data?.data;
@@ -46,7 +48,7 @@ const Home = () => {
 
   return (
     <Box sx={productsStyles.row}>
-      <SideBar />
+      {status === 'authenticated' && <SideBar />}
       <Box sx={productsStyles.content}>
         <TopBanner imgPath={bannerImg.src} />
         <AvatarStaticLayout />

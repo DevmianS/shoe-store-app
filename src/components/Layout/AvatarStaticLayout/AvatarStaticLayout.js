@@ -62,6 +62,11 @@ const AvatarStaticLayoutStyles = {
 
 const AvatarStaticLayout = ({variant}) => {
   const {name, data} = useUser();
+  const {status} = useUser();
+
+  if (status !== 'authenticated') {
+    return <Stack sx={{marginBottom: rwdValue(20, 125)}}></Stack>;
+  }
   return (
     <>
       {variant === 'card' ? (

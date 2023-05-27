@@ -31,7 +31,7 @@ export default async function auth(req, res) {
             return userData;
           } catch (error) {
             // Extract the error message from the server response and throw it
-            const errorMessage = error?.response?.data?.error?.message  || '';
+            const errorMessage = error?.response?.data?.error?.message || '';
             throw new Error(errorMessage);
           }
         },
