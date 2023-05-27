@@ -112,6 +112,12 @@ const ProfileUpdate = () => {
   const updateUserDataHandler = () => {
     udpateUserMutation.mutate();
   };
+  const onChangeInputHandler = propname => e => {
+    setNewUserData(data => ({
+      ...data,
+      [propname]: e.target.value,
+    }));
+  };
 
   useEffect(() => {
     session?.user && setUserData(session.user.user);
@@ -151,41 +157,31 @@ const ProfileUpdate = () => {
                   <TextField
                     fullWidth
                     placeholder={userData.firstName}
-                    label="Name"
+                    label="First name"
                     type="text"
                     size={mobileSize}
-                    onChange={e => {
-                      setNewUserData(data => ({
-                        ...data,
-                        firstName: e.target.value,
-                      }));
-                    }}
+                    onChange={onChangeInputHandler('firstName')}
                   />
                 </Box>
                 <Box sx={updateProfileStyles.item}>
                   <TextField
                     fullWidth
                     placeholder={userData.lastName}
-                    label="Surname"
+                    label="Last name"
                     type="text"
                     size={mobileSize}
-                    onChange={e => {
-                      setNewUserData(data => ({
-                        ...data,
-                        lastName: e.target.value,
-                      }));
-                    }}
+                    onChange={onChangeInputHandler('lastName')}
                   />
                 </Box>
                 <Box sx={updateProfileStyles.item}>
                   <TextField
                     fullWidth
                     placeholder={userData?.email}
-                    defaultValue={userData?.email}
                     label="Email"
                     type="email"
                     size={mobileSize}
                     disabled
+                    onChange={onChangeInputHandler('email')}
                     sx={updateProfileStyles.disabled}
                   />
                 </Box>
@@ -196,12 +192,7 @@ const ProfileUpdate = () => {
                     label="Phone number"
                     type="tel"
                     size={mobileSize}
-                    onChange={e => {
-                      setNewUserData(data => ({
-                        ...data,
-                        phoneNumber: e.target.value,
-                      }));
-                    }}
+                    onChange={onChangeInputHandler('phoneNumber')}
                   />
                 </Box>
                 <Box sx={updateProfileStyles.saveChangesBox}>
