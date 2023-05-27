@@ -39,6 +39,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const contentDescription = `Effortlessly manage your shop's product inventory with our intuitive
+form for adding and editing products. Streamline your workflow and
+stay organized as you easily input and update product details such
+as name, description, price, and availability. With a user-friendly
+interface and comprehensive fields, you can swiftly add new products
+or make changes to existing ones. Enhance your online store's
+efficiency and maintain accurate product information with our
+convenient form, designed to simplify the process of managing your
+shop's offerings. Start optimizing your product management today!`;
+
 const selectsInit = {gender: 'Men', brand: 'Nike', color: 'Black', size: '36'};
 
 const actionStyles = {
@@ -344,15 +354,7 @@ const ProductAction = ({isEditing}) => {
             component="p"
             sx={actionStyles.description}
           >
-            Effortlessly manage your shop's product inventory with our intuitive
-            form for adding and editing products. Streamline your workflow and
-            stay organized as you easily input and update product details such
-            as name, description, price, and availability. With a user-friendly
-            interface and comprehensive fields, you can swiftly add new products
-            or make changes to existing ones. Enhance your online store's
-            efficiency and maintain accurate product information with our
-            convenient form, designed to simplify the process of managing your
-            shop's offerings. Start optimizing your product management today!
+            {contentDescription}
           </DialogContentText>
           <form style={{...actionStyles.formRow, ...flexStyles.formRow}}>
             <DialogContent sx={actionStyles.form}>
