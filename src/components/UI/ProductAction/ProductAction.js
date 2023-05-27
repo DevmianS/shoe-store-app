@@ -219,7 +219,6 @@ const ProductAction = ({isEditing, openState, setOpenState}) => {
   const [select, setSelect] = useState(selectsInit);
 
   const [loading, setLoading] = useState(false);
-  const [openState, setOpenState] = useState(false);
 
   // EVENTS
   const selectChangeHandler = property => e => {
@@ -280,7 +279,7 @@ const ProductAction = ({isEditing, openState, setOpenState}) => {
 
         if (res?.status == '200') {
           resetForm();
-          router.push('/my-products');
+          setOpenState(false);
         }
       }
     } catch (error) {

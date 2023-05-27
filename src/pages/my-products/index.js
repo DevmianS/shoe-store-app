@@ -18,6 +18,7 @@ import TopBanner from '@/components/UI/TopBanner';
 import Button from '@/components/UI/Button';
 
 import bannerImg from '@/assets/banner.jpg';
+import ProductAction from '@/components/UI/ProductAction/ProductAction';
 
 const myProductsStyles = {
   row: {
@@ -77,13 +78,18 @@ const myProductsStyles = {
 
 const MyProducts = ({productsList}) => {
   const {products, isLoading} = useMyProducts();
-  const [openModal, setOpenModal] = useState();
+  const [openModal, setOpenModal] = useState(false);
+
+  const addProductClickHandler = () => {
+    setOpenModal(true);
+  };
 
   return (
     <>
       <Head>
         <title>Wellrun | My Products</title>
       </Head>
+      <ProductAction openState={openModal} setOpenState={setOpenModal} />
       <NavBarLayout>
         <Box sx={myProductsStyles.row}>
           <SideBar />
@@ -95,7 +101,12 @@ const MyProducts = ({productsList}) => {
                 My products
               </Typography>
               {Array.isArray(products) && products.length > 0 && (
-                <Button sx={myProductsStyles.msgBtn}>Add product</Button>
+                <Button
+                  sx={myProductsStyles.msgBtn}
+                  onClick={addProductClickHandler}
+                >
+                  Add product
+                </Button>
               )}
             </Box>
             <Box sx={myProductsStyles.productsRow}>
