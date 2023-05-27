@@ -33,24 +33,13 @@ import {
   validationCreateProduct,
 } from '@/utils/utils';
 
-import FileInput from '@/components/UI/FileInput';
 import Button from '@/components/UI/Button';
 import Loading from '@/components/UI/Loading';
+import ImageUploader from '@/components/UI/ImageUploader';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
-const imagesInit = [
-  {id: 1, file: null, image: null},
-  {id: 2, file: null, image: null},
-  {id: 3, file: null, image: null},
-  {id: 4, file: null, image: null},
-  {id: 5, file: null, image: null},
-  {id: 6, file: null, image: null},
-  {id: 7, file: null, image: null},
-  {id: 8, file: null, image: null},
-];
 
 const selectsInit = {gender: 'Men', brand: 'Nike', color: 'Black', size: '36'};
 
@@ -146,11 +135,11 @@ const ProductAction = ({isEditing}) => {
     },
     form: {
       maxWidth: {xs: '100%', md: '440px'},
-      flex: isDesktop ? '0 0 440px' : '1 1 auto',
+      flexBasis: {xs: '440px', md: '100%'},
       marginRight: isDesktop ? rwdValue(30, 120) : 0,
       padding: rwdValue(0, 20),
       '& .MuiInputBase-input': {
-        fontSize: isDesktop ? '15px' : '10px',
+        fontSize: {xs: '10px', md: '15px'},
       },
       '& form': {display: 'flex', flexWrap: 'wrap'},
     },
@@ -186,6 +175,19 @@ const ProductAction = ({isEditing}) => {
     },
     rwdSize: isDesktop ? 'medium' : 'small',
     btns: {padding: 0},
+    itemSize: {
+      width: {md: '75px', xs: '52px'},
+      height: {md: '48px', xs: '34px'},
+      fontSize: {md: '15px', xs: '10px'},
+      border: '1px solid #C4C4C4!important',
+      borderRadius: '5.58px!important',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 0,
+      margin: 0,
+      cursor: 'pointer',
+    },
   };
   const router = useRouter();
 
@@ -196,17 +198,14 @@ const ProductAction = ({isEditing}) => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
 
-  const [arrImages, setArrImages] = useState(imagesInit);
+  const [arrImages, setArrImages] = useState([]);
   const [select, setSelect] = useState(selectsInit);
   const [loading, setLoading] = useState(false);
-
+  console.log(arrImages);
   // EVENTS
   const selectChangeHandler = property => e => {
     console.log(property);
     setSelect({...select, [property]: e.target.value});
-  };
-  const sizeChangeHandler = e => {
-    setSelect({...select, size: e.target.value});
   };
 
   const checkBoxChangeHandlerCategory = event => {
@@ -279,7 +278,7 @@ const ProductAction = ({isEditing}) => {
     setName('');
     setDescription('');
     setPrice(0);
-    setArrImages(imagesInit);
+    setArrImages([]);
     setCategories(
       categories.map(obj => {
         return {
@@ -456,17 +455,7 @@ const ProductAction = ({isEditing}) => {
                   {sizes &&
                     sizes.map(size => {
                       const itemStyle = {
-                        width: {md: '75px', xs: '52px'},
-                        height: {md: '48px', xs: '34px'},
-                        fontSize: {md: '15px', xs: '10px'},
-                        border: '1px solid #C4C4C4!important',
-                        borderRadius: '5.58px!important',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: 0,
-                        margin: 0,
-                        cursor: 'pointer',
+                        ...actionStyles.itemSize,
                         background:
                           size.value === select.size
                             ? theme.palette.primary.main
@@ -533,14 +522,7 @@ const ProductAction = ({isEditing}) => {
             <DialogContent sx={actionStyles.filesWrap}>
               <InputLabel>Product images</InputLabel>
               <Box sx={actionStyles.filesRow}>
-                {arrImages?.map(img => (
-                  <FileInput
-                    key={img.id}
-                    id={img.id}
-                    setArrImages={setArrImages}
-                    arrImages={arrImages}
-                  />
-                ))}
+                <ImageUploader images={arrImages} setImages={setArrImages} />
               </Box>
             </DialogContent>
           </form>
