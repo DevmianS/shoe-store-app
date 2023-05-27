@@ -42,6 +42,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const selectsInit = {gender: 'Men', brand: 'Nike', color: 'Black', size: '36'};
 
 const actionStyles = {
+  dialog: {
+    '& .MuiDialog-paper': {
+      margin: {xs: '10px', md: '32px'},
+      width: {xs: 'calc(100% - 20px)', md: 'calc(100% - 64px)'},
+      maxHeight: {xs: 'calc(100% - 20px)', md: 'calc(100% - 64px)'},
+    },
+  },
   openButton: {
     maxWidth: '152px',
   },
@@ -74,10 +81,10 @@ const actionStyles = {
       fontSize: {xs: '12px', md: '15px'},
     },
     flex: '1 1 auto',
-    padding: `0 ${rwdValue(15, 60)}`,
+    padding: `0 ${rwdValue(10, 60)}`,
   },
   formItem: {
-    marginBottom: '25px',
+    marginBottom: {xs: '15px', md: '25px'},
     '& textarea': {
       height: {md: '270px!important', xs: '34px!important'},
       width: '100%',
@@ -126,6 +133,7 @@ const actionStyles = {
   form: {
     maxWidth: {xs: '100%', md: '440px'},
     flexBasis: {xs: '440px', md: '100%'},
+    overflow: 'visible',
     marginRight: {xs: 0, md: rwdValue(30, 120)},
     padding: rwdValue(0, 20),
     '& .MuiInputBase-input': {
@@ -137,10 +145,10 @@ const actionStyles = {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    rowGap: {xs: '15px', md: '25px'},
     justifyContent: 'space-between',
     '& .MuiFormControl-root': {
-      flex: {xs: '0 0 100%', md: '0 0 30%'},
-      marginBottom: {xs: '25px', md: 0},
+      flex: '0 0 calc(50% - 10px)',
     },
   },
   label: {
@@ -157,6 +165,7 @@ const actionStyles = {
     flex: '1 1 auto',
     width: '100%',
     padding: rwdValue(0, 20),
+    marginBottom: '30px',
   },
   btns: {padding: 0},
   itemSize: {
@@ -304,6 +313,7 @@ const ProductAction = ({isEditing}) => {
         onClose={handleClose}
         fullWidth
         maxWidth="xl"
+        sx={actionStyles.dialog}
         TransitionComponent={Transition}
       >
         {loading && <Loading />}
@@ -314,14 +324,14 @@ const ProductAction = ({isEditing}) => {
             </DialogTitle>
             <DialogActions sx={actionStyles.btns}>
               <Button
-                size={actionStyles.rwdSize}
+                size={flexStyles.rwdSize}
                 variant="contained"
                 onClick={handleClose}
               >
                 Cancel
               </Button>
               <Button
-                size={actionStyles.rwdSize}
+                size={flexStyles.rwdSize}
                 variant="contained"
                 onClick={handleSubmit}
               >
@@ -349,7 +359,7 @@ const ProductAction = ({isEditing}) => {
               <Box sx={actionStyles.formItem}>
                 <TextField
                   fullWidth
-                  size={actionStyles.rwdSize}
+                  size={flexStyles.rwdSize}
                   placeholder="Nike Air Max 90"
                   label="Product name"
                   type="text"
@@ -360,7 +370,7 @@ const ProductAction = ({isEditing}) => {
               <Box sx={actionStyles.formItem}>
                 <TextField
                   fullWidth
-                  size={actionStyles.rwdSize}
+                  size={flexStyles.rwdSize}
                   placeholder="Price"
                   label="Price"
                   type="number"
@@ -378,7 +388,7 @@ const ProductAction = ({isEditing}) => {
                       value={select.gender}
                       onChange={selectChangeHandler('gender')}
                       defaultValue="Men"
-                      size={actionStyles.rwdSize}
+                      size={flexStyles.rwdSize}
                     >
                       {!isLoading &&
                         genders.map(gender => {
@@ -393,7 +403,7 @@ const ProductAction = ({isEditing}) => {
                   <FormControl fullWidth>
                     <InputLabel id="brand">Brand</InputLabel>
                     <Select
-                      size={actionStyles.rwdSize}
+                      size={flexStyles.rwdSize}
                       labelId="brand"
                       variant="outlined"
                       value={select.brand}
@@ -418,7 +428,7 @@ const ProductAction = ({isEditing}) => {
                       value={select.color}
                       onChange={selectChangeHandler('color')}
                       defaultValue="Black"
-                      size={actionStyles.rwdSize}
+                      size={flexStyles.rwdSize}
                     >
                       {!isLoading &&
                         colors.map(color => {
@@ -438,7 +448,7 @@ const ProductAction = ({isEditing}) => {
                       aria-label="size"
                       value={select.size}
                       onChange={selectChangeHandler('size')}
-                      size={actionStyles.rwdSize}
+                      size={flexStyles.rwdSize}
                       defaultValue="36"
                     >
                       {!isLoading &&
