@@ -4,14 +4,18 @@ import {
   AccordionSummary,
   Typography,
   Stack,
-  TextField,
   FormControlLabel,
   Checkbox,
   useTheme,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function Filters({filterResult, filterCategory}) {
+import {useFilter} from '@/context/FilterContext';
+
+import PriceRangeSlider from '@/components/UI/PriceRangeSlider';
+import {useState} from 'react';
+
+export default function Filters({total}) {
   const theme = useTheme();
   const styles = {
     wrapper: {
@@ -51,16 +55,79 @@ export default function Filters({filterResult, filterCategory}) {
     accordionSubTitle: {fontSize: 25},
   };
 
+  const [expandBrand, setExpandBrand] = useState(false);
+  const [expandColor, setExpandColor] = useState(false);
+
+  const {arrIdFilters, setArrIdFilters, navigateToSearch} = useFilter();
+
+  const checkBoxChangeGenderHandler = event => {
+    console.log('event: ', event, event.target.value);
+    let newArr = arrIdFilters.genders.map(gender => {
+      if (gender.id == event.target.value) {
+        return {
+          ...gender,
+          needed: !gender.needed,
+        };
+      }
+      return gender;
+    });
+    setArrIdFilters(prevState => {
+      return {
+        ...prevState,
+        genders: newArr,
+      };
+    });
+  };
+
+  const checkBoxChangeBrandHandler = event => {
+    console.log('event: ', event, event.target.value);
+    let newArr = arrIdFilters.brands.map(brand => {
+      if (brand.id == event.target.value) {
+        return {
+          ...brand,
+          needed: !brand.needed,
+        };
+      }
+      return brand;
+    });
+    setArrIdFilters(prevState => {
+      return {
+        ...prevState,
+        brands: newArr,
+      };
+    });
+  };
+
+  const checkBoxChangeColorHandler = event => {
+    console.log('event: ', event, event.target.value);
+    let newArr = arrIdFilters.colors.map(color => {
+      if (color.id == event.target.value) {
+        return {
+          ...color,
+          needed: !color.needed,
+        };
+      }
+      return color;
+    });
+    setArrIdFilters(prevState => {
+      return {
+        ...prevState,
+        colors: newArr,
+      };
+    });
+  };
+
+  console.log('arrIdFilters.name: ', arrIdFilters.name, total);
+
   return (
     <>
       <Stack sx={styles.wrapper}>
-        <Typography variant="body5" component="p">
-          {filterCategory || 'Shoes/Air Force 1'}
-        </Typography>
+        <Typography variant="body5" component="p"></Typography>
         <Typography variant="h2" sx={styles.accordionSubTitle} component="h2">
-          {filterResult || 'Nike (7)'}
+          {arrIdFilters.name[0] || 'All products'}
+          {' (' + total + ') '}
         </Typography>
-        <Accordion sx={styles.accordion} elevation={0}>
+        <Accordion sx={styles.accordion} elevation={0} defaultExpanded>
           <AccordionSummary
             sx={styles.accordionSummary}
             expandIcon={<ExpandMoreIcon />}
@@ -70,41 +137,28 @@ export default function Filters({filterResult, filterCategory}) {
             </Typography>
           </AccordionSummary>
           <AccordionDetails sx={styles.accordionDetails}>
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Men"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Women"
-            />
+            {arrIdFilters.genders &&
+              arrIdFilters.genders.map(gender => {
+                return (
+                  <FormControlLabel
+                    key={gender.name}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={gender.id}
+                        checked={gender.needed}
+                        onChange={checkBoxChangeGenderHandler}
+                      />
+                    }
+                    label={gender.name}
+                  />
+                );
+              })}
           </AccordionDetails>
         </Accordion>
       </Stack>
       <Stack sx={styles.wrapper}>
-        <Accordion sx={styles.accordion} elevation={0}>
-          <AccordionSummary
-            sx={styles.accordionSummary}
-            expandIcon={<ExpandMoreIcon />}
-          >
-            <Typography variant="body1" sx={styles.accordionTitle}>
-              Kids
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails sx={styles.accordionDetails}>
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Boys"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Girls"
-            />
-          </AccordionDetails>
-        </Accordion>
-      </Stack>
-      <Stack sx={styles.wrapper}>
-        <Accordion sx={styles.accordion} elevation={0}>
+        <Accordion sx={styles.accordion} elevation={0} defaultExpanded>
           <AccordionSummary
             sx={styles.accordionSummary}
             expandIcon={<ExpandMoreIcon />}
@@ -114,36 +168,61 @@ export default function Filters({filterResult, filterCategory}) {
             </Typography>
           </AccordionSummary>
           <AccordionDetails sx={styles.accordionDetails}>
-            <TextField size="small" placeholder="Search" />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Adidas (+350)"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Asics (+840)"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="New Balance (+840)"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Nike"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Puma (+350)"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Reebok (+97)"
-            />
+            {arrIdFilters.brands &&
+              arrIdFilters.brands.slice(0, 3).map(brand => {
+                return (
+                  <FormControlLabel
+                    key={brand.id}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={brand.id}
+                        checked={brand.needed}
+                        onChange={checkBoxChangeBrandHandler}
+                      />
+                    }
+                    label={brand.name}
+                  />
+                );
+              })}
+            {expandBrand &&
+              arrIdFilters.brands &&
+              arrIdFilters.brands.slice(3).map(brand => {
+                return (
+                  <FormControlLabel
+                    key={brand.id}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={brand.id}
+                        checked={brand.needed}
+                        onChange={checkBoxChangeBrandHandler}
+                      />
+                    }
+                    label={brand.name}
+                  />
+                );
+              })}
+            <Accordion
+              sx={styles.accordion}
+              elevation={0}
+              onClick={() => setExpandBrand(!expandBrand)}
+            >
+              <AccordionSummary
+                sx={styles.accordionSummary}
+                expandIcon={<ExpandMoreIcon />}
+              >
+                <Typography variant="body1" sx={styles.accordionTitle}>
+                  {expandBrand ? 'Show Less brands' : 'Show More Brands'}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={styles.accordionDetails}></AccordionDetails>
+            </Accordion>
           </AccordionDetails>
         </Accordion>
       </Stack>
       <Stack sx={styles.wrapper}>
-        <Accordion sx={styles.accordion} elevation={0}>
+        <Accordion sx={styles.accordion} elevation={0} defaultExpanded>
           <AccordionSummary
             sx={styles.accordionSummary}
             expandIcon={<ExpandMoreIcon />}
@@ -153,14 +232,12 @@ export default function Filters({filterResult, filterCategory}) {
             </Typography>
           </AccordionSummary>
           <AccordionDetails sx={styles.accordionDetailsAlt}>
-            <TextField placeholder="Min" size="small" onChange={() => {}} />
-            -
-            <TextField placeholder="Max" size="small" onChange={() => {}} />
+            <PriceRangeSlider />
           </AccordionDetails>
         </Accordion>
       </Stack>
       <Stack sx={styles.wrapper}>
-        <Accordion sx={styles.accordion} elevation={0}>
+        <Accordion sx={styles.accordion} elevation={0} defaultExpanded>
           <AccordionSummary
             sx={styles.accordionSummary}
             expandIcon={<ExpandMoreIcon />}
@@ -170,22 +247,56 @@ export default function Filters({filterResult, filterCategory}) {
             </Typography>
           </AccordionSummary>
           <AccordionDetails sx={styles.accordionDetails}>
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="White"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Black"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Red"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" onChange={() => {}} />}
-              label="Blue"
-            />
+            {arrIdFilters.colors &&
+              arrIdFilters.colors
+                .slice(0, 3)
+                .map(color => (
+                  <FormControlLabel
+                    key={color.id}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={color.id}
+                        checked={color.needed}
+                        onChange={checkBoxChangeColorHandler}
+                      />
+                    }
+                    label={color.name}
+                  />
+                ))}
+            {expandColor &&
+              arrIdFilters.colors &&
+              arrIdFilters.colors
+                .slice(3)
+                .map(color => (
+                  <FormControlLabel
+                    key={color.id}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={color.id}
+                        checked={color.needed}
+                        onChange={checkBoxChangeColorHandler}
+                      />
+                    }
+                    label={color.name}
+                  />
+                ))}
+            <Accordion
+              sx={styles.accordion}
+              elevation={0}
+              onClick={() => setExpandColor(!expandColor)}
+            >
+              <AccordionSummary
+                sx={styles.accordionSummary}
+                expandIcon={<ExpandMoreIcon />}
+              >
+                <Typography variant="body1" sx={styles.accordionTitle}>
+                  {expandColor ? 'Show Less Colors' : 'Show More Colors'}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={styles.accordionDetails}></AccordionDetails>
+            </Accordion>
           </AccordionDetails>
         </Accordion>
       </Stack>

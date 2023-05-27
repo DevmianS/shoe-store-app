@@ -125,7 +125,7 @@ const SignInForm = () => {
       });
       if (ok) {
         executeSucces('Successfully logged in.');
-        router.push('/');
+        router.push(router.query.callbackUrl || '/');
         isBrowser && setStore('USER_EMAIL', email);
         setCartItems(() => cartInit());
         setCartCount(() => valuesSum(cartItems));

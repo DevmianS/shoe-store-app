@@ -10,6 +10,7 @@ const NoContent = ({
   title = 'There are no products yet',
   description = 'Product can contain images, text, brands, etc...',
   href = '/add-product',
+  buttonText = 'Add product',
 }) => {
   const styles = {
     msgBody: {maxWidth: '320px', textAlign: 'center', margin: '0 auto'},
@@ -43,7 +44,7 @@ const NoContent = ({
       </Typography>
       <Link href={href}>
         <Button size={'medium'} sx={styles.msgBtn}>
-          Add product
+          {buttonText}
         </Button>
       </Link>
     </Box>
