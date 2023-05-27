@@ -23,7 +23,6 @@ const AvatarStaticLayoutStyles = {
   },
   avatar: {
     marginRight: rwdValue(28, 75),
-    border: '4px solid white',
     flex: `0 0 ${rwdValue(100, 150)}`,
   },
   avatarName: {
@@ -33,10 +32,10 @@ const AvatarStaticLayoutStyles = {
   },
   avatarGap: {ml: 2},
   avatarText: {fontSize: '12px'},
-  points: {
+  email: {
     color: theme.palette.text.tetriary,
     fontSize: rwdValue(12, 15),
-    marginBottom: {xs: 0, md: '12px'},
+    marginBottom: {xs: 0, sm: '12px'},
   },
   largeName: {fontSize: rwdValue(14, 20)},
   noBorder: {textDecoration: 'none'},
@@ -47,7 +46,7 @@ const AvatarStaticLayoutStyles = {
     flexDirection: 'row',
     marginTop: {xs: '-15px', md: '-30px'},
   },
-  largeName: {
+  largeAvatar: {
     marginRight: rwdValue(5, 15),
     border: '4px solid white',
     zIndex: 2,
@@ -55,7 +54,7 @@ const AvatarStaticLayoutStyles = {
 };
 
 const AvatarStaticLayout = ({variant}) => {
-  const {name} = useUser();
+  const {name, data} = useUser();
   return (
     <>
       {variant === 'card' ? (
@@ -81,7 +80,7 @@ const AvatarStaticLayout = ({variant}) => {
           <AvatarStatic
             variant="medium"
             userName={name}
-            sx={AvatarStaticLayoutStyles.largeName}
+            sx={AvatarStaticLayoutStyles.largeAvatar}
           />
           <Box>
             <Typography
@@ -91,8 +90,8 @@ const AvatarStaticLayout = ({variant}) => {
             >
               {name}
             </Typography>
-            <Typography sx={AvatarStaticLayoutStyles.points}>
-              1234 bonus points
+            <Typography sx={AvatarStaticLayoutStyles.email}>
+              {data?.user?.user?.email}
             </Typography>
           </Box>
         </Stack>
