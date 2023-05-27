@@ -144,11 +144,11 @@ export default function ProductPage({product, error}) {
       description:
         product?.data?.attributes?.description ||
         'There is no description about this product yet',
-      color: product?.data?.attributes?.color?.data?.attributes?.value,
+      color: product?.data?.attributes?.color?.data?.attributes?.name,
       brand: product?.data?.attributes?.brand?.data?.attributes?.name,
     });
   }, [product]);
-
+  console.log(product);
   return (
     <>
       <Head>
@@ -175,26 +175,27 @@ export default function ProductPage({product, error}) {
                 <b>{data.brand} </b> {`${data.gender}'s Shoes`}
               </Typography>
               <Typography component="p" variant="body2" sx={singleStyles.label}>
-                Available sizes
+                Size
               </Typography>
               <Box sx={singleStyles.props}>EU-{data.size}</Box>
-              {data.color && (
+              {data?.color && (
                 <>
                   <Typography
                     component="p"
                     variant="body2"
                     sx={singleStyles.label}
                   >
-                    Available colors
+                    Color
                   </Typography>
                   <Box
                     sx={{
                       ...singleStyles.props,
-                      background: data.color.toLowerCase(),
-                      color: '#fff',
+                      background: data?.color.toLowerCase(),
+                      borderColor: data?.color.toLowerCase(),
+                      color: data?.color.toLowerCase(),
                     }}
                   >
-                    {data.color}
+                    {data?.color}
                   </Box>
                 </>
               )}

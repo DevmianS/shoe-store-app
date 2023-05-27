@@ -1,81 +1,229 @@
-import {rwdValue} from '@/utils/theme';
+import {useRouter} from 'next/router';
+import React, {useState} from 'react';
 
-import {
-  Typography,
-  Box,
-  TextField,
-  TextareaAutosize,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  useTheme,
-  useMediaQuery,
-  Checkbox,
-  FormGroup,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  DialogContentText,
-  DialogContent,
-  ToggleButtonGroup,
-  ToggleButton,
-} from '@mui/material';
+import {toast} from 'sonner';
 
-import {useState} from 'react';
-import FileInput from '@/components/UI/FileInput';
-import Button from '@/components/UI/Button';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogContent from '@mui/material/DialogContent';
+import Slide from '@mui/material/Slide';
+
 import useProductData from '@/hooks/useProductData';
 import useUser from '@/hooks/useUser';
 
+import {rwdValue, theme} from '@/utils/theme';
 import {
   createProduct,
   uploadImages,
   validationCreateProduct,
 } from '@/utils/utils';
 
+import Button from '@/components/UI/Button';
 import Loading from '@/components/UI/Loading';
-import {toast} from 'sonner';
-import {useRouter} from 'next/router';
+import ImageUploader from '@/components/UI/ImageUploader';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const contentDescription = `Effortlessly manage your shop's product inventory with our intuitive
+form for adding and editing products. Streamline your workflow and
+stay organized as you easily input and update product details such
+as name, description, price, and availability. With a user-friendly
+interface and comprehensive fields, you can swiftly add new products
+or make changes to existing ones. Enhance your online store's
+efficiency and maintain accurate product information with our
+convenient form, designed to simplify the process of managing your
+shop's offerings. Start optimizing your product management today!`;
+
+const selectsInit = {gender: 'Men', brand: 'Nike', color: 'Black', size: '36'};
+
+const actionStyles = {
+  dialog: {
+    '& .MuiDialog-paper': {
+      margin: {xs: '10px', md: '32px'},
+      width: {xs: 'calc(100% - 20px)', md: 'calc(100% - 64px)'},
+      maxHeight: {xs: 'calc(100% - 20px)', md: 'calc(100% - 64px)'},
+    },
+  },
+  openButton: {
+    maxWidth: '152px',
+  },
+  description: {
+    color: 'text.secondary',
+    mb: rwdValue(25, 40),
+    fontSize: rwdValue(12, 15),
+    lineHeight: 1.25,
+  },
+  title: {padding: 0},
+  headerRow: {
+    display: 'flex',
+    rowGap: '10px',
+    justifyContent: 'space-between',
+    marginBottom: rwdValue(20, 35),
+    marginTop: rwdValue(30, 60),
+    '& button': {maxWidth: '152px'},
+  },
+  row: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: {xs: '25px 0', md: '40px 0'},
+  },
+  content: {
+    '& .MuiInputBase-root': {
+      height: {xs: '33px', md: '48px'},
+      fontSize: {xs: '10px', md: '15px'},
+    },
+    '& label': {
+      fontSize: {xs: '12px', md: '15px'},
+    },
+    flex: '1 1 auto',
+    padding: `0 ${rwdValue(10, 60)}`,
+  },
+  formItem: {
+    marginBottom: {xs: '15px', md: '25px'},
+    '& textarea': {
+      height: {md: '270px!important', xs: '34px!important'},
+      width: '100%',
+      color: '#5C5C5C',
+      padding: '10px',
+      borderRadius: '8px',
+      resize: 'none',
+      borderColor: 'rgba(0, 0, 0, 0.23)',
+      fontSize: rwdValue(10, 15),
+      fontFamily: 'inherit',
+      '&::placeholder': {opacity: 0.3},
+      '&:focus': {
+        '&::placeholder': {opacity: 0},
+        outline: 'none',
+        borderColor: theme.palette.primary.main,
+      },
+    },
+  },
+  formGroup: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    gap: '10px',
+    marginBottom: '20px',
+    '& .MuiFormLabel-root': {
+      cursor: 'pointer',
+      border: `1px solid #C4C4C4`,
+      borderRadius: '5.58px',
+      width: {md: '75px', xs: '52px'},
+      height: {md: '48px', xs: '34px'},
+      fontSize: {md: '15px', xs: '10px'},
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 0,
+      margin: 0,
+    },
+    '& .MuiCheckbox-root': {
+      display: 'none',
+    },
+  },
+  formRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  form: {
+    maxWidth: {xs: '100%', md: '440px'},
+    flexBasis: {xs: '440px', md: '100%'},
+    overflow: 'visible',
+    marginRight: {xs: 0, md: rwdValue(30, 120)},
+    padding: rwdValue(0, 20),
+    '& .MuiInputBase-input': {
+      fontSize: {xs: '10px', md: '15px'},
+    },
+    '& form': {display: 'flex', flexWrap: 'wrap'},
+  },
+  selectsRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    rowGap: {xs: '15px', md: '25px'},
+    justifyContent: 'space-between',
+    '& .MuiFormControl-root': {
+      flex: '0 0 calc(50% - 10px)',
+    },
+  },
+  label: {
+    fontSize: rwdValue(12, 15),
+    flex: '0 0 100%',
+    fontWeight: 500,
+  },
+  filesRow: {
+    display: 'flex',
+    gap: {xs: '20px', md: '52px'},
+    flexWrap: 'wrap',
+  },
+  filesWrap: {
+    flex: '1 1 auto',
+    width: '100%',
+    padding: rwdValue(0, 20),
+    marginBottom: '30px',
+  },
+  btns: {padding: 0},
+  itemSize: {
+    width: {md: '75px', xs: '52px'},
+    height: {md: '48px', xs: '34px'},
+    fontSize: {md: '15px', xs: '10px'},
+    border: '1px solid #C4C4C4!important',
+    borderRadius: '5.58px!important',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 0,
+    margin: 0,
+    cursor: 'pointer',
+  },
+};
 
 const ProductAction = ({isEditing}) => {
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
+  const flexStyles = {
+    headerRow: {
+      alignItems: isDesktop ? 'center' : 'start',
+      flexDirection: isDesktop ? 'row' : 'column',
+    },
+    formRow: {
+      flexDirection: isDesktop ? 'row' : 'column',
+    },
+    rwdSize: isDesktop ? 'medium' : 'small',
+  };
   const router = useRouter();
 
   const {brands, categories, genders, sizes, colors, isLoading, setCategories} =
     useProductData() || {};
 
-  const [loading, setLoading] = useState(false);
-
-  const [select, setSelect] = useState({
-    gender: 'Men',
-    brand: 'Nike',
-    color: 'Black',
-    size: '36',
-  });
-
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
 
-  const [arrImages, setArrImages] = useState([
-    {id: 1, file: null, image: null},
-    {id: 2, file: null, image: null},
-    {id: 3, file: null, image: null},
-    {id: 4, file: null, image: null},
-  ]);
+  const [arrImages, setArrImages] = useState([]);
+  const [select, setSelect] = useState(selectsInit);
+
+  const [loading, setLoading] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   // EVENTS
-  const genderChangeHandler = e => {
-    setSelect({...select, gender: e.target.value});
-  };
-  const brandChangeHandler = e => {
-    setSelect({...select, brand: e.target.value});
-  };
-  const colorChangeHandler = e => {
-    setSelect({...select, color: e.target.value});
-  };
-  const sizeChangeHandler = e => {
-    setSelect({...select, size: e.target.value});
+  const selectChangeHandler = property => e => {
+    setSelect({...select, [property]: e.target.value});
   };
 
   const checkBoxChangeHandlerCategory = event => {
@@ -90,121 +238,6 @@ const ProductAction = ({isEditing}) => {
         return obj;
       }),
     );
-  };
-
-  // STYLED COMPONENTS
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const lg = useMediaQuery(theme.breakpoints.down('lg'));
-
-  const styles = {
-    openButton: {
-      maxWidth: '152px',
-    },
-    headerRow: {
-      display: 'flex',
-      flexDirection: isDesktop ? 'row' : 'column',
-      rowGap: '10px',
-      alignItems: isDesktop ? 'center' : 'start',
-      justifyContent: 'space-between',
-      marginBottom: rwdValue(20, 35),
-      marginTop: 10,
-      '& button': {maxWidth: '152px'},
-    },
-    row: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      padding: !isDesktop ? '25px 0' : '40px 0',
-    },
-    content: {
-      '& .MuiInputBase-root': {
-        height: isDesktop ? '48px' : '33px',
-        fontSize: isDesktop ? '15px' : '10px',
-      },
-      '& label': {
-        fontSize: isDesktop ? '15px' : '12px',
-      },
-      flex: '1 1 auto',
-      padding: `0 ${rwdValue(20, 60)}`,
-    },
-    formItem: {
-      marginBottom: '25px',
-      '& textarea': {
-        height: isDesktop ? '270px!important' : '34px!important',
-        width: '100%',
-        color: '#5C5C5C',
-        padding: '10px',
-        borderRadius: '8px',
-        resize: 'none',
-        borderColor: 'rgba(0, 0, 0, 0.23)',
-        fontSize: rwdValue(10, 15),
-        fontFamily: 'inherit',
-        '&::placeholder': {opacity: 0.3},
-        '&:focus': {
-          '&::placeholder': {opacity: 0},
-          outline: 'none',
-          borderColor: theme.palette.primary.main,
-        },
-      },
-    },
-    formGroup: {
-      display: 'flex',
-      flexDirection: 'row',
-      width: '100%',
-      gap: '10px',
-      marginBottom: '20px',
-      '& .MuiFormLabel-root': {
-        cursor: 'pointer',
-        border: `1px solid #C4C4C4`,
-        borderRadius: '5.58px',
-        width: isDesktop ? '75px' : '52px',
-        height: isDesktop ? '48px' : '34px',
-        fontSize: isDesktop ? '15px' : '10px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 0,
-        margin: 0,
-      },
-      '& .MuiCheckbox-root': {
-        display: 'none',
-      },
-    },
-    formRow: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexDirection: !isDesktop ? 'column' : 'row',
-      flexWrap: lg ? 'wrap' : 'nowrap',
-    },
-    form: {
-      maxWidth: !isDesktop ? '100%' : '440px',
-      flex: !isDesktop ? '1 1 auto' : '0 0 440px',
-      marginRight: !isDesktop ? 0 : rwdValue(30, 120),
-      '& .MuiInputBase-input': {
-        fontSize: isDesktop ? '15px' : '10px',
-      },
-      '& form': {display: 'flex', flexWrap: 'wrap'},
-    },
-    checkboxRow: {display: 'flex', gap: '20px', flexDirection: 'row'},
-    label: {
-      fontSize: isDesktop ? '15px' : '12px',
-      flex: '0 0 100%',
-    },
-    filesRow: {
-      display: 'flex',
-      gap: !isDesktop ? '20px' : '52px',
-      flexWrap: 'wrap',
-    },
-    filesWrap: {
-      flex: '1 1 auto',
-      width: '100%',
-      paddingBottom: 10,
-    },
-    toggleButtonGroup: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      gap: '10px',
-    },
   };
 
   const {jwt, id} = useUser();
@@ -247,28 +280,24 @@ const ProductAction = ({isEditing}) => {
 
         if (res?.status == '200') {
           resetForm();
-
           router.push('/my-products');
         }
       }
     } catch (error) {
+      console.error(error);
+      toast.error(error.message);
+    } finally {
       setLoading(false);
     }
-    setLoading(false);
   };
 
   const resetForm = () => {
-    setSelect({gender: 'Men', brand: 'Nike', color: 'Black', size: '36'});
+    setSelect(selectsInit);
 
     setName('');
     setDescription('');
     setPrice(0);
-    setArrImages([
-      {id: 1, file: null, image: null},
-      {id: 2, file: null, image: null},
-      {id: 3, file: null, image: null},
-      {id: 4, file: null, image: null},
-    ]);
+    setArrImages([]);
     setCategories(
       categories.map(obj => {
         return {
@@ -278,37 +307,41 @@ const ProductAction = ({isEditing}) => {
       }),
     );
   };
-
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => setModalIsOpen(true);
   const handleClose = () => {
-    setOpen(false);
+    setModalIsOpen(false);
     resetForm();
   };
 
   return (
     <>
-      <Button onClick={handleOpen} sx={styles.openButton}>
+      <Button onClick={handleOpen} sx={actionStyles.openButton}>
         {isEditing ? 'Edit' : 'Add'} product
       </Button>
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xl">
+      <Dialog
+        open={modalIsOpen}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="xl"
+        sx={actionStyles.dialog}
+        TransitionComponent={Transition}
+      >
         {loading && <Loading />}
-        <Box sx={styles.content}>
-          <Box sx={styles.headerRow}>
-            <DialogTitle variant="h1" component="h1">
+        <Box sx={actionStyles.content}>
+          <Box sx={{...actionStyles.headerRow, ...flexStyles.headerRow}}>
+            <DialogTitle variant="h1" component="h1" sx={actionStyles.title}>
               {isEditing ? 'Edit' : 'Add'} product
             </DialogTitle>
-            <DialogActions>
+            <DialogActions sx={actionStyles.btns}>
               <Button
-                size={isDesktop ? 'medium' : 'small'}
+                size={flexStyles.rwdSize}
                 variant="contained"
                 onClick={handleClose}
               >
                 Cancel
               </Button>
               <Button
-                size={isDesktop ? 'medium' : 'small'}
+                size={flexStyles.rwdSize}
                 variant="contained"
                 onClick={handleSubmit}
               >
@@ -319,23 +352,16 @@ const ProductAction = ({isEditing}) => {
           <DialogContentText
             variant="body5"
             component="p"
-            color="text.secondary"
-            mb={rwdValue(25, 40)}
-            fontSize={rwdValue(12, 15)}
-            maxWidth="900px"
+            sx={actionStyles.description}
           >
-            Lorem ipsum, or lipsum as it is sometimes known, is dummy text used
-            in laying out print, graphic or web designs. The passage is
-            attributed to an unknown typesetter in the 15th century who is
-            thought to have scrambled parts of Cicero{`'`}s De Finibus Bonorum
-            et Malorum for use in a type specimen book. It usually begins with:
+            {contentDescription}
           </DialogContentText>
-          <form style={styles.formRow}>
-            <DialogContent sx={styles.form}>
-              <Box sx={styles.formItem}>
+          <form style={{...actionStyles.formRow, ...flexStyles.formRow}}>
+            <DialogContent sx={actionStyles.form}>
+              <Box sx={actionStyles.formItem}>
                 <TextField
                   fullWidth
-                  size={isDesktop ? 'medium' : 'small'}
+                  size={flexStyles.rwdSize}
                   placeholder="Nike Air Max 90"
                   label="Product name"
                   type="text"
@@ -343,10 +369,10 @@ const ProductAction = ({isEditing}) => {
                   onChange={e => setName(e.target.value)}
                 />
               </Box>
-              <Box sx={styles.formItem}>
+              <Box sx={actionStyles.formItem}>
                 <TextField
                   fullWidth
-                  size={isDesktop ? 'medium' : 'small'}
+                  size={flexStyles.rwdSize}
                   placeholder="Price"
                   label="Price"
                   type="number"
@@ -354,17 +380,17 @@ const ProductAction = ({isEditing}) => {
                   onChange={e => setPrice(e.target.value)}
                 />
               </Box>
-              <Box sx={styles.formItem}>
-                <Box sx={styles.checkboxRow}>
+              <Box sx={actionStyles.formItem}>
+                <Box sx={actionStyles.selectsRow}>
                   <FormControl fullWidth>
                     <InputLabel id="gender">Gender</InputLabel>
                     <Select
                       labelId="gender"
                       variant="outlined"
                       value={select.gender}
-                      onChange={genderChangeHandler}
+                      onChange={selectChangeHandler('gender')}
                       defaultValue="Men"
-                      size={isDesktop ? 'medium' : 'small'}
+                      size={flexStyles.rwdSize}
                     >
                       {!isLoading &&
                         genders.map(gender => {
@@ -379,11 +405,11 @@ const ProductAction = ({isEditing}) => {
                   <FormControl fullWidth>
                     <InputLabel id="brand">Brand</InputLabel>
                     <Select
-                      size={isDesktop ? 'medium' : 'small'}
+                      size={flexStyles.rwdSize}
                       labelId="brand"
                       variant="outlined"
                       value={select.brand}
-                      onChange={brandChangeHandler}
+                      onChange={selectChangeHandler('brand')}
                     >
                       {!isLoading &&
                         brands.map(brand => {
@@ -400,13 +426,15 @@ const ProductAction = ({isEditing}) => {
                     <Select
                       labelId="color"
                       variant="outlined"
+                      aria-label="color"
                       value={select.color}
-                      onChange={colorChangeHandler}
+                      onChange={selectChangeHandler('color')}
                       defaultValue="Black"
-                      size={isDesktop ? 'medium' : 'small'}
+                      size={flexStyles.rwdSize}
                     >
                       {!isLoading &&
                         colors.map(color => {
+                          console.log(colors.name);
                           return (
                             <MenuItem key={color.id} value={color.name}>
                               {color.name}
@@ -415,9 +443,31 @@ const ProductAction = ({isEditing}) => {
                         })}
                     </Select>
                   </FormControl>
+                  <FormControl fullWidth>
+                    <InputLabel id="size">Size</InputLabel>
+                    <Select
+                      labelId="size"
+                      variant="outlined"
+                      aria-label="size"
+                      value={select.size}
+                      onChange={selectChangeHandler('size')}
+                      size={flexStyles.rwdSize}
+                      defaultValue="36"
+                    >
+                      {!isLoading &&
+                        sizes.map(size => {
+                          return (
+                            <MenuItem key={size.id} value={size.value}>
+                              {`EU-${size.value}`}
+                            </MenuItem>
+                          );
+                        })}
+                    </Select>
+                  </FormControl>
                 </Box>
               </Box>
-              <Box sx={styles.formItem}>
+              <Box sx={actionStyles.formItem}>
+                <InputLabel id="description">Description</InputLabel>
                 <TextareaAutosize
                   placeholder="Do not exceed 1000 characters."
                   label="Description"
@@ -426,50 +476,8 @@ const ProductAction = ({isEditing}) => {
                   onChange={e => setDescription(e.target.value)}
                 />
               </Box>
-              <FormGroup sx={styles.formGroup}>
-                <Typography sx={styles.label}>Add size</Typography>
-                <ToggleButtonGroup
-                  exclusive
-                  sx={styles.toggleButtonGroup}
-                  onChange={sizeChangeHandler}
-                >
-                  {sizes &&
-                    sizes.map(size => {
-                      const itemStyle = {
-                        border: '1px solid #C4C4C4',
-                        background:
-                          size.value === select.size
-                            ? theme.palette.primary.main
-                            : 'white',
-                        color:
-                          size.value === select.size
-                            ? 'white'
-                            : theme.palette.text.secondary,
-                        '&:hover': {
-                          background:
-                            size.value === select.size
-                              ? theme.palette.primary.main
-                              : 'white',
-                          borderColor: 'black',
-                          color: 'black',
-                        },
-                      };
-                      return (
-                        <>
-                          <ToggleButton
-                            size={isDesktop ? 'medium' : 'small'}
-                            key={size.id}
-                            value={size.value}
-                            onClick={sizeChangeHandler}
-                            sx={itemStyle}
-                          >{`EU-${size.value}`}</ToggleButton>
-                        </>
-                      );
-                    })}
-                </ToggleButtonGroup>
-              </FormGroup>
-              <FormGroup sx={styles.formGroup}>
-                <Typography sx={styles.label}>Add categories</Typography>
+              <FormGroup sx={actionStyles.formGroup}>
+                <Typography sx={actionStyles.label}>Add categories</Typography>
                 {categories &&
                   categories.map(category => {
                     const itemStyle = {
@@ -503,17 +511,10 @@ const ProductAction = ({isEditing}) => {
                   })}
               </FormGroup>
             </DialogContent>
-            <DialogContent sx={styles.filesWrap}>
+            <DialogContent sx={actionStyles.filesWrap}>
               <InputLabel>Product images</InputLabel>
-              <Box sx={styles.filesRow}>
-                {arrImages.map(img => (
-                  <FileInput
-                    key={img.id}
-                    id={img.id}
-                    setArrImages={setArrImages}
-                    arrImages={arrImages}
-                  />
-                ))}
+              <Box sx={actionStyles.filesRow}>
+                <ImageUploader images={arrImages} setImages={setArrImages} />
               </Box>
             </DialogContent>
           </form>
