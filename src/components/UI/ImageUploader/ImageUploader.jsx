@@ -79,6 +79,7 @@ const uploaderStyles = {
       maxWidth: '100%',
       width: '100%',
       objectFit: 'cover',
+      filter: {xs: 'brightness(0.7)', md: 'none'},
       transition: '0.3s',
     },
     '&:hover': {
@@ -103,7 +104,7 @@ const uploaderStyles = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%,-50%)',
-    opacity: 0,
+    opacity: {xs: 1, md: 0},
     fontSize: rwdValue(24, 32),
     transition: '0.3s',
   },
@@ -123,6 +124,7 @@ function ImageUploader({images, setImages}) {
     };
 
     reader.readAsDataURL(file);
+
     event.target.value = '';
   };
 
