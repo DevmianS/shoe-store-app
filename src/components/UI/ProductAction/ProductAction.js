@@ -213,7 +213,6 @@ const ProductAction = ({isEditing}) => {
 
   // EVENTS
   const selectChangeHandler = property => e => {
-    console.log(property, e.target.value);
     setSelect({...select, [property]: e.target.value});
   };
 
@@ -276,6 +275,7 @@ const ProductAction = ({isEditing}) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -432,6 +432,7 @@ const ProductAction = ({isEditing}) => {
                     >
                       {!isLoading &&
                         colors.map(color => {
+                          console.log(colors.name);
                           return (
                             <MenuItem key={color.id} value={color.name}>
                               {color.name}

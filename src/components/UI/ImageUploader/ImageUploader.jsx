@@ -123,7 +123,6 @@ function ImageUploader({images, setImages}) {
     };
 
     reader.readAsDataURL(file);
-    console.log(file);
     event.target.value = '';
   };
 
