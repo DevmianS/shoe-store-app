@@ -55,7 +55,7 @@ const itemStyles = {
     borderBottom: '1px dotted #d6d6d6',
   },
   title: {
-    flex: `0 0 ${rwdValue(110, 150)}`,
+    flex: `0 0 ${rwdValue(110, 175)}`,
     color: theme.palette.text.secondary,
     fontSize: rwdValue(15, 24),
   },
@@ -64,6 +64,7 @@ const itemStyles = {
     color: '#707070',
   },
 };
+
 const UserDataItem = ({textLabel, textProp}) => (
   <Box sx={itemStyles.wrap}>
     {' '}
@@ -78,6 +79,24 @@ const UserDataItem = ({textLabel, textProp}) => (
 
 const Profile = () => {
   const user = useUser();
+
+  const userDataInfo = [
+    {label: 'Personal id', text: user?.id},
+    {label: 'User name', text: user?.data?.user?.user?.username},
+    {label: 'First name', text: user?.data?.user?.user?.firstName},
+    {label: 'Last name', text: user?.data?.user?.user?.lastName},
+    {label: 'Email', text: user?.data?.user?.user?.email},
+    {label: 'Phone', text: user?.data?.user?.user?.phoneNumber},
+    {
+      label: 'Created date',
+      text: new Date(user?.data?.user?.user?.createdAt).toLocaleString(),
+    },
+    {
+      label: 'Confirmed',
+      text: user?.data?.user?.user?.confirmed ? 'Yes' : 'No',
+    },
+  ];
+
   return (
     <>
       <Head>
@@ -106,39 +125,17 @@ const Profile = () => {
                 </Link>
               </Box>
             </Stack>
-
             <Stack sx={profileStyles.data}>
-              <UserDataItem textLabel="Personal id" textProp={user.id} />
-              <UserDataItem
-                textLabel="User name"
-                textProp={user?.data?.user?.user?.username}
-              />
-              <UserDataItem
-                textLabel="First name"
-                textProp={user?.data?.user?.user?.firstName}
-              />
-              <UserDataItem
-                textLabel="Last name"
-                textProp={user?.data?.user?.user?.lastName}
-              />
-              <UserDataItem
-                textLabel="Email"
-                textProp={user?.data?.user?.user?.email}
-              />
-              <UserDataItem
-                textLabel="Phone"
-                textProp={user?.data?.user?.user?.phoneNumber}
-              />
-              <UserDataItem
-                textLabel="Created date"
-                textProp={new Date(
-                  user?.data?.user?.user?.createdAt,
-                ).toLocaleString()}
-              />
-              <UserDataItem
-                textLabel="Confirmed"
-                textProp={user?.data?.user?.user?.confirmed ? 'yes' : 'no'}
-              />
+              {userDataInfo[0].text &&
+                userDataInfo.map(item => {
+                  return (
+                    <UserDataItem
+                      key={item.label}
+                      textLabel={item.label}
+                      textProp={item.text}
+                    />
+                  );
+                })}
             </Stack>
           </Box>
         </Box>
