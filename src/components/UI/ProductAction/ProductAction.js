@@ -1,4 +1,3 @@
-import {useRouter} from 'next/router';
 import React, {useState} from 'react';
 
 import {toast} from 'sonner';
@@ -206,7 +205,6 @@ const ProductAction = ({isEditing, openState, setOpenState}) => {
     },
     rwdSize: isDesktop ? 'medium' : 'small',
   };
-  const router = useRouter();
 
   const {brands, categories, genders, sizes, colors, isLoading, setCategories} =
     useProductData() || {};
