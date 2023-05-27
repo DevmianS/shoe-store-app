@@ -64,13 +64,22 @@ const updateProfileStyles = {
   },
   form: {maxWidth: '450px'},
   item: {marginBottom: rwdValue(25, 50)},
+  disabled: {
+    '& fieldset': {
+      background: 'rgba(100,100,100,0.1)',
+    },
+    '& .Mui-disabled input::placeholder': {
+      opacity: 1,
+      WebkitTextFillColor: 'rgba(100,100,100,0.6)!important',
+    },
+  },
   saveChangesBox: {display: 'flex', justifyContent: 'flex-end'},
   saveChangesBtn: {width: 'fit-content'},
 };
 
 const ProfileUpdate = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const btnSize = isMobile ? 'small' : 'medium';
+  const mobileSize = isMobile ? 'small' : 'medium';
 
   const [userData, setUserData] = useState({});
   const [newUserData, setNewUserData] = useState({});
@@ -123,10 +132,10 @@ const ProfileUpdate = () => {
             <Stack sx={updateProfileStyles.avatarRow}>
               <AvatarStaticLayout variant="avatar" />
               <Box>
-                <Button size={btnSize} outlined sx={updateProfileStyles.btn}>
+                <Button size={mobileSize} outlined sx={updateProfileStyles.btn}>
                   Change photo
                 </Button>
-                <Button size={btnSize}>Delete</Button>
+                <Button size={mobileSize}>Delete</Button>
               </Box>
             </Stack>
             <Typography
@@ -141,10 +150,10 @@ const ProfileUpdate = () => {
                 <Box sx={updateProfileStyles.item}>
                   <TextField
                     fullWidth
-                    size={updateProfileStyles.size}
                     placeholder={userData.firstName}
                     label="Name"
                     type="text"
+                    size={mobileSize}
                     onChange={e => {
                       setNewUserData(data => ({
                         ...data,
@@ -156,10 +165,10 @@ const ProfileUpdate = () => {
                 <Box sx={updateProfileStyles.item}>
                   <TextField
                     fullWidth
-                    size={updateProfileStyles.size}
                     placeholder={userData.lastName}
                     label="Surname"
                     type="text"
+                    size={mobileSize}
                     onChange={e => {
                       setNewUserData(data => ({
                         ...data,
@@ -171,20 +180,22 @@ const ProfileUpdate = () => {
                 <Box sx={updateProfileStyles.item}>
                   <TextField
                     fullWidth
-                    size={updateProfileStyles.size}
-                    placeholder={userData.email}
+                    placeholder={userData?.email}
+                    defaultValue={userData?.email}
                     label="Email"
                     type="email"
+                    size={mobileSize}
                     disabled
+                    sx={updateProfileStyles.disabled}
                   />
                 </Box>
                 <Box sx={updateProfileStyles.item}>
                   <TextField
                     fullWidth
-                    size={updateProfileStyles.size}
                     placeholder={userData.phoneNumber}
                     label="Phone number"
                     type="tel"
+                    size={mobileSize}
                     onChange={e => {
                       setNewUserData(data => ({
                         ...data,
@@ -204,7 +215,7 @@ const ProfileUpdate = () => {
                     }
                     type="button"
                     onClick={updateUserDataHandler}
-                    size={updateProfileStyles.size}
+                    size={mobileSize}
                     sx={updateProfileStyles.saveChangesBtn}
                   >
                     Save changes
