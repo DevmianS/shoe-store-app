@@ -323,67 +323,6 @@ export const createProduct = async ({
     executeError('There was an error.');
   }
 };
-export const updateProduct = async ({
-  genders,
-  select,
-  brands,
-  price,
-  categories,
-  sizes,
-  colors,
-  name,
-  arrImgId,
-  description,
-  jwt,
-  productId,
-}) => {
-  const idGender = String(
-    genders.find(gender => gender.name == select.gender)?.id,
-  );
-  const idBrand = String(brands.find(brand => brand.name == select.brand)?.id);
-  const idColor = String(colors.find(color => color.name == select.color)?.id);
-
-  const categoriesArr = categories
-    .filter(category => category.needed)
-    .map(category => String(category.id));
-
-  const idSize = String(sizes.find(size => size.value == select.size)?.id);
-
-  const obj = {
-    data: {
-      name: name,
-      images: arrImgId,
-      description: description,
-      brand: idBrand,
-      categories: categoriesArr,
-      gender: idGender,
-      color: idColor,
-      size: idSize,
-      price: price,
-    },
-  };
-
-  try {
-    const res = await axios.put(
-      `${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`,
-      obj,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + jwt,
-        },
-      },
-    );
-
-    if (res.status == '200') {
-      executeSucces('Product created succesfully.');
-      return res;
-    }
-  } catch (error) {
-    executeError('There was an error.');
-  }
-};
-
 export const deleteProduct = async ({id, jwt}) => {
   try {
     const res = await axios.delete(

@@ -1,7 +1,6 @@
 import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
 
-import axios from 'axios';
 import {toast} from 'sonner';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -28,11 +27,14 @@ import useUser from '@/hooks/useUser';
 import {rwdValue, theme} from '@/utils/theme';
 import {
   createProduct,
-  executeError,
-  updateProduct,
   uploadImages,
   validationCreateProduct,
 } from '@/utils/utils';
+import {
+  fetchProductData,
+  filesToStateHandler,
+  updateProductSubmit,
+} from '@/utils/editProduct';
 
 import Button from '@/components/UI/Button';
 import Loading from '@/components/UI/Loading';
@@ -196,47 +198,6 @@ const actionStyles = {
   },
 };
 
-async function fetchProductData(id) {
-  try {
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/products/${id}?populate=*`,
-    );
-    return response.data;
-  } catch (error) {
-    console.error('Error:', error);
-    executeError(error.message);
-    return null;
-  }
-}
-async function transformFilesFromURLs(fileURLs) {
-  try {
-    const transformedFiles = await Promise.all(
-      fileURLs.map(async fileURL => {
-        const response = await axios.get(fileURL, {responseType: 'blob'});
-        const blob = response.data;
-        const transformedFile = new File([blob], fileURL, {type: blob.type});
-        return transformedFile;
-      }),
-    );
-
-    return transformedFiles;
-  } catch (error) {
-    console.error('Image error:', error);
-    return [];
-  }
-}
-async function handleTransformFiles(fileIds, fileURLs, setF) {
-  const transformedFiles = await transformFilesFromURLs(fileURLs);
-  if (transformedFiles.length > 0) {
-    setF([
-      ...fileURLs.map((_, i) => ({
-        id: fileIds[i],
-        image: fileURLs[i],
-        file: transformedFiles[i],
-      })),
-    ]);
-  }
-}
 const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   const [data, setData] = useState(null);
   // setData({
@@ -255,11 +216,13 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
     async function fetchData() {
       if (productId) {
         const result = await fetchProductData(productId);
-        const pr = result?.data?.attributes;
-        console.log('PRO', pr);
-        await handleTransformFiles(
-          [...pr?.images?.data.map(img => img?.id)],
-          [...pr?.images?.data.map(img => img?.attributes?.url)],
+        await filesToStateHandler(
+          [...result?.data?.attributes?.images?.data.map(img => img?.id)],
+          [
+            ...result?.data?.attributes?.images?.data.map(
+              img => img?.attributes?.url,
+            ),
+          ],
           setArrImages,
         );
       } else {
@@ -384,7 +347,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
         toast.message('Please fill in the gaps again correctly.');
       } else {
         let arrImgId = await uploadImages(arrImages, jwt);
-        const res = await updateProduct({
+        const res = await updateProductSubmit({
           genders,
           select,
           brands,
