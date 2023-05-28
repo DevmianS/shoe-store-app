@@ -1,12 +1,8 @@
-import {memo} from 'react';
-
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-
 import {rwdValue, theme} from '@/utils/theme';
 import useUser from '@/hooks/useUser';
-
 import AvatarStatic from '@/components/UI/AvatarStatic';
 
 const AvatarStaticLayoutStyles = {
@@ -64,9 +60,6 @@ const AvatarStaticLayout = ({variant}) => {
   const {name, data} = useUser();
   const {status} = useUser();
 
-  if (status !== 'authenticated') {
-    return <Stack sx={{marginBottom: rwdValue(20, 125)}}></Stack>;
-  }
   return (
     <>
       {variant === 'card' ? (
@@ -83,7 +76,7 @@ const AvatarStaticLayout = ({variant}) => {
               Welcome
             </Typography>
             <Typography sx={AvatarStaticLayoutStyles.avatarName}>
-              {name}
+              {status === 'authenticated' ? name : 'Guest'}
             </Typography>
           </Box>
         </Stack>
