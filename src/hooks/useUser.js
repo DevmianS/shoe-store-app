@@ -1,13 +1,20 @@
+import {getOwnUser} from '@/utils/utils';
+import {useQuery} from '@tanstack/react-query';
 import {useSession} from 'next-auth/react';
 
 const useUser = () => {
   const {data, status} = useSession();
 
-  const user = data?.user?.user;
-
   const jwt = data?.user?.jwt;
-
+  const user = data?.user?.user;
   const id = user?.id;
+
+  const userQuery = useQuery({
+    queryKey: ['user', id],
+    queryFn: () => getOwnUser(jwt, id),
+  });
+
+  const avatar = userQuery?.data?.avatar?.url;
 
   let username = null;
   if (user?.firstName && user?.lastName) {
@@ -25,6 +32,7 @@ const useUser = () => {
   }
 
   return {
+    avatar,
     name: username || '',
     status,
     data,
