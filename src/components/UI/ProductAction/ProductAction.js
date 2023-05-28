@@ -193,7 +193,8 @@ const actionStyles = {
   },
 };
 
-const ProductAction = ({isEditing}) => {
+const ProductAction = ({isEditing, openState, setOpenState}) => {
+  const router = useRouter();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const flexStyles = {
@@ -206,7 +207,6 @@ const ProductAction = ({isEditing}) => {
     },
     rwdSize: isDesktop ? 'medium' : 'small',
   };
-  const router = useRouter();
 
   const {brands, categories, genders, sizes, colors, isLoading, setCategories} =
     useProductData() || {};
@@ -219,7 +219,6 @@ const ProductAction = ({isEditing}) => {
   const [select, setSelect] = useState(selectsInit);
 
   const [loading, setLoading] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   // EVENTS
   const selectChangeHandler = property => e => {
@@ -280,7 +279,8 @@ const ProductAction = ({isEditing}) => {
 
         if (res?.status == '200') {
           resetForm();
-          router.push('/my-products');
+          setOpenState(false);
+          router.reload();
         }
       }
     } catch (error) {
@@ -293,7 +293,6 @@ const ProductAction = ({isEditing}) => {
 
   const resetForm = () => {
     setSelect(selectsInit);
-
     setName('');
     setDescription('');
     setPrice(0);
@@ -307,220 +306,213 @@ const ProductAction = ({isEditing}) => {
       }),
     );
   };
-  const handleOpen = () => setModalIsOpen(true);
   const handleClose = () => {
-    setModalIsOpen(false);
+    setOpenState(false);
     resetForm();
   };
 
   return (
-    <>
-      <Button onClick={handleOpen} sx={actionStyles.openButton}>
-        {isEditing ? 'Edit' : 'Add'} product
-      </Button>
-      <Dialog
-        open={modalIsOpen}
-        onClose={handleClose}
-        fullWidth
-        maxWidth="xl"
-        sx={actionStyles.dialog}
-        TransitionComponent={Transition}
-      >
-        {loading && <Loading />}
-        <Box sx={actionStyles.content}>
-          <Box sx={{...actionStyles.headerRow, ...flexStyles.headerRow}}>
-            <DialogTitle variant="h1" component="h1" sx={actionStyles.title}>
-              {isEditing ? 'Edit' : 'Add'} product
-            </DialogTitle>
-            <DialogActions sx={actionStyles.btns}>
-              <Button
-                size={flexStyles.rwdSize}
-                variant="contained"
-                onClick={handleClose}
-              >
-                Cancel
-              </Button>
-              <Button
-                size={flexStyles.rwdSize}
-                variant="contained"
-                onClick={handleSubmit}
-              >
-                Save
-              </Button>
-            </DialogActions>
-          </Box>
-          <DialogContentText
-            variant="body5"
-            component="p"
-            sx={actionStyles.description}
-          >
-            {contentDescription}
-          </DialogContentText>
-          <form style={{...actionStyles.formRow, ...flexStyles.formRow}}>
-            <DialogContent sx={actionStyles.form}>
-              <Box sx={actionStyles.formItem}>
-                <TextField
-                  fullWidth
-                  size={flexStyles.rwdSize}
-                  placeholder="Nike Air Max 90"
-                  label="Product name"
-                  type="text"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                />
-              </Box>
-              <Box sx={actionStyles.formItem}>
-                <TextField
-                  fullWidth
-                  size={flexStyles.rwdSize}
-                  placeholder="Price"
-                  label="Price"
-                  type="number"
-                  value={price}
-                  onChange={e => setPrice(e.target.value)}
-                />
-              </Box>
-              <Box sx={actionStyles.formItem}>
-                <Box sx={actionStyles.selectsRow}>
-                  <FormControl fullWidth>
-                    <InputLabel id="gender">Gender</InputLabel>
-                    <Select
-                      labelId="gender"
-                      variant="outlined"
-                      value={select.gender}
-                      onChange={selectChangeHandler('gender')}
-                      defaultValue="Men"
-                      size={flexStyles.rwdSize}
-                    >
-                      {!isLoading &&
-                        genders.map(gender => {
-                          return (
-                            <MenuItem key={gender.id} value={gender.name}>
-                              {gender.name}
-                            </MenuItem>
-                          );
-                        })}
-                    </Select>
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <InputLabel id="brand">Brand</InputLabel>
-                    <Select
-                      size={flexStyles.rwdSize}
-                      labelId="brand"
-                      variant="outlined"
-                      value={select.brand}
-                      onChange={selectChangeHandler('brand')}
-                    >
-                      {!isLoading &&
-                        brands.map(brand => {
-                          return (
-                            <MenuItem key={brand.id} value={brand.name}>
-                              {brand.name}
-                            </MenuItem>
-                          );
-                        })}
-                    </Select>
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <InputLabel id="color">Color</InputLabel>
-                    <Select
-                      labelId="color"
-                      variant="outlined"
-                      aria-label="color"
-                      value={select.color}
-                      onChange={selectChangeHandler('color')}
-                      defaultValue="Black"
-                      size={flexStyles.rwdSize}
-                    >
-                      {!isLoading &&
-                        colors.map(color => {
-                          console.log(colors.name);
-                          return (
-                            <MenuItem key={color.id} value={color.name}>
-                              {color.name}
-                            </MenuItem>
-                          );
-                        })}
-                    </Select>
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <InputLabel id="size">Size</InputLabel>
-                    <Select
-                      labelId="size"
-                      variant="outlined"
-                      aria-label="size"
-                      value={select.size}
-                      onChange={selectChangeHandler('size')}
-                      size={flexStyles.rwdSize}
-                      defaultValue="36"
-                    >
-                      {!isLoading &&
-                        sizes.map(size => {
-                          return (
-                            <MenuItem key={size.id} value={size.value}>
-                              {`EU-${size.value}`}
-                            </MenuItem>
-                          );
-                        })}
-                    </Select>
-                  </FormControl>
-                </Box>
-              </Box>
-              <Box sx={actionStyles.formItem}>
-                <InputLabel id="description">Description</InputLabel>
-                <TextareaAutosize
-                  placeholder="Do not exceed 1000 characters."
-                  label="Description"
-                  type="text"
-                  value={description}
-                  onChange={e => setDescription(e.target.value)}
-                />
-              </Box>
-              <FormGroup sx={actionStyles.formGroup}>
-                <Typography sx={actionStyles.label}>Add categories</Typography>
-                {categories &&
-                  categories.map(category => {
-                    const itemStyle = {
-                      background: category.needed
-                        ? theme.palette.primary.main
-                        : 'white',
-                      color: category.needed
-                        ? 'white'
-                        : theme.palette.text.secondary,
-                      '&:hover': {
-                        borderColor: 'black',
-                        color: 'black',
-                      },
-                    };
-                    return (
-                      <Box
-                        key={category.id}
-                        onClick={checkBoxChangeHandlerCategory}
-                      >
-                        <Checkbox
-                          name={category.name}
-                          checked={category.needed}
-                          onClick={checkBoxChangeHandlerCategory}
-                          id={category.id}
-                        />
-                        <InputLabel sx={itemStyle} htmlFor={category.name}>
-                          {category.name}
-                        </InputLabel>
-                      </Box>
-                    );
-                  })}
-              </FormGroup>
-            </DialogContent>
-            <DialogContent sx={actionStyles.filesWrap}>
-              <InputLabel>Product images</InputLabel>
-              <Box sx={actionStyles.filesRow}>
-                <ImageUploader images={arrImages} setImages={setArrImages} />
-              </Box>
-            </DialogContent>
-          </form>
+    <Dialog
+      open={openState}
+      onClose={handleClose}
+      fullWidth
+      maxWidth="xl"
+      sx={actionStyles.dialog}
+      TransitionComponent={Transition}
+    >
+      {loading && <Loading />}
+      <Box sx={actionStyles.content}>
+        <Box sx={{...actionStyles.headerRow, ...flexStyles.headerRow}}>
+          <DialogTitle variant="h1" component="h1" sx={actionStyles.title}>
+            {isEditing ? 'Edit' : 'Add'} product
+          </DialogTitle>
+          <DialogActions sx={actionStyles.btns}>
+            <Button
+              size={flexStyles.rwdSize}
+              variant="contained"
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              size={flexStyles.rwdSize}
+              variant="contained"
+              onClick={handleSubmit}
+            >
+              Save
+            </Button>
+          </DialogActions>
         </Box>
-      </Dialog>
-    </>
+        <DialogContentText
+          variant="body5"
+          component="p"
+          sx={actionStyles.description}
+        >
+          {contentDescription}
+        </DialogContentText>
+        <form style={{...actionStyles.formRow, ...flexStyles.formRow}}>
+          <DialogContent sx={actionStyles.form}>
+            <Box sx={actionStyles.formItem}>
+              <TextField
+                fullWidth
+                size={flexStyles.rwdSize}
+                placeholder="Nike Air Max 90"
+                label="Product name"
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+              />
+            </Box>
+            <Box sx={actionStyles.formItem}>
+              <TextField
+                fullWidth
+                size={flexStyles.rwdSize}
+                placeholder="Price"
+                label="Price"
+                type="number"
+                value={price}
+                onChange={e => setPrice(e.target.value)}
+              />
+            </Box>
+            <Box sx={actionStyles.formItem}>
+              <Box sx={actionStyles.selectsRow}>
+                <FormControl fullWidth>
+                  <InputLabel id="gender">Gender</InputLabel>
+                  <Select
+                    labelId="gender"
+                    variant="outlined"
+                    value={select.gender}
+                    onChange={selectChangeHandler('gender')}
+                    defaultValue="Men"
+                    size={flexStyles.rwdSize}
+                  >
+                    {!isLoading &&
+                      genders.map(gender => {
+                        return (
+                          <MenuItem key={gender.id} value={gender.name}>
+                            {gender.name}
+                          </MenuItem>
+                        );
+                      })}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel id="brand">Brand</InputLabel>
+                  <Select
+                    size={flexStyles.rwdSize}
+                    labelId="brand"
+                    variant="outlined"
+                    value={select.brand}
+                    onChange={selectChangeHandler('brand')}
+                  >
+                    {!isLoading &&
+                      brands.map(brand => {
+                        return (
+                          <MenuItem key={brand.id} value={brand.name}>
+                            {brand.name}
+                          </MenuItem>
+                        );
+                      })}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel id="color">Color</InputLabel>
+                  <Select
+                    labelId="color"
+                    variant="outlined"
+                    aria-label="color"
+                    value={select.color}
+                    onChange={selectChangeHandler('color')}
+                    defaultValue="Black"
+                    size={flexStyles.rwdSize}
+                  >
+                    {!isLoading &&
+                      colors.map(color => {
+                        return (
+                          <MenuItem key={color.id} value={color.name}>
+                            {color.name}
+                          </MenuItem>
+                        );
+                      })}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel id="size">Size</InputLabel>
+                  <Select
+                    labelId="size"
+                    variant="outlined"
+                    aria-label="size"
+                    value={select.size}
+                    onChange={selectChangeHandler('size')}
+                    size={flexStyles.rwdSize}
+                    defaultValue="36"
+                  >
+                    {!isLoading &&
+                      sizes.map(size => {
+                        return (
+                          <MenuItem key={size.id} value={size.value}>
+                            {`EU-${size.value}`}
+                          </MenuItem>
+                        );
+                      })}
+                  </Select>
+                </FormControl>
+              </Box>
+            </Box>
+            <Box sx={actionStyles.formItem}>
+              <InputLabel id="description">Description</InputLabel>
+              <TextareaAutosize
+                placeholder="Do not exceed 1000 characters."
+                label="Description"
+                type="text"
+                value={description}
+                onChange={e => setDescription(e.target.value)}
+              />
+            </Box>
+            <FormGroup sx={actionStyles.formGroup}>
+              <Typography sx={actionStyles.label}>Add categories</Typography>
+              {categories &&
+                categories.map(category => {
+                  const itemStyle = {
+                    background: category.needed
+                      ? theme.palette.primary.main
+                      : 'white',
+                    color: category.needed
+                      ? 'white'
+                      : theme.palette.text.secondary,
+                    '&:hover': {
+                      borderColor: 'black',
+                      color: 'black',
+                    },
+                  };
+                  return (
+                    <Box
+                      key={category.id}
+                      onClick={checkBoxChangeHandlerCategory}
+                    >
+                      <Checkbox
+                        name={category.name}
+                        checked={category.needed}
+                        onClick={checkBoxChangeHandlerCategory}
+                        id={category.id}
+                      />
+                      <InputLabel sx={itemStyle} htmlFor={category.name}>
+                        {category.name}
+                      </InputLabel>
+                    </Box>
+                  );
+                })}
+            </FormGroup>
+          </DialogContent>
+          <DialogContent sx={actionStyles.filesWrap}>
+            <InputLabel>Product images</InputLabel>
+            <Box sx={actionStyles.filesRow}>
+              <ImageUploader images={arrImages} setImages={setArrImages} />
+            </Box>
+          </DialogContent>
+        </form>
+      </Box>
+    </Dialog>
   );
 };
 
