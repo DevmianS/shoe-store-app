@@ -41,7 +41,6 @@ const Home = () => {
   const [page, setPage] = useState(1);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const {status} = useUser();
-
   const {data, isLoading} = useProducts(page);
   const products = data?.data;
   const pagination = data?.meta?.pagination;
@@ -50,11 +49,18 @@ const Home = () => {
 
   return (
     <Box sx={productsStyles.row}>
-      {status === 'authenticated' && <SideBar />}
+      <SideBar />
       <Box sx={productsStyles.content}>
         <TopBanner imgPath={bannerImg.src} />
-        <AvatarStaticLayout />
-        <Typography variant="h1" component="h1" sx={productsStyles.title}>
+        {status === 'authenticated' && <AvatarStaticLayout />}
+        <Typography
+          variant="h1"
+          component="h1"
+          sx={{
+            ...productsStyles.title,
+            marginTop: status !== 'authenticated' ? rwdValue(20, 125) : '',
+          }}
+        >
           All products
         </Typography>
         <PaginationUI

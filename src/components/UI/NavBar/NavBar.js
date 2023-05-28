@@ -134,6 +134,19 @@ const NavBar = () => {
       backgroundColor: '#F3F3F3',
       zIndex: 60,
     },
+    signIn: {
+      fontSize: 12,
+      fontWeight: 700,
+      color: '#FE645E',
+      borderRadius: '4px',
+      width: '145px',
+      height: '48px',
+      marginRight: '40px',
+      display: {
+        md: 'block',
+        xs: 'none',
+      },
+    },
   };
 
   const handleMenuCLick = () => {
@@ -196,14 +209,14 @@ const NavBar = () => {
               <Button>Products</Button>
             </Link>
           </Stack>
-          {status !== 'authenticated' && (
-            <Stack component="nav" sx={navStyles.nav}>
-              <Link href="/sign-in">
-                <Button>Sign-in</Button>
-              </Link>
-            </Stack>
-          )}
           <Box sx={navStyles.search}>
+            {status !== 'authenticated' && (
+              <Link href="/sign-in" sx={{sm: {}}}>
+                <Button sx={navStyles.signIn} variant="outlined">
+                  Sign-in
+                </Button>
+              </Link>
+            )}
             <Searchbar
               searchExpanded={searchExpanded}
               setSearchExpanded={setSearchExpanded}
