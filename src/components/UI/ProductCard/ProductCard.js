@@ -31,6 +31,7 @@ export default function ProductCard({
   category,
   imgPath,
   showOptions,
+  onEdit,
 }) {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const router = useRouter();
@@ -353,6 +354,7 @@ export default function ProductCard({
               <OptionsMenu
                 confirmationHandler={setDeleteConfVisible}
                 productId={productId}
+                onEdit={onEdit}
               />
             )}
           </>

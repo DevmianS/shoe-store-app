@@ -27,7 +27,7 @@ const optionsStyles = {
   },
 };
 
-function OptionsMenu({productId, confirmationHandler}) {
+function OptionsMenu({productId, confirmationHandler, onEdit}) {
   const router = useRouter();
 
   return (
@@ -41,12 +41,7 @@ function OptionsMenu({productId, confirmationHandler}) {
         </ListItemButton>
         <Divider variant="middle" />
         <ListItemButton>
-          <ListItemText
-            primary="Edit"
-            onClick={() => {
-              console.log('TODO: Edit');
-            }}
-          />
+          <ListItemText primary="Edit" onClick={onEdit} />
         </ListItemButton>
         <Divider variant="middle" />
         <ListItemButton

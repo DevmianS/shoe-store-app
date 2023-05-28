@@ -241,7 +241,7 @@ const ProductAction = ({isEditing, openState, setOpenState}) => {
 
   const {jwt, id} = useUser();
 
-  const handleSubmit = async () => {
+  const addProductHandleSubmit = async () => {
     setLoading(true);
 
     try {
@@ -263,6 +263,55 @@ const ProductAction = ({isEditing, openState, setOpenState}) => {
       } else {
         let arrImgId = await uploadImages(arrImages, jwt);
         const res = await createProduct({
+          genders,
+          select,
+          brands,
+          price,
+          categories,
+          sizes,
+          colors,
+          name,
+          arrImgId,
+          description,
+          id,
+          jwt,
+        });
+
+        if (res?.status == '200') {
+          resetForm();
+          setOpenState(false);
+          router.reload();
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const editProductHandleSubmit = async () => {
+    setLoading(true);
+
+    try {
+      const errorInParameters = await validationCreateProduct({
+        genders,
+        price,
+        categories,
+        sizes,
+        colors,
+        name,
+        arrImages,
+        description,
+        id,
+        jwt,
+      });
+
+      if (errorInParameters) {
+        toast.message('Please fill in the gaps again correctly.');
+      } else {
+        let arrImgId = await uploadImages(arrImages, jwt);
+        const res = await updateProduct({
           genders,
           select,
           brands,
@@ -337,9 +386,11 @@ const ProductAction = ({isEditing, openState, setOpenState}) => {
             <Button
               size={flexStyles.rwdSize}
               variant="contained"
-              onClick={handleSubmit}
+              onClick={
+                isEditing ? editProductHandleSubmit : addProductHandleSubmit
+              }
             >
-              Save
+              {isEditing ? 'Update' : 'Save'}
             </Button>
           </DialogActions>
         </Box>
