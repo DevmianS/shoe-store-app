@@ -27,6 +27,7 @@ import useUser from '@/hooks/useUser';
 import {rwdValue, theme} from '@/utils/theme';
 import {
   createProduct,
+  updateProduct,
   uploadImages,
   validationCreateProduct,
 } from '@/utils/utils';
@@ -293,43 +294,26 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   const editProductHandleSubmit = async () => {
     setLoading(true);
     try {
-      const errorInParameters = await validationCreateProduct({
+      let arrImgId = await uploadImages(arrImages, jwt);
+      const res = await updateProduct({
         genders,
+        select,
+        brands,
         price,
         categories,
         sizes,
         colors,
         name,
-        arrImages,
+        arrImgId,
         description,
-        id,
         jwt,
+        productId,
       });
 
-      if (errorInParameters) {
-        toast.message('Please fill in the gaps again correctly.');
-      } else {
-        let arrImgId = await uploadImages(arrImages, jwt);
-        const res = await updateProduct({
-          genders,
-          select,
-          brands,
-          price,
-          categories,
-          sizes,
-          colors,
-          name,
-          arrImgId,
-          description,
-          jwt,
-          productId,
-        });
-
-        if (res?.status == '200') {
-          resetForm();
-          setOpenState(false);
-          router.reload();
-        }
+      if (res?.status == '200') {
+        resetForm();
+        setOpenState(false);
+        router.reload();
       }
     } catch (error) {
       console.error(error);

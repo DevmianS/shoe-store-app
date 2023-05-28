@@ -80,13 +80,15 @@ const MyProducts = ({productsList}) => {
   const {products, isLoading} = useMyProducts();
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const [openEditProduct, setOpenEditProduct] = useState(false);
+  const [selectedId, setSelectedId] = useState(0);
 
   const addProductClickHandler = e => {
     e.preventDefault();
     setOpenAddProduct(true);
   };
-  const editProductClickHandler = e => {
+  const editProductClickHandler = (e, id) => {
     e.preventDefault();
+    setSelectedId(id);
     setOpenEditProduct(true);
   };
 
@@ -103,6 +105,7 @@ const MyProducts = ({productsList}) => {
         openState={openEditProduct}
         setOpenState={setOpenEditProduct}
         isEditing
+        productId={selectedId}
       />
       <NavBarLayout>
         <Box sx={myProductsStyles.row}>

@@ -155,6 +155,8 @@ export default function ProductCard({
       fontSize: rwdValue(10, 22),
       fontWeight: 500,
       marginBottom: '5px',
+      wordBreak: 'break-all',
+      minWidth: '90px',
     },
     categoryRow: {
       color: theme.palette.text.secondary,

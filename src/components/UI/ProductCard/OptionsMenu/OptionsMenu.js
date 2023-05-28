@@ -41,7 +41,7 @@ function OptionsMenu({productId, confirmationHandler, onEdit}) {
         </ListItemButton>
         <Divider variant="middle" />
         <ListItemButton>
-          <ListItemText primary="Edit" onClick={onEdit} />
+          <ListItemText primary="Edit" onClick={e => onEdit(e, productId)} />
         </ListItemButton>
         <Divider variant="middle" />
         <ListItemButton
