@@ -1,8 +1,6 @@
 import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
 
-import {toast} from 'sonner';
-
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -28,6 +26,8 @@ import {theme} from '@/utils/theme';
 import actionStyles from './actionStyles';
 import {
   createProduct,
+  executeError,
+  executeInfo,
   uploadImages,
   validationCreateProduct,
 } from '@/utils/utils';
@@ -48,6 +48,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
+  const router = useRouter();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const flexStyles = {
+    headerRow: {
+      alignItems: isDesktop ? 'center' : 'start',
+      flexDirection: isDesktop ? 'row' : 'column',
+    },
+    formRow: {
+      flexDirection: isDesktop ? 'row' : 'column',
+    },
+    rwdSize: isDesktop ? 'medium' : 'small',
+  };
   const [data, setData] = useState(null);
   // setData({
   //   name: result?.data?.data?.attributes?.name,
@@ -61,6 +73,18 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   //   color: result?.data?.data?.attributes?.color?.data?.attributes?.name,
   //   brand: result?.data?.data?.attributes?.brand?.data?.attributes?.name,
   // });
+  const {brands, categories, genders, sizes, colors, isLoading, setCategories} =
+    useProductData() || {};
+  const {jwt, id} = useUser();
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState(0);
+
+  const [arrImages, setArrImages] = useState([]);
+  const [select, setSelect] = useState(selectsInit);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
       if (!productId) {
@@ -81,36 +105,10 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
     fetchData();
   }, [productId]);
 
-  const router = useRouter();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-
-  const flexStyles = {
-    headerRow: {
-      alignItems: isDesktop ? 'center' : 'start',
-      flexDirection: isDesktop ? 'row' : 'column',
-    },
-    formRow: {
-      flexDirection: isDesktop ? 'row' : 'column',
-    },
-    rwdSize: isDesktop ? 'medium' : 'small',
-  };
-
-  const {brands, categories, genders, sizes, colors, isLoading, setCategories} =
-    useProductData() || {};
-
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState(0);
-
-  const [arrImages, setArrImages] = useState([]);
-  const [select, setSelect] = useState(selectsInit);
-  const [loading, setLoading] = useState(false);
-
   // EVENTS
   const selectChangeHandler = property => e => {
     setSelect({...select, [property]: e.target.value});
   };
-
   const checkBoxChangeHandlerCategory = event => {
     setCategories(
       categories.map(obj => {
@@ -124,9 +122,6 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
       }),
     );
   };
-
-  const {jwt, id} = useUser();
-
   const addProductHandleSubmit = async () => {
     setLoading(true);
 
@@ -145,7 +140,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
       });
 
       if (errorInParameters) {
-        toast.message('Please fill in the gaps again correctly.');
+        executeInfo('Please fill in the gaps again correctly.');
       } else {
         let arrImgId = await uploadImages(arrImages, jwt);
         const res = await createProduct({
@@ -171,7 +166,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
       }
     } catch (error) {
       console.error(error);
-      toast.error(error.message);
+      executeError(error.message);
     } finally {
       setLoading(false);
     }
@@ -192,7 +187,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
         jwt,
       });
       if (errorInParameters) {
-        toast.message('Please fill in the gaps again correctly.');
+        executeInfo('Please fill in the gaps again correctly.');
       } else {
         let arrImgId = await uploadImages(arrImages, jwt);
         const res = await updateProductSubmit({
@@ -217,7 +212,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
       }
     } catch (error) {
       console.error(error);
-      toast.error(error.message);
+      executeError(error.message);
     } finally {
       setLoading(false);
     }
