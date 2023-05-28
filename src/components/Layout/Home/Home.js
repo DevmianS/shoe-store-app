@@ -14,6 +14,7 @@ import NoContent from '@/components/UI/NoContent';
 import PaginationUI from '@/components/UI/PaginationUI';
 import ProductCard from '@/components/UI/ProductCard';
 import TopBanner from '@/components/UI/TopBanner';
+import ProductAction from '@/components/UI/ProductAction/ProductAction';
 
 import bannerImg from '@/assets/banner2.jpg';
 import useUser from '@/hooks/useUser';
@@ -38,6 +39,7 @@ const productsStyles = {
 
 const Home = () => {
   const [page, setPage] = useState(1);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const {status} = useUser();
 
   const {data, isLoading} = useProducts(page);
@@ -78,7 +80,13 @@ const Home = () => {
               );
             })
           ) : (
-            <NoContent />
+            <>
+              <NoContent buttonAction={() => setIsOpenModal(true)} />
+              <ProductAction
+                openState={isOpenModal}
+                setOpenState={setIsOpenModal}
+              />
+            </>
           )}
         </Box>
         <PaginationUI
