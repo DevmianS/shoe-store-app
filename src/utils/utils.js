@@ -53,7 +53,8 @@ export const resetPassword = async (
   } catch (error) {
     // Extract the error message from the server response and throw it
     const errorMessage = error?.response?.data?.error?.message || '';
-    throw new Error(errorMessage);
+    executeError(errorMessage);
+    console.log('ERROR: ', error);
   }
 };
 

@@ -83,11 +83,7 @@ const ResetPasswordForm = () => {
       code
     ) {
       try {
-        const {data, status} = await resetPassword(
-          password,
-          confirmPassword,
-          code,
-        );
+        const {status} = await resetPassword(password, confirmPassword, code);
         console.log('status: ', status);
         if (status == '200') {
           executeSucces('Password reset successfully.');
@@ -100,7 +96,6 @@ const ResetPasswordForm = () => {
         }
       } catch (error) {
         console.log('my error: ', error);
-        executeError(error);
       }
     } else {
       !code &&
