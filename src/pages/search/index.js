@@ -17,6 +17,7 @@ import NoContent from '@/components/UI/NoContent';
 const SearchResults = ({searchString, productsServer, total, filters}) => {
   const [hideFilter, setHideFilter] = useState(false);
 
+  const router = useRouter();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -133,8 +134,8 @@ const SearchResults = ({searchString, productsServer, total, filters}) => {
                 <NoContent
                   title="We don't have that product :/"
                   description="Maybe you write it wrong, Try it again!"
-                  href="/search"
                   buttonText="Search"
+                  buttonAction={() => router.push('/search')}
                 />
               )}
             </Box>
@@ -147,6 +148,7 @@ const SearchResults = ({searchString, productsServer, total, filters}) => {
 import axios from 'axios';
 import {useFilter} from '@/context/FilterContext';
 import {useEffect, useState} from 'react';
+import {useRouter} from 'next/router';
 
 export default SearchResults;
 
