@@ -334,8 +334,8 @@ export const updateProduct = async ({
   name,
   arrImgId,
   description,
-  id,
   jwt,
+  productId,
 }) => {
   const idGender = String(
     genders.find(gender => gender.name == select.gender)?.id,
@@ -360,16 +360,12 @@ export const updateProduct = async ({
       color: idColor,
       size: idSize,
       price: price,
-      userID: id,
-      teamName: 'fb-team',
-      uniqueID: generateRandomNumber(10),
-      sitemap_exclude: true,
     },
   };
 
   try {
-    const res = await axios.post(
-      process.env.NEXT_PUBLIC_API_URL + '/products',
+    const res = await axios.put(
+      `${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`,
       obj,
       {
         headers: {

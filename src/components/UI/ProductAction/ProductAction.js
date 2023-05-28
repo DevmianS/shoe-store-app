@@ -193,7 +193,7 @@ const actionStyles = {
   },
 };
 
-const ProductAction = ({isEditing, openState, setOpenState}) => {
+const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   const router = useRouter();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -292,7 +292,6 @@ const ProductAction = ({isEditing, openState, setOpenState}) => {
   };
   const editProductHandleSubmit = async () => {
     setLoading(true);
-
     try {
       const errorInParameters = await validationCreateProduct({
         genders,
@@ -322,8 +321,8 @@ const ProductAction = ({isEditing, openState, setOpenState}) => {
           name,
           arrImgId,
           description,
-          id,
           jwt,
+          productId,
         });
 
         if (res?.status == '200') {
