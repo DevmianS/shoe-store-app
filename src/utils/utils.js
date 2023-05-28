@@ -403,3 +403,66 @@ export function searchKeyInObject(obj, key) {
 
   return null;
 }
+
+export const getOwnUser = async (jwt, userId) => {
+  try {
+    const {data} = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}?populate=*`,
+      {
+        headers: {Authorization: `Bearer ${jwt}`},
+      },
+    );
+    return data;
+  } catch (error) {
+    console.error('getOwnUser', error);
+    throw error;
+  }
+};
+
+export const uploadAvatar = async (jwt, imageFile) => {
+  const formData = new FormData();
+  formData.append('files', imageFile);
+
+  try {
+    const {data} = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/upload`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${jwt}`,
+        },
+      },
+    );
+
+    return data;
+  } catch (error) {
+    console.error('uploadAvatar', error);
+    throw error;
+  }
+};
+
+export const changeUserAvatar = async (jwt, imageId, userId) => {
+  const form = {
+    avatar: imageId,
+  };
+  try {
+    const {status} = await axios.put(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`,
+      form,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwt}`,
+        },
+      },
+    );
+
+    if (status === 200) {
+      return toast.success('Your photo has been succesfully changed');
+    }
+  } catch (error) {
+    console.error('changeUserAvatar', error);
+    throw error;
+  }
+};
