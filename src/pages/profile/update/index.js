@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import {useRouter} from 'next/router';
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {toast} from 'sonner';
 
 import {
@@ -18,10 +18,13 @@ import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 
 import Button from '@/components/UI/Button';
 import {signIn, signOut, useSession} from 'next-auth/react';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
 
 import {rwdValue} from '@/utils/theme';
+import useUser from '@/hooks/useUser';
+import {changeUserAvatar, uploadAvatar} from '@/utils/utils';
+import Loading from '@/components/UI/Loading/Loading';
 
 const ProfileUpdate = () => {
   const theme = useTheme();
@@ -80,6 +83,7 @@ const ProfileUpdate = () => {
   const [userData, setUserData] = useState({});
   const [newUserData, setNewUserData] = useState({});
   const {data: session, update: updateSession} = useSession();
+  const {jwt, id: userId} = useUser();
 
   const udpateUserMutation = useMutation({
     mutationFn: () => {
@@ -123,11 +127,38 @@ const ProfileUpdate = () => {
     }
     console.log(session);
   }, [session]);
+
+  const queryClient = useQueryClient();
+
+  const changePhotoMutation = useMutation({
+    mutationFn: async imageFile => {
+      try {
+        const uploadedAvatar = await uploadAvatar(jwt, imageFile);
+        const imageId = uploadedAvatar[0]?.id;
+
+        return await changeUserAvatar(jwt, imageId, userId);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    onSuccess: data => {
+      queryClient.setQueryData(['user', data.id], data);
+      queryClient.invalidateQueries(['user']);
+    },
+  });
+
+  const input = useRef();
+  const handleChangeAvatar = async event => {
+    const file = event.target.files[0];
+    changePhotoMutation.mutate(file);
+  };
+
   return (
     <>
       <Head>
         <title>Wellrun | Update Profile</title>
       </Head>
+      {changePhotoMutation.isLoading && <Loading />}
       <NavBarLayout>
         <Box sx={styles.row}>
           <SideBar />
@@ -139,7 +170,19 @@ const ProfileUpdate = () => {
             <Stack sx={styles.avatarRow}>
               <AvatarStaticLayout variant="avatar" />
               <Box>
-                <Button size={styles.size} outlined sx={styles.btn}>
+                <input
+                  type="file"
+                  ref={input}
+                  onChange={event => handleChangeAvatar(event)}
+                  hidden
+                  accept="image/*"
+                />
+                <Button
+                  size={styles.size}
+                  outlined
+                  sx={styles.btn}
+                  onClick={() => input.current.click()}
+                >
                   Change photo
                 </Button>
                 <Button size={styles.size}>Delete</Button>
