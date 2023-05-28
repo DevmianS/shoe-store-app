@@ -6,7 +6,7 @@ import {useRouter} from 'next/router';
 import {Paper} from '@mui/material';
 import {rwdValue} from '@/utils/theme';
 
-const styles = {
+const optionsStyles = {
   optionsMenu: {
     position: 'absolute',
     right: 15,
@@ -32,7 +32,7 @@ function OptionsMenu({productId, confirmationHandler}) {
 
   return (
     <Paper elevation={3} className="three-dots-menu">
-      <List elevation={3} component="nav" sx={styles.optionsMenu}>
+      <List elevation={3} component="nav" sx={optionsStyles.optionsMenu}>
         <ListItemButton>
           <ListItemText
             primary="View"
