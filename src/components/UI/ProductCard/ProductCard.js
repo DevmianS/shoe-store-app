@@ -156,8 +156,8 @@ export default function ProductCard({
       fontWeight: 500,
       marginBottom: '5px',
       wordBreak: 'break-all',
-      minWidth: '90px',
     },
+    price: {textAlign: 'right', maxWidth: rwdValue(40, 85), paddingLeft: '3px'},
     categoryRow: {
       color: theme.palette.text.secondary,
       display: 'flex',
@@ -316,7 +316,13 @@ export default function ProductCard({
             <Typography component="h3" sx={styles.title}>
               {title || 'Product title'}
             </Typography>
-            <Typography component="span" sx={styles.title}>
+            <Typography
+              component="span"
+              sx={{
+                ...styles.title,
+                ...styles.price,
+              }}
+            >
               ${price || '100'}
             </Typography>
           </Stack>

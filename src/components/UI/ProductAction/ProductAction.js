@@ -63,23 +63,22 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   // });
   useEffect(() => {
     async function fetchData() {
-      if (productId) {
-        const result = await fetchById(productId);
-        await filesToStateHandler(
-          [...result?.data?.attributes?.images?.data.map(img => img?.id)],
-          [
-            ...result?.data?.attributes?.images?.data.map(
-              img => img?.attributes?.url,
-            ),
-          ],
-          setArrImages,
-        );
-      } else {
+      if (!productId) {
         console.log('NO PRODUCT ID');
         return;
       }
+
+      const result = await fetchById(productId);
+      const imagesData = result?.data?.attributes?.images?.data;
+
+      if (imagesData) {
+        const imageIds = imagesData.map(img => img?.id);
+        const imageUrls = imagesData.map(img => img?.attributes?.url);
+        await filesToStateHandler(imageIds, imageUrls, setArrImages);
+      }
     }
-    productId && fetchData();
+
+    fetchData();
   }, [productId]);
 
   const router = useRouter();
