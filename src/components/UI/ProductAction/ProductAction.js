@@ -1,6 +1,7 @@
 import {useRouter} from 'next/router';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
+import axios from 'axios';
 import {toast} from 'sonner';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -27,6 +28,7 @@ import useUser from '@/hooks/useUser';
 import {rwdValue, theme} from '@/utils/theme';
 import {
   createProduct,
+  executeError,
   updateProduct,
   uploadImages,
   validationCreateProduct,
@@ -194,7 +196,80 @@ const actionStyles = {
   },
 };
 
+async function fetchProductData(id) {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/products/${id}?populate=*`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error);
+    executeError(error.message);
+    return null;
+  }
+}
+async function transformFilesFromURLs(fileURLs) {
+  try {
+    const transformedFiles = await Promise.all(
+      fileURLs.map(async fileURL => {
+        const response = await axios.get(fileURL, {responseType: 'blob'});
+        const blob = response.data;
+        const transformedFile = new File([blob], fileURL, {type: blob.type});
+        return transformedFile;
+      }),
+    );
+
+    return transformedFiles;
+  } catch (error) {
+    console.error('Image error:', error);
+    return [];
+  }
+}
+async function handleTransformFiles(fileIds, fileURLs, setF) {
+  const transformedFiles = await transformFilesFromURLs(fileURLs);
+  if (transformedFiles.length > 0) {
+    setF([
+      ...fileURLs.map((_, i) => ({
+        id: fileIds[i],
+        image: fileURLs[i],
+        file: transformedFiles[i],
+      })),
+    ]);
+  }
+}
 const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
+  const [data, setData] = useState(null);
+  // setData({
+  //   name: result?.data?.data?.attributes?.name,
+  //   price: result?.data?.data?.attributes?.price,
+  //   categories: [...result?.data?.data?.attributes?.categories?.data],
+  //   gender: result?.data?.data?.attributes?.gender?.data?.attributes?.name,
+  //   size: result?.data?.data?.attributes?.size?.data?.attributes?.value,
+  //   description:
+  //     result?.data?.data?.attributes?.description ||
+  //     'There is no description about this product yet',
+  //   color: result?.data?.data?.attributes?.color?.data?.attributes?.name,
+  //   brand: result?.data?.data?.attributes?.brand?.data?.attributes?.name,
+  // });
+  useEffect(() => {
+    async function fetchData() {
+      if (productId) {
+        const result = await fetchProductData(productId);
+        const pr = result?.data?.attributes;
+        console.log('PRO', pr);
+        await handleTransformFiles(
+          [...pr?.images?.data.map(img => img?.id)],
+          [...pr?.images?.data.map(img => img?.attributes?.url)],
+          setArrImages,
+        );
+      } else {
+        console.log('NO PRODUCT ID');
+        return;
+      }
+    }
+    productId && fetchData();
+  }, [productId]);
+
   const router = useRouter();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -218,7 +293,6 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
 
   const [arrImages, setArrImages] = useState([]);
   const [select, setSelect] = useState(selectsInit);
-
   const [loading, setLoading] = useState(false);
 
   // EVENTS
