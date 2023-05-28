@@ -1,3 +1,4 @@
+import {useRouter} from 'next/router';
 import React, {useState} from 'react';
 
 import {toast} from 'sonner';
@@ -193,6 +194,7 @@ const actionStyles = {
 };
 
 const ProductAction = ({isEditing, openState, setOpenState}) => {
+  const router = useRouter();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const flexStyles = {
@@ -278,6 +280,7 @@ const ProductAction = ({isEditing, openState, setOpenState}) => {
         if (res?.status == '200') {
           resetForm();
           setOpenState(false);
+          router.reload();
         }
       }
     } catch (error) {
@@ -425,7 +428,6 @@ const ProductAction = ({isEditing, openState, setOpenState}) => {
                   >
                     {!isLoading &&
                       colors.map(color => {
-                        console.log(colors.name);
                         return (
                           <MenuItem key={color.id} value={color.name}>
                             {color.name}
