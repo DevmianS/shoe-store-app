@@ -80,7 +80,9 @@ const MyProducts = ({productsList}) => {
   const {products, isLoading} = useMyProducts();
   const [openModal, setOpenModal] = useState(false);
 
-  const addProductClickHandler = () => {
+  const addProductClickHandler = e => {
+    e.preventDefault();
+    console.log(111);
     setOpenModal(true);
   };
 
@@ -128,7 +130,7 @@ const MyProducts = ({productsList}) => {
                   );
                 })
               ) : (
-                <NoContent />
+                <NoContent buttonAction={addProductClickHandler} />
               )}
             </Box>
           </Box>
