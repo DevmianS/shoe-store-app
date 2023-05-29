@@ -72,7 +72,7 @@ export async function updateProductSubmit({
     );
 
     if (res.status == '200') {
-      executeSucces('Product created succesfully.');
+      executeSucces('Product updated succesfully.');
       return res;
     }
   } catch (error) {
