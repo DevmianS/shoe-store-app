@@ -151,28 +151,31 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
       }),
     );
   };
-  const addProductHandleSubmit = async () => {
+  const validateParameters = async () => {
+    return await validationProductFields({
+      genders,
+      price,
+      categories,
+      sizes,
+      colors,
+      name,
+      arrImages,
+      description,
+      id,
+      jwt,
+    });
+  };
+  const handleSubmit = async (uploadFn, submitFn, infoMessage) => {
     setLoading(true);
 
     try {
-      const errorInParameters = await validationProductFields({
-        genders,
-        price,
-        categories,
-        sizes,
-        colors,
-        name,
-        arrImages,
-        description,
-        id,
-        jwt,
-      });
+      const errorInParameters = await validateParameters();
 
       if (errorInParameters) {
         executeInfo('Please fill in the gaps again correctly.');
       } else {
-        let arrImgId = await uploadImages(arrImages, jwt);
-        const res = await createProduct({
+        let arrImgId = await uploadFn(arrImages, jwt);
+        const res = await submitFn({
           genders,
           select,
           brands,
@@ -185,6 +188,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
           description,
           id,
           jwt,
+          productId,
         });
 
         res?.status == '200' && successReset();
@@ -196,47 +200,19 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
       setLoading(false);
     }
   };
+  const addProductHandleSubmit = async () => {
+    await handleSubmit(
+      uploadImages,
+      createProduct,
+      'Please fill in the gaps again correctly.',
+    );
+  };
   const editProductHandleSubmit = async () => {
-    setLoading(true);
-    try {
-      const errorInParameters = await validationProductFields({
-        genders,
-        price,
-        categories,
-        sizes,
-        colors,
-        name,
-        arrImages,
-        description,
-        id,
-        jwt,
-      });
-      if (errorInParameters) {
-        executeInfo('Please fill in the gaps again correctly.');
-      } else {
-        let arrImgId = await uploadImages(arrImages, jwt);
-        const res = await updateProductSubmit({
-          genders,
-          select,
-          brands,
-          price,
-          categories,
-          sizes,
-          colors,
-          name,
-          arrImgId,
-          description,
-          jwt,
-          productId,
-        });
-        res?.status == '200' && successReset();
-      }
-    } catch (error) {
-      console.error(error);
-      executeError(error.message);
-    } finally {
-      setLoading(false);
-    }
+    await handleSubmit(
+      uploadImages,
+      updateProductSubmit,
+      'Please fill in the gaps again correctly.',
+    );
   };
 
   const resetForm = () => {
