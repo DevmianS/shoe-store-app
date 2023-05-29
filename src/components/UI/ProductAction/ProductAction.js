@@ -74,6 +74,29 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   const [loading, setLoading] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
 
+  const selectsdata = [
+    {
+      id: 'gender',
+      defaultValue: 'Men',
+      object: genders,
+    },
+    {
+      id: 'brand',
+      defaultValue: 'Nike',
+      object: brands,
+    },
+    {
+      id: 'color',
+      defaultValue: 'Black',
+      object: colors,
+    },
+    {
+      id: 'size',
+      defaultValue: '36',
+      object: sizes,
+    },
+  ];
+
   useEffect(() => {
     async function fetchData() {
       if (!productId) {
@@ -313,87 +336,34 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
             </Box>
             <Box sx={actionStyles.formItem}>
               <Box sx={actionStyles.selectsRow}>
-                <FormControl fullWidth>
-                  <InputLabel id="gender">Gender</InputLabel>
-                  <Select
-                    labelId="gender"
-                    variant="outlined"
-                    value={select.gender}
-                    onChange={selectChangeHandler('gender')}
-                    defaultValue="Men"
-                    size={flexStyles.rwdSize}
-                  >
-                    {!isLoading &&
-                      genders.map(gender => {
-                        return (
-                          <MenuItem key={gender.id} value={gender.name}>
-                            {gender.name}
-                          </MenuItem>
-                        );
-                      })}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth>
-                  <InputLabel id="brand">Brand</InputLabel>
-                  <Select
-                    size={flexStyles.rwdSize}
-                    labelId="brand"
-                    variant="outlined"
-                    value={select.brand}
-                    onChange={selectChangeHandler('brand')}
-                  >
-                    {!isLoading &&
-                      brands.map(brand => {
-                        return (
-                          <MenuItem key={brand.id} value={brand.name}>
-                            {brand.name}
-                          </MenuItem>
-                        );
-                      })}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth>
-                  <InputLabel id="color">Color</InputLabel>
-                  <Select
-                    labelId="color"
-                    variant="outlined"
-                    aria-label="color"
-                    value={select.color}
-                    onChange={selectChangeHandler('color')}
-                    defaultValue="Black"
-                    size={flexStyles.rwdSize}
-                  >
-                    {!isLoading &&
-                      colors.map(color => {
-                        return (
-                          <MenuItem key={color.id} value={color.name}>
-                            {color.name}
-                          </MenuItem>
-                        );
-                      })}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth>
-                  <InputLabel id="size">Size</InputLabel>
-                  <Select
-                    labelId="size"
-                    variant="outlined"
-                    aria-label="size"
-                    value={select.size}
-                    onChange={selectChangeHandler('size')}
-                    size={flexStyles.rwdSize}
-                    defaultValue="36"
-                  >
-                    {!isLoading &&
-                      sizes.map(size => {
-                        return (
-                          <MenuItem key={size.id} value={size.value}>
-                            {`EU-${size.value}`}
-                          </MenuItem>
-                        );
-                      })}
-                  </Select>
-                </FormControl>
+                {selectsdata.map(item => {
+                  return (
+                    <FormControl fullWidth>
+                      <InputLabel id={item.id}>
+                        {item.id.toUpperCase()}
+                      </InputLabel>
+                      <Select
+                        labelId={item.id}
+                        variant="outlined"
+                        value={select[item.id]}
+                        onChange={selectChangeHandler(item.id)}
+                        defaultValue={item.defaultValue}
+                        size={flexStyles.rwdSize}
+                      >
+                        {!isLoading &&
+                          item.object.map(opt => {
+                            const name =
+                              item.id == 'size' ? opt.value : opt.name;
+                            return (
+                              <MenuItem key={opt.id} value={name}>
+                                {name}
+                              </MenuItem>
+                            );
+                          })}
+                      </Select>
+                    </FormControl>
+                  );
+                })}
               </Box>
             </Box>
             <Box sx={actionStyles.formItem}>
