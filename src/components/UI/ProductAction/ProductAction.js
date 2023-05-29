@@ -164,11 +164,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
           jwt,
         });
 
-        if (res?.status == '200') {
-          resetForm();
-          setOpenState(false);
-          router.reload();
-        }
+        res?.status == '200' && successReset();
       }
     } catch (error) {
       console.error(error);
@@ -210,11 +206,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
           jwt,
           productId,
         });
-        if (res?.status == '200') {
-          resetForm();
-          setOpenState(false);
-          router.reload();
-        }
+        res?.status == '200' && successReset();
       }
     } catch (error) {
       console.error(error);
@@ -242,6 +234,12 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   const handleClose = () => {
     setOpenState(false);
     resetForm();
+  };
+
+  const successReset = () => {
+    resetForm();
+    setOpenState(false);
+    setTimeout(() => router.reload(), 3000);
   };
 
   return (
