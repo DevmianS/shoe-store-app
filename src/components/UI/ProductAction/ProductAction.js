@@ -29,7 +29,7 @@ import {
   executeError,
   executeInfo,
   uploadImages,
-  validationCreateProduct,
+  validationProductFields,
 } from '@/utils/utils';
 import {
   contentDescription,
@@ -130,7 +130,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
     setLoading(true);
 
     try {
-      const errorInParameters = await validationCreateProduct({
+      const errorInParameters = await validationProductFields({
         genders,
         price,
         categories,
@@ -178,7 +178,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   const editProductHandleSubmit = async () => {
     setLoading(true);
     try {
-      const errorInParameters = await validationCreateProduct({
+      const errorInParameters = await validationProductFields({
         genders,
         price,
         categories,
