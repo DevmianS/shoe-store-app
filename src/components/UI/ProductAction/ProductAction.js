@@ -72,6 +72,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   const [arrImages, setArrImages] = useState([]);
   const [select, setSelect] = useState(selectsInit);
   const [loading, setLoading] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -105,9 +106,10 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
           needed: fullData.categories.includes(cat.name),
         })),
       );
+      setIsTouch(false);
     }
     fetchData();
-  }, [productId]);
+  }, [productId, openState]);
 
   // EVENTS
   const selectChangeHandler = property => e => {
@@ -268,6 +270,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
             <Button
               size={flexStyles.rwdSize}
               variant="contained"
+              disabled={!isTouch}
               onClick={
                 isEditing ? editProductHandleSubmit : addProductHandleSubmit
               }
@@ -283,7 +286,10 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
         >
           {contentDescription}
         </DialogContentText>
-        <form style={{...actionStyles.formRow, ...flexStyles.formRow}}>
+        <form
+          style={{...actionStyles.formRow, ...flexStyles.formRow}}
+          onInput={() => setIsTouch(true)}
+        >
           <DialogContent sx={actionStyles.form}>
             <Box sx={actionStyles.formItem}>
               <TextField
