@@ -1,28 +1,21 @@
 import Image from 'next/image';
-import {useCallback, useEffect, useState} from 'react';
-import {
-  Typography,
-  Stack,
-  Box,
-  useMediaQuery,
-  IconButton,
-  Button as MUIButton,
-} from '@mui/material';
-import {useTheme} from '@mui/material/styles';
-
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-
-import {rwdValue} from '@/utils/theme';
-import {useCart} from '@/context/CartContext';
-
-import Button from '@/components/UI/Button';
 import {useRouter} from 'next/router';
-import OptionsMenu from './OptionsMenu';
-import Modal from '../Modal/Modal';
-import Loading from '../Loading/Loading';
+import {useCallback, useEffect, useState} from 'react';
+
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import IconButton from '@mui/material/IconButton';
+import {Button as MUIButton} from '@mui/material/Button';
+
+import {rwdValue, theme} from '@/utils/theme';
 import useUser from '@/hooks/useUser';
 import {deleteProduct} from '@/utils/utils';
+
+import OptionsMenu from './OptionsMenu';
+import Modal from '@/components/UI/Modal';
+import Loading from '@/components/UI/Modal';
 
 export default function ProductCard({
   productId,
@@ -33,40 +26,9 @@ export default function ProductCard({
   showOptions,
   onEdit,
 }) {
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const router = useRouter();
-  const theme = useTheme();
-  const {status} = useUser();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const {addProduct} = useCart();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [deleteConfVisible, setDeleteConfVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const {jwt} = useUser();
-
-  const goToPreviousImage = () => {
-    console.log('prev', currentImageIndex);
-    if (currentImageIndex > 0) {
-      console.log('true');
-      setCurrentImageIndex(prevState => prevState - 1);
-    }
-  };
-
-  const goToNextImage = () => {
-    console.log(
-      'next',
-      currentImageIndex,
-      currentImageIndex < imgPath.length - 1,
-      currentImageIndex,
-      imgPath.length - 1,
-    );
-    if (currentImageIndex < imgPath.length - 1) {
-      console.log('true');
-      setCurrentImageIndex(prevState => prevState + 1);
-    }
-  };
   const styles = {
     column: isMobile
       ? {
@@ -123,18 +85,16 @@ export default function ProductCard({
       marginBottom: '12px',
       overflow: 'hidden',
       background: 'lightgrey',
-      '&:hover': isDesktop
-        ? {
-            cursor: 'pointer',
-            '& img': {
-              transition: '1s',
-              transform: 'scale(1.25)',
-            },
-            '& button': {
-              opacity: 1,
-            },
-          }
-        : {},
+      '&:hover': {
+        cursor: 'pointer',
+        '& img': {
+          transition: '1s',
+          transform: 'scale(1.25)',
+        },
+        '& button': {
+          opacity: 1,
+        },
+      },
       '& button': {
         opacity: {xs: 1, md: 0},
       },
@@ -195,15 +155,48 @@ export default function ProductCard({
       zIndex: 3,
       opacity: 0,
       transition: '0.3s all',
-      '&:disabled': {backgroundColor: 'lightgrey', borderColor: 'lightgrey'},
-      '&:hover': isDesktop
-        ? {
-            backgroundColor: '#fe645e',
-            borderColor: '#fe645e',
-            color: '#fff',
-          }
-        : {},
+
+      '&:hover': {
+        backgroundColor: '#fe645e',
+        borderColor: '#fe645e',
+        color: '#fff',
+      },
     },
+    disabled: {
+      backgroundColor: 'lightgrey',
+      borderColor: 'lightgrey',
+    },
+  };
+
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const router = useRouter();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [deleteConfVisible, setDeleteConfVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const {jwt} = useUser();
+
+  const goToPreviousImage = e => {
+    e.stopPropagation();
+    console.log('prev', currentImageIndex);
+    if (currentImageIndex > 0) {
+      console.log('true');
+      setCurrentImageIndex(prevState => prevState - 1);
+    }
+  };
+
+  const goToNextImage = e => {
+    e.stopPropagation();
+    console.log(
+      'next',
+      currentImageIndex,
+      currentImageIndex < imgPath.length - 1,
+      currentImageIndex,
+      imgPath.length - 1,
+    );
+    if (currentImageIndex < imgPath.length - 1) {
+      console.log('true');
+      setCurrentImageIndex(prevState => prevState + 1);
+    }
   };
 
   const handleOutsideClick = useCallback(({target}) => {
@@ -238,7 +231,10 @@ export default function ProductCard({
       <Box sx={styles.card}>
         <Box
           sx={styles.image}
-          onClick={() => router.push(`/products/${productId}`)}
+          onClick={e => {
+            e.stopPropagation();
+            router.push(`/products/${productId}`);
+          }}
         >
           <Image
             src={
@@ -255,18 +251,25 @@ export default function ProductCard({
           {imgPath && (
             <>
               <IconButton
-                sx={styles.iconBtn}
+                sx={{
+                  ...styles.iconBtn,
+                  ...(currentImageIndex === 0 ? styles.disabled : ''),
+                }}
                 onClick={goToPreviousImage}
-                disabled={currentImageIndex === 0}
               >
-                <KeyboardArrowLeft />
+                <Typography component="i" className="icon-chevron-left" />
               </IconButton>
               <IconButton
-                sx={{...styles.iconBtn, right: 0}}
+                sx={{
+                  ...styles.iconBtn,
+                  ...(currentImageIndex === imgPath?.length - 1
+                    ? styles.disabled
+                    : ''),
+                  right: 0,
+                }}
                 onClick={goToNextImage}
-                disabled={currentImageIndex === imgPath?.length - 1}
               >
-                <KeyboardArrowRight />
+                <Typography component="i" className="icon-chevron-right" />
               </IconButton>
             </>
           )}

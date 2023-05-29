@@ -93,8 +93,19 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
       setName(fullData.name);
       setDescription(fullData.description);
       setPrice(fullData.price);
+      setSelect({
+        gender: fullData.gender,
+        brand: fullData.brand,
+        color: fullData.color,
+        size: fullData.size,
+      });
+      setCategories(
+        categories.map(cat => ({
+          ...cat,
+          needed: fullData.categories.includes(cat.name),
+        })),
+      );
     }
-
     fetchData();
   }, [productId]);
 

@@ -125,7 +125,9 @@ export function getEditData(result) {
   return {
     name: result?.data?.attributes?.name,
     price: result?.data?.attributes?.price,
-    categories: [...result?.data?.attributes?.categories?.data],
+    categories: [...result?.data?.attributes?.categories?.data].map(
+      c => c.attributes.name,
+    ),
     gender: result?.data?.attributes?.gender?.data?.attributes?.name,
     size: result?.data?.attributes?.size?.data?.attributes?.value,
     description: result?.data?.attributes?.description,
