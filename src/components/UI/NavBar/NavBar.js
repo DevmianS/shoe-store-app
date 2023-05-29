@@ -210,7 +210,7 @@ const NavBar = () => {
             </Link>
           </Stack>
           <Box sx={navStyles.search}>
-            {status !== 'authenticated' && (
+            {status !== 'authenticated' && !searchExpanded && (
               <Link href="/sign-in" sx={{sm: {}}}>
                 <Button sx={navStyles.signIn} variant="outlined">
                   Sign-in
