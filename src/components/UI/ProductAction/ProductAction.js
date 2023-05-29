@@ -37,6 +37,7 @@ import {
   filesToStateHandler,
   selectsInit,
   updateProductSubmit,
+  getEditData,
 } from '@/utils/editProduct';
 
 import Button from '@/components/UI/Button';
@@ -60,19 +61,6 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
     },
     rwdSize: isDesktop ? 'medium' : 'small',
   };
-  const [data, setData] = useState(null);
-  // setData({
-  //   name: result?.data?.data?.attributes?.name,
-  //   price: result?.data?.data?.attributes?.price,
-  //   categories: [...result?.data?.data?.attributes?.categories?.data],
-  //   gender: result?.data?.data?.attributes?.gender?.data?.attributes?.name,
-  //   size: result?.data?.data?.attributes?.size?.data?.attributes?.value,
-  //   description:
-  //     result?.data?.data?.attributes?.description ||
-  //     'There is no description about this product yet',
-  //   color: result?.data?.data?.attributes?.color?.data?.attributes?.name,
-  //   brand: result?.data?.data?.attributes?.brand?.data?.attributes?.name,
-  // });
   const {brands, categories, genders, sizes, colors, isLoading, setCategories} =
     useProductData() || {};
   const {jwt, id} = useUser();
@@ -88,11 +76,12 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   useEffect(() => {
     async function fetchData() {
       if (!productId) {
-        console.log('NO PRODUCT ID');
+        console.warn('NO PRODUCT ID OR IS ADD PRODUCT');
         return;
       }
 
       const result = await fetchById(productId);
+      const fullData = getEditData(result);
       const imagesData = result?.data?.attributes?.images?.data;
 
       if (imagesData) {
@@ -100,6 +89,10 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
         const imageUrls = imagesData.map(img => img?.attributes?.url);
         await filesToStateHandler(imageIds, imageUrls, setArrImages);
       }
+
+      setName(fullData.name);
+      setDescription(fullData.description);
+      setPrice(fullData.price);
     }
 
     fetchData();

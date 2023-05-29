@@ -120,3 +120,16 @@ export async function filesToStateHandler(fileIds, fileURLs, setFilesState) {
     ]);
   }
 }
+
+export function getEditData(result) {
+  return {
+    name: result?.data?.attributes?.name,
+    price: result?.data?.attributes?.price,
+    categories: [...result?.data?.attributes?.categories?.data],
+    gender: result?.data?.attributes?.gender?.data?.attributes?.name,
+    size: result?.data?.attributes?.size?.data?.attributes?.value,
+    description: result?.data?.attributes?.description,
+    color: result?.data?.attributes?.color?.data?.attributes?.name || 'Black',
+    brand: result?.data?.attributes?.brand?.data?.attributes?.name,
+  };
+}

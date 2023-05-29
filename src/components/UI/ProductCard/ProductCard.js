@@ -133,10 +133,6 @@ export default function ProductCard({
             '& button': {
               opacity: 1,
             },
-            '& .actions': {
-              transform: 'translate(-50%,0)',
-              transition: '0.5s',
-            },
           }
         : {},
       '& button': {
@@ -157,7 +153,12 @@ export default function ProductCard({
       marginBottom: '5px',
       wordBreak: 'break-all',
     },
-    price: {textAlign: 'right', maxWidth: rwdValue(40, 85), paddingLeft: '3px'},
+    price: {
+      textAlign: 'right',
+      maxWidth: rwdValue(40, 85),
+      paddingLeft: '3px',
+      wordBreak: 'keep-all',
+    },
     categoryRow: {
       color: theme.palette.text.secondary,
       display: 'flex',
@@ -203,26 +204,6 @@ export default function ProductCard({
           }
         : {},
     },
-    actions: {
-      display: 'flex',
-      gap: '10px',
-      position: 'absolute',
-      bottom: rwdValue(10, 20),
-      left: '50%',
-      transform: {xs: 'translate(-50%,0)', md: 'translate(-50%,20px)'},
-      zIndex: 3,
-      transition: '0.5s',
-      '& span': {
-        fontSize: rwdValue(18, 24),
-        lineHeight: rwdValue(32, 40),
-        color: '#fff',
-      },
-      '& button': {
-        width: rwdValue(32, 40),
-        minWidth: rwdValue(32, 40),
-        height: rwdValue(32, 40),
-      },
-    },
   };
 
   const handleOutsideClick = useCallback(({target}) => {
@@ -255,31 +236,10 @@ export default function ProductCard({
   return (
     <Box sx={styles.column}>
       <Box sx={styles.card}>
-        <Box sx={styles.image}>
-          <Box sx={styles.actions} className="actions">
-            {status === 'authenticated' && (
-              <Button
-                size={isDesktop ? 'medium' : 'small'}
-                onClick={() => addProduct({productId, title})}
-              >
-                <Typography
-                  component="span"
-                  className="icon-add-to-cart"
-                  title={`Add ${title} to the cart`}
-                />
-              </Button>
-            )}
-            <Button
-              size={isDesktop ? 'medium' : 'small'}
-              onClick={() => router.push(`/products/${productId}`)}
-            >
-              <Typography
-                component="span"
-                className="icon-search"
-                title={`Open ${title} page`}
-              />
-            </Button>
-          </Box>
+        <Box
+          sx={styles.image}
+          onClick={() => router.push(`/products/${productId}`)}
+        >
           <Image
             src={
               imgPath
@@ -372,9 +332,9 @@ export default function ProductCard({
           <Modal
             state={true}
             setState={setDeleteConfVisible}
-            title={'Are you sure to delete selected item '}
+            title={'Are you sure to delete selected item?'}
             text={
-              'Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur. '
+              'Deleting this product is irreversible. Are you absolutely certain you want to proceed with the deletion? Once deleted, all associated data will be permanently lost.'
             }
             submitAction={deleteProductHandler}
           >
