@@ -314,7 +314,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
               <Box sx={actionStyles.selectsRow}>
                 {selectsdata.map(item => {
                   return (
-                    <FormControl fullWidth>
+                    <FormControl key={item.id} fullWidth>
                       <InputLabel id={item.id}>
                         {item.id.toUpperCase()}
                       </InputLabel>
