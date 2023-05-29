@@ -1,28 +1,21 @@
 import Image from 'next/image';
-import {useCallback, useEffect, useState} from 'react';
-import {
-  Typography,
-  Stack,
-  Box,
-  useMediaQuery,
-  IconButton,
-  Button as MUIButton,
-} from '@mui/material';
-import {useTheme} from '@mui/material/styles';
-
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-
-import {rwdValue} from '@/utils/theme';
-import {useCart} from '@/context/CartContext';
-
-import Button from '@/components/UI/Button';
 import {useRouter} from 'next/router';
-import OptionsMenu from './OptionsMenu';
-import Modal from '../Modal/Modal';
-import Loading from '../Loading/Loading';
+import {useCallback, useEffect, useState} from 'react';
+
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import IconButton from '@mui/material/IconButton';
+import MUIButton from '@mui/material/Button';
+
+import {rwdValue, theme} from '@/utils/theme';
 import useUser from '@/hooks/useUser';
 import {deleteProduct} from '@/utils/utils';
+
+import OptionsMenu from './OptionsMenu';
+import Modal from '@/components/UI/Modal';
+import Loading from '@/components/UI/Modal';
 
 export default function ProductCard({
   productId,
@@ -31,41 +24,11 @@ export default function ProductCard({
   category,
   imgPath,
   showOptions,
+  onEdit,
 }) {
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const router = useRouter();
-  const theme = useTheme();
-  const {status} = useUser();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const {addProduct} = useCart();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [deleteConfVisible, setDeleteConfVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const {jwt} = useUser();
-
-  const goToPreviousImage = () => {
-    console.log('prev', currentImageIndex);
-    if (currentImageIndex > 0) {
-      console.log('true');
-      setCurrentImageIndex(prevState => prevState - 1);
-    }
-  };
-
-  const goToNextImage = () => {
-    console.log(
-      'next',
-      currentImageIndex,
-      currentImageIndex < imgPath.length - 1,
-      currentImageIndex,
-      imgPath.length - 1,
-    );
-    if (currentImageIndex < imgPath.length - 1) {
-      console.log('true');
-      setCurrentImageIndex(prevState => prevState + 1);
-    }
-  };
   const styles = {
     column: isMobile
       ? {
@@ -122,22 +85,16 @@ export default function ProductCard({
       marginBottom: '12px',
       overflow: 'hidden',
       background: 'lightgrey',
-      '&:hover': isDesktop
-        ? {
-            cursor: 'pointer',
-            '& img': {
-              transition: '1s',
-              transform: 'scale(1.25)',
-            },
-            '& button': {
-              opacity: 1,
-            },
-            '& .actions': {
-              transform: 'translate(-50%,0)',
-              transition: '0.5s',
-            },
-          }
-        : {},
+      '&:hover': {
+        cursor: 'pointer',
+        '& img': {
+          transition: '1s',
+          transform: 'scale(1.25)',
+        },
+        '& button': {
+          opacity: 1,
+        },
+      },
       '& button': {
         opacity: {xs: 1, md: 0},
       },
@@ -154,6 +111,13 @@ export default function ProductCard({
       fontSize: rwdValue(10, 22),
       fontWeight: 500,
       marginBottom: '5px',
+      wordBreak: 'break-all',
+    },
+    price: {
+      textAlign: 'right',
+      maxWidth: rwdValue(40, 85),
+      paddingLeft: '3px',
+      wordBreak: 'keep-all',
     },
     categoryRow: {
       color: theme.palette.text.secondary,
@@ -191,35 +155,48 @@ export default function ProductCard({
       zIndex: 3,
       opacity: 0,
       transition: '0.3s all',
-      '&:disabled': {backgroundColor: 'lightgrey', borderColor: 'lightgrey'},
-      '&:hover': isDesktop
-        ? {
-            backgroundColor: '#fe645e',
-            borderColor: '#fe645e',
-            color: '#fff',
-          }
-        : {},
-    },
-    actions: {
-      display: 'flex',
-      gap: '10px',
-      position: 'absolute',
-      bottom: rwdValue(10, 20),
-      left: '50%',
-      transform: {xs: 'translate(-50%,0)', md: 'translate(-50%,20px)'},
-      zIndex: 3,
-      transition: '0.5s',
-      '& span': {
-        fontSize: rwdValue(18, 24),
-        lineHeight: rwdValue(32, 40),
+
+      '&:hover': {
+        backgroundColor: '#fe645e',
+        borderColor: '#fe645e',
         color: '#fff',
       },
-      '& button': {
-        width: rwdValue(32, 40),
-        minWidth: rwdValue(32, 40),
-        height: rwdValue(32, 40),
-      },
     },
+    disabled: {
+      backgroundColor: 'lightgrey',
+      borderColor: 'lightgrey',
+    },
+  };
+
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const router = useRouter();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [deleteConfVisible, setDeleteConfVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const {jwt} = useUser();
+
+  const goToPreviousImage = e => {
+    e.stopPropagation();
+    console.log('prev', currentImageIndex);
+    if (currentImageIndex > 0) {
+      console.log('true');
+      setCurrentImageIndex(prevState => prevState - 1);
+    }
+  };
+
+  const goToNextImage = e => {
+    e.stopPropagation();
+    console.log(
+      'next',
+      currentImageIndex,
+      currentImageIndex < imgPath.length - 1,
+      currentImageIndex,
+      imgPath.length - 1,
+    );
+    if (currentImageIndex < imgPath.length - 1) {
+      console.log('true');
+      setCurrentImageIndex(prevState => prevState + 1);
+    }
   };
 
   const handleOutsideClick = useCallback(({target}) => {
@@ -244,39 +221,31 @@ export default function ProductCard({
   };
 
   useEffect(() => {
-    if (isMenuVisible)
-      window.addEventListener('click', handleOutsideClick, true);
-    else window.removeEventListener('click', handleOutsideClick, true);
+    const handleOutsideClickWrapper = event => {
+      handleOutsideClick(event);
+    };
+
+    if (isMenuVisible) {
+      window.addEventListener('click', handleOutsideClickWrapper, true);
+    } else {
+      window.removeEventListener('click', handleOutsideClickWrapper, true);
+    }
+
+    return () => {
+      window.removeEventListener('click', handleOutsideClickWrapper, true);
+    };
   }, [isMenuVisible, handleOutsideClick]);
 
   return (
     <Box sx={styles.column}>
       <Box sx={styles.card}>
-        <Box sx={styles.image}>
-          <Box sx={styles.actions} className="actions">
-            {status === 'authenticated' && (
-              <Button
-                size={isDesktop ? 'medium' : 'small'}
-                onClick={() => addProduct({productId, title})}
-              >
-                <Typography
-                  component="span"
-                  className="icon-add-to-cart"
-                  title={`Add ${title} to the cart`}
-                />
-              </Button>
-            )}
-            <Button
-              size={isDesktop ? 'medium' : 'small'}
-              onClick={() => router.push(`/products/${productId}`)}
-            >
-              <Typography
-                component="span"
-                className="icon-search"
-                title={`Open ${title} page`}
-              />
-            </Button>
-          </Box>
+        <Box
+          sx={styles.image}
+          onClick={e => {
+            e.stopPropagation();
+            router.push(`/products/${productId}`);
+          }}
+        >
           <Image
             src={
               imgPath
@@ -292,18 +261,25 @@ export default function ProductCard({
           {imgPath && (
             <>
               <IconButton
-                sx={styles.iconBtn}
+                sx={{
+                  ...styles.iconBtn,
+                  ...(currentImageIndex === 0 ? styles.disabled : ''),
+                }}
                 onClick={goToPreviousImage}
-                disabled={currentImageIndex === 0}
               >
-                <KeyboardArrowLeft />
+                <Typography component="i" className="icon-chevron-left" />
               </IconButton>
               <IconButton
-                sx={{...styles.iconBtn, right: 0}}
+                sx={{
+                  ...styles.iconBtn,
+                  ...(currentImageIndex === imgPath?.length - 1
+                    ? styles.disabled
+                    : ''),
+                  right: 0,
+                }}
                 onClick={goToNextImage}
-                disabled={currentImageIndex === imgPath?.length - 1}
               >
-                <KeyboardArrowRight />
+                <Typography component="i" className="icon-chevron-right" />
               </IconButton>
             </>
           )}
@@ -313,7 +289,13 @@ export default function ProductCard({
             <Typography component="h3" sx={styles.title}>
               {title || 'Product title'}
             </Typography>
-            <Typography component="span" sx={styles.title}>
+            <Typography
+              component="span"
+              sx={{
+                ...styles.title,
+                ...styles.price,
+              }}
+            >
               ${price || '100'}
             </Typography>
           </Stack>
@@ -353,6 +335,7 @@ export default function ProductCard({
               <OptionsMenu
                 confirmationHandler={setDeleteConfVisible}
                 productId={productId}
+                onEdit={onEdit}
               />
             )}
           </>
@@ -362,9 +345,9 @@ export default function ProductCard({
           <Modal
             state={true}
             setState={setDeleteConfVisible}
-            title={'Are you sure to delete selected item '}
+            title={'Are you sure to delete selected item?'}
             text={
-              'Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur. '
+              'Deleting this product is irreversible. Are you absolutely certain you want to proceed with the deletion? Once deleted, all associated data will be permanently lost.'
             }
             submitAction={deleteProductHandler}
           >

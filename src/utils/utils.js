@@ -165,7 +165,7 @@ export const uploadImages = async (arrImages, jwt) => {
   }
 };
 
-export const validationCreateProduct = async ({
+export const validationProductFields = async ({
   genders,
   price,
   categories,
@@ -184,12 +184,6 @@ export const validationCreateProduct = async ({
   ) {
     executeError('Error: The name must be between 1 and 50 characters.');
     return true;
-  } else {
-    const isNameUsed = await fetchProductsByName(name);
-    if (isNameUsed) {
-      executeError('Error: The name already exists. Choose a new one.');
-      return true;
-    }
   }
 
   if (
@@ -324,7 +318,6 @@ export const createProduct = async ({
     executeError('There was an error.');
   }
 };
-
 export const deleteProduct = async ({id, jwt}) => {
   try {
     const res = await axios.delete(

@@ -159,7 +159,6 @@ export default function ProductPage({product, error}) {
       brand: product?.data?.attributes?.brand?.data?.attributes?.name,
     });
   }, [product]);
-  console.log(product);
   return (
     <>
       <Head>
@@ -234,10 +233,7 @@ export default function ProductPage({product, error}) {
                 </Button>
               ) : (
                 <Button
-                  onClick={() => {
-                    console.log(router);
-                    router.push(`/sign-in`);
-                  }}
+                  onClick={() => router.push(`/sign-in`)}
                   sx={singleStyles.btn}
                 >
                   Sign In to Add to Bag

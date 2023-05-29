@@ -78,12 +78,18 @@ const myProductsStyles = {
 
 const MyProducts = ({productsList}) => {
   const {products, isLoading} = useMyProducts();
-  const [openModal, setOpenModal] = useState(false);
+  const [openAddProduct, setOpenAddProduct] = useState(false);
+  const [openEditProduct, setOpenEditProduct] = useState(false);
+  const [selectedId, setSelectedId] = useState(0);
 
   const addProductClickHandler = e => {
     e.preventDefault();
-    console.log(111);
-    setOpenModal(true);
+    setOpenAddProduct(true);
+  };
+  const editProductClickHandler = (e, id) => {
+    e.preventDefault();
+    setSelectedId(id);
+    setOpenEditProduct(true);
   };
 
   return (
@@ -91,7 +97,16 @@ const MyProducts = ({productsList}) => {
       <Head>
         <title>Wellrun | My Products</title>
       </Head>
-      <ProductAction openState={openModal} setOpenState={setOpenModal} />
+      <ProductAction
+        openState={openAddProduct}
+        setOpenState={setOpenAddProduct}
+      />
+      <ProductAction
+        openState={openEditProduct}
+        setOpenState={setOpenEditProduct}
+        isEditing
+        productId={selectedId}
+      />
       <NavBarLayout>
         <Box sx={myProductsStyles.row}>
           <SideBar />
@@ -126,6 +141,7 @@ const MyProducts = ({productsList}) => {
                       price={attributes.price}
                       imgPath={attributes.images.data}
                       category={attributes.categories.data}
+                      onEdit={editProductClickHandler}
                     />
                   );
                 })
