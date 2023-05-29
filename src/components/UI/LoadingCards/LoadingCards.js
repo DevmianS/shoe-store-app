@@ -56,6 +56,10 @@ function LoadingCard(isBag) {
       ...loadingCardStyles.image,
       height: rwdValue(100, 220),
     };
+    loadingCardStyles.card = {
+      ...loadingCardStyles.card,
+      height: rwdValue(150, 320),
+    };
   }
   return (
     <Box sx={loadingCardStyles.column}>
