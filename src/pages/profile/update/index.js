@@ -1,86 +1,92 @@
 import Head from 'next/head';
-import {useRouter} from 'next/router';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {toast} from 'sonner';
 
-import {
-  Typography,
-  Box,
-  Stack,
-  TextField,
-  useTheme,
-  useMediaQuery,
-} from '@mui/material';
+import {useSession} from 'next-auth/react';
+import {useEffect, useRef, useState} from 'react';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import axios from 'axios';
+
+import {toast} from 'sonner';
+import {rwdValue, theme} from '@/utils/theme';
+import {changeUserAvatar, uploadAvatar} from '@/utils/utils';
+
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
-
 import Button from '@/components/UI/Button';
-import {signIn, signOut, useSession} from 'next-auth/react';
-import {useEffect, useRef, useState} from 'react';
-import axios from 'axios';
-
-import {rwdValue} from '@/utils/theme';
-import useUser from '@/hooks/useUser';
-import {changeUserAvatar, uploadAvatar} from '@/utils/utils';
 import Loading from '@/components/UI/Loading/Loading';
 import Modal from '@/components/UI/Modal/Modal';
 
+import useUser from '@/hooks/useUser';
+
+const updateProfileStyles = {
+  row: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    paddingTop: rwdValue(20, 40),
+    paddingBottom: rwdValue(20, 40),
+  },
+  sidebar: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: '7px',
+    borderBottom: '1px solid',
+    borderColor: 'divider',
+  },
+  content: {
+    flex: '1 1 auto',
+    paddingLeft: rwdValue(10, 60),
+    paddingRight: rwdValue(10, 60),
+  },
+  avatarRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    marginBottom: rwdValue(25, 50),
+  },
+  avatar: {
+    marginRight: rwdValue(28, 75),
+    border: '4px solid white',
+    flex: `0 0 ${rwdValue(100, 150)}`,
+  },
+  h1: {
+    marginBottom: rwdValue(12, 50),
+    color: theme.palette.text.primary,
+  },
+  btn: {
+    marginBottom: rwdValue(16, 25),
+  },
+  description: {
+    color: theme.palette.text.secondary,
+    marginBottom: rwdValue(25, 50),
+    fontSize: rwdValue(12, 15),
+  },
+  form: {maxWidth: '450px'},
+  item: {marginBottom: rwdValue(25, 50)},
+  disabled: {
+    '& fieldset': {
+      background: 'rgba(100,100,100,0.1)',
+    },
+    '& .Mui-disabled input::placeholder': {
+      opacity: 1,
+      WebkitTextFillColor: 'rgba(100,100,100,0.6)!important',
+    },
+  },
+  saveChangesBox: {display: 'flex', justifyContent: 'flex-end'},
+  saveChangesBtn: {width: 'fit-content'},
+};
+
 const ProfileUpdate = () => {
-  const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  
-  const styles = {
-    row: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      paddingTop: rwdValue(20, 40),
-      paddingBottom: rwdValue(20, 40),
-    },
-    sidebar: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: '7px',
-      borderBottom: '1px solid',
-      borderColor: 'divider',
-    },
-    content: {
-      flex: '1 1 auto',
-      paddingLeft: rwdValue(10, 60),
-      paddingRight: rwdValue(10, 60),
-    },
-    avatarRow: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      flexWrap: 'wrap',
-      marginBottom: rwdValue(25, 50),
-    },
-    avatar: {
-      marginRight: rwdValue(28, 75),
-      border: '4px solid white',
-      flex: `0 0 ${rwdValue(100, 150)}`,
-    },
-    h1: {
-      marginBottom: rwdValue(12, 50),
-    },
-    btn: {
-      marginBottom: rwdValue(16, 25),
-    },
-    description: {
-      color: theme.palette.text.secondary,
-      marginBottom: rwdValue(25, 50),
-      fontSize: rwdValue(12, 15),
-    },
-    form: {maxWidth: '450px'},
-    item: {marginBottom: rwdValue(25, 50)},
-    size: isMobile ? 'small' : 'medium',
-    saveChangesBox: {display: 'flex', justifyContent: 'flex-end'},
-    saveChangesBtn: {width: 'fit-content'},
-  };
-  
+  const mobileSize = isMobile ? 'small' : 'medium';
+
   const [userData, setUserData] = useState({});
   const [newUserData, setNewUserData] = useState({});
   const {data: session, update: updateSession} = useSession();
@@ -206,6 +212,16 @@ const ProfileUpdate = () => {
     deletePhotoMutation.mutate();
     setOpenModal(false);
   };
+  const onChangeInputHandler = propname => e => {
+    setNewUserData(data => ({
+      ...data,
+      [propname]: e.target.value,
+    }));
+  };
+
+  useEffect(() => {
+    session?.user && setUserData(session.user.user);
+  }, [session]);
 
   return (
     <>
@@ -214,14 +230,14 @@ const ProfileUpdate = () => {
       </Head>
       {changePhotoMutation.isLoading && <Loading />}
       <NavBarLayout>
-        <Box sx={styles.row}>
+        <Box sx={updateProfileStyles.row}>
           <SideBar />
           {/* Page content column */}
-          <Box sx={styles.content}>
-            <Typography variant="h1" component="h1" sx={styles.h1}>
-              My Profile
+          <Box sx={updateProfileStyles.content}>
+            <Typography variant="h1" component="h1" sx={updateProfileStyles.h1}>
+              Update Profile
             </Typography>
-            <Stack sx={styles.avatarRow}>
+            <Stack sx={updateProfileStyles.avatarRow}>
               <AvatarStaticLayout variant="avatar" />
               <Box>
                 <input
@@ -232,14 +248,14 @@ const ProfileUpdate = () => {
                   accept="image/*"
                 />
                 <Button
-                  size={styles.size}
+                  size={mobileSize}
                   outlined
-                  sx={styles.btn}
+                  sx={updateProfileStyles.btn}
                   onClick={() => input.current.click()}
                 >
                   Change photo
                 </Button>
-                <Button size={styles.size} onClick={() => setOpenModal(true)}>
+                <Button size={mobileSize} onClick={() => setOpenModal(true)}>
                   Delete
                 </Button>
                 <Modal
@@ -253,67 +269,58 @@ const ProfileUpdate = () => {
                 />
               </Box>
             </Stack>
-            <Typography variant="body5" component="p" sx={styles.description}>
+            <Typography
+              variant="body5"
+              component="p"
+              sx={updateProfileStyles.description}
+            >
               Welcome back! Please enter your details to log into your account.
             </Typography>
-            <Box sx={styles.form}>
+            <Box sx={updateProfileStyles.form}>
               <Box component="form" autoComplete="off">
-                <Box sx={styles.item}>
+                <Box sx={updateProfileStyles.item}>
                   <TextField
                     fullWidth
-                    size={styles.size}
                     placeholder={userData.firstName}
-                    label="Name"
+                    label="First name"
                     type="text"
-                    onChange={e => {
-                      setNewUserData(data => ({
-                        ...data,
-                        firstName: e.target.value,
-                      }));
-                    }}
+                    size={mobileSize}
+                    onChange={onChangeInputHandler('firstName')}
                   />
                 </Box>
-                <Box sx={styles.item}>
+                <Box sx={updateProfileStyles.item}>
                   <TextField
                     fullWidth
-                    size={styles.size}
                     placeholder={userData.lastName}
-                    label="Surname"
+                    label="Last name"
                     type="text"
-                    onChange={e => {
-                      setNewUserData(data => ({
-                        ...data,
-                        lastName: e.target.value,
-                      }));
-                    }}
+                    size={mobileSize}
+                    onChange={onChangeInputHandler('lastName')}
                   />
                 </Box>
-                <Box sx={styles.item}>
+                <Box sx={updateProfileStyles.item}>
                   <TextField
                     fullWidth
-                    size={styles.size}
-                    placeholder={userData.email}
+                    placeholder={userData?.email}
                     label="Email"
                     type="email"
+                    size={mobileSize}
                     disabled
+                    onChange={onChangeInputHandler('email')}
+                    sx={updateProfileStyles.disabled}
                   />
                 </Box>
-                <Box sx={styles.item}>
+                <Box sx={updateProfileStyles.item}>
                   <TextField
                     fullWidth
-                    size={styles.size}
                     placeholder={userData.phoneNumber}
                     label="Phone number"
                     type="tel"
-                    onChange={e => {
-                      setNewUserData(data => ({
-                        ...data,
-                        phoneNumber: e.target.value,
-                      }));
-                    }}
+                    size={mobileSize}
+                    onChange={onChangeInputHandler('phoneNumber')}
                   />
                 </Box>
-                <Box sx={styles.saveChangesBox}>
+                <Box sx={updateProfileStyles.saveChangesBox}>
                   <Button
                     disabled={
                       //TODO add validation logic
@@ -324,8 +331,8 @@ const ProfileUpdate = () => {
                     }
                     type="button"
                     onClick={updateUserDataHandler}
-                    size={styles.size}
-                    sx={styles.saveChangesBtn}
+                    size={mobileSize}
+                    sx={updateProfileStyles.saveChangesBtn}
                   >
                     Save changes
                   </Button>

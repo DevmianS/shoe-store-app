@@ -1,7 +1,6 @@
-import React from 'react';
-import {Typography, Box} from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
-import Link from 'next/link';
 import {rwdValue} from '@/utils/theme';
 
 import Button from '@/components/UI/Button';
@@ -9,8 +8,8 @@ import Button from '@/components/UI/Button';
 const NoContent = ({
   title = 'There are no products yet',
   description = 'Product can contain images, text, brands, etc...',
-  href = '/add-product',
   buttonText = 'Add product',
+  buttonAction,
 }) => {
   const styles = {
     msgBody: {maxWidth: '320px', textAlign: 'center', margin: '0 auto'},
@@ -42,11 +41,9 @@ const NoContent = ({
       <Typography component="p" variant="body1" sx={styles.msgText}>
         {description}
       </Typography>
-      <Link href={href}>
-        <Button size={'medium'} sx={styles.msgBtn}>
-          {buttonText}
-        </Button>
-      </Link>
+      <Button size={'medium'} sx={styles.msgBtn} onClick={buttonAction}>
+        {buttonText}
+      </Button>
     </Box>
   );
 };

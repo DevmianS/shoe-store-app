@@ -8,7 +8,6 @@ import {useSession, getSession} from 'next-auth/react';
 import Loading from '@/components/UI/Loading';
 
 const Index = () => {
-  //Client option
   const {status} = useSession();
 
   const render = () => {
@@ -31,26 +30,12 @@ const Index = () => {
       <Head>
         <title>Wellrun | Home</title>
       </Head>
-      {render()}
+      {/* {render()} */}
+      <NavBarLayout>
+        <Home />
+      </NavBarLayout>
     </>
   );
 };
 
 export default Index;
-
-// Server way without showing important code to the users EJ: ADMIN PANEL
-/* export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  if (!session) {
-    // Redirect the user to the login page or show an error message
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-
-} 
- */

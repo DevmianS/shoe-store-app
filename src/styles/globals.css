@@ -170,3 +170,11 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #858585;
 }
+
+#nprogress .bar {
+  background: #fe645e !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #fe645e, 0 0 5px #fe645e;
+}

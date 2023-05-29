@@ -1,12 +1,8 @@
-import {memo} from 'react';
-
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-
 import {rwdValue, theme} from '@/utils/theme';
 import useUser from '@/hooks/useUser';
-
 import AvatarStatic from '@/components/UI/AvatarStatic';
 
 const AvatarStaticLayoutStyles = {
@@ -23,7 +19,6 @@ const AvatarStaticLayoutStyles = {
   },
   avatar: {
     marginRight: rwdValue(28, 75),
-    border: '4px solid white',
     flex: `0 0 ${rwdValue(100, 150)}`,
   },
   avatarName: {
@@ -33,13 +28,20 @@ const AvatarStaticLayoutStyles = {
   },
   avatarGap: {ml: 2},
   avatarText: {fontSize: '12px'},
-  points: {
+  email: {
     color: theme.palette.text.tetriary,
     fontSize: rwdValue(12, 15),
-    marginBottom: {xs: 0, md: '12px'},
+    marginBottom: {xs: 0, sm: '12px'},
   },
   largeName: {fontSize: rwdValue(14, 20)},
-  noBorder: {textDecoration: 'none'},
+  small: {
+    color: 'white!important',
+    transition: '0.3s',
+    '&:hover': {
+      transform: 'scale(1.05)',
+      filter: 'brightness(1.1)',
+    },
+  },
   largeWrap: {
     marginLeft: rwdValue(20, 50),
     marginBottom: rwdValue(20, 30),
@@ -47,7 +49,7 @@ const AvatarStaticLayoutStyles = {
     flexDirection: 'row',
     marginTop: {xs: '-15px', md: '-30px'},
   },
-  largeName: {
+  largeAvatar: {
     marginRight: rwdValue(5, 15),
     border: '4px solid white',
     zIndex: 2,
@@ -55,22 +57,26 @@ const AvatarStaticLayoutStyles = {
 };
 
 const AvatarStaticLayout = ({variant}) => {
-  const {name} = useUser();
+  const {name, data} = useUser();
+  const {status} = useUser();
+
   return (
     <>
       {variant === 'card' ? (
         <Stack sx={AvatarStaticLayoutStyles.wrapper}>
           <AvatarStatic
+            component="a"
+            href="/profile"
             variant="small"
             userName={name}
-            sx={AvatarStaticLayoutStyles.noBorder}
+            sx={AvatarStaticLayoutStyles.small}
           />
           <Box sx={AvatarStaticLayoutStyles.avatarGap}>
             <Typography sx={AvatarStaticLayoutStyles.avatarText}>
               Welcome
             </Typography>
             <Typography sx={AvatarStaticLayoutStyles.avatarName}>
-              {name}
+              {status === 'authenticated' ? name : 'Guest'}
             </Typography>
           </Box>
         </Stack>
@@ -81,7 +87,7 @@ const AvatarStaticLayout = ({variant}) => {
           <AvatarStatic
             variant="medium"
             userName={name}
-            sx={AvatarStaticLayoutStyles.largeName}
+            sx={AvatarStaticLayoutStyles.largeAvatar}
           />
           <Box>
             <Typography
@@ -91,8 +97,8 @@ const AvatarStaticLayout = ({variant}) => {
             >
               {name}
             </Typography>
-            <Typography sx={AvatarStaticLayoutStyles.points}>
-              1234 bonus points
+            <Typography sx={AvatarStaticLayoutStyles.email}>
+              {data?.user?.user?.email}
             </Typography>
           </Box>
         </Stack>

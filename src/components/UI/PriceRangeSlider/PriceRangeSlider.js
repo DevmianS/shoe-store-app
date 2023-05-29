@@ -4,7 +4,7 @@ import {useFilter} from '@/context/FilterContext';
 
 import {useState, useEffect} from 'react';
 
-const PriceRangeSlider = () => {
+const PriceRangeSlider = ({maxPriceCalculated}) => {
   const {arrIdFilters, setArrIdFilters} = useFilter();
 
   const {minPrice: min, maxPrice: max} = arrIdFilters;
@@ -20,7 +20,13 @@ const PriceRangeSlider = () => {
   }, [min, max]);
 
   const [minPrice, setMinPrice] = useState(1);
-  const [maxPrice, setMaxPrice] = useState(10000);
+  const [maxPrice, setMaxPrice] = useState(maxPriceCalculated || 3000);
+
+  useEffect(() => {
+    if (typeof maxPriceCalculated == 'number' && maxPriceCalculated > 1) {
+      setMaxPrice(maxPriceCalculated);
+    }
+  }, [maxPriceCalculated]);
 
   const transmitPrice = () => {
     console.log('Transmitprice');
@@ -50,7 +56,7 @@ const PriceRangeSlider = () => {
     <Box sx={{width: '90%'}}>
       <Slider
         min={1}
-        max={10000}
+        max={maxPriceCalculated}
         value={[minPrice, maxPrice]}
         onChange={handleSliderChange}
         valueLabelDisplay="auto"
