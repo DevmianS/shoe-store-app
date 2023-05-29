@@ -28,6 +28,7 @@ const AvatarStatic = ({variant = 'medium', sx}) => {
         ...variantsSize,
         ...sx,
         bgcolor: status !== 'authenticated' ? 'transparent' : 'auto',
+        '& img': {objectFit: 'cover'},
       }}
     >
       {avatar ? (
