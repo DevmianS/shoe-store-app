@@ -25,11 +25,12 @@ import {rwdValue} from '@/utils/theme';
 import useUser from '@/hooks/useUser';
 import {changeUserAvatar, uploadAvatar} from '@/utils/utils';
 import Loading from '@/components/UI/Loading/Loading';
+import Modal from '@/components/UI/Modal/Modal';
 
 const ProfileUpdate = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
+  
   const styles = {
     row: {
       display: 'flex',
@@ -79,12 +80,12 @@ const ProfileUpdate = () => {
     saveChangesBox: {display: 'flex', justifyContent: 'flex-end'},
     saveChangesBtn: {width: 'fit-content'},
   };
-
+  
   const [userData, setUserData] = useState({});
   const [newUserData, setNewUserData] = useState({});
   const {data: session, update: updateSession} = useSession();
   const {jwt, id: userId} = useUser();
-
+  
   const udpateUserMutation = useMutation({
     mutationFn: () => {
       return axios.put(
@@ -93,50 +94,104 @@ const ProfileUpdate = () => {
         {
           headers: {Authorization: `Bearer ${session.user.jwt}`},
         },
-      );
-    },
-    onSuccess: async () => {
-      await updateSession({
-        ...session,
-        user: {
-          ...session?.user,
-          user: {...session.user.user, ...newUserData},
-          jwt: session.user.jwt,
-        },
-      }).then(() => {
-        toast.success('Data changed successfully!');
-      });
-    },
-  });
+        );
+      },
+      onSuccess: async () => {
+        await updateSession({
+          ...session,
+          user: {
+            ...session?.user,
+            user: {...session.user.user, ...newUserData},
+            jwt: session.user.jwt,
+          },
+        }).then(() => {
+          toast.success('Data changed successfully!');
+        });
+      },
+    });
+    
+    const updateUserDataHandler = () => {
+      udpateUserMutation.mutate();
+    };
+    
+    const router = useRouter();
+    
+    const formItems = [
+      {placeholder: 'Jane', label: 'Name', type: 'text'},
+      {placeholder: 'Meldrum', label: 'Surname', type: 'text'},
+      {placeholder: 'Email', label: 'Email', type: 'example@mail.com'},
+      {placeholder: '(949) 354-2574', label: 'Phone number', type: 'tel'},
+    ];
+    useEffect(() => {
+      if (session?.user) {
+        setUserData(session.user.user);
+      }
+      console.log(session);
+    }, [session]);
+    
+    const queryClient = useQueryClient();
+    
+    const changePhotoMutation = useMutation({
+      mutationFn: async imageFile => {
+        try {
+          const uploadedAvatar = await uploadAvatar(jwt, imageFile);
+          const imageId = uploadedAvatar[0]?.id;
+          
+          return await changeUserAvatar(jwt, imageId, userId);
+        } catch (error) {
+          console.error(error);
+        }
+      },
+      onSuccess: data => {
+        queryClient.setQueryData(['user', data.id], data);
+        queryClient.invalidateQueries(['user']);
+      },
+    });
+    
+    const [openModal, setOpenModal] = useState(false);
+    const input = useRef();
+    const handleChangeAvatar = event => {
+      const file = event.target.files[0];
+      const fileReader = new FileReader();
+      
+      if (file) {
+        fileReader.readAsDataURL(file);
+      }
+      
+      fileReader.onload = () => {
+        const image = new Image();
+        image.src = fileReader.result;
+        
+        image.onload = () => {
+          changePhotoMutation.mutate(file);
+        };
+        
+        image.onerror = () => {
+          toast.error('The file is invalid. Please, choose a valid image file.');
+          event.target.value = null;
+        };
+      };
+      
+    };
+    
+    
+    const deletePhotoMutation = useMutation({
+      mutationFn: async () => {
+        try {
+          const {status} = await axios.put(
+            `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`,
+          {avatar: null},
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${jwt}`,
+            },
+          },
+        );
 
-  const updateUserDataHandler = () => {
-    udpateUserMutation.mutate();
-  };
-
-  const router = useRouter();
-
-  const formItems = [
-    {placeholder: 'Jane', label: 'Name', type: 'text'},
-    {placeholder: 'Meldrum', label: 'Surname', type: 'text'},
-    {placeholder: 'Email', label: 'Email', type: 'example@mail.com'},
-    {placeholder: '(949) 354-2574', label: 'Phone number', type: 'tel'},
-  ];
-  useEffect(() => {
-    if (session?.user) {
-      setUserData(session.user.user);
-    }
-    console.log(session);
-  }, [session]);
-
-  const queryClient = useQueryClient();
-
-  const changePhotoMutation = useMutation({
-    mutationFn: async imageFile => {
-      try {
-        const uploadedAvatar = await uploadAvatar(jwt, imageFile);
-        const imageId = uploadedAvatar[0]?.id;
-
-        return await changeUserAvatar(jwt, imageId, userId);
+        if (status === 200) {
+          return toast.success('Your photo has been successfully deleted');
+        }
       } catch (error) {
         console.error(error);
       }
@@ -147,10 +202,9 @@ const ProfileUpdate = () => {
     },
   });
 
-  const input = useRef();
-  const handleChangeAvatar = async event => {
-    const file = event.target.files[0];
-    changePhotoMutation.mutate(file);
+  const handleDeleteAvaar = () => {
+    deletePhotoMutation.mutate();
+    setOpenModal(false);
   };
 
   return (
@@ -185,7 +239,18 @@ const ProfileUpdate = () => {
                 >
                   Change photo
                 </Button>
-                <Button size={styles.size}>Delete</Button>
+                <Button size={styles.size} onClick={() => setOpenModal(true)}>
+                  Delete
+                </Button>
+                <Modal
+                  state={openModal}
+                  setState={setOpenModal}
+                  title={'Are you sure you want to delete your photo?'}
+                  text={
+                    'Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur. '
+                  }
+                  submitAction={handleDeleteAvaar}
+                />
               </Box>
             </Stack>
             <Typography variant="body5" component="p" sx={styles.description}>
