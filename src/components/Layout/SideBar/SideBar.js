@@ -23,7 +23,7 @@ function SideBar({children, isFilter}) {
 
   const styles = {
     position: !isDesktop ? 'fixed' : 'static',
-    maxWidth: !isDesktop ? '270px' : '320px',
+    maxWidth: !isDesktop ? '340px' : '320px',
     paddingTop: !isDesktop ? '32px' : 0,
     display: router.asPath.includes('/bag') && isDesktop ? 'none' : 'block',
     right: 0,
@@ -33,7 +33,7 @@ function SideBar({children, isFilter}) {
     width: '100%',
     height: '100%',
     background: '#fff',
-    zIndex: 61,
+    zIndex: {xs: 61, md: 10},
     transition: '0.5s',
     transform: !isDesktop
       ? isToggled
