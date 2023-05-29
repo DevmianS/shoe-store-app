@@ -165,7 +165,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
       jwt,
     });
   };
-  const handleSubmit = async (uploadFn, submitFn, infoMessage) => {
+  const handleSubmit = async (uploadFn, submitFn) => {
     setLoading(true);
 
     try {
