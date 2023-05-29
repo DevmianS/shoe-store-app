@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {Skeleton} from '@mui/material';
 import {toast} from 'sonner';
 
 export const getStuff = async type => {
@@ -56,20 +55,6 @@ export const resetPassword = async (
     executeError(errorMessage);
     console.log('ERROR: ', error);
   }
-};
-
-export const SkeletonProducts = () => {
-  return Array(20)
-    .fill()
-    .map((_, index) => (
-      <Skeleton
-        key={index}
-        variant="rectangular"
-        width={300}
-        height={300}
-        sx={{margin: '25px'}}
-      />
-    ));
 };
 
 export const checkErrorEmail = (email, setEmailError) => {

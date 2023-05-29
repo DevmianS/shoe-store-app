@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 import useProducts from '@/hooks/useProducts';
-import {SkeletonProducts} from '@/utils/utils';
 import {rwdValue} from '@/utils/theme';
 
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
@@ -14,7 +13,8 @@ import NoContent from '@/components/UI/NoContent';
 import PaginationUI from '@/components/UI/PaginationUI';
 import ProductCard from '@/components/UI/ProductCard';
 import TopBanner from '@/components/UI/TopBanner';
-import ProductAction from '@/components/UI/ProductAction/ProductAction';
+import ProductAction from '@/components/UI/ProductAction';
+import LoadingCards from '@/components/UI/LoadingCards';
 
 import bannerImg from '@/assets/banner2.jpg';
 import useUser from '@/hooks/useUser';
@@ -70,8 +70,9 @@ const Home = () => {
           isLoading={isLoading}
         />
         <Box sx={productsStyles.card}>
-          {isLoading && SkeletonProducts()}
-          {Array.isArray(products) && products.length > 0 ? (
+          {isLoading ? (
+            <LoadingCards />
+          ) : Array.isArray(products) && products.length > 0 ? (
             products.map(product => {
               const {id, attributes} = product;
               return (

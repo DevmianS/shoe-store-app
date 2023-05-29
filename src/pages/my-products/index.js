@@ -5,20 +5,20 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import {rwdValue, theme} from '@/utils/theme';
-import {SkeletonProducts} from '@/utils/utils';
 import useMyProducts from '@/hooks/useMyProducts';
 
 import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 
+import Button from '@/components/UI/Button';
 import NoContent from '@/components/UI/NoContent';
 import ProductCard from '@/components/UI/ProductCard';
 import TopBanner from '@/components/UI/TopBanner';
-import Button from '@/components/UI/Button';
+import LoadingCards from '@/components/UI/LoadingCards';
+import ProductAction from '@/components/UI/ProductAction';
 
 import bannerImg from '@/assets/banner.jpg';
-import ProductAction from '@/components/UI/ProductAction/ProductAction';
 
 const myProductsStyles = {
   row: {
@@ -128,7 +128,7 @@ const MyProducts = ({productsList}) => {
             </Box>
             <Box sx={myProductsStyles.productsRow}>
               {isLoading ? (
-                SkeletonProducts()
+                <LoadingCards />
               ) : Array.isArray(products) && products.length > 0 ? (
                 products.map(product => {
                   const {id, attributes} = product;

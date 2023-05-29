@@ -5,7 +5,6 @@ import {useState, useEffect} from 'react';
 import {Typography, Box, useMediaQuery, useTheme} from '@mui/material';
 
 import {rwdValue} from '@/utils/theme';
-import {SkeletonProducts} from '@/utils/utils';
 
 import {useCart} from '@/context/CartContext';
 import useProducts from '@/hooks/useProducts';
@@ -16,6 +15,7 @@ import SideBar from '@/components/Layout/SideBar';
 import Button from '@/components/UI/Button';
 import CartProductItem from '@/components/UI/CartProductItem';
 import Summary from '@/components/UI/Summary';
+import LoadingCards from '@/components/UI/LoadingCards';
 
 const Bag = () => {
   const {data, isLoading} = useProducts();
@@ -93,28 +93,30 @@ const Bag = () => {
               <Typography variant="h1" component="h1">
                 Cart
               </Typography>
-              {isLoading
-                ? SkeletonProducts()
-                : items &&
-                  items.length > 0 &&
-                  items.map(product => {
-                    const {attributes, id} = product;
-                    const {categories, name, price, images} = attributes;
-                    const cat1 = categories?.data[0]?.attributes?.name;
-                    const cat2 = categories?.data[1]?.attributes?.name;
-                    return (
-                      <Box sx={styles.card} key={id}>
-                        <CartProductItem
-                          productId={id}
-                          title={name}
-                          category={cat1 + ' ' + cat2 ? cat2 : ''}
-                          price={price}
-                          image={images?.data}
-                          quantity={cartItems[id]}
-                        />
-                      </Box>
-                    );
-                  })}
+              {isLoading ? (
+                <LoadingCards isBag />
+              ) : (
+                items &&
+                items.length > 0 &&
+                items.map(product => {
+                  const {attributes, id} = product;
+                  const {categories, name, price, images} = attributes;
+                  const cat1 = categories?.data[0]?.attributes?.name;
+                  const cat2 = categories?.data[1]?.attributes?.name;
+                  return (
+                    <Box sx={styles.card} key={id}>
+                      <CartProductItem
+                        productId={id}
+                        title={name}
+                        category={cat1 + ' ' + cat2 ? cat2 : ''}
+                        price={price}
+                        image={images?.data}
+                        quantity={cartItems[id]}
+                      />
+                    </Box>
+                  );
+                })
+              )}
               {(!items || items.length == 0) && (
                 <>
                   <Typography component="h2" variant="h2" sx={styles.h2}>
