@@ -459,7 +459,7 @@ export const changeUserAvatar = async (jwt, imageId, userId) => {
     );
 
     if (status === 200) {
-      return toast.success('Your photo has been succesfully changed');
+      return toast.success('Your photo has been successfully changed');
     }
   } catch (error) {
     console.error('changeUserAvatar', error);
