@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import IconButton from '@mui/material/IconButton';
-import {Button as MUIButton} from '@mui/material/Button';
+import MUIButton from '@mui/material/Button';
 
 import {rwdValue, theme} from '@/utils/theme';
 import useUser from '@/hooks/useUser';
@@ -221,9 +221,19 @@ export default function ProductCard({
   };
 
   useEffect(() => {
-    if (isMenuVisible)
-      window.addEventListener('click', handleOutsideClick, true);
-    else window.removeEventListener('click', handleOutsideClick, true);
+    const handleOutsideClickWrapper = event => {
+      handleOutsideClick(event);
+    };
+
+    if (isMenuVisible) {
+      window.addEventListener('click', handleOutsideClickWrapper, true);
+    } else {
+      window.removeEventListener('click', handleOutsideClickWrapper, true);
+    }
+
+    return () => {
+      window.removeEventListener('click', handleOutsideClickWrapper, true);
+    };
   }, [isMenuVisible, handleOutsideClick]);
 
   return (
