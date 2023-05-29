@@ -1,12 +1,13 @@
 import Head from 'next/head';
 
 import {useSession} from 'next-auth/react';
-import {useEffect, useState} from 'react';
-import {useMutation} from '@tanstack/react-query';
-
+import {useEffect, useRef, useState} from 'react';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
+
 import {toast} from 'sonner';
 import {rwdValue, theme} from '@/utils/theme';
+import {changeUserAvatar, uploadAvatar} from '@/utils/utils';
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -18,6 +19,10 @@ import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import Button from '@/components/UI/Button';
+import Loading from '@/components/UI/Loading/Loading';
+import Modal from '@/components/UI/Modal/Modal';
+
+import useUser from '@/hooks/useUser';
 
 const updateProfileStyles = {
   row: {
@@ -85,7 +90,8 @@ const ProfileUpdate = () => {
   const [userData, setUserData] = useState({});
   const [newUserData, setNewUserData] = useState({});
   const {data: session, update: updateSession} = useSession();
-
+  const {jwt, id: userId} = useUser();
+  
   const udpateUserMutation = useMutation({
     mutationFn: () => {
       return axios.put(
@@ -94,24 +100,109 @@ const ProfileUpdate = () => {
         {
           headers: {Authorization: `Bearer ${session.user.jwt}`},
         },
-      );
+        );
+      },
+      onSuccess: async () => {
+        await updateSession({
+          ...session,
+          user: {
+            ...session?.user,
+            user: {...session.user.user, ...newUserData},
+            jwt: session.user.jwt,
+          },
+        }).then(() => {
+          toast.success('Data changed successfully!');
+        });
+      },
+    });
+    
+    const updateUserDataHandler = () => {
+      udpateUserMutation.mutate();
+    };
+
+    useEffect(() => {
+      if (session?.user) {
+        setUserData(session.user.user);
+      }
+      console.log(session);
+    }, [session]);
+    
+    const queryClient = useQueryClient();
+    
+    const changePhotoMutation = useMutation({
+      mutationFn: async imageFile => {
+        try {
+          const uploadedAvatar = await uploadAvatar(jwt, imageFile);
+          const imageId = uploadedAvatar[0]?.id;
+          
+          return await changeUserAvatar(jwt, imageId, userId);
+        } catch (error) {
+          console.error(error);
+        }
+      },
+      onSuccess: data => {
+        queryClient.setQueryData(['user', data.id], data);
+        queryClient.invalidateQueries(['user']);
+      },
+    });
+    
+    const [openModal, setOpenModal] = useState(false);
+    const input = useRef();
+    const handleChangeAvatar = event => {
+      const file = event.target.files[0];
+      const fileReader = new FileReader();
+      
+      if (file) {
+        fileReader.readAsDataURL(file);
+      }
+      
+      fileReader.onload = () => {
+        const image = new Image();
+        image.src = fileReader.result;
+        
+        image.onload = () => {
+          changePhotoMutation.mutate(file);
+        };
+        
+        image.onerror = () => {
+          toast.error('The file is invalid. Please, choose a valid image file.');
+          event.target.value = null;
+        };
+      };
+      
+    };
+    
+    
+    const deletePhotoMutation = useMutation({
+      mutationFn: async () => {
+        try {
+          const {status} = await axios.put(
+            `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`,
+          {avatar: null},
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${jwt}`,
+            },
+          },
+        );
+
+        if (status === 200) {
+          return toast.success('Your photo has been successfully deleted');
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
-    onSuccess: async () => {
-      await updateSession({
-        ...session,
-        user: {
-          ...session?.user,
-          user: {...session.user.user, ...newUserData},
-          jwt: session.user.jwt,
-        },
-      }).then(() => {
-        toast.success('Data changed successfully!');
-      });
+    onSuccess: data => {
+      queryClient.setQueryData(['user', data.id], data);
+      queryClient.invalidateQueries(['user']);
     },
   });
 
-  const updateUserDataHandler = () => {
-    udpateUserMutation.mutate();
+  const handleDeleteAvaar = () => {
+    deletePhotoMutation.mutate();
+    setOpenModal(false);
   };
   const onChangeInputHandler = propname => e => {
     setNewUserData(data => ({
@@ -123,11 +214,13 @@ const ProfileUpdate = () => {
   useEffect(() => {
     session?.user && setUserData(session.user.user);
   }, [session]);
+
   return (
     <>
       <Head>
         <title>Wellrun | Update Profile</title>
       </Head>
+      {changePhotoMutation.isLoading && <Loading />}
       <NavBarLayout>
         <Box sx={updateProfileStyles.row}>
           <SideBar />
@@ -139,10 +232,33 @@ const ProfileUpdate = () => {
             <Stack sx={updateProfileStyles.avatarRow}>
               <AvatarStaticLayout variant="avatar" />
               <Box>
-                <Button size={mobileSize} outlined sx={updateProfileStyles.btn}>
+                <input
+                  type="file"
+                  ref={input}
+                  onChange={event => handleChangeAvatar(event)}
+                  hidden
+                  accept="image/*"
+                />
+                <Button
+                  size={mobileSize}
+                  outlined
+                  sx={updateProfileStyles.btn}
+                  onClick={() => input.current.click()}
+                >
                   Change photo
                 </Button>
-                <Button size={mobileSize}>Delete</Button>
+                <Button size={mobileSize} onClick={() => setOpenModal(true)}>
+                  Delete
+                </Button>
+                <Modal
+                  state={openModal}
+                  setState={setOpenModal}
+                  title={'Are you sure you want to delete your photo?'}
+                  text={
+                    'Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur. '
+                  }
+                  submitAction={handleDeleteAvaar}
+                />
               </Box>
             </Stack>
             <Typography

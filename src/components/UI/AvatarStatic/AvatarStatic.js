@@ -4,9 +4,8 @@ import useUser from '@/hooks/useUser';
 import {rwdValue, theme} from '@/utils/theme';
 import Image from 'next/image';
 
-const AvatarStatic = ({variant = 'medium', sx, photo}) => {
-  const {initials} = useUser();
-  const {status} = useUser();
+const AvatarStatic = ({variant = 'medium', sx}) => {
+  const {avatar, status, initials} = useUser();
 
   const sizes = {
     small: {range: rwdValue(61, 64), max: 64},
@@ -29,10 +28,11 @@ const AvatarStatic = ({variant = 'medium', sx, photo}) => {
         ...variantsSize,
         ...sx,
         bgcolor: status !== 'authenticated' ? 'transparent' : 'auto',
+        '& img': {objectFit: 'cover'},
       }}
     >
-      {photo ? (
-        <Image src={photo} fill alt={initials + ' user avatar'} />
+      {avatar ? (
+        <Image src={avatar} fill alt={initials + ' user avatar'} />
       ) : status === 'authenticated' ? (
         initials
       ) : (
