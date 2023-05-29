@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import {useSearch} from '@/context/SearchContext';
 import {useToggle} from '@/context/ToggleContext';
 import {useCart} from '@/context/CartContext';
+import useUser from '@/hooks/useUser';
 
 import Cart from '@/components/UI/Cart';
 import Searchbar from '@/components/UI/Searchbar';
@@ -21,6 +22,7 @@ const NavBar = () => {
   const {isToggled, toggle, setIsToggled} = useToggle();
   const {searchExpanded, setSearchExpanded} = useSearch();
   const {cartCount} = useCart();
+  const {status} = useUser();
 
   const searchInputRef = useRef();
   const router = useRouter();
@@ -132,6 +134,19 @@ const NavBar = () => {
       backgroundColor: '#F3F3F3',
       zIndex: 60,
     },
+    signIn: {
+      fontSize: 12,
+      fontWeight: 700,
+      color: '#FE645E',
+      borderRadius: '4px',
+      width: '145px',
+      height: '48px',
+      marginRight: '40px',
+      display: {
+        md: 'block',
+        xs: 'none',
+      },
+    },
   };
 
   const handleMenuCLick = () => {
@@ -195,6 +210,13 @@ const NavBar = () => {
             </Link>
           </Stack>
           <Box sx={navStyles.search}>
+            {status !== 'authenticated' && (
+              <Link href="/sign-in" sx={{sm: {}}}>
+                <Button sx={navStyles.signIn} variant="outlined">
+                  Sign-in
+                </Button>
+              </Link>
+            )}
             <Searchbar
               searchExpanded={searchExpanded}
               setSearchExpanded={setSearchExpanded}

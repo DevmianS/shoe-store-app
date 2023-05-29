@@ -1,83 +1,143 @@
-import {rwdValue} from '@/utils/theme';
+import {useRouter} from 'next/router';
+import React, {useEffect, useState} from 'react';
 
-import {
-  Typography,
-  Box,
-  TextField,
-  TextareaAutosize,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  useTheme,
-  useMediaQuery,
-  Checkbox,
-  FormGroup,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  DialogContentText,
-  DialogContent,
-  ToggleButtonGroup,
-  ToggleButton,
-} from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogContent from '@mui/material/DialogContent';
+import Slide from '@mui/material/Slide';
 
-import {useState} from 'react';
-import FileInput from '@/components/UI/FileInput';
-import Button from '@/components/UI/Button';
 import useProductData from '@/hooks/useProductData';
 import useUser from '@/hooks/useUser';
 
+import {theme} from '@/utils/theme';
+import actionStyles from './actionStyles';
 import {
   createProduct,
+  executeError,
+  executeInfo,
   uploadImages,
-  validationCreateProduct,
+  validationProductFields,
 } from '@/utils/utils';
+import {
+  contentDescription,
+  fetchById,
+  filesToStateHandler,
+  selectsInit,
+  updateProductSubmit,
+  getEditData,
+} from '@/utils/editProduct';
 
+import Button from '@/components/UI/Button';
 import Loading from '@/components/UI/Loading';
-import {toast} from 'sonner';
-import {useRouter} from 'next/router';
+import ImageUploader from '@/components/UI/ImageUploader';
 
-const ProductAction = ({isEditing}) => {
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   const router = useRouter();
-
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const flexStyles = {
+    headerRow: {
+      alignItems: isDesktop ? 'center' : 'start',
+      flexDirection: isDesktop ? 'row' : 'column',
+    },
+    formRow: {
+      flexDirection: isDesktop ? 'row' : 'column',
+    },
+    rwdSize: isDesktop ? 'medium' : 'small',
+  };
   const {brands, categories, genders, sizes, colors, isLoading, setCategories} =
     useProductData() || {};
-
-  const [loading, setLoading] = useState(false);
-
-  const [select, setSelect] = useState({
-    gender: 'Men',
-    brand: 'Nike',
-    color: 'Black',
-    size: '36',
-  });
+  const {jwt, id} = useUser();
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
 
-  const [arrImages, setArrImages] = useState([
-    {id: 1, file: null, image: null},
-    {id: 2, file: null, image: null},
-    {id: 3, file: null, image: null},
-    {id: 4, file: null, image: null},
-  ]);
+  const [arrImages, setArrImages] = useState([]);
+  const [select, setSelect] = useState(selectsInit);
+  const [loading, setLoading] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
+
+  const selectsdata = [
+    {
+      id: 'gender',
+      defaultValue: 'Men',
+      object: genders,
+    },
+    {
+      id: 'brand',
+      defaultValue: 'Nike',
+      object: brands,
+    },
+    {
+      id: 'color',
+      defaultValue: 'Black',
+      object: colors,
+    },
+    {
+      id: 'size',
+      defaultValue: '36',
+      object: sizes,
+    },
+  ];
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!productId) {
+        console.warn('NO PRODUCT ID OR IS ADD PRODUCT');
+        return;
+      }
+
+      const result = await fetchById(productId);
+      const fullData = getEditData(result);
+      const imagesData = result?.data?.attributes?.images?.data;
+
+      if (imagesData) {
+        const imageIds = imagesData.map(img => img?.id);
+        const imageUrls = imagesData.map(img => img?.attributes?.url);
+        await filesToStateHandler(imageIds, imageUrls, setArrImages);
+      }
+
+      setName(fullData.name);
+      setDescription(fullData.description);
+      setPrice(fullData.price);
+      setSelect({
+        gender: fullData.gender,
+        brand: fullData.brand,
+        color: fullData.color,
+        size: fullData.size,
+      });
+      setCategories(
+        categories.map(cat => ({
+          ...cat,
+          needed: fullData.categories.includes(cat.name),
+        })),
+      );
+      setIsTouch(false);
+    }
+    fetchData();
+  }, [productId, openState]);
 
   // EVENTS
-  const genderChangeHandler = e => {
-    setSelect({...select, gender: e.target.value});
+  const selectChangeHandler = property => e => {
+    setSelect({...select, [property]: e.target.value});
   };
-  const brandChangeHandler = e => {
-    setSelect({...select, brand: e.target.value});
-  };
-  const colorChangeHandler = e => {
-    setSelect({...select, color: e.target.value});
-  };
-  const sizeChangeHandler = e => {
-    setSelect({...select, size: e.target.value});
-  };
-
   const checkBoxChangeHandlerCategory = event => {
     setCategories(
       categories.map(obj => {
@@ -91,146 +151,31 @@ const ProductAction = ({isEditing}) => {
       }),
     );
   };
-
-  // STYLED COMPONENTS
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const lg = useMediaQuery(theme.breakpoints.down('lg'));
-
-  const styles = {
-    openButton: {
-      maxWidth: '152px',
-    },
-    headerRow: {
-      display: 'flex',
-      flexDirection: isDesktop ? 'row' : 'column',
-      rowGap: '10px',
-      alignItems: isDesktop ? 'center' : 'start',
-      justifyContent: 'space-between',
-      marginBottom: rwdValue(20, 35),
-      marginTop: 10,
-      '& button': {maxWidth: '152px'},
-    },
-    row: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      padding: !isDesktop ? '25px 0' : '40px 0',
-    },
-    content: {
-      '& .MuiInputBase-root': {
-        height: isDesktop ? '48px' : '33px',
-        fontSize: isDesktop ? '15px' : '10px',
-      },
-      '& label': {
-        fontSize: isDesktop ? '15px' : '12px',
-      },
-      flex: '1 1 auto',
-      padding: `0 ${rwdValue(20, 60)}`,
-    },
-    formItem: {
-      marginBottom: '25px',
-      '& textarea': {
-        height: isDesktop ? '270px!important' : '34px!important',
-        width: '100%',
-        color: '#5C5C5C',
-        padding: '10px',
-        borderRadius: '8px',
-        resize: 'none',
-        borderColor: 'rgba(0, 0, 0, 0.23)',
-        fontSize: rwdValue(10, 15),
-        fontFamily: 'inherit',
-        '&::placeholder': {opacity: 0.3},
-        '&:focus': {
-          '&::placeholder': {opacity: 0},
-          outline: 'none',
-          borderColor: theme.palette.primary.main,
-        },
-      },
-    },
-    formGroup: {
-      display: 'flex',
-      flexDirection: 'row',
-      width: '100%',
-      gap: '10px',
-      marginBottom: '20px',
-      '& .MuiFormLabel-root': {
-        cursor: 'pointer',
-        border: `1px solid #C4C4C4`,
-        borderRadius: '5.58px',
-        width: isDesktop ? '75px' : '52px',
-        height: isDesktop ? '48px' : '34px',
-        fontSize: isDesktop ? '15px' : '10px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 0,
-        margin: 0,
-      },
-      '& .MuiCheckbox-root': {
-        display: 'none',
-      },
-    },
-    formRow: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexDirection: !isDesktop ? 'column' : 'row',
-      flexWrap: lg ? 'wrap' : 'nowrap',
-    },
-    form: {
-      maxWidth: !isDesktop ? '100%' : '440px',
-      flex: !isDesktop ? '1 1 auto' : '0 0 440px',
-      marginRight: !isDesktop ? 0 : rwdValue(30, 120),
-      '& .MuiInputBase-input': {
-        fontSize: isDesktop ? '15px' : '10px',
-      },
-      '& form': {display: 'flex', flexWrap: 'wrap'},
-    },
-    checkboxRow: {display: 'flex', gap: '20px', flexDirection: 'row'},
-    label: {
-      fontSize: isDesktop ? '15px' : '12px',
-      flex: '0 0 100%',
-    },
-    filesRow: {
-      display: 'flex',
-      gap: !isDesktop ? '20px' : '52px',
-      flexWrap: 'wrap',
-    },
-    filesWrap: {
-      flex: '1 1 auto',
-      width: '100%',
-      paddingBottom: 10,
-    },
-    toggleButtonGroup: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      gap: '10px',
-    },
+  const validateParameters = async () => {
+    return await validationProductFields({
+      genders,
+      price,
+      categories,
+      sizes,
+      colors,
+      name,
+      arrImages,
+      description,
+      id,
+      jwt,
+    });
   };
-
-  const {jwt, id} = useUser();
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (uploadFn, submitFn) => {
     setLoading(true);
 
     try {
-      const errorInParameters = await validationCreateProduct({
-        genders,
-        price,
-        categories,
-        sizes,
-        colors,
-        name,
-        arrImages,
-        description,
-        id,
-        jwt,
-      });
+      const errorInParameters = await validateParameters();
 
       if (errorInParameters) {
-        toast.message('Please fill in the gaps again correctly.');
+        executeInfo('Please fill in the gaps again correctly.');
       } else {
-        let arrImgId = await uploadImages(arrImages, jwt);
-        const res = await createProduct({
+        let arrImgId = await uploadFn(arrImages, jwt);
+        const res = await submitFn({
           genders,
           select,
           brands,
@@ -243,32 +188,39 @@ const ProductAction = ({isEditing}) => {
           description,
           id,
           jwt,
+          productId,
         });
 
-        if (res?.status == '200') {
-          resetForm();
-
-          router.push('/my-products');
-        }
+        res?.status == '200' && successReset();
       }
     } catch (error) {
+      console.error(error);
+      executeError(error.message);
+    } finally {
       setLoading(false);
     }
-    setLoading(false);
+  };
+  const addProductHandleSubmit = async () => {
+    await handleSubmit(
+      uploadImages,
+      createProduct,
+      'Please fill in the gaps again correctly.',
+    );
+  };
+  const editProductHandleSubmit = async () => {
+    await handleSubmit(
+      uploadImages,
+      updateProductSubmit,
+      'Please fill in the gaps again correctly.',
+    );
   };
 
   const resetForm = () => {
-    setSelect({gender: 'Men', brand: 'Nike', color: 'Black', size: '36'});
-
+    setSelect(selectsInit);
     setName('');
     setDescription('');
     setPrice(0);
-    setArrImages([
-      {id: 1, file: null, image: null},
-      {id: 2, file: null, image: null},
-      {id: 3, file: null, image: null},
-      {id: 4, file: null, image: null},
-    ]);
+    setArrImages([]);
     setCategories(
       categories.map(obj => {
         return {
@@ -278,248 +230,172 @@ const ProductAction = ({isEditing}) => {
       }),
     );
   };
-
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    setOpen(false);
+    setOpenState(false);
     resetForm();
   };
 
+  const successReset = () => {
+    resetForm();
+    setOpenState(false);
+    setTimeout(() => router.reload(), 3000);
+  };
+
   return (
-    <>
-      <Button onClick={handleOpen} sx={styles.openButton}>
-        {isEditing ? 'Edit' : 'Add'} product
-      </Button>
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xl">
-        {loading && <Loading />}
-        <Box sx={styles.content}>
-          <Box sx={styles.headerRow}>
-            <DialogTitle variant="h1" component="h1">
-              {isEditing ? 'Edit' : 'Add'} product
-            </DialogTitle>
-            <DialogActions>
-              <Button
-                size={isDesktop ? 'medium' : 'small'}
-                variant="contained"
-                onClick={handleClose}
-              >
-                Cancel
-              </Button>
-              <Button
-                size={isDesktop ? 'medium' : 'small'}
-                variant="contained"
-                onClick={handleSubmit}
-              >
-                Save
-              </Button>
-            </DialogActions>
-          </Box>
-          <DialogContentText
-            variant="body5"
-            component="p"
-            color="text.secondary"
-            mb={rwdValue(25, 40)}
-            fontSize={rwdValue(12, 15)}
-            maxWidth="900px"
-          >
-            Lorem ipsum, or lipsum as it is sometimes known, is dummy text used
-            in laying out print, graphic or web designs. The passage is
-            attributed to an unknown typesetter in the 15th century who is
-            thought to have scrambled parts of Cicero{`'`}s De Finibus Bonorum
-            et Malorum for use in a type specimen book. It usually begins with:
-          </DialogContentText>
-          <form style={styles.formRow}>
-            <DialogContent sx={styles.form}>
-              <Box sx={styles.formItem}>
-                <TextField
-                  fullWidth
-                  size={isDesktop ? 'medium' : 'small'}
-                  placeholder="Nike Air Max 90"
-                  label="Product name"
-                  type="text"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                />
-              </Box>
-              <Box sx={styles.formItem}>
-                <TextField
-                  fullWidth
-                  size={isDesktop ? 'medium' : 'small'}
-                  placeholder="Price"
-                  label="Price"
-                  type="number"
-                  value={price}
-                  onChange={e => setPrice(e.target.value)}
-                />
-              </Box>
-              <Box sx={styles.formItem}>
-                <Box sx={styles.checkboxRow}>
-                  <FormControl fullWidth>
-                    <InputLabel id="gender">Gender</InputLabel>
-                    <Select
-                      labelId="gender"
-                      variant="outlined"
-                      value={select.gender}
-                      onChange={genderChangeHandler}
-                      defaultValue="Men"
-                      size={isDesktop ? 'medium' : 'small'}
-                    >
-                      {!isLoading &&
-                        genders.map(gender => {
-                          return (
-                            <MenuItem key={gender.id} value={gender.name}>
-                              {gender.name}
-                            </MenuItem>
-                          );
-                        })}
-                    </Select>
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <InputLabel id="brand">Brand</InputLabel>
-                    <Select
-                      size={isDesktop ? 'medium' : 'small'}
-                      labelId="brand"
-                      variant="outlined"
-                      value={select.brand}
-                      onChange={brandChangeHandler}
-                    >
-                      {!isLoading &&
-                        brands.map(brand => {
-                          return (
-                            <MenuItem key={brand.id} value={brand.name}>
-                              {brand.name}
-                            </MenuItem>
-                          );
-                        })}
-                    </Select>
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <InputLabel id="color">Color</InputLabel>
-                    <Select
-                      labelId="color"
-                      variant="outlined"
-                      value={select.color}
-                      onChange={colorChangeHandler}
-                      defaultValue="Black"
-                      size={isDesktop ? 'medium' : 'small'}
-                    >
-                      {!isLoading &&
-                        colors.map(color => {
-                          return (
-                            <MenuItem key={color.id} value={color.name}>
-                              {color.name}
-                            </MenuItem>
-                          );
-                        })}
-                    </Select>
-                  </FormControl>
-                </Box>
-              </Box>
-              <Box sx={styles.formItem}>
-                <TextareaAutosize
-                  placeholder="Do not exceed 1000 characters."
-                  label="Description"
-                  type="text"
-                  value={description}
-                  onChange={e => setDescription(e.target.value)}
-                />
-              </Box>
-              <FormGroup sx={styles.formGroup}>
-                <Typography sx={styles.label}>Add size</Typography>
-                <ToggleButtonGroup
-                  exclusive
-                  sx={styles.toggleButtonGroup}
-                  onChange={sizeChangeHandler}
-                >
-                  {sizes &&
-                    sizes.map(size => {
-                      const itemStyle = {
-                        border: '1px solid #C4C4C4',
-                        background:
-                          size.value === select.size
-                            ? theme.palette.primary.main
-                            : 'white',
-                        color:
-                          size.value === select.size
-                            ? 'white'
-                            : theme.palette.text.secondary,
-                        '&:hover': {
-                          background:
-                            size.value === select.size
-                              ? theme.palette.primary.main
-                              : 'white',
-                          borderColor: 'black',
-                          color: 'black',
-                        },
-                      };
-                      return (
-                        <>
-                          <ToggleButton
-                            size={isDesktop ? 'medium' : 'small'}
-                            key={size.id}
-                            value={size.value}
-                            onClick={sizeChangeHandler}
-                            sx={itemStyle}
-                          >{`EU-${size.value}`}</ToggleButton>
-                        </>
-                      );
-                    })}
-                </ToggleButtonGroup>
-              </FormGroup>
-              <FormGroup sx={styles.formGroup}>
-                <Typography sx={styles.label}>Add categories</Typography>
-                {categories &&
-                  categories.map(category => {
-                    const itemStyle = {
-                      background: category.needed
-                        ? theme.palette.primary.main
-                        : 'white',
-                      color: category.needed
-                        ? 'white'
-                        : theme.palette.text.secondary,
-                      '&:hover': {
-                        borderColor: 'black',
-                        color: 'black',
-                      },
-                    };
-                    return (
-                      <Box
-                        key={category.id}
-                        onClick={checkBoxChangeHandlerCategory}
-                      >
-                        <Checkbox
-                          name={category.name}
-                          checked={category.needed}
-                          onClick={checkBoxChangeHandlerCategory}
-                          id={category.id}
-                        />
-                        <InputLabel sx={itemStyle} htmlFor={category.name}>
-                          {category.name}
-                        </InputLabel>
-                      </Box>
-                    );
-                  })}
-              </FormGroup>
-            </DialogContent>
-            <DialogContent sx={styles.filesWrap}>
-              <InputLabel>Product images</InputLabel>
-              <Box sx={styles.filesRow}>
-                {arrImages.map(img => (
-                  <FileInput
-                    key={img.id}
-                    id={img.id}
-                    setArrImages={setArrImages}
-                    arrImages={arrImages}
-                  />
-                ))}
-              </Box>
-            </DialogContent>
-          </form>
+    <Dialog
+      open={openState}
+      onClose={handleClose}
+      fullWidth
+      maxWidth="xl"
+      sx={actionStyles.dialog}
+      TransitionComponent={Transition}
+    >
+      {loading && <Loading />}
+      <Box sx={actionStyles.content}>
+        <Box sx={{...actionStyles.headerRow, ...flexStyles.headerRow}}>
+          <DialogTitle variant="h1" component="h1" sx={actionStyles.title}>
+            {isEditing ? 'Edit' : 'Add'} product
+          </DialogTitle>
+          <DialogActions sx={actionStyles.btns}>
+            <Button
+              size={flexStyles.rwdSize}
+              variant="contained"
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              size={flexStyles.rwdSize}
+              variant="contained"
+              disabled={!isTouch}
+              onClick={
+                isEditing ? editProductHandleSubmit : addProductHandleSubmit
+              }
+            >
+              {isEditing ? 'Update' : 'Save'}
+            </Button>
+          </DialogActions>
         </Box>
-      </Dialog>
-    </>
+        <DialogContentText
+          variant="body5"
+          component="p"
+          sx={actionStyles.description}
+        >
+          {contentDescription}
+        </DialogContentText>
+        <form
+          style={{...actionStyles.formRow, ...flexStyles.formRow}}
+          onInput={() => setIsTouch(true)}
+        >
+          <DialogContent sx={actionStyles.form}>
+            <Box sx={actionStyles.formItem}>
+              <TextField
+                fullWidth
+                size={flexStyles.rwdSize}
+                placeholder="Nike Air Max 90"
+                label="Product name"
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+              />
+            </Box>
+            <Box sx={actionStyles.formItem}>
+              <TextField
+                fullWidth
+                size={flexStyles.rwdSize}
+                placeholder="Price"
+                label="Price"
+                type="number"
+                value={price}
+                onChange={e => setPrice(e.target.value)}
+              />
+            </Box>
+            <Box sx={actionStyles.formItem}>
+              <Box sx={actionStyles.selectsRow}>
+                {selectsdata.map(item => {
+                  return (
+                    <FormControl key={item.id} fullWidth>
+                      <InputLabel id={item.id}>
+                        {item.id.toUpperCase()}
+                      </InputLabel>
+                      <Select
+                        labelId={item.id}
+                        variant="outlined"
+                        value={select[item.id]}
+                        onChange={selectChangeHandler(item.id)}
+                        defaultValue={item.defaultValue}
+                        size={flexStyles.rwdSize}
+                      >
+                        {!isLoading &&
+                          item.object.map(opt => {
+                            const name =
+                              item.id == 'size' ? opt.value : opt.name;
+                            return (
+                              <MenuItem key={opt.id} value={name}>
+                                {name}
+                              </MenuItem>
+                            );
+                          })}
+                      </Select>
+                    </FormControl>
+                  );
+                })}
+              </Box>
+            </Box>
+            <Box sx={actionStyles.formItem}>
+              <InputLabel id="description">Description</InputLabel>
+              <TextareaAutosize
+                placeholder="Do not exceed 1000 characters."
+                label="Description"
+                type="text"
+                value={description}
+                onChange={e => setDescription(e.target.value)}
+              />
+            </Box>
+            <FormGroup sx={actionStyles.formGroup}>
+              <Typography sx={actionStyles.label}>Add categories</Typography>
+              {categories &&
+                categories.map(category => {
+                  const itemStyle = {
+                    background: category.needed
+                      ? theme.palette.primary.main
+                      : 'white',
+                    color: category.needed
+                      ? 'white'
+                      : theme.palette.text.secondary,
+                    '&:hover': {
+                      borderColor: 'black',
+                      color: 'black',
+                    },
+                  };
+                  return (
+                    <Box
+                      key={category.id}
+                      onClick={checkBoxChangeHandlerCategory}
+                    >
+                      <Checkbox
+                        name={category.name}
+                        checked={category.needed}
+                        onClick={checkBoxChangeHandlerCategory}
+                        id={category.id}
+                      />
+                      <InputLabel sx={itemStyle} htmlFor={category.name}>
+                        {category.name}
+                      </InputLabel>
+                    </Box>
+                  );
+                })}
+            </FormGroup>
+          </DialogContent>
+          <DialogContent sx={actionStyles.filesWrap}>
+            <InputLabel>Product images</InputLabel>
+            <Box sx={actionStyles.filesRow}>
+              <ImageUploader images={arrImages} setImages={setArrImages} />
+            </Box>
+          </DialogContent>
+        </form>
+      </Box>
+    </Dialog>
   );
 };
 

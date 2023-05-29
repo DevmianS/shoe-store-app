@@ -1,12 +1,8 @@
-import {memo} from 'react';
-
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-
 import {rwdValue, theme} from '@/utils/theme';
 import useUser from '@/hooks/useUser';
-
 import AvatarStatic from '@/components/UI/AvatarStatic';
 
 const AvatarStaticLayoutStyles = {
@@ -38,7 +34,14 @@ const AvatarStaticLayoutStyles = {
     marginBottom: {xs: 0, sm: '12px'},
   },
   largeName: {fontSize: rwdValue(14, 20)},
-  noBorder: {textDecoration: 'none'},
+  small: {
+    color: 'white!important',
+    transition: '0.3s',
+    '&:hover': {
+      transform: 'scale(1.05)',
+      filter: 'brightness(1.1)',
+    },
+  },
   largeWrap: {
     marginLeft: rwdValue(20, 50),
     marginBottom: rwdValue(20, 30),
@@ -55,21 +58,25 @@ const AvatarStaticLayoutStyles = {
 
 const AvatarStaticLayout = ({variant}) => {
   const {name, data} = useUser();
+  const {status} = useUser();
+
   return (
     <>
       {variant === 'card' ? (
         <Stack sx={AvatarStaticLayoutStyles.wrapper}>
           <AvatarStatic
+            component="a"
+            href="/profile"
             variant="small"
             userName={name}
-            sx={AvatarStaticLayoutStyles.noBorder}
+            sx={AvatarStaticLayoutStyles.small}
           />
           <Box sx={AvatarStaticLayoutStyles.avatarGap}>
             <Typography sx={AvatarStaticLayoutStyles.avatarText}>
               Welcome
             </Typography>
             <Typography sx={AvatarStaticLayoutStyles.avatarName}>
-              {name}
+              {status === 'authenticated' ? name : 'Guest'}
             </Typography>
           </Box>
         </Stack>

@@ -14,8 +14,10 @@ import NoContent from '@/components/UI/NoContent';
 import PaginationUI from '@/components/UI/PaginationUI';
 import ProductCard from '@/components/UI/ProductCard';
 import TopBanner from '@/components/UI/TopBanner';
+import ProductAction from '@/components/UI/ProductAction/ProductAction';
 
 import bannerImg from '@/assets/banner2.jpg';
+import useUser from '@/hooks/useUser';
 
 const productsStyles = {
   row: {
@@ -37,7 +39,8 @@ const productsStyles = {
 
 const Home = () => {
   const [page, setPage] = useState(1);
-
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const {status} = useUser();
   const {data, isLoading} = useProducts(page);
   const products = data?.data;
   const pagination = data?.meta?.pagination;
@@ -49,8 +52,15 @@ const Home = () => {
       <SideBar />
       <Box sx={productsStyles.content}>
         <TopBanner imgPath={bannerImg.src} />
-        <AvatarStaticLayout />
-        <Typography variant="h1" component="h1" sx={productsStyles.title}>
+        {status === 'authenticated' && <AvatarStaticLayout />}
+        <Typography
+          variant="h1"
+          component="h1"
+          sx={{
+            ...productsStyles.title,
+            marginTop: status !== 'authenticated' ? rwdValue(20, 125) : '',
+          }}
+        >
           All products
         </Typography>
         <PaginationUI
@@ -76,7 +86,13 @@ const Home = () => {
               );
             })
           ) : (
-            <NoContent />
+            <>
+              <NoContent buttonAction={() => setIsOpenModal(true)} />
+              <ProductAction
+                openState={isOpenModal}
+                setOpenState={setIsOpenModal}
+              />
+            </>
           )}
         </Box>
         <PaginationUI

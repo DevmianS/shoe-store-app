@@ -1,11 +1,12 @@
 import Avatar from '@mui/material/Avatar';
-
+import {Box} from '@mui/material';
 import useUser from '@/hooks/useUser';
-import {rwdValue} from '@/utils/theme';
+import {rwdValue, theme} from '@/utils/theme';
 import Image from 'next/image';
 
 const AvatarStatic = ({variant = 'medium', sx, photo}) => {
   const {initials} = useUser();
+  const {status} = useUser();
 
   const sizes = {
     small: {range: rwdValue(61, 64), max: 64},
@@ -22,15 +23,23 @@ const AvatarStatic = ({variant = 'medium', sx, photo}) => {
   };
   return (
     <Avatar
+      component={variant === 'small' ? 'a' : 'span'}
+      href={variant === 'small' ? '/profile' : null}
       sx={{
         ...variantsSize,
         ...sx,
+        bgcolor: status !== 'authenticated' ? 'transparent' : 'auto',
       }}
     >
       {photo ? (
         <Image src={photo} fill alt={initials + ' user avatar'} />
-      ) : (
+      ) : status === 'authenticated' ? (
         initials
+      ) : (
+        <Box
+          className={'icon-profile'}
+          sx={{fontSize: 65, color: theme.palette.text.light}}
+        ></Box>
       )}
     </Avatar>
   );

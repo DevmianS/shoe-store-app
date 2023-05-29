@@ -6,7 +6,7 @@ import {useRouter} from 'next/router';
 import {Paper} from '@mui/material';
 import {rwdValue} from '@/utils/theme';
 
-const styles = {
+const optionsStyles = {
   optionsMenu: {
     position: 'absolute',
     right: 15,
@@ -27,12 +27,12 @@ const styles = {
   },
 };
 
-function OptionsMenu({productId, confirmationHandler}) {
+function OptionsMenu({productId, confirmationHandler, onEdit}) {
   const router = useRouter();
 
   return (
     <Paper elevation={3} className="three-dots-menu">
-      <List elevation={3} component="nav" sx={styles.optionsMenu}>
+      <List elevation={3} component="nav" sx={optionsStyles.optionsMenu}>
         <ListItemButton>
           <ListItemText
             primary="View"
@@ -41,12 +41,7 @@ function OptionsMenu({productId, confirmationHandler}) {
         </ListItemButton>
         <Divider variant="middle" />
         <ListItemButton>
-          <ListItemText
-            primary="Edit"
-            onClick={() => {
-              console.log('TODO: Edit');
-            }}
-          />
+          <ListItemText primary="Edit" onClick={e => onEdit(e, productId)} />
         </ListItemButton>
         <Divider variant="middle" />
         <ListItemButton

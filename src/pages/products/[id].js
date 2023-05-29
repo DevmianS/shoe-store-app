@@ -14,6 +14,7 @@ import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Loading from '@/components/UI/Loading';
 import Gallery from '@/components/UI/Gallery/';
 import Button from '@/components/UI/Button/Button';
+import useUser from '@/hooks/useUser';
 
 const singleStyles = {
   title: {
@@ -83,12 +84,12 @@ const singleStyles = {
     '& .Tennis': {background: '#31C1B0'},
     '& .Casual': {background: '#92BB41'},
     '& .Tracking': {background: '#19976A'},
+    '& .Volleyball': {background: '#B34EE9'},
   },
 };
 
 export async function getServerSideProps(context) {
   const {id} = context.query;
-
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/products/${id}?populate=*`,
@@ -108,8 +109,10 @@ export async function getServerSideProps(context) {
 
 export default function ProductPage({product, error}) {
   const router = useRouter();
+  const {status} = useUser();
   const {addProduct} = useCart();
   const [images, setImages] = useState({array: [], active: 0});
+  const [hostName, setHostName] = useState('');
   const [data, setData] = useState({
     name: '',
     categories: [],
@@ -128,6 +131,14 @@ export default function ProductPage({product, error}) {
   }
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && hostName === '') {
+      const host = window.location.host;
+      const baseUrl = `https://${host}`;
+      setHostName(baseUrl);
+    }
+  }, [hostName, router.pathname]);
+
+  useEffect(() => {
     if (!product) {
       return;
     }
@@ -144,11 +155,10 @@ export default function ProductPage({product, error}) {
       description:
         product?.data?.attributes?.description ||
         'There is no description about this product yet',
-      color: product?.data?.attributes?.color?.data?.attributes?.value,
+      color: product?.data?.attributes?.color?.data?.attributes?.name,
       brand: product?.data?.attributes?.brand?.data?.attributes?.name,
     });
   }, [product]);
-
   return (
     <>
       <Head>
@@ -175,26 +185,27 @@ export default function ProductPage({product, error}) {
                 <b>{data.brand} </b> {`${data.gender}'s Shoes`}
               </Typography>
               <Typography component="p" variant="body2" sx={singleStyles.label}>
-                Available sizes
+                Size
               </Typography>
               <Box sx={singleStyles.props}>EU-{data.size}</Box>
-              {data.color && (
+              {data?.color && (
                 <>
                   <Typography
                     component="p"
                     variant="body2"
                     sx={singleStyles.label}
                   >
-                    Available colors
+                    Color
                   </Typography>
                   <Box
                     sx={{
                       ...singleStyles.props,
-                      background: data.color.toLowerCase(),
-                      color: '#fff',
+                      background: data?.color.toLowerCase(),
+                      borderColor: data?.color.toLowerCase(),
+                      color: data?.color.toLowerCase(),
                     }}
                   >
-                    {data.color}
+                    {data?.color}
                   </Box>
                 </>
               )}
@@ -209,16 +220,25 @@ export default function ProductPage({product, error}) {
                     </Box>
                   ))}
               </Box>
-              <Button
-                onClick={() => {
-                  const title = data.name;
-                  const productId = product?.data?.id;
-                  addProduct({productId, title});
-                }}
-                sx={singleStyles.btn}
-              >
-                Add to Bag
-              </Button>
+              {status === 'authenticated' ? (
+                <Button
+                  onClick={() => {
+                    const title = data.name;
+                    const productId = product?.data?.id;
+                    addProduct({productId, title});
+                  }}
+                  sx={singleStyles.btn}
+                >
+                  Add to Bag
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => router.push(`/sign-in`)}
+                  sx={singleStyles.btn}
+                >
+                  Sign In to Add to Bag
+                </Button>
+              )}
               <Typography component="p" variant="body2" sx={singleStyles.label}>
                 Description
               </Typography>

@@ -1,5 +1,6 @@
 import {useRouter} from 'next/router';
 import {signOut} from 'next-auth/react';
+import useUser from '@/hooks/useUser';
 
 import {toast} from 'sonner';
 import {Stack, Box, List, useMediaQuery, useTheme} from '@mui/material';
@@ -14,7 +15,7 @@ import Loading from '@/components/UI/Loading';
 
 function SideBar({children, isFilter}) {
   const router = useRouter();
-
+  const {status} = useUser();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -46,9 +47,9 @@ function SideBar({children, isFilter}) {
   const handleLogout = async () => {
     setLoading(true);
     await signOut({redirect: false});
-    await router.prefetch('/sign-in');
+    await router.prefetch('/');
     toast.success('Logged out successfully.');
-    router.push('/sign-in');
+    router.push('/');
     if (typeof window !== 'undefined') {
       window.localStorage.removeItem('USER_EMAIL');
     }
@@ -60,7 +61,7 @@ function SideBar({children, isFilter}) {
     <>
       {loading && <Loading />}
       <Box sx={styles}>
-        {!isFilter && (
+        {!isFilter && status === 'authenticated' ? (
           <Stack aria-label="user actions">
             <AvatarStaticLayout variant="card" />
             <List>
@@ -81,6 +82,20 @@ function SideBar({children, isFilter}) {
                 }}
               />
               <ListItem name="Log-out" icon="logout" onClick={handleLogout} />
+            </List>
+          </Stack>
+        ) : (
+          <Stack aria-label="user actions">
+            <AvatarStaticLayout variant="card" />
+            <List>
+              <ListItem
+                name="Log-in"
+                icon="logout"
+                onClick={() => {
+                  router.push('/sign-in');
+                  setIsToggled(false);
+                }}
+              />
             </List>
           </Stack>
         )}

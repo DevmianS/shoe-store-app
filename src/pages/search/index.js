@@ -14,6 +14,13 @@ import {searchKeyInObject} from '@/utils/utils';
 
 import NoContent from '@/components/UI/NoContent';
 
+import axios from 'axios';
+import {useFilter} from '@/context/FilterContext';
+import {useEffect, useState} from 'react';
+
+import PaginationUI from '@/components/UI/PaginationUI/PaginationUI';
+import {useRouter} from 'next/router';
+
 const SearchResults = ({
   searchString,
   productsServer,
@@ -183,8 +190,8 @@ const SearchResults = ({
                 <NoContent
                   title="We don't have that product :/"
                   description="Maybe you write it wrong, Try it again!"
-                  href="/search"
                   buttonText="Search"
+                  buttonAction={() => router.push('/search')}
                 />
               )}
             </Box>
@@ -202,11 +209,6 @@ const SearchResults = ({
     </>
   );
 };
-import axios from 'axios';
-import {useFilter} from '@/context/FilterContext';
-import {useEffect, useState} from 'react';
-import PaginationUI from '@/components/UI/PaginationUI/PaginationUI';
-import {useRouter} from 'next/router';
 
 export default SearchResults;
 
