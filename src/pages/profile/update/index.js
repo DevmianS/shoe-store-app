@@ -119,15 +119,7 @@ const ProfileUpdate = () => {
     const updateUserDataHandler = () => {
       udpateUserMutation.mutate();
     };
-    
-    const router = useRouter();
-    
-    const formItems = [
-      {placeholder: 'Jane', label: 'Name', type: 'text'},
-      {placeholder: 'Meldrum', label: 'Surname', type: 'text'},
-      {placeholder: 'Email', label: 'Email', type: 'example@mail.com'},
-      {placeholder: '(949) 354-2574', label: 'Phone number', type: 'tel'},
-    ];
+
     useEffect(() => {
       if (session?.user) {
         setUserData(session.user.user);
