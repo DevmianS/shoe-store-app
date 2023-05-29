@@ -3,16 +3,19 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import {rwdValue} from '@/utils/theme';
 
-const LoadingCardsStyles = {
+const loadingCardStyles = {
   column: {
-    flexBasis: {sm: '50%', md: '33.333%', lg: '25%'},
-    padding: {sm: '0 8px', md: '0 15px', lg: '0 24px'},
-    marginBottom: {sm: '8px', md: '15px', lg: '24px'},
+    flexBasis: {xs: '50%', md: '33.333%', lg: '25%'},
+    padding: {xs: '0 8px', md: '0 15px', lg: '0 24px'},
+    marginBottom: {xs: '8px', md: '15px', lg: '24px'},
   },
   card: {
     position: 'relative',
     borderRadius: 0,
     border: 'none',
+    display: 'flex',
+    flexDirection: 'column',
+    height: rwdValue(280, 480),
   },
   image: {
     position: 'relative',
@@ -24,6 +27,7 @@ const LoadingCardsStyles = {
     backgroundSize: '200% 100%',
     animation: 'backgroundPosition 1s linear infinite',
     boxShadow: '0 2px 10px rgba(0,0,0, 0.2)',
+    flex: '1 1 auto',
   },
   body: {position: 'relative'},
   header: {
@@ -47,20 +51,22 @@ const LoadingCardsStyles = {
 };
 
 function LoadingCard(isBag) {
-  const bagStyles = {
-    paddingBottom: isBag ? '0' : '120%',
-    height: isBag ? rwdValue(100, 220) : 'auto',
-  };
+  if (isBag) {
+    loadingCardStyles.image = {
+      ...loadingCardStyles.image,
+      height: rwdValue(100, 220),
+    };
+  }
   return (
-    <Box sx={LoadingCardsStyles.column}>
-      <Box sx={LoadingCardsStyles.card}>
-        <Box sx={{...LoadingCardsStyles.image, ...bagStyles}}></Box>
-        <Box sx={LoadingCardsStyles.body}>
-          <Stack sx={LoadingCardsStyles.header}>
-            <Typography component="h3" sx={LoadingCardsStyles.title} />
+    <Box sx={loadingCardStyles.column}>
+      <Box sx={loadingCardStyles.card}>
+        <Box sx={loadingCardStyles.image}></Box>
+        <Box sx={loadingCardStyles.body}>
+          <Stack sx={loadingCardStyles.header}>
+            <Typography component="h3" sx={loadingCardStyles.title} />
           </Stack>
-          <Stack sx={LoadingCardsStyles.header}>
-            <Typography component="h3" sx={LoadingCardsStyles.title} />
+          <Stack sx={loadingCardStyles.header}>
+            <Typography component="h3" sx={loadingCardStyles.title} />
           </Stack>
         </Box>
       </Box>

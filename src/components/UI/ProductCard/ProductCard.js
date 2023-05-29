@@ -27,26 +27,12 @@ export default function ProductCard({
   onEdit,
 }) {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const styles = {
-    column: isMobile
-      ? {
-          flex: '0 0 50%',
-          padding: '0 8px',
-          marginBottom: '16px',
-        }
-      : isTablet
-      ? {
-          flex: '0 0 33.333%',
-          padding: '0 15px',
-          marginBottom: '15px',
-        }
-      : {
-          flex: '0 0 25%',
-          padding: '0 24px',
-          marginBottom: '24px',
-        },
+    column: {
+      flexBasis: {xs: '50%', md: '33.333%', lg: '25%'},
+      padding: {xs: '0 8px', md: '0 15px', lg: '0 24px'},
+      marginBottom: {xs: '8px', md: '15px', lg: '24px'},
+    },
     card: {
       position: 'relative',
       borderRadius: 0,
