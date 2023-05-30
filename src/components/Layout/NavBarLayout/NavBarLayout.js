@@ -16,6 +16,9 @@ const navStyles = {
     flex: '1 1 auto',
     display: 'flex',
     flexDirection: 'row',
+    '& > div': {
+      width: '100%',
+    },
   },
 };
 
