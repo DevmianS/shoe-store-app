@@ -7,7 +7,6 @@ import ProductCard from '@/components/UI/ProductCard';
 
 import qs from 'qs';
 
-import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Filters from '@/components/UI/Filters';
 import {searchKeyInObject} from '@/utils/utils';
@@ -29,7 +28,7 @@ const SearchResults = ({
   meta,
 }) => {
   const router = useRouter();
-  const [hideFilter, setHideFilter] = useState(false);
+  const [showFilter, setShowFilter] = useState(true);
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
@@ -60,8 +59,9 @@ const SearchResults = ({
   const styles = {
     row: {
       display: 'flex',
+      width: '100%',
       justifyContent: 'space-between',
-      padding: isMobile ? '25px 0' : '40px 0',
+      padding: isMobile ? '25px 0' : '0',
     },
     content: {
       '& .MuiInputBase-root': {
@@ -124,18 +124,20 @@ const SearchResults = ({
       <Head>
         <title>Wellrun | Search</title>
       </Head>
-      <NavBarLayout>
+      <NavBarLayout
+        sidebarVisible
+        isFilter={true}
+        showFilter={showFilter}
+        sidebarChildren={
+          <Filters
+            productsLength={productsServer && productsServer.length}
+            filters={filters}
+            total={total}
+            maxPriceCalculated={maxPriceCalculated}
+          />
+        }
+      >
         <Box sx={styles.row}>
-          {!hideFilter && (
-            <SideBar areaName="search filters" isFilter>
-              <Filters
-                productsLength={productsServer && productsServer.length}
-                filters={filters}
-                total={total}
-                maxPriceCalculated={maxPriceCalculated}
-              />
-            </SideBar>
-          )}
           <Box sx={styles.content}>
             <Box sx={styles.header}>
               <Typography variant="h1" component="h1">
@@ -147,12 +149,12 @@ const SearchResults = ({
               <Button onClick={() => console.log('CLEAR FILTERS')}>
                 <Box
                   sx={styles.filterText}
-                  onClick={() => setHideFilter(!hideFilter)}
+                  onClick={() => setShowFilter(!showFilter)}
                 >
                   <Typography variant="body1" component="p">
                     {isMobile
                       ? 'Filters'
-                      : hideFilter
+                      : !showFilter
                       ? 'Show Filters'
                       : 'Hide Filters'}
                   </Typography>{' '}

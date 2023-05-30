@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import {rwdValue, theme} from '@/utils/theme';
 import useMyProducts from '@/hooks/useMyProducts';
 
-import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 
@@ -24,7 +23,6 @@ const myProductsStyles = {
   row: {
     display: 'flex',
     justifyContent: 'space-between',
-    paddingTop: rwdValue(0, 40),
     paddingBottom: rwdValue(0, 40),
   },
   header: {
@@ -107,9 +105,8 @@ const MyProducts = ({productsList}) => {
         isEditing
         productId={selectedId}
       />
-      <NavBarLayout>
+      <NavBarLayout sidebarVisible>
         <Box sx={myProductsStyles.row}>
-          <SideBar />
           <Box sx={myProductsStyles.header}>
             <TopBanner imgPath={bannerImg.src} />
             <AvatarStaticLayout />
