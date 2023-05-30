@@ -1,5 +1,4 @@
-import {useTheme} from '@emotion/react';
-import {Box, Pagination, useMediaQuery} from '@mui/material';
+import {Box, Pagination, useMediaQuery, useTheme} from '@mui/material';
 
 const PaginationUI = ({pageCount, page, setPage, isLoading}) => {
   const theme = useTheme();
