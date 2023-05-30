@@ -1,48 +1,41 @@
 import {useRouter} from 'next/router';
 import {signOut} from 'next-auth/react';
-import useUser from '@/hooks/useUser';
-
-import {toast} from 'sonner';
-import {Stack, Box, List, useMediaQuery, useTheme} from '@mui/material';
-
-import AvatarStaticLayout from '../AvatarStaticLayout';
-
-import {useToggle} from '@/context/ToggleContext';
 import {memo, useState} from 'react';
 
+import {toast} from 'sonner';
+
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import List from '@mui/material/List';
+
+import {useToggle} from '@/context/ToggleContext';
+import useUser from '@/hooks/useUser';
+
+import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import ListItem from '@/components/UI/ListItem';
 import Loading from '@/components/UI/Loading';
 
 function SideBar({children, showFilter, isFilter, sidebarVisible = true}) {
   const router = useRouter();
   const {status} = useUser();
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const [loading, setLoading] = useState();
   const {isToggled, setIsToggled} = useToggle();
 
   const styles = {
-    position: !isDesktop ? 'fixed' : 'static',
-    maxWidth: !isDesktop ? '340px' : '320px',
-    paddingTop: !isDesktop ? '32px' : 0,
-    display: router.asPath.includes('/bag') && isDesktop ? 'none' : 'block',
-    right: 0,
+    position: 'fixed',
+    maxWidth: {xs: '270px', md: '340px'},
+    paddingTop: {xs: '80px', md: '150px'},
+    left: {xs: 'auto', md: 0},
+    right: {xs: isToggled ? 0 : '-340px', md: 'auto'},
     overflowY: 'auto',
-    top: isTablet ? '64px' : '60px',
-    flex: `0 0 ${!isDesktop ? '270px' : '320px'}`,
+    top: 0,
+    flexBasis: {xs: '270px', md: '340px'},
     width: '100%',
     height: '100%',
     background: '#fff',
     zIndex: {xs: 61, md: 10},
-    transition: '0.5s',
-    transform: !isDesktop
-      ? isToggled
-        ? 'translateX(0)'
-        : 'translateX(100%)'
-      : 'none',
+    transition: {xs: '0.5s', md: 0},
   };
-
-  const [loading, setLoading] = useState();
 
   const handleLogout = async () => {
     setLoading(true);

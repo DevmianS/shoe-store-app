@@ -1,11 +1,15 @@
+import Image from 'next/image';
+import {useRouter} from 'next/router';
+
 import Avatar from '@mui/material/Avatar';
-import {Box} from '@mui/material';
+import Box from '@mui/material/Box';
+
 import useUser from '@/hooks/useUser';
 import {rwdValue, theme} from '@/utils/theme';
-import Image from 'next/image';
 
 const AvatarStatic = ({variant = 'medium', sx}) => {
   const {avatar, status, initials} = useUser();
+  const router = useRouter();
 
   const sizes = {
     small: {range: rwdValue(61, 64), max: 64},
@@ -22,13 +26,18 @@ const AvatarStatic = ({variant = 'medium', sx}) => {
   };
   return (
     <Avatar
-      component={variant === 'small' ? 'a' : 'span'}
-      href={variant === 'small' ? '/profile' : null}
+      onClick={() => {
+        if (variant !== 'small') {
+          return;
+        }
+        router.push('/profile');
+      }}
       sx={{
         ...variantsSize,
         ...sx,
         bgcolor: status !== 'authenticated' ? 'transparent' : 'auto',
         '& img': {objectFit: 'cover'},
+        cursor: 'pointer',
       }}
     >
       {avatar ? (

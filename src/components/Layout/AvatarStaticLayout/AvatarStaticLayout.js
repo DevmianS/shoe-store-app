@@ -57,8 +57,7 @@ const AvatarStaticLayoutStyles = {
 };
 
 const AvatarStaticLayout = ({variant}) => {
-  const {name, data} = useUser();
-  const {status} = useUser();
+  const {name, data, status} = useUser();
 
   return (
     <>

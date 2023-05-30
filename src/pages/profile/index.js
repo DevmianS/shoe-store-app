@@ -101,10 +101,8 @@ const Profile = () => {
       <Head>
         <title>Wellrun | Profile</title>
       </Head>
-      <NavBarLayout>
+      <NavBarLayout sidebarVisible>
         <Box sx={profileStyles.row}>
-          <SideBar />
-          {/* Page content column */}
           <Box sx={profileStyles.content}>
             <Typography variant="h1" component="h1" sx={profileStyles.h1}>
               My Profile
