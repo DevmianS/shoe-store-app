@@ -227,16 +227,20 @@ export async function getServerSideProps(context) {
   let total = null;
   let meta = null;
 
-  const brandApi = process.env.NEXT_PUBLIC_API_URL + '/brands?fields=name';
+  const brandApi =
+    process.env.NEXT_PUBLIC_API_URL + '/brands?fields=name&populate=*';
 
   const categoriesApi =
-    process.env.NEXT_PUBLIC_API_URL + '/categories?fields=name';
+    process.env.NEXT_PUBLIC_API_URL + '/categories?fields=name&populate=*';
 
-  const genderApi = process.env.NEXT_PUBLIC_API_URL + '/genders?fields=name';
+  const genderApi =
+    process.env.NEXT_PUBLIC_API_URL + '/genders?fields=name&populate=*';
 
-  const sizeApi = process.env.NEXT_PUBLIC_API_URL + '/sizes?fields=value';
+  const sizeApi =
+    process.env.NEXT_PUBLIC_API_URL + '/sizes?fields=value&populate=*';
 
-  const colorApi = process.env.NEXT_PUBLIC_API_URL + '/colors?fields=name';
+  const colorApi =
+    process.env.NEXT_PUBLIC_API_URL + '/colors?fields=name&populate=*';
 
   const qsObj = qs.parse(currentPath);
 
@@ -247,7 +251,13 @@ export async function getServerSideProps(context) {
     const brands = res.data.map(brand => {
       return {
         id: brand.id,
-        name: brand.attributes.name,
+        name:
+          brand.attributes.name +
+          ' (' +
+          brand?.attributes?.products?.data.filter(
+            product => product.attributes.teamName == 'fb-team',
+          ).length +
+          ') ',
         needed: (searchKeyInObject(qsObj, 'brand') || []).includes(
           String(brand.id),
         ),
@@ -262,7 +272,13 @@ export async function getServerSideProps(context) {
     const colors = res.data.map(color => {
       return {
         id: color.id,
-        name: color.attributes.name,
+        name:
+          color.attributes.name +
+          ' (' +
+          color.attributes?.products?.data.filter(
+            product => product.attributes.teamName == 'fb-team',
+          ).length +
+          ') ',
         needed: (searchKeyInObject(qsObj, 'color') || []).includes(
           String(color.id),
         ),
@@ -276,7 +292,13 @@ export async function getServerSideProps(context) {
     const categories = res.data.map(categorie => {
       return {
         id: String(categorie.id),
-        name: String(categorie.attributes.name),
+        name:
+          String(categorie.attributes.name) +
+          ' (' +
+          categorie.attributes?.products?.data.filter(
+            product => product.attributes.teamName == 'fb-team',
+          ).length +
+          ') ',
         needed: (searchKeyInObject(qsObj, 'categories') || []).includes(
           String(categorie.id),
         ),
@@ -291,7 +313,13 @@ export async function getServerSideProps(context) {
     const genders = res.data.map(gender => {
       return {
         id: String(gender.id),
-        name: String(gender.attributes.name),
+        name:
+          String(gender.attributes.name) +
+          ' (' +
+          gender.attributes?.products?.data.filter(
+            product => product.attributes.teamName == 'fb-team',
+          ).length +
+          ') ',
         needed: (searchKeyInObject(qsObj, 'gender') || []).includes(
           String(gender.id),
         ),
@@ -305,7 +333,13 @@ export async function getServerSideProps(context) {
     const sizes = res.data.map(size => {
       return {
         id: String(size.id),
-        value: String(size.attributes.value),
+        value:
+          String(size.attributes.value) +
+          ' (' +
+          size.attributes?.products?.data.filter(
+            product => product.attributes.teamName == 'fb-team',
+          ).length +
+          ') ',
         needed: (searchKeyInObject(qsObj, 'size') || []).includes(
           String(size.id),
         ),
