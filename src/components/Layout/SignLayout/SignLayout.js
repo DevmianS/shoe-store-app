@@ -3,10 +3,12 @@ import Icon from '@mui/material/Icon';
 import Toolbar from '@mui/material/Toolbar';
 
 import Banner from '@/components/UI/Banner';
+import Link from 'next/link';
 
 const signStyles = {
   icon: {
     width: 32,
+
     position: 'absolute',
     display: {
       xs: 'none',
@@ -14,6 +16,11 @@ const signStyles = {
     },
     top: 50,
     left: 40,
+    '& a': {
+      color: '#000',
+      '&:visited': {color: '#000'},
+      '&:hover': {color: '#fe645e'},
+    },
   },
   box: {
     minHeight: '59px',
@@ -26,7 +33,14 @@ const signStyles = {
       md: 'none',
     },
   },
-  logo: {fontSize: '30px'},
+  logo: {
+    fontSize: '30px',
+    '& a': {
+      color: '#000',
+      '&:visited': {color: '#000'},
+      '&:hover': {color: '#fe645e'},
+    },
+  },
   banner: {
     width: '100%',
     height: '100vh',
@@ -46,11 +60,11 @@ const SignLayout = ({carousel, src, form}) => {
   return (
     <>
       <Icon sx={signStyles.icon}>
-        <i className="icon-logo"></i>
+        <Link className="icon-logo" href="/"></Link>
       </Icon>
       <Box sx={signStyles.box}>
         <Toolbar sx={signStyles.logo}>
-          <i className="icon-logo"></i>
+          <Link className="icon-logo" href="/"></Link>
         </Toolbar>
       </Box>
       <Box sx={signStyles.banner}>
