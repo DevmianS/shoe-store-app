@@ -31,6 +31,7 @@ export default function Filters({total, maxPriceCalculated}) {
     },
     accordion: {
       width: '100%',
+      overflow: 'hidden',
     },
     accordionDetails: {
       padding: 0,
@@ -41,14 +42,16 @@ export default function Filters({total, maxPriceCalculated}) {
       paddingBottom: '32px',
     },
     accordionDetailsAlt: {
-      padding: 0,
       display: 'flex',
+      width: '100%',
       fontSize: 16,
       fontWeight: 400,
       paddingBottom: '32px',
       flexDirection: 'row',
       gap: 1,
       alignItems: 'center',
+      /*       background: 'red',
+       */ padding: '15px',
     },
     accordionSummary: {padding: 0},
     accordionTitle: {fontWeight: 500},
@@ -60,7 +63,7 @@ export default function Filters({total, maxPriceCalculated}) {
   const [expandSize, setExpandSize] = useState(false);
   const [expandCategory, setExpandCategory] = useState(false);
 
-  const {arrIdFilters, setArrIdFilters, navigateToSearch} = useFilter();
+  const {arrIdFilters, setArrIdFilters} = useFilter();
 
   const checkBoxChangeCategoryHandler = event => {
     console.log('event: ', event, event.target.value);

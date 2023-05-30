@@ -173,6 +173,7 @@ a:hover {
 
 #nprogress .bar {
   background: #fe645e !important;
+  min-height: 4px;
 }
 
 #nprogress .peg {
