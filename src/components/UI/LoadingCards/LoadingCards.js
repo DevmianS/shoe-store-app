@@ -8,9 +8,6 @@ const loadingCardStyles = {
     flexBasis: {xs: '50%', md: '33.333%', lg: '25%'},
     padding: {xs: '0 8px', md: '0 15px', lg: '0 24px'},
     marginBottom: {xs: '8px', md: '15px', lg: '24px'},
-    '&:first-of-type': {
-      marginTop: rwdValue(20, 60),
-    },
   },
   card: {
     position: 'relative',
