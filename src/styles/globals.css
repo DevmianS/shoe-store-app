@@ -178,3 +178,12 @@ a:hover {
 #nprogress .peg {
   box-shadow: 0 0 10px #fe645e, 0 0 5px #fe645e;
 }
+@keyframes backgroundPosition {
+  0% {
+    background-position: 50% 0;
+  }
+
+  100% {
+    background-position: -150% 0;
+  }
+}
