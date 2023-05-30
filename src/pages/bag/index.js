@@ -27,6 +27,10 @@ const Bag = () => {
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const styles = {
+    h1: {
+      paddingBottom: rwdValue(20, 60),
+      marginBottom: isTablet ? '20px' : 0,
+    },
     h2: {
       fontSize: rwdValue(18, 28),
       marginTop: rwdValue(45, 65),
@@ -56,8 +60,6 @@ const Bag = () => {
       marginBottom: rwdValue(20, 60),
       '&:first-of-type': {
         borderTop: isTablet ? '1px solid #EAECF0' : 'none',
-        paddingTop: rwdValue(20, 60),
-        marginTop: isTablet ? '20px' : 0,
       },
     },
     row: {
@@ -90,7 +92,7 @@ const Bag = () => {
           <SideBar />
           <Box sx={styles.row}>
             <Box sx={styles.colBig}>
-              <Typography variant="h1" component="h1">
+              <Typography variant="h1" component="h1" sx={styles.h1}>
                 Cart
               </Typography>
               {isLoading ? (

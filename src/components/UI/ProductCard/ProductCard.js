@@ -10,12 +10,14 @@ import IconButton from '@mui/material/IconButton';
 import MUIButton from '@mui/material/Button';
 
 import {rwdValue, theme} from '@/utils/theme';
-import useUser from '@/hooks/useUser';
 import {deleteProduct} from '@/utils/utils';
+import useUser from '@/hooks/useUser';
+import {useCart} from '@/context/CartContext';
 
 import OptionsMenu from './OptionsMenu';
 import Modal from '@/components/UI/Modal';
-import Loading from '@/components/UI/Modal';
+import Loading from '@/components/UI/Loading';
+import Button from '@/components/UI/Button';
 
 export default function ProductCard({
   productId,
@@ -152,14 +154,39 @@ export default function ProductCard({
       backgroundColor: 'lightgrey',
       borderColor: 'lightgrey',
     },
+    delete: {
+      position: 'absolute',
+      zIndex: 5,
+      bottom: rwdValue(20, 50),
+      left: '50%',
+      transform: 'translateX(-50%)',
+      '& button': {
+        opacity: {xs: 1, md: 0},
+        width: rwdValue(32, 64),
+        height: rwdValue(32, 64),
+        minHeight: rwdValue(32, 64),
+        minWidth: rwdValue(32, 64),
+        borderRadius: '50%',
+        transition: '0.5s',
+        '&:active': {
+          transform: 'scale(0.9)',
+        },
+      },
+      '& i': {
+        fontSize: rwdValue(20, 28),
+        color: '#fff',
+      },
+    },
   };
 
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const router = useRouter();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [deleteConfVisible, setDeleteConfVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
   const {jwt} = useUser();
+  const {addProduct} = useCart();
 
   const goToPreviousImage = e => {
     e.stopPropagation();
@@ -232,6 +259,16 @@ export default function ProductCard({
             router.push(`/products/${productId}`);
           }}
         >
+          <Box sx={styles.delete}>
+            <Button
+              onClick={e => {
+                e.stopPropagation();
+                addProduct({productId, title});
+              }}
+            >
+              <Typography className="icon-trash" component="i"></Typography>
+            </Button>
+          </Box>
           <Image
             src={
               imgPath
