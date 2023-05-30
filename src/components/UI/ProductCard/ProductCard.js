@@ -266,7 +266,10 @@ export default function ProductCard({
                 addProduct({productId, title});
               }}
             >
-              <Typography className="icon-trash" component="i"></Typography>
+              <Typography
+                className="icon-add-to-cart"
+                component="i"
+              ></Typography>
             </Button>
           </Box>
           <Image

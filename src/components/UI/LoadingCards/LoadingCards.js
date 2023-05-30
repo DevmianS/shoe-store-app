@@ -78,5 +78,12 @@ function LoadingCard(isBag) {
   );
 }
 
-export default () =>
-  Array.from({length: 12}, (_, index) => <LoadingCard key={index} />);
+export default function LoadingCards() {
+  return (
+    <>
+      {Array.from({length: 12}, (_, index) => (
+        <LoadingCard key={index} />
+      ))}
+    </>
+  );
+}
