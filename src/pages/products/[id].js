@@ -164,7 +164,7 @@ export default function ProductPage({product, error}) {
       <Head>
         <title>Wellrun | {data?.name ? data?.name : 'Loading...'}</title>
       </Head>
-      <NavBarLayout>
+      <NavBarLayout sidebarVisible>
         {product ? (
           <Box sx={singleStyles.row}>
             <Gallery images={images} setImages={setImages} />
