@@ -11,7 +11,6 @@ import {useCart} from '@/context/CartContext';
 import useProducts from '@/hooks/useProducts';
 
 import NavBarLayout from '@/components/Layout/NavBarLayout';
-import SideBar from '@/components/Layout/SideBar';
 
 import Button from '@/components/UI/Button';
 import CartProductItem from '@/components/UI/CartProductItem';
@@ -87,7 +86,6 @@ const Bag = () => {
 
       <NavBarLayout>
         <Box sx={styles.wrapper}>
-          <SideBar />
           <Box sx={styles.row}>
             <Box sx={styles.colBig}>
               <Typography variant="h1" component="h1">

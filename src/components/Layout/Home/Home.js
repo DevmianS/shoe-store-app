@@ -8,7 +8,6 @@ import {SkeletonProducts} from '@/utils/utils';
 import {rwdValue} from '@/utils/theme';
 
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
-import SideBar from '@/components/Layout/SideBar';
 
 import NoContent from '@/components/UI/NoContent';
 import PaginationUI from '@/components/UI/PaginationUI';
@@ -23,7 +22,6 @@ const productsStyles = {
   row: {
     display: 'flex',
     justifyContent: 'space-between',
-    padding: `${rwdValue(0, 40)} 0`,
   },
   content: {
     flex: '1 1 auto',
@@ -49,7 +47,6 @@ const Home = () => {
 
   return (
     <Box sx={productsStyles.row}>
-      <SideBar />
       <Box sx={productsStyles.content}>
         <TopBanner imgPath={bannerImg.src} />
         {status === 'authenticated' && <AvatarStaticLayout />}

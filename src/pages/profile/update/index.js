@@ -15,7 +15,6 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import Button from '@/components/UI/Button';
@@ -28,7 +27,6 @@ const updateProfileStyles = {
   row: {
     display: 'flex',
     justifyContent: 'space-between',
-    paddingTop: rwdValue(20, 40),
     paddingBottom: rwdValue(20, 40),
   },
   sidebar: {
@@ -91,7 +89,7 @@ const ProfileUpdate = () => {
   const [newUserData, setNewUserData] = useState({});
   const {data: session, update: updateSession} = useSession();
   const {jwt, id: userId} = useUser();
-  
+
   const udpateUserMutation = useMutation({
     mutationFn: () => {
       return axios.put(
@@ -100,84 +98,82 @@ const ProfileUpdate = () => {
         {
           headers: {Authorization: `Bearer ${session.user.jwt}`},
         },
-        );
-      },
-      onSuccess: async () => {
-        await updateSession({
-          ...session,
-          user: {
-            ...session?.user,
-            user: {...session.user.user, ...newUserData},
-            jwt: session.user.jwt,
-          },
-        }).then(() => {
-          toast.success('Data changed successfully!');
-        });
-      },
-    });
-    
-    const updateUserDataHandler = () => {
-      udpateUserMutation.mutate();
-    };
+      );
+    },
+    onSuccess: async () => {
+      await updateSession({
+        ...session,
+        user: {
+          ...session?.user,
+          user: {...session.user.user, ...newUserData},
+          jwt: session.user.jwt,
+        },
+      }).then(() => {
+        toast.success('Data changed successfully!');
+      });
+    },
+  });
 
-    useEffect(() => {
-      if (session?.user) {
-        setUserData(session.user.user);
+  const updateUserDataHandler = () => {
+    udpateUserMutation.mutate();
+  };
+
+  useEffect(() => {
+    if (session?.user) {
+      setUserData(session.user.user);
+    }
+    console.log(session);
+  }, [session]);
+
+  const queryClient = useQueryClient();
+
+  const changePhotoMutation = useMutation({
+    mutationFn: async imageFile => {
+      try {
+        const uploadedAvatar = await uploadAvatar(jwt, imageFile);
+        const imageId = uploadedAvatar[0]?.id;
+
+        return await changeUserAvatar(jwt, imageId, userId);
+      } catch (error) {
+        console.error(error);
       }
-      console.log(session);
-    }, [session]);
-    
-    const queryClient = useQueryClient();
-    
-    const changePhotoMutation = useMutation({
-      mutationFn: async imageFile => {
-        try {
-          const uploadedAvatar = await uploadAvatar(jwt, imageFile);
-          const imageId = uploadedAvatar[0]?.id;
-          
-          return await changeUserAvatar(jwt, imageId, userId);
-        } catch (error) {
-          console.error(error);
-        }
-      },
-      onSuccess: data => {
-        queryClient.setQueryData(['user', data.id], data);
-        queryClient.invalidateQueries(['user']);
-      },
-    });
-    
-    const [openModal, setOpenModal] = useState(false);
-    const input = useRef();
-    const handleChangeAvatar = event => {
-      const file = event.target.files[0];
-      const fileReader = new FileReader();
-      
-      if (file) {
-        fileReader.readAsDataURL(file);
-      }
-      
-      fileReader.onload = () => {
-        const image = new Image();
-        image.src = fileReader.result;
-        
-        image.onload = () => {
-          changePhotoMutation.mutate(file);
-        };
-        
-        image.onerror = () => {
-          toast.error('The file is invalid. Please, choose a valid image file.');
-          event.target.value = null;
-        };
+    },
+    onSuccess: data => {
+      queryClient.setQueryData(['user', data.id], data);
+      queryClient.invalidateQueries(['user']);
+    },
+  });
+
+  const [openModal, setOpenModal] = useState(false);
+  const input = useRef();
+  const handleChangeAvatar = event => {
+    const file = event.target.files[0];
+    const fileReader = new FileReader();
+
+    if (file) {
+      fileReader.readAsDataURL(file);
+    }
+
+    fileReader.onload = () => {
+      const image = new Image();
+      image.src = fileReader.result;
+
+      image.onload = () => {
+        changePhotoMutation.mutate(file);
       };
-      
+
+      image.onerror = () => {
+        toast.error('The file is invalid. Please, choose a valid image file.');
+        event.target.value = null;
+      };
     };
-    
-    
-    const deletePhotoMutation = useMutation({
-      mutationFn: async () => {
-        try {
-          const {status} = await axios.put(
-            `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`,
+  };
+
+  const deletePhotoMutation = useMutation({
+    mutationFn: async () => {
+      try {
+        const {status} = await axios.put(
+          `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`,
           {avatar: null},
           {
             headers: {
@@ -223,8 +219,6 @@ const ProfileUpdate = () => {
       {changePhotoMutation.isLoading && <Loading />}
       <NavBarLayout>
         <Box sx={updateProfileStyles.row}>
-          <SideBar />
-          {/* Page content column */}
           <Box sx={updateProfileStyles.content}>
             <Typography variant="h1" component="h1" sx={updateProfileStyles.h1}>
               Update Profile
@@ -315,7 +309,6 @@ const ProfileUpdate = () => {
                 <Box sx={updateProfileStyles.saveChangesBox}>
                   <Button
                     disabled={
-                      //TODO add validation logic
                       udpateUserMutation.isLoading ||
                       (!newUserData?.firstName?.trim() &&
                         !newUserData?.lastName?.trim() &&

@@ -12,7 +12,7 @@ function ErrorPage500() {
       <Head>
         <title>Wellrun | 500 Error</title>
       </Head>
-      <NavBarLayout>
+      <NavBarLayout sidebarVisible={false}>
         <ErrorLayout title={title} text={message} image={'/500.png'} />
       </NavBarLayout>
     </>

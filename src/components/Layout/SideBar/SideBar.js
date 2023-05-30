@@ -8,12 +8,12 @@ import {Stack, Box, List, useMediaQuery, useTheme} from '@mui/material';
 import AvatarStaticLayout from '../AvatarStaticLayout';
 
 import {useToggle} from '@/context/ToggleContext';
-import {memo, useEffect, useState} from 'react';
+import {memo, useState} from 'react';
 
 import ListItem from '@/components/UI/ListItem';
 import Loading from '@/components/UI/Loading';
 
-function SideBar({children, isFilter}) {
+function SideBar({children, showFilter, isFilter, sidebarVisible = true}) {
   const router = useRouter();
   const {status} = useUser();
   const theme = useTheme();
@@ -56,54 +56,59 @@ function SideBar({children, isFilter}) {
     setLoading(false);
     setIsToggled(false);
   };
-  useEffect(() => {
-    console.log('status', status);
-  }, [status]);
+
   return (
     <>
       {loading && <Loading />}
-      <Box sx={styles}>
-        {!isFilter &&
-          (status === 'authenticated' ? (
-            <Stack aria-label="user actions">
-              <AvatarStaticLayout variant="card" />
-              <List>
-                <ListItem
-                  name="My products"
-                  icon="orders"
-                  onClick={() => {
-                    router.push('/my-products');
-                    setIsToggled(false);
-                  }}
-                />
-                <ListItem
-                  name="Settings"
-                  icon="setting"
-                  onClick={() => {
-                    router.push('/profile/update');
-                    setIsToggled(false);
-                  }}
-                />
-                <ListItem name="Log-out" icon="logout" onClick={handleLogout} />
-              </List>
-            </Stack>
-          ) : (
-            <Stack aria-label="user actions">
-              <AvatarStaticLayout variant="card" />
-              <List>
-                <ListItem
-                  name="Log-in"
-                  icon="logout"
-                  onClick={() => {
-                    router.push('/sign-in');
-                    setIsToggled(false);
-                  }}
-                />
-              </List>
-            </Stack>
-          ))}
-        {children}
-      </Box>
+      {sidebarVisible && (
+        <Box sx={styles}>
+          {!isFilter &&
+            !showFilter &&
+            (status === 'authenticated' ? (
+              <Stack aria-label="user actions">
+                <AvatarStaticLayout variant="card" />
+                <List>
+                  <ListItem
+                    name="My products"
+                    icon="orders"
+                    onClick={() => {
+                      router.push('/my-products');
+                      setIsToggled(false);
+                    }}
+                  />
+                  <ListItem
+                    name="Settings"
+                    icon="setting"
+                    onClick={() => {
+                      router.push('/profile/update');
+                      setIsToggled(false);
+                    }}
+                  />
+                  <ListItem
+                    name="Log-out"
+                    icon="logout"
+                    onClick={handleLogout}
+                  />
+                </List>
+              </Stack>
+            ) : (
+              <Stack aria-label="user actions">
+                <AvatarStaticLayout variant="card" />
+                <List>
+                  <ListItem
+                    name="Log-in"
+                    icon="logout"
+                    onClick={() => {
+                      router.push('/sign-in');
+                      setIsToggled(false);
+                    }}
+                  />
+                </List>
+              </Stack>
+            ))}
+          {showFilter && children}
+        </Box>
+      )}
     </>
   );
 }

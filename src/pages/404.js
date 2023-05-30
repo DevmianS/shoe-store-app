@@ -13,7 +13,7 @@ function ErrorPage404() {
       <Head>
         <title>Wellrun | 404 Error</title>
       </Head>
-      <NavBarLayout>
+      <NavBarLayout sidebarVisible={false}>
         <ErrorLayout title={title} text={message} image={'/404.png'} />
       </NavBarLayout>
     </>
