@@ -8,6 +8,7 @@ import {rwdValue} from '@/utils/theme';
 
 import {useCart} from '@/context/CartContext';
 import Button from '@/components/UI/Button';
+import Loading from '../Loading/Loading';
 
 const initSummary = {
   shipping: 0,
@@ -19,6 +20,7 @@ const initSummary = {
 export default function Summary({items, cartItems}) {
   const [cost, setCost] = useState(initSummary);
   const [payment, setPayment] = useState(true);
+  const [isCheckout, setIsCheckout] = useState(false);
 
   const {setCartItems, setCartCount} = useCart();
 
@@ -30,16 +32,18 @@ export default function Summary({items, cartItems}) {
   const checkoutPromise = () =>
     new Promise((resolve, reject) => {
       setPayment(true);
+      setIsCheckout(true);
       setTimeout(() => {
         resolve(
           'Payment was successful! Wait for your order to be delivered. Thank you!',
         );
         setPayment(false);
+        setIsCheckout(false);
         setCost(initSummary);
         setCartItems({});
         setCartCount(0);
-        router.push('/');
-      }, 3000);
+        router.push('/checkout');
+      }, 4000);
     });
 
   const checkoutHandler = data => {
@@ -126,6 +130,7 @@ export default function Summary({items, cartItems}) {
 
   return (
     <Box sx={styles.colSm}>
+      {isCheckout && <Loading />}
       <Box sx={styles.summary}>
         <Typography variant="h1" component="h2" sx={styles.summaryTitle}>
           Summary
