@@ -28,10 +28,15 @@ const NavBarLayout = ({
   showFilter,
   sidebarVisible,
 }) => {
+  const isSidebarStyles = {marginLeft: {xs: 0, md: '340px'}};
   return (
     <Box sx={navStyles} key="wrap">
       <NavBar key="nav" />
-      <Box component="main" key="main">
+      <Box
+        component="main"
+        key="main"
+        sx={{...(sidebarVisible && isSidebarStyles)}}
+      >
         {sidebarVisible && (
           <SideBar showFilter={showFilter}>{sidebarChildren}</SideBar>
         )}
