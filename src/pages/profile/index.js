@@ -18,7 +18,6 @@ const profileStyles = {
   row: {
     display: 'flex',
     justifyContent: 'space-between',
-    paddingTop: rwdValue(20, 40),
     paddingBottom: rwdValue(20, 40),
   },
   content: {
