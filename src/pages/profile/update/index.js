@@ -217,7 +217,7 @@ const ProfileUpdate = () => {
         <title>Wellrun | Update Profile</title>
       </Head>
       {changePhotoMutation.isLoading && <Loading />}
-      <NavBarLayout>
+      <NavBarLayout sidebarVisible>
         <Box sx={updateProfileStyles.row}>
           <Box sx={updateProfileStyles.content}>
             <Typography variant="h1" component="h1" sx={updateProfileStyles.h1}>

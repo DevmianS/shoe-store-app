@@ -83,7 +83,6 @@ const Bag = () => {
       <Head>
         <title>Wellrun | Your Bag</title>
       </Head>
-
       <NavBarLayout>
         <Box sx={styles.wrapper}>
           <Box sx={styles.row}>

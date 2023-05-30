@@ -105,7 +105,7 @@ const MyProducts = ({productsList}) => {
         isEditing
         productId={selectedId}
       />
-      <NavBarLayout>
+      <NavBarLayout sidebarVisible>
         <Box sx={myProductsStyles.row}>
           <Box sx={myProductsStyles.header}>
             <TopBanner imgPath={bannerImg.src} />

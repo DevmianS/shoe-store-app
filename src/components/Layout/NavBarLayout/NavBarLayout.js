@@ -23,7 +23,7 @@ const NavBarLayout = ({
   children,
   sidebarChildren,
   showFilter,
-  sidebarVisible = true,
+  sidebarVisible,
 }) => {
   return (
     <Box sx={navStyles} key="wrap">

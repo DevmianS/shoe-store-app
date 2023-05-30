@@ -125,6 +125,7 @@ const SearchResults = ({
         <title>Wellrun | Search</title>
       </Head>
       <NavBarLayout
+        sidebarVisible
         isFilter={true}
         showFilter={showFilter}
         sidebarChildren={
