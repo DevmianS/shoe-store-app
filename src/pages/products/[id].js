@@ -159,10 +159,11 @@ export default function ProductPage({product, error}) {
       brand: product?.data?.attributes?.brand?.data?.attributes?.name,
     });
   }, [product]);
+  const titleMessage = `Wellrun | ${data?.name ? data?.name : 'Loading...'}`;
   return (
     <>
       <Head>
-        <title>Wellrun | {data?.name ? data?.name : 'Loading...'}</title>
+        <title>{titleMessage}</title>
       </Head>
       <NavBarLayout sidebarVisible>
         {product ? (
