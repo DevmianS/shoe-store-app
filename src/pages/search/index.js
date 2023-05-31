@@ -95,6 +95,13 @@ const SearchResults = ({
       },
       '& span': {display: {xs: 'none', md: 'inline'}},
     },
+    clear: {
+      display: 'flex',
+      alignItems: 'center',
+      fontSize: rwdValue(15, 24),
+      color: theme.palette.primary.main,
+      marginRight: '5px',
+    },
     products: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -148,6 +155,24 @@ const SearchResults = ({
                   {searchString ? searchString : ''}
                 </Typography>
               </Typography>
+              <Button
+                sx={styles.clear}
+                onClick={() =>
+                  setArrIdFilters({
+                    name: [],
+                    brands: [],
+                    colors: [],
+                    sizes: [],
+                    categories: [],
+                    genders: [],
+                    minPrice: [],
+                    maxPrice: [],
+                  })
+                }
+              >
+                Clear
+              </Button>
+
               <Button
                 onClick={() => {
                   if (isMobile && !isToggled) {
