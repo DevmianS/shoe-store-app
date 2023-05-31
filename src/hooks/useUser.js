@@ -8,10 +8,10 @@ const useUser = () => {
   const jwt = data?.user?.jwt;
   const user = data?.user?.user;
   const id = user?.id;
-
   const userQuery = useQuery({
     queryKey: ['user', id],
     queryFn: () => getOwnUser(jwt, id),
+    enabled: !!id,
   });
 
   const avatar = userQuery?.data?.avatar?.url;
