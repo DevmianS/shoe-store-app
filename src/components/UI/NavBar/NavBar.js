@@ -124,7 +124,7 @@ const NavBar = () => {
       },
     },
     overlay: {
-      display: searchExpanded || isToggled ? 'flex' : 'none',
+      visibility: searchExpanded || isToggled ? 'visible' : 'hidden',
       opacity: searchExpanded || isToggled ? '0.85' : '0',
       position: 'fixed',
       top: '0',
@@ -133,6 +133,7 @@ const NavBar = () => {
       height: '100vh',
       backgroundColor: '#F3F3F3',
       zIndex: 60,
+      transition: 'opacity 0.3s',
     },
     signIn: {
       fontSize: 12,
