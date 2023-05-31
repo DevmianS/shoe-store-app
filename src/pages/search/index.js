@@ -1,24 +1,26 @@
 import Head from 'next/head';
-import {Typography, Box, Button, useTheme, useMediaQuery} from '@mui/material';
+import {useRouter} from 'next/router';
+import {useEffect, useState} from 'react';
 
-import {rwdValue} from '@/utils/theme';
+import qs from 'qs';
+import axios from 'axios';
+
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+import {rwdValue, theme} from '@/utils/theme';
+import {searchKeyInObject} from '@/utils/utils';
+import {useFilter} from '@/context/FilterContext';
+import {useToggle} from '@/context/ToggleContext';
 
 import ProductCard from '@/components/UI/ProductCard';
 
-import qs from 'qs';
-
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Filters from '@/components/UI/Filters';
-import {searchKeyInObject} from '@/utils/utils';
-
 import NoContent from '@/components/UI/NoContent';
-
-import axios from 'axios';
-import {useFilter} from '@/context/FilterContext';
-import {useEffect, useState} from 'react';
-
-import PaginationUI from '@/components/UI/PaginationUI/PaginationUI';
-import {useRouter} from 'next/router';
+import PaginationUI from '@/components/UI/PaginationUI';
 
 const SearchResults = ({
   searchString,
@@ -28,11 +30,7 @@ const SearchResults = ({
   meta,
 }) => {
   const router = useRouter();
-  const [showFilter, setShowFilter] = useState(true);
-
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const {showFilter, setShowFilter, filterToggle} = useToggle();
 
   const [maxPriceCalculated, setMaxPriceCalculated] = useState(null);
 
@@ -61,15 +59,15 @@ const SearchResults = ({
       display: 'flex',
       width: '100%',
       justifyContent: 'space-between',
-      padding: isMobile ? '25px 0' : '0',
+      padding: {xs: '25px 0', md: '0'},
     },
     content: {
       '& .MuiInputBase-root': {
-        height: isDesktop ? '48px' : '33px',
-        fontSize: isDesktop ? '15px' : '10px',
+        height: {md: '48px', xs: '33px'},
+        fontSize: {md: '15px', xs: '10px'},
       },
       '& label': {
-        fontSize: isDesktop ? '15px' : '12px',
+        fontSize: {md: '15px', xs: '12px'},
       },
       flex: '1 1 auto',
       padding: `0 ${rwdValue(20, 60)}`,
@@ -92,11 +90,19 @@ const SearchResults = ({
         color: theme.palette.text.secondary,
         fontSize: rwdValue(12, 24),
       },
+      '& span': {display: {xs: 'none', md: 'inline'}},
+    },
+    clear: {
+      display: 'flex',
+      alignItems: 'center',
+      fontSize: rwdValue(15, 24),
+      color: theme.palette.primary.main,
+      marginRight: '5px',
     },
     products: {
       display: 'flex',
       flexWrap: 'wrap',
-      margin: isDesktop ? '0 -24px' : '0 -8px',
+      margin: {md: '0 -24px', xs: '0 -8px'},
     },
   };
 
@@ -119,6 +125,17 @@ const SearchResults = ({
     }
   }, [page]);
 
+  const handleClearFilters = () =>
+    setArrIdFilters({
+      name: [],
+      brands: [],
+      colors: [],
+      sizes: [],
+      categories: [],
+      genders: [],
+      minPrice: [],
+      maxPrice: [],
+    });
   return (
     <>
       <Head>
@@ -146,18 +163,16 @@ const SearchResults = ({
                   {searchString ? searchString : ''}
                 </Typography>
               </Typography>
-              <Button onClick={() => console.log('CLEAR FILTERS')}>
-                <Box
-                  sx={styles.filterText}
-                  onClick={() => setShowFilter(!showFilter)}
-                >
+              <Button sx={styles.clear} onClick={handleClearFilters}>
+                Clear
+              </Button>
+
+              <Button onClick={filterToggle}>
+                <Box sx={styles.filterText}>
                   <Typography variant="body1" component="p">
-                    {isMobile
-                      ? 'Filters'
-                      : !showFilter
-                      ? 'Show Filters'
-                      : 'Hide Filters'}
-                  </Typography>{' '}
+                    Filters
+                    <span> {!showFilter ? 'Show ' : 'Hide '}</span>{' '}
+                  </Typography>
                   <Typography
                     className="icon-filter"
                     component="i"

@@ -85,7 +85,7 @@ const Bag = () => {
       <Head>
         <title>Wellrun | Your Bag</title>
       </Head>
-      <NavBarLayout>
+      <NavBarLayout sidebarVisible isCart>
         <Box sx={styles.wrapper}>
           <Box sx={styles.row}>
             <Box sx={styles.colBig}>

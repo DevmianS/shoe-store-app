@@ -44,7 +44,6 @@ const AvatarStaticLayoutStyles = {
   },
   largeWrap: {
     marginLeft: rwdValue(20, 50),
-    marginBottom: rwdValue(20, 30),
     alignItems: 'end',
     flexDirection: 'row',
     marginTop: {xs: '-15px', md: '-30px'},
@@ -64,8 +63,6 @@ const AvatarStaticLayout = ({variant}) => {
       {variant === 'card' ? (
         <Stack sx={AvatarStaticLayoutStyles.wrapper}>
           <AvatarStatic
-            component="a"
-            href="/profile"
             variant="small"
             userName={name}
             sx={AvatarStaticLayoutStyles.small}

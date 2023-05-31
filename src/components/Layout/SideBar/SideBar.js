@@ -15,7 +15,7 @@ import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import ListItem from '@/components/UI/ListItem';
 import Loading from '@/components/UI/Loading';
 
-function SideBar({children, showFilter, isFilter, sidebarVisible = true}) {
+function SideBar({children, showFilter, isFilter, sidebarVisible = true, sx}) {
   const router = useRouter();
   const {status} = useUser();
   const [loading, setLoading] = useState();
@@ -23,13 +23,13 @@ function SideBar({children, showFilter, isFilter, sidebarVisible = true}) {
 
   const styles = {
     position: 'fixed',
-    maxWidth: {xs: '270px', md: '340px'},
+    maxWidth: '340px',
     paddingTop: {xs: '80px', md: '150px'},
     left: {xs: 'auto', md: 0},
     right: {xs: isToggled ? 0 : '-340px', md: 'auto'},
     overflowY: 'auto',
     top: 0,
-    flexBasis: {xs: '270px', md: '340px'},
+    flexBasis: '340px',
     width: '100%',
     height: '100%',
     background: '#fff',
@@ -54,7 +54,7 @@ function SideBar({children, showFilter, isFilter, sidebarVisible = true}) {
     <>
       {loading && <Loading />}
       {sidebarVisible && (
-        <Box sx={styles}>
+        <Box sx={{...styles, ...sx}}>
           {!isFilter &&
             !showFilter &&
             (status === 'authenticated' ? (

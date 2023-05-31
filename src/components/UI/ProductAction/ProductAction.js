@@ -137,6 +137,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   // EVENTS
   const selectChangeHandler = property => e => {
     setSelect({...select, [property]: e.target.value});
+    setIsTouch(true);
   };
   const checkBoxChangeHandlerCategory = event => {
     setCategories(
