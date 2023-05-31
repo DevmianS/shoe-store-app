@@ -8,10 +8,10 @@ import axios from 'axios';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 import {rwdValue, theme} from '@/utils/theme';
 import {searchKeyInObject} from '@/utils/utils';
+
 import {useFilter} from '@/context/FilterContext';
 import {useToggle} from '@/context/ToggleContext';
 
@@ -22,6 +22,58 @@ import Filters from '@/components/UI/Filters';
 import NoContent from '@/components/UI/NoContent';
 import PaginationUI from '@/components/UI/PaginationUI';
 
+const searchStyles = {
+  row: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+    padding: {xs: '25px 0', md: '0'},
+  },
+  content: {
+    '& .MuiInputBase-root': {
+      height: {md: '48px', xs: '33px'},
+      fontSize: {md: '15px', xs: '10px'},
+    },
+    '& label': {
+      fontSize: {md: '15px', xs: '12px'},
+    },
+    flex: '1 1 auto',
+    padding: `0 ${rwdValue(20, 60)}`,
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: rwdValue(20, 40),
+    '& h1': {flex: '1 1 auto'},
+  },
+  filterText: {
+    display: 'flex',
+    alignItems: 'center',
+    '& p': {
+      fontSize: rwdValue(15, 24),
+      color: theme.palette.text.secondary,
+    },
+    '& i': {
+      color: theme.palette.text.secondary,
+      fontSize: rwdValue(12, 24),
+    },
+    '& span': {display: {xs: 'none', md: 'inline'}},
+  },
+  clear: {
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: rwdValue(15, 24),
+    color: theme.palette.primary.main,
+    marginRight: '5px',
+  },
+  products: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    margin: {md: '0 -24px', xs: '0 -8px'},
+  },
+};
+
 const SearchResults = ({
   searchString,
   productsServer,
@@ -30,11 +82,12 @@ const SearchResults = ({
   meta,
 }) => {
   const router = useRouter();
-  const {showFilter, setShowFilter, filterToggle} = useToggle();
-
+  const {showFilter, filterToggle} = useToggle();
   const [maxPriceCalculated, setMaxPriceCalculated] = useState(null);
-
   const {setArrIdFilters} = useFilter();
+
+  const pagination = meta?.pagination;
+  const [page, setPage] = useState(pagination?.page || 1);
 
   useEffect(() => {
     console.log('filters back: ', filters);
@@ -54,63 +107,6 @@ const SearchResults = ({
     console.log('Max price is: ', maxPrice);
   }, [productsServer]);
 
-  const styles = {
-    row: {
-      display: 'flex',
-      width: '100%',
-      justifyContent: 'space-between',
-      padding: {xs: '25px 0', md: '0'},
-    },
-    content: {
-      '& .MuiInputBase-root': {
-        height: {md: '48px', xs: '33px'},
-        fontSize: {md: '15px', xs: '10px'},
-      },
-      '& label': {
-        fontSize: {md: '15px', xs: '12px'},
-      },
-      flex: '1 1 auto',
-      padding: `0 ${rwdValue(20, 60)}`,
-    },
-    header: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: rwdValue(20, 40),
-      '& h1': {flex: '1 1 auto'},
-    },
-    filterText: {
-      display: 'flex',
-      alignItems: 'center',
-      '& p': {
-        fontSize: rwdValue(15, 24),
-        color: theme.palette.text.secondary,
-      },
-      '& i': {
-        color: theme.palette.text.secondary,
-        fontSize: rwdValue(12, 24),
-      },
-      '& span': {display: {xs: 'none', md: 'inline'}},
-    },
-    clear: {
-      display: 'flex',
-      alignItems: 'center',
-      fontSize: rwdValue(15, 24),
-      color: theme.palette.primary.main,
-      marginRight: '5px',
-    },
-    products: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      margin: {md: '0 -24px', xs: '0 -8px'},
-    },
-  };
-
-  console.log('meta is: ', meta);
-
-  const pagination = meta?.pagination;
-
-  const [page, setPage] = useState(pagination?.page || 1);
   useEffect(() => {
     if (router.asPath.includes('pagination')) {
       console.log('router.asPath.includes');
@@ -154,21 +150,21 @@ const SearchResults = ({
           />
         }
       >
-        <Box sx={styles.row}>
-          <Box sx={styles.content}>
-            <Box sx={styles.header}>
+        <Box sx={searchStyles.row}>
+          <Box sx={searchStyles.content}>
+            <Box sx={searchStyles.header}>
               <Typography variant="h1" component="h1">
                 Search Results
                 <Typography component="b">
                   {searchString ? searchString : ''}
                 </Typography>
               </Typography>
-              <Button sx={styles.clear} onClick={handleClearFilters}>
+              <Button sx={searchStyles.clear} onClick={handleClearFilters}>
                 Clear
               </Button>
 
               <Button onClick={filterToggle}>
-                <Box sx={styles.filterText}>
+                <Box sx={searchStyles.filterText}>
                   <Typography variant="body1" component="p">
                     Filters
                     <span> {!showFilter ? 'Show ' : 'Hide '}</span>{' '}
@@ -188,7 +184,7 @@ const SearchResults = ({
                 isLoading={false}
               />
             )}
-            <Box sx={styles.products}>
+            <Box sx={searchStyles.products}>
               {productsServer.length > 0 ? (
                 productsServer.map(product => {
                   const {id, attributes} = product;
