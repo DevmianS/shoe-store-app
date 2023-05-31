@@ -1,4 +1,3 @@
-import {useRouter} from 'next/router';
 import {forwardRef, useEffect, useState} from 'react';
 
 import {Box, InputBase, Typography, alpha, useTheme} from '@mui/material';
@@ -95,7 +94,7 @@ const Searchbar = forwardRef(({searchExpanded, setSearchExpanded}, ref) => {
           ref={ref}
           sx={styles.input}
           onChange={e => setInput(e.target.value)}
-          value={input}
+          value={input || ''}
         />
       </form>
     </Box>
