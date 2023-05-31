@@ -9,7 +9,7 @@ import {rwdValue} from '@/utils/theme';
 
 const galleryStyles = {
   column: {
-    flex: {xs: '0 0 100%', md: `0 0 calc(50% - ${rwdValue(0, 100)})`},
+    flex: {xs: '0 0 100%', lg: `0 0 calc(50% - ${rwdValue(0, 100)})`},
     display: 'flex',
     flexDirection: {xs: 'column', md: 'row'},
     maxHeight: '500px',
@@ -44,7 +44,7 @@ const galleryStyles = {
     },
   },
   image: {
-    maxWidth: {xs: '100%', md: '500px'},
+    maxWidth: {xs: '100%', lg: '500px'},
     width: '100%',
     flex: '1 1 auto',
     height: '500px',
