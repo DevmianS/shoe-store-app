@@ -123,7 +123,6 @@ const ProfileUpdate = () => {
     if (session?.user) {
       setUserData(session.user.user);
     }
-    console.log(session);
   }, [session]);
 
   const queryClient = useQueryClient();

@@ -90,7 +90,6 @@ const SearchResults = ({
   const [page, setPage] = useState(pagination?.page || 1);
 
   useEffect(() => {
-    console.log('filters back: ', filters);
     setArrIdFilters(filters);
   }, []);
 
@@ -98,18 +97,15 @@ const SearchResults = ({
     let maxPrice = 0;
     productsServer &&
       productsServer.forEach(product => {
-        console.log('product: ', product);
         if (parseFloat(product.attributes.price) > maxPrice) {
           maxPrice = parseFloat(product.attributes.price);
         }
       });
     setMaxPriceCalculated(maxPrice);
-    console.log('Max price is: ', maxPrice);
   }, [productsServer]);
 
   useEffect(() => {
     if (router.asPath.includes('pagination')) {
-      console.log('router.asPath.includes');
       const originalString = router.asPath;
       const newString = originalString.replace(
         /pagination\[page\]=\d+/g,
@@ -255,8 +251,6 @@ export async function getServerSideProps(context) {
 
   const qsObj = qs.parse(currentPath);
 
-  console.log('qsObj: ', qsObj);
-
   const requestBrands = async () => {
     const {data: res} = await axios.get(brandApi);
     const brands = res.data.map(brand => {
@@ -274,7 +268,6 @@ export async function getServerSideProps(context) {
         ),
       };
     });
-    console.log('brands is : ', brands);
     newBrands = brands;
   };
 
@@ -315,7 +308,6 @@ export async function getServerSideProps(context) {
         ),
       };
     });
-    console.log('categories is: ', categories);
     newCategories = categories;
   };
 
@@ -379,36 +371,18 @@ export async function getServerSideProps(context) {
   await fetchData();
 
   async function getProducts() {
-    console.log('url: 3', context.req.url, currentPath);
-    // Devuelve los datos obtenidos como props
-
     currentPath = currentPath ? '&' + currentPath : '';
 
     let url = '/products?filters[teamName]=fb-team&populate=*' + currentPath;
-    console.log('prefinalURL: ', url);
     try {
       const {data} = await axios.get(process.env.NEXT_PUBLIC_API_URL + url);
       newData = data?.data;
-      console.log('Data is: ', data);
       total = data?.meta?.pagination?.total;
       meta = data?.meta;
     } catch (error) {
-      console.log('the error is: ', error);
+      console.error('the error is: ', error);
     }
   }
-
-  console.log(
-    'Filters datA: ',
-    newBrands,
-    newCategories,
-    newColors,
-    newGenders,
-    newSizes,
-    'min',
-    searchKeyInObject(qsObj, '$gte'),
-    'max',
-    searchKeyInObject(qsObj, '$lte'),
-  );
 
   return {
     props: {
