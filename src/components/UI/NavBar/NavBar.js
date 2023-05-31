@@ -264,7 +264,10 @@ const NavBar = () => {
       </AppBar>
       <Box
         sx={navStyles.overlay}
-        onClick={() => setSearchExpanded(false)}
+        onClick={() => {
+          setSearchExpanded(false);
+          setIsToggled(false);
+        }}
       ></Box>
     </>
   );
