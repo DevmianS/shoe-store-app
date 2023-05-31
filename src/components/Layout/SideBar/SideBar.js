@@ -15,7 +15,7 @@ import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import ListItem from '@/components/UI/ListItem';
 import Loading from '@/components/UI/Loading';
 
-function SideBar({children, showFilter, isFilter, sidebarVisible = true}) {
+function SideBar({children, showFilter, isFilter, sidebarVisible = true, sx}) {
   const router = useRouter();
   const {status} = useUser();
   const [loading, setLoading] = useState();
@@ -54,7 +54,7 @@ function SideBar({children, showFilter, isFilter, sidebarVisible = true}) {
     <>
       {loading && <Loading />}
       {sidebarVisible && (
-        <Box sx={styles}>
+        <Box sx={{...styles, ...sx}}>
           {!isFilter &&
             !showFilter &&
             (status === 'authenticated' ? (

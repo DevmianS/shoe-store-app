@@ -25,7 +25,7 @@ const productsStyles = {
   },
   content: {
     flex: '1 1 auto',
-    padding: {lg: '0 60px', md: '0 40px', sm: '0 30px', xs: '0 10px'},
+    padding: `0 ${rwdValue(10, 60)}`,
   },
   cardsRow: {
     display: 'flex',
@@ -55,7 +55,8 @@ const Home = () => {
           component="h1"
           sx={{
             ...productsStyles.title,
-            marginTop: status !== 'authenticated' ? rwdValue(20, 125) : '',
+            marginTop:
+              status !== 'authenticated' ? rwdValue(20, 125) : rwdValue(20, 30),
           }}
         >
           All products

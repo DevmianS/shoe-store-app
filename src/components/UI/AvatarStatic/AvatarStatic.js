@@ -27,9 +27,6 @@ const AvatarStatic = ({variant = 'medium', sx}) => {
   return (
     <Avatar
       onClick={() => {
-        if (variant !== 'small') {
-          return;
-        }
         router.push('/profile');
       }}
       sx={{

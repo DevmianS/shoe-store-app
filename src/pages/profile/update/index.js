@@ -55,7 +55,8 @@ const updateProfileStyles = {
     flex: `0 0 ${rwdValue(100, 150)}`,
   },
   h1: {
-    marginBottom: rwdValue(12, 50),
+    marginTop: rwdValue(20, 30),
+    marginBottom: rwdValue(20, 35),
     color: theme.palette.text.primary,
   },
   btn: {
@@ -66,7 +67,7 @@ const updateProfileStyles = {
     marginBottom: rwdValue(25, 50),
     fontSize: rwdValue(12, 15),
   },
-  form: {maxWidth: '450px'},
+  form: {maxWidth: {xs: '100%', md: '450px'}},
   item: {marginBottom: rwdValue(25, 50)},
   disabled: {
     '& fieldset': {
