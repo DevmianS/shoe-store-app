@@ -19,7 +19,7 @@ export default function ErrorLayout({image, title, text}) {
       minHeight: '100%',
     },
     textCol: {
-      flex: isTablet ? '0 0 100%' : '0 0 50%',
+      flex: isTablet ? '1 1 auto' : '0 0 50%',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -44,7 +44,7 @@ export default function ErrorLayout({image, title, text}) {
     btn: {maxWidth: isTablet ? '180px' : '280px'},
     btnSize: isTablet ? 'small' : 'medium',
     imageCol: {
-      flex: isTablet ? '0 0 100%' : '0 0 50%',
+      flex: isTablet ? '1 1 auto' : '0 0 50%',
       display: 'flex',
       alignItems: 'start',
       padding: '0 30px',
