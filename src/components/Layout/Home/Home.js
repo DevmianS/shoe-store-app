@@ -15,7 +15,6 @@ import TopBanner from '@/components/UI/TopBanner';
 import ProductAction from '@/components/UI/ProductAction';
 import LoadingCards from '@/components/UI/LoadingCards';
 
-import bannerImg from '@/assets/banner2.jpg';
 import useUser from '@/hooks/useUser';
 
 const productsStyles = {
@@ -48,7 +47,7 @@ const Home = () => {
   return (
     <Box sx={productsStyles.row}>
       <Box sx={productsStyles.content}>
-        <TopBanner imgPath={bannerImg.src} />
+        <TopBanner imgPath={'/banner2.jpg'} />
         {status === 'authenticated' && <AvatarStaticLayout />}
         <Typography
           variant="h1"

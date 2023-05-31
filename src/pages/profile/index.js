@@ -9,7 +9,6 @@ import Stack from '@mui/material/Stack';
 
 import useUser from '@/hooks/useUser';
 
-import SideBar from '@/components/Layout/SideBar';
 import NavBarLayout from '@/components/Layout/NavBarLayout';
 import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import Button from '@/components/UI/Button';

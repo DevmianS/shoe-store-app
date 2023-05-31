@@ -1,10 +1,7 @@
 import axios from 'axios';
-import {useQuery} from '@tanstack/react-query';
 import useUser from './useUser';
 import {useCallback, useEffect, useState} from 'react';
 import {executeError} from '@/utils/utils';
-
-import NoContent from '@/components/UI/NoContent';
 
 const useMyProducts = () => {
   const [isLoading, setIsLoading] = useState(true);
