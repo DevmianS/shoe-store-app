@@ -30,10 +30,7 @@ const SearchResults = ({
   meta,
 }) => {
   const router = useRouter();
-  const [showFilter, setShowFilter] = useState(true);
-  const {isToggled, setIsToggled} = useToggle();
-
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const {showFilter, setShowFilter, filterToggle} = useToggle();
 
   const [maxPriceCalculated, setMaxPriceCalculated] = useState(null);
 
@@ -128,6 +125,17 @@ const SearchResults = ({
     }
   }, [page]);
 
+  const handleClearFilters = () =>
+    setArrIdFilters({
+      name: [],
+      brands: [],
+      colors: [],
+      sizes: [],
+      categories: [],
+      genders: [],
+      minPrice: [],
+      maxPrice: [],
+    });
   return (
     <>
       <Head>
@@ -155,34 +163,11 @@ const SearchResults = ({
                   {searchString ? searchString : ''}
                 </Typography>
               </Typography>
-              <Button
-                sx={styles.clear}
-                onClick={() =>
-                  setArrIdFilters({
-                    name: [],
-                    brands: [],
-                    colors: [],
-                    sizes: [],
-                    categories: [],
-                    genders: [],
-                    minPrice: [],
-                    maxPrice: [],
-                  })
-                }
-              >
+              <Button sx={styles.clear} onClick={handleClearFilters}>
                 Clear
               </Button>
 
-              <Button
-                onClick={() => {
-                  if (isMobile && !isToggled) {
-                    setShowFilter(true);
-                    setIsToggled(true);
-                  } else {
-                    setShowFilter(prev => !prev);
-                  }
-                }}
-              >
+              <Button onClick={filterToggle}>
                 <Box sx={styles.filterText}>
                   <Typography variant="body1" component="p">
                     Filters
