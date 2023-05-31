@@ -1,14 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import {Typography, Box, useMediaQuery, useTheme} from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
-import {rwdValue} from '@/utils/theme';
+import {rwdValue, theme} from '@/utils/theme';
 
 import Button from '@/components/UI/Button';
 
 export default function ErrorLayout({image, title, text}) {
-  const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const styles = {
