@@ -90,7 +90,7 @@ const Bag = () => {
       <Head>
         <title>Wellrun | Your Bag</title>
       </Head>
-      <NavBarLayout>
+      <NavBarLayout sidebarVisible isCart>
         <Box sx={bagPageStyles.wrapper}>
           <Box sx={bagPageStyles.row}>
             <Box sx={bagPageStyles.colBig}>

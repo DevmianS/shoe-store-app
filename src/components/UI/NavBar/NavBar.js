@@ -124,7 +124,7 @@ const NavBar = () => {
       },
     },
     overlay: {
-      display: searchExpanded || isToggled ? 'flex' : 'none',
+      visibility: searchExpanded || isToggled ? 'visible' : 'hidden',
       opacity: searchExpanded || isToggled ? '0.85' : '0',
       position: 'fixed',
       top: '0',
@@ -133,6 +133,7 @@ const NavBar = () => {
       height: '100vh',
       backgroundColor: '#F3F3F3',
       zIndex: 60,
+      transition: 'opacity 0.3s',
     },
     signIn: {
       fontSize: 12,
@@ -194,20 +195,27 @@ const NavBar = () => {
       <Box sx={navStyles.box} />
       <AppBar sx={navStyles.appBar}>
         <Toolbar sx={navStyles.toolBar}>
-          <Link href="/">
-            <IconButton
-              size="large"
-              edge="start"
-              aria-label="logo"
-              sx={navStyles.logo}
-            >
-              <Typography component="i" className="icon-logo"></Typography>
-            </IconButton>
-          </Link>
+          <IconButton
+            size="large"
+            edge="start"
+            aria-label="logo"
+            sx={navStyles.logo}
+            onClick={() => {
+              router.push('/');
+              setIsToggled(false);
+            }}
+          >
+            <Typography component="i" className="icon-logo"></Typography>
+          </IconButton>
           <Stack component="nav" sx={navStyles.nav}>
-            <Link href="/">
-              <Button>Products</Button>
-            </Link>
+            <Button
+              onClick={() => {
+                router.push('/');
+                setIsToggled(false);
+              }}
+            >
+              Products
+            </Button>
           </Stack>
           <Box sx={navStyles.search}>
             {status !== 'authenticated' && !searchExpanded && (
@@ -257,7 +265,10 @@ const NavBar = () => {
       </AppBar>
       <Box
         sx={navStyles.overlay}
-        onClick={() => setSearchExpanded(false)}
+        onClick={() => {
+          setSearchExpanded(false);
+          setIsToggled(false);
+        }}
       ></Box>
     </>
   );

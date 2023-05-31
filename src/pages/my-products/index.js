@@ -17,8 +17,6 @@ import TopBanner from '@/components/UI/TopBanner';
 import LoadingCards from '@/components/UI/LoadingCards';
 import ProductAction from '@/components/UI/ProductAction';
 
-import bannerImg from '@/assets/banner.jpg';
-
 const myProductsStyles = {
   row: {
     display: 'flex',
@@ -29,6 +27,12 @@ const myProductsStyles = {
     flex: '1 1 auto',
     paddingLeft: rwdValue(10, 60),
     paddingRight: rwdValue(10, 60),
+  },
+  title: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: rwdValue(20, 30),
+    marginBottom: rwdValue(20, 35),
   },
   avatarWrapper: {
     marginLeft: rwdValue(20, 50),
@@ -42,6 +46,7 @@ const myProductsStyles = {
     border: '4px solid white',
     zIndex: 2,
   },
+
   name: {fontSize: rwdValue(14, 20)},
   points: {
     fontSize: rwdValue(12, 15),
@@ -71,7 +76,12 @@ const myProductsStyles = {
     fontSize: rwdValue(12, 15),
     marginBottom: rwdValue(32, 40),
   },
-  msgBtn: {maxWidth: '152px'},
+  msgBtn: {
+    maxWidth: 'fit-content',
+    fontSize: rwdValue(12, 15),
+    height: {xs: 'auto', md: '40px'},
+    padding: {xs: '4px 10px', md: '6px 16px'},
+  },
 };
 
 const MyProducts = ({productsList}) => {
@@ -108,10 +118,10 @@ const MyProducts = ({productsList}) => {
       <NavBarLayout sidebarVisible>
         <Box sx={myProductsStyles.row}>
           <Box sx={myProductsStyles.header}>
-            <TopBanner imgPath={bannerImg.src} />
+            <TopBanner imgPath={'/banner.jpg'} />
             <AvatarStaticLayout />
-            <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-              <Typography variant="h1" component="h1" mb="40px">
+            <Box sx={myProductsStyles.title}>
+              <Typography variant="h1" component="h1">
                 My products
               </Typography>
               {Array.isArray(products) && products.length > 0 && (

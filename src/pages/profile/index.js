@@ -33,7 +33,8 @@ const profileStyles = {
   },
   h1: {
     color: theme.palette.text.primary,
-    marginBottom: rwdValue(12, 50),
+    marginTop: rwdValue(20, 30),
+    marginBottom: rwdValue(20, 35),
   },
   description: {
     color: theme.palette.text.secondary,

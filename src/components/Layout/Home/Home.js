@@ -15,7 +15,6 @@ import TopBanner from '@/components/UI/TopBanner';
 import ProductAction from '@/components/UI/ProductAction';
 import LoadingCards from '@/components/UI/LoadingCards';
 
-import bannerImg from '@/assets/banner2.jpg';
 import useUser from '@/hooks/useUser';
 
 const productsStyles = {
@@ -25,7 +24,7 @@ const productsStyles = {
   },
   content: {
     flex: '1 1 auto',
-    padding: {lg: '0 60px', md: '0 40px', sm: '0 30px', xs: '0 10px'},
+    padding: `0 ${rwdValue(10, 60)}`,
   },
   cardsRow: {
     display: 'flex',
@@ -48,14 +47,15 @@ const Home = () => {
   return (
     <Box sx={productsStyles.row}>
       <Box sx={productsStyles.content}>
-        <TopBanner imgPath={bannerImg.src} />
+        <TopBanner imgPath={'/banner2.jpg'} />
         {status === 'authenticated' && <AvatarStaticLayout />}
         <Typography
           variant="h1"
           component="h1"
           sx={{
             ...productsStyles.title,
-            marginTop: status !== 'authenticated' ? rwdValue(20, 125) : '',
+            marginTop:
+              status !== 'authenticated' ? rwdValue(20, 125) : rwdValue(20, 30),
           }}
         >
           All products

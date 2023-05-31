@@ -27,18 +27,24 @@ const NavBarLayout = ({
   sidebarChildren,
   showFilter,
   sidebarVisible,
+  isCart,
 }) => {
   const isSidebarStyles = {marginLeft: {xs: 0, md: '340px'}};
+  const cartStyles = {display: {xs: 'block', md: 'none'}};
   return (
     <Box sx={navStyles} key="wrap">
       <NavBar key="nav" />
       <Box
         component="main"
         key="main"
-        sx={{...(sidebarVisible && isSidebarStyles)}}
+        sx={{
+          ...(sidebarVisible && !isCart ? isSidebarStyles : {marginLeft: 0}),
+        }}
       >
         {sidebarVisible && (
-          <SideBar showFilter={showFilter}>{sidebarChildren}</SideBar>
+          <SideBar showFilter={showFilter} sx={{...(isCart && cartStyles)}}>
+            {sidebarChildren}
+          </SideBar>
         )}
         {children}
       </Box>
