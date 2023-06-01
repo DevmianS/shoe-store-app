@@ -1,14 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import {Typography, Box, useMediaQuery, useTheme} from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
-import {rwdValue} from '@/utils/theme';
+import {rwdValue, theme} from '@/utils/theme';
 
 import Button from '@/components/UI/Button';
 
 export default function ErrorLayout({image, title, text}) {
-  const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const styles = {
@@ -19,7 +20,7 @@ export default function ErrorLayout({image, title, text}) {
       minHeight: '100%',
     },
     textCol: {
-      flex: isTablet ? '0 0 100%' : '0 0 50%',
+      flex: isTablet ? '1 1 auto' : '0 0 50%',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -44,7 +45,7 @@ export default function ErrorLayout({image, title, text}) {
     btn: {maxWidth: isTablet ? '180px' : '280px'},
     btnSize: isTablet ? 'small' : 'medium',
     imageCol: {
-      flex: isTablet ? '0 0 100%' : '0 0 50%',
+      flex: isTablet ? '1 1 auto' : '0 0 50%',
       display: 'flex',
       alignItems: 'start',
       padding: '0 30px',

@@ -3,11 +3,13 @@ import Head from 'next/head';
 import {useSession} from 'next-auth/react';
 import {useEffect, useRef, useState} from 'react';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import axios from 'axios';
 
+import axios from 'axios';
 import {toast} from 'sonner';
+
 import {rwdValue, theme} from '@/utils/theme';
 import {changeUserAvatar, uploadAvatar} from '@/utils/utils';
+import useUser from '@/hooks/useUser';
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -20,8 +22,6 @@ import AvatarStaticLayout from '@/components/Layout/AvatarStaticLayout';
 import Button from '@/components/UI/Button';
 import Loading from '@/components/UI/Loading/Loading';
 import Modal from '@/components/UI/Modal/Modal';
-
-import useUser from '@/hooks/useUser';
 
 const updateProfileStyles = {
   row: {
@@ -123,7 +123,6 @@ const ProfileUpdate = () => {
     if (session?.user) {
       setUserData(session.user.user);
     }
-    console.log(session);
   }, [session]);
 
   const queryClient = useQueryClient();
