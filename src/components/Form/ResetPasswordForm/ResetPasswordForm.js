@@ -1,19 +1,14 @@
 import Link from 'next/link';
-import {
-  Box,
-  FormControl,
-  TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-
-import Button from '@/components/UI/Button';
-import {rwdValue} from '@/utils/theme';
-
 import {useRouter} from 'next/router';
-import Loading from '@/components/UI/Loading';
 import {useState} from 'react';
+
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+import {rwdValue, theme} from '@/utils/theme';
 import {
   checkErrorConfirm,
   checkErrorPassword,
@@ -22,6 +17,45 @@ import {
   executeSucces,
   resetPassword,
 } from '@/utils/utils';
+
+import Button from '@/components/UI/Button';
+import Loading from '@/components/UI/Loading';
+
+const resetStyles = {
+  wrapper: {
+    width: '100%',
+    maxWidth: {xs: '100%', md: '480px'},
+    padding: {xs: 0, md: '20px'},
+  },
+  resetTitle: {marginBottom: '10px'},
+  resetText: {
+    fontSize: rwdValue(10, 15),
+    marginBottom: '5px',
+  },
+  formControl: {width: '100%'},
+  confirmField: {width: '100%', mb: '30px'},
+  backToLogin: {
+    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '10px',
+    columnGap: '5px',
+
+    '& .MuiTypography-root': {
+      fontSize: rwdValue(10, 15),
+      fontWeight: 500,
+    },
+  },
+  loginLink: {
+    fontWeight: 500,
+    fontSize: rwdValue(10, 15),
+    color: theme.palette.primary.main,
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+};
 
 const ResetPasswordForm = () => {
   const router = useRouter();
@@ -35,48 +69,10 @@ const ResetPasswordForm = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
-  const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const styles = {
-    wrapper: {
-      width: '100%',
-      maxWidth: isMobile ? '100%' : '480px',
-      padding: isMobile ? 0 : '20px',
-    },
-    resetTitle: {marginBottom: '10px'},
-    resetText: {
-      fontSize: rwdValue(10, 15),
-      marginBottom: '5px',
-    },
-    formControl: {width: '100%'},
-    confirmField: {width: '100%', mb: '30px'},
-    backToLogin: {
-      textAlign: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: '10px',
-      columnGap: '5px',
-
-      '& .MuiTypography-root': {
-        fontSize: rwdValue(10, 15),
-        fontWeight: 500,
-      },
-    },
-    loginLink: {
-      fontWeight: 500,
-      fontSize: rwdValue(10, 15),
-      color: theme.palette.primary.main,
-      '&:hover': {
-        textDecoration: 'underline',
-      },
-    },
-  };
 
   const handleSignIn = async () => {
     setLoading(true);
-    console.log('Clicked reset');
     if (
       !checkErrorConfirm(password, confirmPassword, setConfirmPasswordError) &&
       !checkErrorPassword(password, setPasswordError) &&
@@ -84,7 +80,6 @@ const ResetPasswordForm = () => {
     ) {
       try {
         const {status} = await resetPassword(password, confirmPassword, code);
-        console.log('status: ', status);
         if (status == '200') {
           executeSucces('Password reset successfully.');
           executeInfo('Try to log in with your new password');
@@ -95,7 +90,8 @@ const ResetPasswordForm = () => {
           );
         }
       } catch (error) {
-        console.log('my error: ', error);
+        console.error('my error: ', error);
+        executeError(error.message);
       }
     } else {
       !code &&
@@ -111,15 +107,15 @@ const ResetPasswordForm = () => {
   return (
     <>
       {loading && <Loading />}
-      <Box sx={styles.wrapper}>
-        <Typography component="h1" variant="h1" sx={styles.resetTitle}>
+      <Box sx={resetStyles.wrapper}>
+        <Typography component="h1" variant="h1" sx={resetStyles.resetTitle}>
           Reset password
         </Typography>
-        <Typography component="p" variant="body1" sx={styles.resetText}>
+        <Typography component="p" variant="body1" sx={resetStyles.resetText}>
           Please create new password here
         </Typography>
         <Box>
-          <FormControl sx={styles.formControl}>
+          <FormControl sx={resetStyles.formControl}>
             <TextField
               size={isMobile ? 'small' : 'medium'}
               label="Password"
@@ -145,7 +141,7 @@ const ResetPasswordForm = () => {
               placeholder="at least 8 characters"
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
-              sx={styles.confirmField}
+              sx={resetStyles.confirmField}
               error={confirmPasswordError}
               helperText={
                 confirmPasswordError && 'Both passwords should be equal.'
@@ -163,10 +159,10 @@ const ResetPasswordForm = () => {
               Reset password
             </Button>
           </FormControl>
-          <Box sx={styles.backToLogin}>
+          <Box sx={resetStyles.backToLogin}>
             <Typography component="span">Back to</Typography>
             <Link href="/sign-up">
-              <Typography component="span" sx={styles.loginLink}>
+              <Typography component="span" sx={resetStyles.loginLink}>
                 Log in
               </Typography>
             </Link>
