@@ -1,20 +1,13 @@
 import Link from 'next/link';
-import {
-  Box,
-  FormControl,
-  TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-
 import {useState} from 'react';
 
-import Loading from '@/components/UI/Loading';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
-import Button from '@/components/UI/Button';
-
-import {rwdValue} from '@/utils/theme';
+import {rwdValue, theme} from '@/utils/theme';
 import {
   checkErrorEmail,
   executeError,
@@ -23,56 +16,58 @@ import {
   forgotPassword,
 } from '@/utils/utils';
 
-const ForgotPasswordForm = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+import Loading from '@/components/UI/Loading';
+import Button from '@/components/UI/Button';
 
-  const styles = {
-    wrapper: {
-      width: '100%',
-      maxWidth: isMobile ? '100%' : '480px',
-      padding: isMobile ? 0 : '20px',
-    },
-    forgotText: {marginBottom: '10px'},
-    instructionsText: {
+const forgotStyles = {
+  wrapper: {
+    width: '100%',
+    maxWidth: {xs: '100%', md: '480px'},
+    padding: {xs: 0, md: '20px'},
+  },
+  forgotText: {marginBottom: '10px'},
+  instructionsText: {
+    fontSize: rwdValue(10, 15),
+    color: 'text.secondary',
+    marginBottom: '5px',
+  },
+  formControl: {width: '100%'},
+  emailField: {marginBottom: '25px', marginTop: '60px'},
+  backToLogin: {
+    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '10px',
+    columnGap: '5px',
+
+    '& .MuiTypography-root': {
       fontSize: rwdValue(10, 15),
-      color: 'text.secondary',
-      marginBottom: '5px',
-    },
-    formControl: {width: '100%'},
-    emailField: {marginBottom: '25px', marginTop: '60px'},
-    backToLogin: {
-      textAlign: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: '10px',
-      columnGap: '5px',
-
-      '& .MuiTypography-root': {
-        fontSize: rwdValue(10, 15),
-        fontWeight: 500,
-      },
-    },
-    loginLink: {
       fontWeight: 500,
-      fontSize: rwdValue(10, 15),
-      color: theme.palette.primary.main,
-      '&:hover': {
-        textDecoration: 'underline',
-      },
     },
-  };
+  },
+  loginLink: {
+    fontWeight: 500,
+    fontSize: rwdValue(10, 15),
+    color: theme.palette.primary.main,
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+};
+
+const ForgotPasswordForm = () => {
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSignIn = async () => {
     setLoading(true);
-    console.log('Clicked');
     if (!checkErrorEmail(email, setEmailError)) {
       try {
-        const {data, status} = await forgotPassword(email);
+        const {status} = await forgotPassword(email);
 
         if (status == '200') {
           executeSucces('Mail sent successfully.');
@@ -86,7 +81,7 @@ const ForgotPasswordForm = () => {
           );
         }
       } catch (error) {
-        console.log('my error: ', error);
+        console.error('my error: ', error);
         executeError(error);
       }
     } else {
@@ -95,23 +90,25 @@ const ForgotPasswordForm = () => {
     setLoading(false);
   };
 
-  const [loading, setLoading] = useState(false);
-
   return (
     <>
       {loading && <Loading />}
-      <Box sx={styles.wrapper}>
-        <Typography component="h1" variant="h1" sx={styles.forgotText}>
+      <Box sx={forgotStyles.wrapper}>
+        <Typography component="h1" variant="h1" sx={forgotStyles.forgotText}>
           Forgot password?
         </Typography>
-        <Typography component="p" variant="body1" sx={styles.instructionsText}>
+        <Typography
+          component="p"
+          variant="body1"
+          sx={forgotStyles.instructionsText}
+        >
           Don{`'`}t worry, we{`'`}ll send you reset instructions.
         </Typography>
 
         <Box>
-          <FormControl sx={styles.formControl}>
+          <FormControl sx={forgotStyles.formControl}>
             <TextField
-              sx={styles.emailField}
+              sx={forgotStyles.emailField}
               fullWidth
               size={isMobile ? 'small' : 'medium'}
               label="Email"
@@ -129,10 +126,10 @@ const ForgotPasswordForm = () => {
               Reset password
             </Button>
           </FormControl>
-          <Box sx={styles.backToLogin}>
+          <Box sx={forgotStyles.backToLogin}>
             <Typography component="span">Back to</Typography>
             <Link href="/sign-in">
-              <Typography component="span" sx={styles.loginLink}>
+              <Typography component="span" sx={forgotStyles.loginLink}>
                 Log in
               </Typography>
             </Link>
