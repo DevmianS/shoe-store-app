@@ -117,17 +117,9 @@ const SearchResults = ({
     }
   }, [page]);
 
-  const handleClearFilters = () =>
-    setArrIdFilters({
-      name: [],
-      brands: [],
-      colors: [],
-      sizes: [],
-      categories: [],
-      genders: [],
-      minPrice: [],
-      maxPrice: [],
-    });
+  const clearFilters = async () => {
+    window.location.href = '/search?';
+  };
   return (
     <>
       <Head>
@@ -155,7 +147,7 @@ const SearchResults = ({
                   {searchString ? searchString : ''}
                 </Typography>
               </Typography>
-              <Button sx={searchStyles.clear} onClick={handleClearFilters}>
+              <Button sx={searchStyles.clear} onClick={clearFilters}>
                 Clear
               </Button>
 
