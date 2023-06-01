@@ -11,7 +11,7 @@ const useMyProducts = () => {
       try {
         const {data} = await axios.get(
           process.env.NEXT_PUBLIC_API_URL +
-            `/products?filters[teamName]=fb-team&filters[userID]=${id}&populate=*`,
+            `/products?filters[teamName]=fb-team&filters[userID]=${id}&populate=*&sort=updatedAt:desc`,
         );
         return data.data;
       } catch (error) {

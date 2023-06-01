@@ -7,8 +7,8 @@ const useProducts = page => {
     queryKey: ['products', page],
     queryFn: async () => {
       const paginated = page
-        ? `/products?filters[teamName]=fb-team&populate=*&pagination[page]=${page}`
-        : `/products?filters[teamName]=fb-team&populate=*&pagination[limit]=999`;
+        ? `/products?filters[teamName]=fb-team&populate=*&pagination[page]=${page}&sort=updatedAt:desc`
+        : `/products?filters[teamName]=fb-team&populate=*&pagination[limit]=999&sort=updatedAt:desc`;
       try {
         const {data} = await axios.get(
           process.env.NEXT_PUBLIC_API_URL + paginated,
