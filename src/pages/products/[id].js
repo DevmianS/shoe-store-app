@@ -7,6 +7,7 @@ import axios from 'axios';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
+import useUser from '@/hooks/useUser';
 import {useCart} from '@/context/CartContext';
 import {rwdValue, theme} from '@/utils/theme';
 
@@ -14,7 +15,6 @@ import NavBarLayout from '@/components/Layout/NavBarLayout';
 import Loading from '@/components/UI/Loading';
 import Gallery from '@/components/UI/Gallery/';
 import Button from '@/components/UI/Button/Button';
-import useUser from '@/hooks/useUser';
 
 const singleStyles = {
   title: {
@@ -86,6 +86,16 @@ const singleStyles = {
   },
 };
 
+const dataInit = {
+  name: '',
+  categories: [],
+  gender: '',
+  size: '',
+  description: '',
+  color: '',
+  brand: '',
+};
+
 export async function getServerSideProps(context) {
   const {id} = context.query;
   try {
@@ -111,15 +121,7 @@ export default function ProductPage({product, error}) {
   const {addProduct} = useCart();
   const [images, setImages] = useState({array: [], active: 0});
   const [hostName, setHostName] = useState('');
-  const [data, setData] = useState({
-    name: '',
-    categories: [],
-    gender: '',
-    size: '',
-    description: '',
-    color: '',
-    brand: '',
-  });
+  const [data, setData] = useState(dataInit);
 
   if (typeof window !== 'undefined' && error) {
     const {status} = error;
