@@ -4,12 +4,14 @@ import {useRouter} from 'next/router';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 
+import {useToggle} from '@/context/ToggleContext';
 import useUser from '@/hooks/useUser';
 import {rwdValue, theme} from '@/utils/theme';
 
 const AvatarStatic = ({variant = 'medium', sx}) => {
   const {avatar, status, initials} = useUser();
   const router = useRouter();
+  const {setIsToggled} = useToggle();
 
   const sizes = {
     small: {range: rwdValue(61, 64), max: 64},
@@ -24,10 +26,12 @@ const AvatarStatic = ({variant = 'medium', sx}) => {
     maxHeight: sizes[variant].max,
     borderRadius: '50%',
   };
+
   return (
     <Avatar
       onClick={() => {
         router.push('/profile');
+        setIsToggled(false);
       }}
       sx={{
         ...variantsSize,
