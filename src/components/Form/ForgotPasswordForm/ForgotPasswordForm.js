@@ -82,7 +82,7 @@ const ForgotPasswordForm = () => {
         }
       } catch (error) {
         console.error('my error: ', error);
-        executeError(error);
+        executeError(error.message);
       }
     } else {
       executeError('The email is wrong. Please write it again.');
