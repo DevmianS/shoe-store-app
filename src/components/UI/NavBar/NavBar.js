@@ -231,9 +231,15 @@ const NavBar = () => {
               ref={searchInputRef}
             />
             <Box sx={navStyles.icons}>
-              <IconButton size="large" aria-label="Bag" sx={navStyles.bagIcon}>
-                <Cart count={cartCount} />
-              </IconButton>
+              {status === 'authenticated' && (
+                <IconButton
+                  size="large"
+                  aria-label="Bag"
+                  sx={navStyles.bagIcon}
+                >
+                  <Cart count={cartCount} />
+                </IconButton>
+              )}
               <IconButton
                 size="large"
                 onClick={() => setSearchExpanded(true)}
