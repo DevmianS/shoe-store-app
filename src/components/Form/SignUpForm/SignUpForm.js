@@ -5,11 +5,10 @@ import {useEffect, useState} from 'react';
 
 import {useMutation} from '@tanstack/react-query';
 
-import {useTheme} from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import {
   checkErrorConfirm,
@@ -21,13 +20,62 @@ import {
   executeSucces,
   registerNewUser,
 } from '@/utils/utils';
-
-import {rwdValue} from '@/utils/theme';
+import {rwdValue, theme} from '@/utils/theme';
 
 import Button from '@/components/UI/Button';
 import Spinner from '@/components/UI/Spinner';
 
+const signUpStyles = {
+  spinnerWrapper: {
+    width: '100vw',
+    height: '100vh',
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: '#F3F3F3',
+    zIndex: '200',
+    opacity: 0.8,
+  },
+  wrapper: {
+    width: '100%',
+    maxWidth: {xs: '100%', md: '480px'},
+    padding: {xs: 0, md: '20px'},
+  },
+  welcomeText: {fontSize: '15px', color: '#5C5C5C', mt: 1.5, mb: 3},
+  nameField: {width: '100%'},
+  emailField: {width: '100%'},
+  passwordField: {width: '100%'},
+  confirmPasswordField: {width: '100%'},
+  signUpBtn: {mt: '80px'},
+  signInLinkWrapper: {
+    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '10px',
+    columnGap: '5px',
+    '& .MuiTypography-root': {
+      fontSize: rwdValue(10, 15),
+      fontWeight: 500,
+    },
+  },
+  signInLink: {
+    fontWeight: 500,
+    fontSize: rwdValue(10, 15),
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+};
+
 const SignUpForm = () => {
+  const router = useRouter();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,60 +86,9 @@ const SignUpForm = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
-  const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const signUpStyles = {
-    spinnerWrapper: {
-      width: '100vw',
-      height: '100vh',
-      position: 'fixed',
-      top: '0',
-      left: '0',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      background: '#F3F3F3',
-      zIndex: '200',
-      opacity: 0.8,
-    },
-    wrapper: {
-      width: '100%',
-      maxWidth: isMobile ? '100%' : '480px',
-      padding: isMobile ? 0 : '20px',
-    },
-    welcomeText: {fontSize: '15px', color: '#5C5C5C', mt: 1.5, mb: 3},
-    nameField: {width: '100%'},
-    emailField: {width: '100%'},
-    passwordField: {width: '100%'},
-    confirmPasswordField: {width: '100%'},
-    signUpBtn: {mt: '80px'},
-    signInLinkWrapper: {
-      textAlign: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: '10px',
-      columnGap: '5px',
-      '& .MuiTypography-root': {
-        fontSize: rwdValue(10, 15),
-        fontWeight: 500,
-      },
-    },
-    signInLink: {
-      fontWeight: 500,
-      fontSize: rwdValue(10, 15),
-      color: theme.palette.primary.main,
-      textDecoration: 'none',
-      '&:hover': {
-        textDecoration: 'underline',
-      },
-    },
-  };
-
-  const router = useRouter();
-
-  const {data, isLoading, isError, isSuccess, error, mutate} = useMutation({
+  const {isLoading, isError, isSuccess, error, mutate} = useMutation({
     mutationKey: ['registerNewUser'],
     mutationFn: async user => registerNewUser(user),
   });
@@ -104,7 +101,6 @@ const SignUpForm = () => {
       !checkErrorEmail(email, setEmailError) &&
       !checkErrorName(name, setNameError)
     ) {
-      console.log('handleSubmit pass');
       const user = {
         username: name,
         email: email,

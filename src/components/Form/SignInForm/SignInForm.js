@@ -106,7 +106,6 @@ const SignInForm = () => {
     event.preventDefault();
     setLoading(true);
     await router.prefetch('/');
-    console.log('handleSubmit');
     if (
       !checkErrorEmail(email, setEmailError) &&
       !checkErrorPassword(password, setPasswordError)
