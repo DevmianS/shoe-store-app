@@ -117,8 +117,8 @@ const SearchResults = ({
     }
   }, [page]);
 
-  const clearFilters = () => {
-    router.push('/search?');
+  const clearFilters = async () => {
+    window.location.href = '/search?';
   };
   return (
     <>
