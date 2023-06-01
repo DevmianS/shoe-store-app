@@ -143,7 +143,7 @@ const productCardStyles = {
     backgroundColor: 'lightgrey',
     borderColor: 'lightgrey',
   },
-  delete: {
+  addProduct: {
     position: 'absolute',
     zIndex: 5,
     bottom: rwdValue(20, 50),
@@ -183,7 +183,7 @@ export default function ProductCard({
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-  const {jwt} = useUser();
+  const {jwt, status} = useUser();
   const {addProduct} = useCart();
 
   const goToPreviousImage = e => {
@@ -257,19 +257,21 @@ export default function ProductCard({
             router.push(`/products/${productId}`);
           }}
         >
-          <Box sx={productCardStyles.delete}>
-            <Button
-              onClick={e => {
-                e.stopPropagation();
-                addProduct({productId, title});
-              }}
-            >
-              <Typography
-                className="icon-add-to-cart"
-                component="i"
-              ></Typography>
-            </Button>
-          </Box>
+          {status === 'authenticated' && (
+            <Box sx={productCardStyles.addProduct}>
+              <Button
+                onClick={e => {
+                  e.stopPropagation();
+                  addProduct({productId, title});
+                }}
+              >
+                <Typography
+                  className="icon-add-to-cart"
+                  component="i"
+                ></Typography>
+              </Button>
+            </Box>
+          )}
           <Image
             src={
               imgPath
