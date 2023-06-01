@@ -2,12 +2,11 @@ import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {useCallback, useEffect, useState} from 'react';
 
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import IconButton from '@mui/material/IconButton';
 import MUIButton from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 import {rwdValue, theme} from '@/utils/theme';
 import {deleteProduct} from '@/utils/utils';
@@ -19,6 +18,156 @@ import Modal from '@/components/UI/Modal';
 import Loading from '@/components/UI/Loading';
 import Button from '@/components/UI/Button';
 
+const productCardStyles = {
+  column: {
+    flexBasis: {xs: '50%', md: '33.333%', lg: '25%'},
+    padding: {xs: '0 8px', md: '0 15px', lg: '0 24px'},
+    marginBottom: {xs: '8px', md: '15px', lg: '24px'},
+  },
+  card: {
+    position: 'relative',
+    borderRadius: 0,
+    border: 'none',
+    boxShadow: 'none',
+    '& img': {
+      position: 'absolute',
+      background: 'primary',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      transition: '1s',
+    },
+  },
+  threeDots: {
+    position: 'absolute',
+    right: 10,
+    top: 0,
+    opacity: 1,
+    minWidth: '16px',
+    height: '32px',
+    '&.MuiButtonBase-root:hover': {
+      bgcolor: 'transparent',
+    },
+    span: {
+      fontWeight: 700,
+      fontSize: rwdValue(14, 32),
+    },
+  },
+  image: {
+    position: 'relative',
+    width: '100%',
+    paddingBottom: '120%',
+    marginBottom: '12px',
+    overflow: 'hidden',
+    background: 'lightgrey',
+    '&:hover': {
+      cursor: 'pointer',
+      '& img': {
+        transition: '1s',
+        transform: 'scale(1.25)',
+      },
+      '& button': {
+        opacity: 1,
+      },
+    },
+    '& button': {
+      opacity: {xs: 1, md: 0},
+    },
+  },
+
+  body: {position: 'relative'},
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'start',
+    gap: '5px',
+  },
+  title: {
+    fontSize: rwdValue(10, 22),
+    fontWeight: 500,
+    marginBottom: '5px',
+    wordBreak: 'break-all',
+  },
+  price: {
+    textAlign: 'right',
+    maxWidth: rwdValue(40, 85),
+    paddingLeft: '3px',
+    wordBreak: 'keep-all',
+  },
+  categoryRow: {
+    color: theme.palette.text.secondary,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'start',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+
+    '& h4': {
+      fontSize: rwdValue(7, 16),
+      background: '#B9B8B4',
+      padding: '3px 12px',
+      borderRadius: '10px',
+      margin: '3px',
+      color: '#fff',
+      '&.Running': {background: '#E16200'},
+      '&.Athletic': {background: '#D18D47'},
+      '&.Tennis': {background: '#31C1B0'},
+      '&.Casual': {background: '#92BB41'},
+      '&.Tracking': {background: '#19976A'},
+      '&.Volleyball': {background: '#B34EE9'},
+    },
+  },
+  iconBtn: {
+    width: 28,
+    height: 28,
+    border: '1px solid #fff',
+    borderRadius: 32,
+    backgroundColor: '#fff',
+    m: 1,
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    zIndex: 3,
+    opacity: 0,
+    transition: '0.3s all',
+
+    '&:hover': {
+      backgroundColor: '#fe645e',
+      borderColor: '#fe645e',
+      color: '#fff',
+    },
+  },
+  disabled: {
+    backgroundColor: 'lightgrey',
+    borderColor: 'lightgrey',
+  },
+  addProduct: {
+    position: 'absolute',
+    zIndex: 5,
+    bottom: rwdValue(20, 50),
+    left: '50%',
+    transform: 'translateX(-50%)',
+    '& button': {
+      opacity: {xs: 1, md: 0},
+      width: rwdValue(32, 64),
+      height: rwdValue(32, 64),
+      minHeight: rwdValue(32, 64),
+      minWidth: rwdValue(32, 64),
+      borderRadius: '50%',
+      transition: '0.5s',
+      '&:active': {
+        transform: 'scale(0.9)',
+      },
+    },
+    '& i': {
+      fontSize: rwdValue(20, 28),
+      color: '#fff',
+    },
+  },
+};
+
 export default function ProductCard({
   productId,
   title,
@@ -28,164 +177,13 @@ export default function ProductCard({
   showOptions,
   onEdit,
 }) {
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const styles = {
-    column: {
-      flexBasis: {xs: '50%', md: '33.333%', lg: '25%'},
-      padding: {xs: '0 8px', md: '0 15px', lg: '0 24px'},
-      marginBottom: {xs: '8px', md: '15px', lg: '24px'},
-    },
-    card: {
-      position: 'relative',
-      borderRadius: 0,
-      border: 'none',
-      boxShadow: 'none',
-      '& img': {
-        position: 'absolute',
-        background: 'primary',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        transition: '1s',
-      },
-    },
-    threeDots: {
-      position: 'absolute',
-      right: 10,
-      top: 0,
-      opacity: 1,
-      minWidth: '16px',
-      height: '32px',
-      '&.MuiButtonBase-root:hover': {
-        bgcolor: 'transparent',
-      },
-      span: {
-        fontWeight: 700,
-        fontSize: rwdValue(14, 32),
-      },
-    },
-    image: {
-      position: 'relative',
-      width: '100%',
-      paddingBottom: '120%',
-      marginBottom: '12px',
-      overflow: 'hidden',
-      background: 'lightgrey',
-      '&:hover': {
-        cursor: 'pointer',
-        '& img': {
-          transition: '1s',
-          transform: 'scale(1.25)',
-        },
-        '& button': {
-          opacity: 1,
-        },
-      },
-      '& button': {
-        opacity: {xs: 1, md: 0},
-      },
-    },
-
-    body: {position: 'relative'},
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'start',
-      gap: '5px',
-    },
-    title: {
-      fontSize: rwdValue(10, 22),
-      fontWeight: 500,
-      marginBottom: '5px',
-      wordBreak: 'break-all',
-    },
-    price: {
-      textAlign: 'right',
-      maxWidth: rwdValue(40, 85),
-      paddingLeft: '3px',
-      wordBreak: 'keep-all',
-    },
-    categoryRow: {
-      color: theme.palette.text.secondary,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'start',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-
-      '& h4': {
-        fontSize: rwdValue(7, 16),
-        background: '#B9B8B4',
-        padding: '3px 12px',
-        borderRadius: '10px',
-        margin: '3px',
-        color: '#fff',
-        '&.Running': {background: '#E16200'},
-        '&.Athletic': {background: '#D18D47'},
-        '&.Tennis': {background: '#31C1B0'},
-        '&.Casual': {background: '#92BB41'},
-        '&.Tracking': {background: '#19976A'},
-        '&.Volleyball': {background: '#B34EE9'},
-      },
-    },
-    iconBtn: {
-      width: 28,
-      height: 28,
-      border: '1px solid #fff',
-      borderRadius: 32,
-      backgroundColor: '#fff',
-      m: 1,
-      position: 'absolute',
-      top: '50%',
-      transform: 'translateY(-50%)',
-      zIndex: 3,
-      opacity: 0,
-      transition: '0.3s all',
-
-      '&:hover': {
-        backgroundColor: '#fe645e',
-        borderColor: '#fe645e',
-        color: '#fff',
-      },
-    },
-    disabled: {
-      backgroundColor: 'lightgrey',
-      borderColor: 'lightgrey',
-    },
-    delete: {
-      position: 'absolute',
-      zIndex: 5,
-      bottom: rwdValue(20, 50),
-      left: '50%',
-      transform: 'translateX(-50%)',
-      '& button': {
-        opacity: {xs: 1, md: 0},
-        width: rwdValue(32, 64),
-        height: rwdValue(32, 64),
-        minHeight: rwdValue(32, 64),
-        minWidth: rwdValue(32, 64),
-        borderRadius: '50%',
-        transition: '0.5s',
-        '&:active': {
-          transform: 'scale(0.9)',
-        },
-      },
-      '& i': {
-        fontSize: rwdValue(20, 28),
-        color: '#fff',
-      },
-    },
-  };
-
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [deleteConfVisible, setDeleteConfVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-  const {jwt} = useUser();
+  const {jwt, status} = useUser();
   const {addProduct} = useCart();
 
   const goToPreviousImage = e => {
@@ -250,28 +248,30 @@ export default function ProductCard({
   }, [isMenuVisible, handleOutsideClick]);
 
   return (
-    <Box sx={styles.column}>
-      <Box sx={styles.card}>
+    <Box sx={productCardStyles.column}>
+      <Box sx={productCardStyles.card}>
         <Box
-          sx={styles.image}
+          sx={productCardStyles.image}
           onClick={e => {
             e.stopPropagation();
             router.push(`/products/${productId}`);
           }}
         >
-          <Box sx={styles.delete}>
-            <Button
-              onClick={e => {
-                e.stopPropagation();
-                addProduct({productId, title});
-              }}
-            >
-              <Typography
-                className="icon-add-to-cart"
-                component="i"
-              ></Typography>
-            </Button>
-          </Box>
+          {status === 'authenticated' && (
+            <Box sx={productCardStyles.addProduct}>
+              <Button
+                onClick={e => {
+                  e.stopPropagation();
+                  addProduct({productId, title});
+                }}
+              >
+                <Typography
+                  className="icon-add-to-cart"
+                  component="i"
+                ></Typography>
+              </Button>
+            </Box>
+          )}
           <Image
             src={
               imgPath
@@ -282,14 +282,15 @@ export default function ProductCard({
               imgPath && imgPath[currentImageIndex]?.attributes?.alternativeText
             }`}
             fill
-            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 15vw, 20vw"
           />
           {imgPath && (
             <>
               <IconButton
                 sx={{
-                  ...styles.iconBtn,
-                  ...(currentImageIndex === 0 ? styles.disabled : ''),
+                  ...productCardStyles.iconBtn,
+                  ...(currentImageIndex === 0
+                    ? productCardStyles.disabled
+                    : ''),
                 }}
                 onClick={goToPreviousImage}
               >
@@ -297,9 +298,9 @@ export default function ProductCard({
               </IconButton>
               <IconButton
                 sx={{
-                  ...styles.iconBtn,
+                  ...productCardStyles.iconBtn,
                   ...(currentImageIndex === imgPath?.length - 1
-                    ? styles.disabled
+                    ? productCardStyles.disabled
                     : ''),
                   right: 0,
                 }}
@@ -310,28 +311,28 @@ export default function ProductCard({
             </>
           )}
         </Box>
-        <Box sx={styles.body}>
-          <Stack sx={styles.header}>
-            <Typography component="h3" sx={styles.title}>
+        <Box sx={productCardStyles.body}>
+          <Stack sx={productCardStyles.header}>
+            <Typography component="h3" sx={productCardStyles.title}>
               {title || 'Product title'}
             </Typography>
             <Typography
               component="span"
               sx={{
-                ...styles.title,
-                ...styles.price,
+                ...productCardStyles.title,
+                ...productCardStyles.price,
               }}
             >
               ${price || '100'}
             </Typography>
           </Stack>
-          <Stack sx={styles.categoryRow}>
+          <Stack sx={productCardStyles.categoryRow}>
             {typeof imgPath?.src === 'string'
               ? category
               : category.map(cat => {
                   return (
                     <Typography
-                      sx={styles.category}
+                      sx={productCardStyles.category}
                       component="h4"
                       key={cat.id}
                       className={cat.attributes.name}
@@ -347,8 +348,7 @@ export default function ProductCard({
             <MUIButton
               variant="text"
               disableRipple
-              size={isDesktop ? 'medium' : 'small'}
-              sx={styles.threeDots}
+              sx={productCardStyles.threeDots}
               onClick={() => {
                 setIsMenuVisible(prev => !prev);
               }}
