@@ -90,8 +90,8 @@ const ResetPasswordForm = () => {
           );
         }
       } catch (error) {
-        console.error('my error: ', error);
-        executeError(error.message);
+        const errorMessage = error?.response?.data?.error?.message || '';
+        executeError(errorMessage);
       }
     } else {
       !code &&
@@ -161,7 +161,7 @@ const ResetPasswordForm = () => {
           </FormControl>
           <Box sx={resetStyles.backToLogin}>
             <Typography component="span">Back to</Typography>
-            <Link href="/sign-up">
+            <Link href="/sign-in">
               <Typography component="span" sx={resetStyles.loginLink}>
                 Log in
               </Typography>
