@@ -30,7 +30,9 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {queries: {staleTime: 1000 * 60 * 5}},
+});
 const icons_font = localFont({src: '../font/SHOES_STORE.woff'});
 
 export default function App({Component, pageProps}) {

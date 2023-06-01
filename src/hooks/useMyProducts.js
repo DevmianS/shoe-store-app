@@ -1,48 +1,33 @@
 import axios from 'axios';
 import useUser from './useUser';
-import {useCallback, useEffect, useState} from 'react';
+import {useQuery} from '@tanstack/react-query';
 import {executeError} from '@/utils/utils';
 
 const useMyProducts = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [products, setProducts] = useState(null);
-
   const {id} = useUser();
-
-  const queryMyProducts = useCallback(async id => {
-    setIsLoading(true);
-    try {
-      const {data} = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL +
-          `/products?filters[teamName]=fb-team&filters[userID]=${id}&populate=*`,
-      );
-      setIsLoading(false);
-      return data?.data;
-    } catch (error) {
-      console.log('error: ', error);
-      executeError(
-        'There was an error with the application. Please Try again later or talk to support. Error: ' +
-          error?.response?.data?.error?.name || '',
-      );
-    }
-    setIsLoading(false);
-    return [];
-  }, []);
-
-  console.log('userID: ', id, isLoading);
-
-  useEffect(() => {
-    async function test() {
-      let prod = null;
-      if (id) {
-        prod = await queryMyProducts(id);
+  const {data, isLoading, isError, error} = useQuery({
+    queryKey: ['products', 'my-products', id],
+    queryFn: async () => {
+      try {
+        const {data} = await axios.get(
+          process.env.NEXT_PUBLIC_API_URL +
+            `/products?filters[teamName]=fb-team&filters[userID]=${id}&populate=*&sort=updatedAt:desc`,
+        );
+        return data.data;
+      } catch (error) {
+        console.log('error: ', error);
+        executeError(
+          'There was an error with the application. Please Try again later or talk to support. Error: ' +
+            error?.response?.data?.error?.name || '',
+        );
       }
-      setProducts(prod);
-    }
-    test();
-  }, [id, queryMyProducts]);
+      return [];
+    },
+    enabled: !!id,
+    keepPreviousData: true,
+  });
 
-  return {products, isLoading};
+  return {data, isLoading, isError, error};
 };
 
 export default useMyProducts;

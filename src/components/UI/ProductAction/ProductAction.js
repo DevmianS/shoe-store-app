@@ -1,6 +1,6 @@
 import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
-
+import {useQueryClient} from '@tanstack/react-query';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -73,6 +73,8 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   const [select, setSelect] = useState(selectsInit);
   const [loading, setLoading] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
+
+  const queryClient = useQueryClient();
 
   const selectsdata = [
     {
@@ -239,7 +241,7 @@ const ProductAction = ({isEditing, openState, setOpenState, productId}) => {
   const successReset = () => {
     resetForm();
     setOpenState(false);
-    setTimeout(() => router.reload(), 3000);
+    queryClient.invalidateQueries({queryKey: ['products']});
   };
 
   return (

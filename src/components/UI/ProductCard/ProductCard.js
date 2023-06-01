@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {useCallback, useEffect, useState} from 'react';
+import {useQueryClient} from '@tanstack/react-query';
 
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -186,6 +187,8 @@ export default function ProductCard({
   const {jwt, status} = useUser();
   const {addProduct} = useCart();
 
+  const queryClient = useQueryClient();
+
   const goToPreviousImage = e => {
     e.stopPropagation();
     console.log('prev', currentImageIndex);
@@ -219,7 +222,7 @@ export default function ProductCard({
     try {
       setLoading(true);
       await deleteProduct({id: productId, jwt});
-      router.reload();
+      queryClient.invalidateQueries({queryKey: ['products']});
     } catch {
       setLoading(false);
       setDeleteConfVisible(false);

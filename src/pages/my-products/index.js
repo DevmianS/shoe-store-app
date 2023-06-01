@@ -84,8 +84,8 @@ const myProductsStyles = {
   },
 };
 
-const MyProducts = ({productsList}) => {
-  const {products, isLoading} = useMyProducts();
+const MyProducts = () => {
+  const {data: products, isLoading} = useMyProducts();
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const [openEditProduct, setOpenEditProduct] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
