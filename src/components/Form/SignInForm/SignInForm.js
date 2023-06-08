@@ -46,7 +46,7 @@ const signInStyles = {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     marginBottom: rwdValue(20, 50),
   },
   rememberCheckbox: {
@@ -92,7 +92,7 @@ const SignInForm = () => {
 
   const {setCartItems, setCartCount, cartItems} = useCart();
 
-  const [rememberMe, setRememberMe] = useState(true);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -197,7 +197,7 @@ const SignInForm = () => {
             onBlur={() => checkErrorPassword(password, setPasswordError)}
           />
           <Box sx={signInStyles.rememberText}>
-            <FormControlLabel
+            {/* <FormControlLabel
               control={
                 <Checkbox
                   checked={rememberMe}
@@ -206,7 +206,7 @@ const SignInForm = () => {
               }
               label="Remember me"
               sx={signInStyles.rememberCheckbox}
-            />
+            /> */}
             <Link href="/forgot-password">
               <Typography sx={signInStyles.link}>Forgot password?</Typography>
             </Link>
